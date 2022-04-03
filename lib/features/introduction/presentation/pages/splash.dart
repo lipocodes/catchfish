@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
+import 'package:catchfish/features/introduction/presentation/widgets/boat_steering.dart';
+import 'package:catchfish/features/introduction/presentation/widgets/flying_bird.dart';
+import 'package:catchfish/features/introduction/presentation/widgets/text_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -103,104 +106,25 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.2,
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  //width: MediaQuery.of(context).size.width * 0.9,
-                  child: Transform.rotate(
-                    angle: steeringAngle,
-                    child: Image.asset(
-                      'assets/images/introduction/boat_steering.png',
-                      fit: BoxFit.cover,
-                      height: double.infinity,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                    ),
-                  ),
-                ),
+                boatSteering(context, steeringAngle),
                 const SizedBox(
                   height: 50.0,
                 ),
-                colorLoadingText
-                    ? SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.1,
-                        child: const Text(
-                          "loading",
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.brown,
-                          ),
-                        ).tr(),
-                      )
-                    : SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.1,
-                        child: const Text(
-                          "loading",
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.yellow,
-                          ),
-                        ).tr(),
-                      ),
+                textLoading(context, colorLoadingText),
               ],
             ),
           ),
           if (rightPositionBird1 > 0.0) ...[
-            Positioned(
-              top: topPositionBird1,
-              right: rightPositionBird1,
-              child: SizedBox(
-                height: 100,
-                child: Image.asset(
-                  'assets/images/introduction/flying_bird.gif',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                ),
-              ),
-            )
+            flyingBird(topPositionBird1, rightPositionBird1),
           ],
           if (rightPositionBird2 > 0.0) ...[
-            Positioned(
-              top: topPositionBird2,
-              right: rightPositionBird2,
-              child: SizedBox(
-                height: 100,
-                child: Image.asset(
-                  'assets/images/introduction/flying_bird.gif',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                ),
-              ),
-            )
+            flyingBird(topPositionBird2, rightPositionBird2),
           ],
           if (rightPositionBird3 > 0.0) ...[
-            Positioned(
-              top: topPositionBird3,
-              right: rightPositionBird3,
-              child: SizedBox(
-                height: 100,
-                child: Image.asset(
-                  'assets/images/introduction/flying_bird.gif',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                ),
-              ),
-            )
+            flyingBird(topPositionBird3, rightPositionBird3),
           ],
           if (rightPositionBird4 > 0.0) ...[
-            Positioned(
-              top: topPositionBird4,
-              right: rightPositionBird4,
-              child: SizedBox(
-                height: 100,
-                child: Image.asset(
-                  'assets/images/introduction/flying_bird.gif',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                ),
-              ),
-            )
+            flyingBird(topPositionBird4, rightPositionBird4),
           ],
         ]),
       ),
