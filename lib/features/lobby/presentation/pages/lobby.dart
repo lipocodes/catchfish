@@ -20,7 +20,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     super.initState();
 
     PlaySound playSound = PlaySound();
-    playSound.play(path: "assets/sounds/", fileName: "applause.mp3");
+    playSound.play(path: "assets/sounds/", fileName: "construction.mp3");
   }
 
   @override

@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:catchfish/core/utils/play_sound.dart';
+import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
+
 import 'package:catchfish/features/introduction/presentation/widgets/boat_steering.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/flying_bird.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/text_loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -86,45 +89,55 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<IntroductionBloc>(context);
+    bloc.add(LoadingEvent());
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Stack(children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/introduction/fishing_boat.jpg',
+      child: BlocBuilder<IntroductionBloc, IntroductionState>(
+        builder: (context, state) {
+          if (state is LoadingState) {
+            print("pppppppppppp=" + state.name.toString());
+          }
+
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: Stack(children: [
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                      'assets/images/introduction/fishing_boat.jpg',
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                fit: BoxFit.cover,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                    ),
+                    boatSteering(context, steeringAngle),
+                    const SizedBox(
+                      height: 50.0,
+                    ),
+                    textLoading(context, colorLoadingText),
+                  ],
+                ),
               ),
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.2,
-                ),
-                boatSteering(context, steeringAngle),
-                const SizedBox(
-                  height: 50.0,
-                ),
-                textLoading(context, colorLoadingText),
+              if (rightPositionBird1 > 0.0) ...[
+                flyingBird(topPositionBird1, rightPositionBird1),
               ],
-            ),
-          ),
-          if (rightPositionBird1 > 0.0) ...[
-            flyingBird(topPositionBird1, rightPositionBird1),
-          ],
-          if (rightPositionBird2 > 0.0) ...[
-            flyingBird(topPositionBird2, rightPositionBird2),
-          ],
-          if (rightPositionBird3 > 0.0) ...[
-            flyingBird(topPositionBird3, rightPositionBird3),
-          ],
-          if (rightPositionBird4 > 0.0) ...[
-            flyingBird(topPositionBird4, rightPositionBird4),
-          ],
-        ]),
+              if (rightPositionBird2 > 0.0) ...[
+                flyingBird(topPositionBird2, rightPositionBird2),
+              ],
+              if (rightPositionBird3 > 0.0) ...[
+                flyingBird(topPositionBird3, rightPositionBird3),
+              ],
+              if (rightPositionBird4 > 0.0) ...[
+                flyingBird(topPositionBird4, rightPositionBird4),
+              ],
+            ]),
+          );
+        },
       ),
     );
   }

@@ -7,4 +7,4 @@ abstract class IntroductionEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class IntroductionLoading extends IntroductionEvent {}
+class LoadingEvent extends IntroductionEvent {}

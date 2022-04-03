@@ -7,7 +7,9 @@ part 'introduction_state.dart';
 class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
   IntroductionBloc() : super(IntroductionInitial()) {
     on<IntroductionEvent>((event, emit) {
-      // TODO: implement event handler
+      if (event is LoadingEvent) {
+        emit(LoadingState(name: "Lior"));
+      }
     });
   }
 }
