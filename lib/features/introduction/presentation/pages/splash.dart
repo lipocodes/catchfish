@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,30 +21,20 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   double topPositionBird3 = 0.0;
   double topPositionBird4 = 600.0;
   double rightPositionBird4 = 300.0;
-  late AudioPlayer advancedPlayer;
-  late AudioCache audioCache;
+
   late AnimationController animationController;
   double steeringAngle = 0;
   int enumerator = 0;
   int remainingMilliseconds = 5000;
   bool colorLoadingText = false;
 
-  playSound() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool permissionAudio = prefs.getBool("permissionAudio") ?? true;
-    if (permissionAudio) {
-      advancedPlayer = AudioPlayer();
-      audioCache = AudioCache(
-          fixedPlayer: advancedPlayer, prefix: 'assets/sounds/introduction/');
-      await audioCache.play("tweet.mp3");
-    }
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    playSound();
+
+    PlaySound playSound = PlaySound();
+    playSound.play(path: "assets/sounds/introduction/", fileName: "tweet.mp3");
 
     animationController = AnimationController(
       vsync: this,
