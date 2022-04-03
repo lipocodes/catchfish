@@ -1,9 +1,12 @@
+import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
+import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,16 +31,24 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<IntroductionBloc>(
+          create: (BuildContext context) => IntroductionBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        routes: <String, WidgetBuilder>{
+          '/': (BuildContext context) => const Splash(),
+          '/lobby': (BuildContext context) => const Lobby(),
+        },
       ),
-      routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => const Splash(),
-      },
     );
   }
 }

@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/boat_steering.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/flying_bird.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/text_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -49,6 +46,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
       if (remainingMilliseconds == 0) {
         t.cancel();
+        Navigator.pushNamed(context, '/lobby');
       } else {
         remainingMilliseconds -= 100;
       }
