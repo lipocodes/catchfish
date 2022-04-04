@@ -1,5 +1,6 @@
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
+import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<IntroductionBloc>(
-          create: (BuildContext context) => IntroductionBloc(),
+            create: (BuildContext context) => IntroductionBloc()),
+        BlocProvider<LobbyBloc>(
+          create: (BuildContext context) => LobbyBloc(),
         ),
       ],
       child: MaterialApp(
