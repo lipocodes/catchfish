@@ -108,7 +108,8 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                      'assets/images/introduction/fishing_boat.jpg',
+                      //tenor.com
+                      'assets/images/introduction/waves.gif',
                     ),
                     fit: BoxFit.cover,
                   ),

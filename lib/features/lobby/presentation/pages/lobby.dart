@@ -44,19 +44,25 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                      //pixabay.com
-                      'assets/images/lobby/sea.jpg',
+                      //tenor.com
+                      'assets/images/lobby/waves.gif',
                     ),
                     fit: BoxFit.cover,
                   ),
                 ),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.15,
+                    const SizedBox(
+                      height: 100.0,
                     ),
                     _duringWheelRotation ? arrowBottom() : buttonRotate(),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                     compass(context, 0),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                   ],
                 ),
               ),
