@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         routes: <String, WidgetBuilder>{
-          '/': (BuildContext context) => const Splash(),
+          '/': (BuildContext context) => const /*Splash()*/ Lobby(),
           '/lobby': (BuildContext context) => const Lobby(),
         },
       ),
