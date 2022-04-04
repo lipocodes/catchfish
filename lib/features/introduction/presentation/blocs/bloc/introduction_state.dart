@@ -13,3 +13,7 @@ class LoadingState extends IntroductionState {
   final String name;
   const LoadingState({required this.name});
 }
+
+class TimerTickState extends IntroductionState {}
+
+class IntroductionEnd extends IntroductionState {}

@@ -8,3 +8,7 @@ abstract class IntroductionEvent extends Equatable {
 }
 
 class LoadingEvent extends IntroductionEvent {}
+
+class TimerTickEvent extends IntroductionEvent {
+  const TimerTickEvent();
+}

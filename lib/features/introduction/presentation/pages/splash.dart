@@ -5,6 +5,7 @@ import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduc
 import 'package:catchfish/features/introduction/presentation/widgets/boat_steering.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/flying_bird.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/text_loading.dart';
+import 'package:catchfish/features/lobby/domain/entities/introduction_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +17,8 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
+  late IntroductionBloc _bloc;
+  bool _isTimerSet = false;
   double rightPositionBird1 = 300.0;
   double topPositionBird1 = 300.0;
   double rightPositionBird2 = 300.0;
@@ -33,19 +36,20 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     PlaySound playSound = PlaySound();
     playSound.play(path: "assets/sounds/introduction/", fileName: "tweet.mp3");
+  }
 
-    animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 5),
-    );
+  setTimer(BuildContext context) async {
+    if (_isTimerSet) {
+      return;
+    }
 
-    animationController.repeat();
-
+    _isTimerSet = true;
+    _bloc = BlocProvider.of<IntroductionBloc>(context);
+    _bloc.add(LoadingEvent());
     Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
       if (remainingMilliseconds == 0) {
         t.cancel();
@@ -89,8 +93,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<IntroductionBloc>(context);
-    bloc.add(LoadingEvent());
+    setTimer(context);
     return SafeArea(
       child: BlocBuilder<IntroductionBloc, IntroductionState>(
         builder: (context, state) {
