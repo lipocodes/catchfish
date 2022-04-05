@@ -46,14 +46,16 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     var random = Random();
     //randomize: the speed the compass rotates
     int num = random.nextInt(360);
-    num += 360; // we need a large enough number
+    num += 1440;
+
+    // we need a large enough number
     double speedInRadians = num * 0.01745329;
 
     Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
       setState(() {
         if (speedInRadians > 0) {
           angle += speedInRadians;
-          speedInRadians -= 0.1;
+          speedInRadians -= 0.5;
         } else {
           double degreesBrute = angle * 57.2957795;
           degreesNet = degreesBrute % 360;
@@ -97,7 +99,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                           ? arrowBottom()
                           : buttonRotate(context),
                       SizedBox(
-                        height: 20.0,
+                        height: 30.0,
                         child: Text(degreesNet.ceil().toString() + "\u00b0",
                             style: const TextStyle(fontSize: 18.0)),
                       ),
