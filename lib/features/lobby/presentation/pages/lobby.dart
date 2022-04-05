@@ -7,6 +7,7 @@ import 'package:catchfish/features/introduction/presentation/widgets/flying_bird
 import 'package:catchfish/features/introduction/presentation/widgets/text_loading.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/arrow_bottom.dart';
+import 'package:catchfish/features/lobby/presentation/widgets/button_back.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/button_rotate.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/compass.dart';
 import 'package:flutter/material.dart';
@@ -79,24 +80,11 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                     ],
                   ),
                 ),
-                backButton(),
+                buttonBack(performBack),
               ]),
             ),
           ),
         );
-      },
-    );
-  }
-
-  Widget backButton() {
-    return IconButton(
-      icon: const Icon(
-        Icons.arrow_back,
-        size: 24,
-        color: Colors.white,
-      ),
-      onPressed: () {
-        performBack();
       },
     );
   }
