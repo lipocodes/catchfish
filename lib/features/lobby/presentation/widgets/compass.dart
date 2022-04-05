@@ -5,7 +5,7 @@ Widget compass(BuildContext context, double angle) {
     height: 350.0,
     width: 350.0,
     child: Transform.rotate(
-      angle: 0,
+      angle: -angle,
       child: Image.asset(
         //pixabay.com
         'assets/images/lobby/compass.png',

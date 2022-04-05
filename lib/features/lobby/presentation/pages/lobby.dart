@@ -1,19 +1,14 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:catchfish/core/utils/here_working.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
-import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
-import 'package:catchfish/features/introduction/presentation/widgets/boat_steering.dart';
-import 'package:catchfish/features/introduction/presentation/widgets/flying_bird.dart';
-import 'package:catchfish/features/introduction/presentation/widgets/text_loading.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/arrow_bottom.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/button_back.dart';
-import 'package:catchfish/features/lobby/presentation/widgets/button_rotate.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/compass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:ui';
-import 'package:catchfish/features/lobby/domain/entities/button_or_arrow.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Lobby extends StatefulWidget {
   const Lobby({Key? key}) : super(key: key);
@@ -23,7 +18,11 @@ class Lobby extends StatefulWidget {
 }
 
 class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
-  final bool _duringWheelRotation = false;
+  double angle = 0.0;
+  double millisecondsElasped = 0.0;
+  late PlaySound playSound;
+  double degreesNet = 0.0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,6 +36,32 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     Navigator.pop(context, true);
     Navigator.pop(context, true);
     Navigator.pushNamed(context, '/');
+  }
+
+  //rotate the compass using a Timer
+  void rotateCompass() async {
+    BlocProvider.of<LobbyBloc>(context).add(RotateCompassEvent());
+    playSound = PlaySound();
+    playSound.play(path: "assets/sounds/lobby/", fileName: "bounce.mp3");
+    var random = Random();
+    //randomize: the speed the compass rotates
+    int num = random.nextInt(360);
+    num += 360; // we need a large enough number
+    double speedInRadians = num * 0.01745329;
+
+    Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
+      setState(() {
+        if (speedInRadians > 0) {
+          angle += speedInRadians;
+          speedInRadians -= 0.1;
+        } else {
+          double degreesBrute = angle * 57.2957795;
+          degreesNet = degreesBrute % 360;
+          t.cancel();
+          playSound.stop();
+        }
+      });
+    });
   }
 
   @override
@@ -71,10 +96,12 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                       state is RotateCompassState
                           ? arrowBottom()
                           : buttonRotate(context),
-                      const SizedBox(
+                      SizedBox(
                         height: 20.0,
+                        child: Text(degreesNet.ceil().toString() + "\u00b0",
+                            style: const TextStyle(fontSize: 18.0)),
                       ),
-                      compass(context, 0),
+                      compass(context, angle),
                       const SizedBox(
                         height: 20.0,
                       ),
@@ -87,6 +114,40 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           ),
         );
       },
+    );
+  }
+
+  //////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////
+  Widget buttonRotate(BuildContext context) {
+    return SizedBox(
+      width: 250.0,
+      child: TextButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("click_to_roll",
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.w700))
+                  .tr(),
+              const SizedBox(
+                width: 10.0,
+              ),
+              const Icon(Icons.rotate_left),
+            ],
+          ),
+          onPressed: () {
+            BlocProvider.of<LobbyBloc>(context).add(RotateCompassEvent());
+            rotateCompass();
+          },
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.greenAccent),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: const BorderSide(color: Colors.red))))),
     );
   }
 }
