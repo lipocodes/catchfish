@@ -13,6 +13,7 @@ import 'package:catchfish/features/lobby/presentation/widgets/compass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui';
+import 'package:catchfish/features/lobby/domain/entities/button_or_arrow.dart';
 
 class Lobby extends StatefulWidget {
   const Lobby({Key? key}) : super(key: key);
@@ -42,7 +43,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocBuilder<LobbyBloc, LobbyState>(
       builder: (context, state) {
-        print("sssssssssssssssssss=" + state.toString());
         return WillPopScope(
           onWillPop: () async {
             performBack();
@@ -68,7 +68,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                       const SizedBox(
                         height: 100.0,
                       ),
-                      _duringWheelRotation
+                      state is RotateCompassState
                           ? arrowBottom()
                           : buttonRotate(context),
                       const SizedBox(

@@ -5,7 +5,7 @@ import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduc
 import 'package:catchfish/features/introduction/presentation/widgets/boat_steering.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/flying_bird.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/text_loading.dart';
-import 'package:catchfish/features/lobby/domain/entities/introduction_settings.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

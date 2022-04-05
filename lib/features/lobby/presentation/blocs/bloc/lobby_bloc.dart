@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
+import 'package:catchfish/features/lobby/domain/entities/button_or_arrow.dart';
 import 'package:equatable/equatable.dart';
 
 part 'lobby_event.dart';
