@@ -8,6 +8,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:page_transition/page_transition.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,9 +48,30 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        routes: <String, WidgetBuilder>{
+        /*routes: <String, WidgetBuilder>{
           '/': (BuildContext context) => const Splash(),
           '/lobby': (BuildContext context) => const Lobby(),
+        },*/
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/':
+              return PageTransition(
+                child: const Splash(),
+                type: PageTransitionType.fade,
+                settings: settings,
+                duration: const Duration(milliseconds: 1000),
+              );
+            case '/lobby':
+              return PageTransition(
+                child: const Lobby(),
+                type: PageTransitionType.fade,
+                settings: settings,
+                duration: const Duration(milliseconds: 1000),
+              );
+
+            default:
+              return null;
+          }
         },
       ),
     );

@@ -10,3 +10,5 @@ abstract class LobbyEvent extends Equatable {
 class EnteringLobbyEvent extends LobbyEvent {
   const EnteringLobbyEvent() : super();
 }
+
+class LeavingLobbyEvent extends LobbyEvent {}

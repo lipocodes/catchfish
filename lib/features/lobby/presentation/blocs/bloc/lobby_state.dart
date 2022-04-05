@@ -12,3 +12,5 @@ class LobbyInitial extends LobbyState {}
 class EnteringLobbyState extends LobbyState {
   const EnteringLobbyState() : super();
 }
+
+class LeavingLobbyState extends LobbyState {}
