@@ -41,7 +41,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   }
 
   //custom BACK operation
-  performBack() {
+  performBack() async {
     BlocProvider.of<LobbyBloc>(context).add(LeavingLobbyEvent());
     Navigator.pop(context, true);
     Navigator.pop(context, true);
@@ -60,7 +60,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
     // we need a large enough number
     double speedInRadians = num * 0.01745329;
-
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
       setState(() {
         if (speedInRadians > 0) {
@@ -71,6 +71,9 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           degreesNet = degreesBrute % 360;
           t.cancel();
           playSound.stop();
+
+          prefs.setInt("dayLastRotation", DateTime.now().day);
+          prefs.setString('dailyPrize', "10 XP");
           showDailyPrize("10 XP");
         }
       });
@@ -108,12 +111,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //after compass stops rotating, we show the prize to user
   showDailyPrize(String dailyPrize) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('dailyPrize', dailyPrize);
-    _dailyPrize = dailyPrize;
-    prefs.setInt("dayLastRotation", DateTime.now().day);
-    _dayLastRotation = DateTime.now().day;
-
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -278,12 +275,11 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
               const Icon(Icons.compass_calibration_sharp),
             ],
           ),
-          onPressed: () {
-            setState(() {
-              _dayLastRotation = 0;
-              BlocProvider.of<LobbyBloc>(context)
-                  .add(const EnteringLobbyEvent());
-            });
+          onPressed: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setInt("dayLastRotation", 0);
+            prefs.setString('dailyPrize', "");
+            performBack();
           },
           style: ButtonStyle(
               backgroundColor:
