@@ -1,6 +1,8 @@
 {
     "welcome": "Here we will build together a new application!",
     "loading": "Loading...",
-    "click_to_roll": "Click to Rotate"
-
+    "click_to_roll": "Click to Rotate",
+    "explanation_compass": "Why rotate this compass?",
+    "what_is_this": "What is this?",
+    "compass_explantion": "When you rotate this compass, you get a number beween 0-360. \n\n This number gives you a daily prize: Money, fishing rods, baits, XPs and more."
 }

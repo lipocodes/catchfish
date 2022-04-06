@@ -66,6 +66,32 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     });
   }
 
+  showExplantionRoattion() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.greenAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text("what_is_this").tr(),
+          content: const Text("compass_explantion").tr(),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  )),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LobbyBloc, LobbyState>(
@@ -93,7 +119,23 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                   child: Column(
                     children: [
                       const SizedBox(
-                        height: 100.0,
+                        height: 70.0,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showExplantionRoattion();
+                        },
+                        child: const Text(
+                          "explanation_compass",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.red,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ).tr(),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
                       ),
                       state is RotateCompassState
                           ? arrowBottom()
