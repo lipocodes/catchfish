@@ -149,56 +149,9 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             child: Scaffold(
               backgroundColor: Colors.white,
               body: Stack(children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        //tenor.com
-                        'assets/images/lobby/waves.gif',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: DateTime.now().day == _dayLastRotation
-                      ? prize()
-                      : Column(
-                          children: [
-                            const SizedBox(
-                              height: 70.0,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showExplantionRoattion();
-                              },
-                              child: const Text(
-                                "explanation_compass",
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.red,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ).tr(),
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            state is RotateCompassState
-                                ? arrowBottom()
-                                : buttonRotate(context),
-                            SizedBox(
-                              height: 30.0,
-                              child: Text(
-                                  degreesNet.ceil().toString() + "\u00b0",
-                                  style: const TextStyle(fontSize: 18.0)),
-                            ),
-                            compass(context, angle),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                          ],
-                        ),
-                ),
+                DateTime.now().day == _dayLastRotation
+                    ? prize()
+                    : rotate(state),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -216,6 +169,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////
+
   Widget buttonGoToShop() {
     return TextButton(
         child: Text("Go to Shop".toUpperCase(),
@@ -231,29 +185,98 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
         onPressed: () {});
   }
 
-  Widget prize() {
-    return SizedBox(
-      width: 200.0,
-      height: 600.0,
+  Widget rotate(state) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+            //tenor.com
+            'assets/images/lobby/waves.gif',
+          ),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "your_daily_prize",
-            style: TextStyle(
-                color: Colors.red, fontSize: 42.0, fontWeight: FontWeight.w800),
-          ).tr(),
-          const SizedBox(height: 10.0),
-          Text(
-            _dailyPrize,
-            style: const TextStyle(
-                color: Colors.white,
-                fontSize: 32.0,
-                fontWeight: FontWeight.w400),
-          ).tr(),
-          const SizedBox(height: 20.0),
-          buttonEnableCompass(context),
+          const SizedBox(
+            height: 70.0,
+          ),
+          GestureDetector(
+            onTap: () {
+              showExplantionRoattion();
+            },
+            child: const Text(
+              "explanation_compass",
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.red,
+                decoration: TextDecoration.underline,
+              ),
+            ).tr(),
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          state is RotateCompassState ? arrowBottom() : buttonRotate(context),
+          SizedBox(
+            height: 30.0,
+            child: Text(degreesNet.ceil().toString() + "\u00b0",
+                style: const TextStyle(fontSize: 18.0)),
+          ),
+          compass(context, angle),
+          const SizedBox(
+            height: 20.0,
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget prize() {
+    BlocProvider.of<LobbyBloc>(context).add(EnteringDailyPrizeEvent());
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+            //tenor.com
+            'assets/images/lobby/aquarium.gif',
+          ),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: SizedBox(
+        width: 600.0,
+        height: 800.0,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 60.0),
+              child: const Text(
+                "your_daily_prize",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 42.0,
+                  fontWeight: FontWeight.w100,
+                  fontFamily: 'RubikBeastly',
+                ),
+              ).tr(),
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              _dailyPrize,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 36.0,
+                fontWeight: FontWeight.w100,
+                fontFamily: 'RubikBeastly',
+              ),
+            ).tr(),
+            const SizedBox(height: 20.0),
+            buttonEnableCompass(context),
+          ],
+        ),
       ),
     );
   }

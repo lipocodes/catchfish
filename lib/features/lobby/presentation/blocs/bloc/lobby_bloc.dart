@@ -19,6 +19,8 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         emit(LeavingLobbyState());
       } else if (event is RotateCompassEvent) {
         emit(RotateCompassState());
+      } else if (event is EnteringDailyPrizeEvent) {
+        emit(const EnteringDailyPrizeState());
       }
     });
   }

@@ -13,4 +13,6 @@ class EnteringLobbyEvent extends LobbyEvent {
 
 class LeavingLobbyEvent extends LobbyEvent {}
 
+class EnteringDailyPrizeEvent extends LobbyEvent {}
+
 class RotateCompassEvent extends LobbyEvent {}

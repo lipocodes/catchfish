@@ -16,3 +16,7 @@ class EnteringLobbyState extends LobbyState {
 class LeavingLobbyState extends LobbyState {}
 
 class RotateCompassState extends LobbyState {}
+
+class EnteringDailyPrizeState extends LobbyState {
+  const EnteringDailyPrizeState() : super();
+}
