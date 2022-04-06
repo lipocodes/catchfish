@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
-
 import 'package:catchfish/features/introduction/presentation/widgets/boat_steering.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/flying_bird.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/text_loading.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,12 +31,13 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   int enumerator = 0;
   int remainingMilliseconds = 5000;
   bool colorLoadingText = false;
+  late PlaySound playSound;
 
   @override
   void initState() {
     super.initState();
 
-    PlaySound playSound = PlaySound();
+    playSound = PlaySound();
     playSound.play(path: "assets/sounds/introduction/", fileName: "tweet.mp3");
   }
 

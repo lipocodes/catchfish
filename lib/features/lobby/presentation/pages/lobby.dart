@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:catchfish/core/utils/here_working.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/arrow_bottom.dart';
@@ -9,6 +8,7 @@ import 'package:catchfish/features/lobby/presentation/widgets/compass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Lobby extends StatefulWidget {
   const Lobby({Key? key}) : super(key: key);
@@ -22,15 +22,25 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   double millisecondsElasped = 0.0;
   late PlaySound playSound;
   double degreesNet = 0.0;
+  int _dayLastRotation = 0;
+  String _dailyPrize = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    retreivePrefs();
     BlocProvider.of<LobbyBloc>(context).add(const EnteringLobbyEvent());
   }
 
+  //Retreive existing prefs
+  retreivePrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _dayLastRotation = prefs.getInt("dayLastRotation") ?? 0;
+    _dailyPrize = prefs.getString("dailyPrize") ?? "";
+  }
+
+  //custom BACK operation
   performBack() {
     BlocProvider.of<LobbyBloc>(context).add(LeavingLobbyEvent());
     Navigator.pop(context, true);
@@ -61,12 +71,16 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           degreesNet = degreesBrute % 360;
           t.cancel();
           playSound.stop();
+          showDailyPrize("10 XP");
         }
       });
     });
   }
 
+  //if user clicks on 'Wjy rotate this compass?'
   showExplantionRoattion() async {
+    playSound = PlaySound();
+    playSound.play(path: "assets/sounds/lobby/", fileName: "beep.mp3");
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -78,6 +92,39 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           ),
           title: const Text("what_is_this").tr(),
           content: const Text("compass_explantion").tr(),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  )),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //after compass stops rotating, we show the prize to user
+  showDailyPrize(String dailyPrize) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('dailyPrize', dailyPrize);
+    _dailyPrize = dailyPrize;
+    prefs.setInt("dayLastRotation", DateTime.now().day);
+    _dayLastRotation = DateTime.now().day;
+
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.greenAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text("your_daily_prize").tr(),
+          content: Text(dailyPrize),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -116,43 +163,52 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 70.0,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showExplantionRoattion();
-                        },
-                        child: const Text(
-                          "explanation_compass",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            color: Colors.red,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ).tr(),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      state is RotateCompassState
-                          ? arrowBottom()
-                          : buttonRotate(context),
-                      SizedBox(
-                        height: 30.0,
-                        child: Text(degreesNet.ceil().toString() + "\u00b0",
-                            style: const TextStyle(fontSize: 18.0)),
-                      ),
-                      compass(context, angle),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                    ],
-                  ),
+                  child: DateTime.now().day == _dayLastRotation
+                      ? prize()
+                      : Column(
+                          children: [
+                            const SizedBox(
+                              height: 70.0,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                showExplantionRoattion();
+                              },
+                              child: const Text(
+                                "explanation_compass",
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.red,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ).tr(),
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            state is RotateCompassState
+                                ? arrowBottom()
+                                : buttonRotate(context),
+                            SizedBox(
+                              height: 30.0,
+                              child: Text(
+                                  degreesNet.ceil().toString() + "\u00b0",
+                                  style: const TextStyle(fontSize: 18.0)),
+                            ),
+                            compass(context, angle),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                          ],
+                        ),
                 ),
-                buttonBack(performBack),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    buttonBack(performBack),
+                    buttonGoToShop(),
+                  ],
+                ),
               ]),
             ),
           ),
@@ -163,6 +219,83 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////
+  Widget buttonGoToShop() {
+    return TextButton(
+        child: Text("Go to Shop".toUpperCase(),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+        style: ButtonStyle(
+            padding:
+                MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(15)),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: const BorderSide(color: Colors.red)))),
+        onPressed: () {});
+  }
+
+  Widget prize() {
+    return SizedBox(
+      width: 200.0,
+      height: 600.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            "your_daily_prize",
+            style: TextStyle(
+                color: Colors.red, fontSize: 42.0, fontWeight: FontWeight.w800),
+          ).tr(),
+          const SizedBox(height: 10.0),
+          Text(
+            _dailyPrize,
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 32.0,
+                fontWeight: FontWeight.w400),
+          ).tr(),
+          const SizedBox(height: 20.0),
+          buttonEnableCompass(context),
+        ],
+      ),
+    );
+  }
+
+  Widget buttonEnableCompass(BuildContext context) {
+    return SizedBox(
+      width: 300.0,
+      child: TextButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("click_to_enable_compass",
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.w700))
+                  .tr(),
+              const SizedBox(
+                width: 10.0,
+              ),
+              const Icon(Icons.compass_calibration_sharp),
+            ],
+          ),
+          onPressed: () {
+            setState(() {
+              _dayLastRotation = 0;
+              BlocProvider.of<LobbyBloc>(context)
+                  .add(const EnteringLobbyEvent());
+            });
+          },
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.greenAccent),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: const BorderSide(color: Colors.red))))),
+    );
+  }
+
   Widget buttonRotate(BuildContext context) {
     return SizedBox(
       width: 250.0,

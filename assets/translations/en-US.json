@@ -4,5 +4,7 @@
     "click_to_roll": "Click to Rotate",
     "explanation_compass": "Why rotate this compass?",
     "what_is_this": "What is this?",
-    "compass_explantion": "When you rotate this compass, you get a number beween 0-360. \n\n This number gives you a daily prize: Money, fishing rods, baits, XPs and more."
+    "compass_explantion": "When you rotate this compass, you get a number beween 0-360. \n\n This number gives you a daily prize: Money, fishing rods, baits, XPs and more.",
+    "your_daily_prize": "Your Daily Prize",
+    "click_to_enable_compass": "Click to enable compass"
 }
