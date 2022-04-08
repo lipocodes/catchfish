@@ -15,6 +15,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         playSound.play(path: "assets/sounds/lobby/", fileName: "waves.mp3");
         emit(const EnteringLobbyState());
       } else if (event is LeavingLobbyEvent) {
+        print("pppppppppppppp");
         playSound.stop();
         emit(LeavingLobbyState());
       } else if (event is RotateCompassEvent) {

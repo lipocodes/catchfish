@@ -1,11 +1,11 @@
 {
-    "welcome": "כאן נבנה יחד משחק חדש",
-    "loading": "טוען...",
-    "click_to_roll": "לחצו כדי לסובב",
-    "explanation_compass": "למה לסובב את המצפן?",
-    "what_is_this": "מה זה?",
-    "compass_explantion": "כאשר אתה מסובב מצפן זה, אתה מקבל מספר בין 0-360.     מספר זה מעניק לך פרס יומי: כסף, חכות דיג, פיתיונות, XP ועוד.",
-    "your_daily_prize": "הפרס היומי שלך",
-    "click_to_enable_compass": "לחץ כדי להפוך מצפן לזמין",
-    "go_to_shop": "לחנות"
+    "welcome": "Here we will build together a new application!",
+    "loading": "Loading...",
+    "click_to_roll": "Click to Rotate",
+    "explanation_compass": "Why rotate this compass?",
+    "what_is_this": "What is this?",
+    "compass_explantion": "When you rotate this compass, you get a number beween 0-360. \n\n This number gives you a daily prize: Money, fishing rods, baits, XPs and more.",
+    "your_daily_prize": "Your Daily Prize",
+    "click_to_enable_compass": "Click to enable compass",
+    "go_to_shop": "Go to Shop"
 }

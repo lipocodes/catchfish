@@ -30,8 +30,15 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     retreivePrefs();
     BlocProvider.of<LobbyBloc>(context).add(const EnteringLobbyEvent());
+  }
+
+  @override
+  void dispose() {
+    BlocProvider.of<LobbyBloc>(context).add(LeavingLobbyEvent());
+    super.dispose();
   }
 
   //Retreive existing prefs
@@ -216,7 +223,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           ),
           state is RotateCompassState ? arrowBottom() : buttonRotate(context),
           const SizedBox(
-            height: 10.0,
+            height: 20.0,
           ),
           compass(context, angle),
           SizedBox(
