@@ -2,6 +2,8 @@ import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduc
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
+
+import 'package:catchfish/features/login/presentation/pages/login.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -57,6 +59,13 @@ class MyApp extends StatelessWidget {
             case '/':
               return PageTransition(
                 child: const Splash(),
+                type: PageTransitionType.fade,
+                settings: settings,
+                duration: const Duration(milliseconds: 1000),
+              );
+            case '/login':
+              return PageTransition(
+                child: const Login(),
                 type: PageTransitionType.fade,
                 settings: settings,
                 duration: const Duration(milliseconds: 1000),

@@ -4,6 +4,7 @@ import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/arrow_bottom.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/button_back.dart';
+import 'package:catchfish/features/lobby/presentation/widgets/button_go_to_shop.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/compass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,8 +81,8 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     });
   }
 
-  //if user clicks on 'Wjy rotate this compass?'
-  showExplantionRoattion() async {
+  //if user clicks on 'Why rotate this compass?'
+  showExplantionRotation() async {
     playSound = PlaySound();
     playSound.play(path: "assets/sounds/lobby/", fileName: "beep.mp3");
     await showDialog(
@@ -93,14 +94,25 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          title: const Text("what_is_this").tr(),
-          content: const Text("compass_explantion").tr(),
+          title: const Text(
+            "what_is_this",
+            style: TextStyle(
+              fontFamily: 'skullsandcrossbones',
+            ),
+          ).tr(),
+          content: const Text(
+            "compass_explantion",
+            style: TextStyle(
+              fontFamily: 'skullsandcrossbones',
+            ),
+          ).tr(),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('OK',
                   style: TextStyle(
                     fontSize: 18.0,
+                    fontFamily: 'skullsandcrossbones',
                   )),
             ),
           ],
@@ -109,7 +121,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     );
   }
 
-  //after compass stops rotating, we show the prize to user
+  //after compass finishes rotating, we show the prize to user
   showDailyPrize(String dailyPrize) async {
     await showDialog(
       context: context,
@@ -128,6 +140,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
               child: const Text('OK',
                   style: TextStyle(
                     fontSize: 18.0,
+                    fontFamily: 'skullsandcrossbones',
                   )),
             ),
           ],
@@ -156,7 +169,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     buttonBack(performBack),
-                    buttonGoToShop(),
+                    //buttonGoToShop(),
                   ],
                 ),
               ]),
@@ -169,22 +182,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////
-
-  Widget buttonGoToShop() {
-    return TextButton(
-        child: Text("Go to Shop".toUpperCase(),
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
-        style: ButtonStyle(
-            padding:
-                MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(15)),
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: const BorderSide(color: Colors.red)))),
-        onPressed: () {});
-  }
-
+  //this appears when user hasn't yet rotated compass today
   Widget rotate(state) {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -204,7 +202,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           ),
           GestureDetector(
             onTap: () {
-              showExplantionRoattion();
+              showExplantionRotation();
             },
             child: const Text(
               "explanation_compass",
@@ -212,6 +210,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                 fontSize: 18.0,
                 color: Colors.red,
                 decoration: TextDecoration.underline,
+                fontFamily: 'skullsandcrossbones',
               ),
             ).tr(),
           ),
@@ -222,7 +221,10 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           SizedBox(
             height: 30.0,
             child: Text(degreesNet.ceil().toString() + "\u00b0",
-                style: const TextStyle(fontSize: 18.0)),
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontFamily: 'skullsandcrossbones',
+                )),
           ),
           compass(context, angle),
           const SizedBox(
@@ -233,6 +235,8 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     );
   }
 
+//this appears when user has already rotated compass today.
+//It tells user what's today's prize
   Widget prize() {
     BlocProvider.of<LobbyBloc>(context).add(EnteringDailyPrizeEvent());
     return Container(
@@ -259,7 +263,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                   color: Colors.red,
                   fontSize: 42.0,
                   fontWeight: FontWeight.w100,
-                  fontFamily: 'RubikBeastly',
+                  fontFamily: 'skullsandcrossbones',
                 ),
               ).tr(),
             ),
@@ -270,7 +274,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                 color: Colors.white,
                 fontSize: 36.0,
                 fontWeight: FontWeight.w100,
-                fontFamily: 'RubikBeastly',
+                fontFamily: 'skullsandcrossbones',
               ),
             ).tr(),
             const SizedBox(height: 20.0),
@@ -281,6 +285,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     );
   }
 
+  //button for letting user rotate compass more than once today
   Widget buttonEnableCompass(BuildContext context) {
     return SizedBox(
       width: 300.0,
@@ -289,9 +294,11 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text("click_to_enable_compass",
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.w700))
-                  .tr(),
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'skullsandcrossbones',
+                  )).tr(),
               const SizedBox(
                 width: 10.0,
               ),
@@ -315,6 +322,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     );
   }
 
+  //button for activating the rotation of compass
   Widget buttonRotate(BuildContext context) {
     return SizedBox(
       width: 250.0,
@@ -323,9 +331,11 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text("click_to_roll",
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.w700))
-                  .tr(),
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'skullsandcrossbones',
+                  )).tr(),
               const SizedBox(
                 width: 10.0,
               ),

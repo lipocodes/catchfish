@@ -45,11 +45,13 @@ dependencies:
   shared_preferences: ^2.0.13
   #Localization
   easy_localization: ^3.0.0 
+  audioplayers: ^0.20.1
+  page_transition: ^2.0.5
   #Firebase packages
   firebase_core: ^1.13.1
   firebase_crashlytics: ^2.5.3
-  audioplayers: ^0.20.1
-  page_transition: ^2.0.5
+  firebase_auth: ^3.3.13
+  
 
 dev_dependencies:
   flutter_test:
@@ -98,9 +100,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-     - family: RubikBeastly
+     - family: skullsandcrossbones
        fonts:
-         - asset: lib/fonts/RubikBeastly-Regular.ttf
+         - asset: lib/fonts/skullsandcrossbones 500.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
