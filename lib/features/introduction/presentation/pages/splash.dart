@@ -49,7 +49,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       if (remainingMilliseconds == 0) {
         t.cancel();
 
-        //Navigator.pushNamed(context, '/lobby');
+        Navigator.pushNamed(context, '/lobby');
         /*Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Login()),

@@ -190,7 +190,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
         image: DecorationImage(
           image: AssetImage(
             //tenor.com
-            'assets/images/lobby/waves.gif',
+            'assets/images/lobby/dolphins.gif',
           ),
           fit: BoxFit.cover,
         ),
@@ -214,19 +214,20 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
               ),
             ).tr(),
           ),
+          state is RotateCompassState ? arrowBottom() : buttonRotate(context),
           const SizedBox(
             height: 10.0,
           ),
-          state is RotateCompassState ? arrowBottom() : buttonRotate(context),
+          compass(context, angle),
           SizedBox(
             height: 30.0,
             child: Text(degreesNet.ceil().toString() + "\u00b0",
                 style: const TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 28.0,
+                  color: Colors.white,
                   fontFamily: 'skullsandcrossbones',
                 )),
           ),
-          compass(context, angle),
           const SizedBox(
             height: 20.0,
           ),
