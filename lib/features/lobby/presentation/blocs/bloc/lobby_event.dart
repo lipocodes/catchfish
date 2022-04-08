@@ -16,3 +16,8 @@ class LeavingLobbyEvent extends LobbyEvent {}
 class EnteringDailyPrizeEvent extends LobbyEvent {}
 
 class RotateCompassEvent extends LobbyEvent {}
+
+class EndRotateCompassEvent extends LobbyEvent {
+  final double generatedNumber;
+  const EndRotateCompassEvent({required this.generatedNumber});
+}

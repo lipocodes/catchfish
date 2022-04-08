@@ -25,6 +25,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   double degreesNet = 0.0;
   int _dayLastRotation = 0;
   String _dailyPrize = "";
+  bool isAfterRotating = false;
 
   @override
   void initState() {
@@ -33,12 +34,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
     retreivePrefs();
     BlocProvider.of<LobbyBloc>(context).add(const EnteringLobbyEvent());
-  }
-
-  @override
-  void dispose() {
-    BlocProvider.of<LobbyBloc>(context).add(LeavingLobbyEvent());
-    super.dispose();
   }
 
   //Retreive existing prefs
@@ -58,7 +53,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //rotate the compass using a Timer
   void rotateCompass() async {
-    BlocProvider.of<LobbyBloc>(context).add(RotateCompassEvent());
     playSound = PlaySound();
     playSound.play(path: "assets/sounds/lobby/", fileName: "bounce.mp3");
     var random = Random();
@@ -79,7 +73,10 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           degreesNet = degreesBrute % 360;
           t.cancel();
           playSound.stop();
+          isAfterRotating = true;
 
+          BlocProvider.of<LobbyBloc>(context)
+              .add(EndRotateCompassEvent(generatedNumber: degreesNet));
           prefs.setInt("dayLastRotation", DateTime.now().day);
           prefs.setString('dailyPrize', "10 XP");
           showDailyPrize("10 XP");
@@ -160,29 +157,55 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocBuilder<LobbyBloc, LobbyState>(
       builder: (context, state) {
-        return WillPopScope(
-          onWillPop: () async {
-            performBack();
-            return true;
-          },
-          child: SafeArea(
-            child: Scaffold(
-              backgroundColor: Colors.white,
-              body: Stack(children: [
-                DateTime.now().day == _dayLastRotation
-                    ? prize()
-                    : rotate(state),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    buttonBack(performBack),
-                    //buttonGoToShop(),
-                  ],
-                ),
-              ]),
+        print("aaaaaaaaaaaaaaaa=" + state.toString());
+        if (state is EnteringLobbyState) {
+          return WillPopScope(
+            onWillPop: () async {
+              performBack();
+              return true;
+            },
+            child: SafeArea(
+              child: Scaffold(
+                backgroundColor: Colors.white,
+                body: Stack(children: [
+                  rotate(state),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      buttonBack(performBack),
+                      //buttonGoToShop(),
+                    ],
+                  ),
+                ]),
+              ),
             ),
-          ),
-        );
+          );
+        } else if (state is EndRotateCompassState) {
+          print("ppppppppppppppppp");
+          return WillPopScope(
+            onWillPop: () async {
+              performBack();
+              return true;
+            },
+            child: SafeArea(
+              child: Scaffold(
+                backgroundColor: Colors.white,
+                body: Stack(children: [
+                  rotate(state),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      buttonBack(performBack),
+                      //buttonGoToShop(),
+                    ],
+                  ),
+                ]),
+              ),
+            ),
+          );
+        } else {
+          return Container();
+        }
       },
     );
   }
@@ -205,26 +228,32 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
       child: Column(
         children: [
           const SizedBox(
-            height: 70.0,
+            height: 30.0,
           ),
-          GestureDetector(
-            onTap: () {
-              showExplantionRotation();
-            },
-            child: const Text(
-              "explanation_compass",
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.red,
-                decoration: TextDecoration.underline,
-                fontFamily: 'skullsandcrossbones',
-              ),
-            ).tr(),
-          ),
-          state is RotateCompassState ? arrowBottom() : buttonRotate(context),
-          const SizedBox(
-            height: 20.0,
-          ),
+          if (state is EndRotateCompassState) ...[
+            Container(),
+          ] else ...[
+            GestureDetector(
+              onTap: () {
+                showExplantionRotation();
+              },
+              child: const Text(
+                "explanation_compass",
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.red,
+                  decoration: TextDecoration.underline,
+                  fontFamily: 'skullsandcrossbones',
+                ),
+              ).tr(),
+            ),
+          ],
+          buttonRotate(context),
+          if (state is EndRotateCompassState) ...[
+            Container(),
+          ] else ...[
+            arrowBottom(),
+          ],
           compass(context, angle),
           SizedBox(
             height: 30.0,
@@ -239,56 +268,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             height: 20.0,
           ),
         ],
-      ),
-    );
-  }
-
-//this appears when user has already rotated compass today.
-//It tells user what's today's prize
-  Widget prize() {
-    BlocProvider.of<LobbyBloc>(context).add(EnteringDailyPrizeEvent());
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-            //tenor.com
-            'assets/images/lobby/aquarium.gif',
-          ),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: SizedBox(
-        width: 600.0,
-        height: 800.0,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: const Text(
-                "your_daily_prize",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 42.0,
-                  fontWeight: FontWeight.w100,
-                  fontFamily: 'skullsandcrossbones',
-                ),
-              ).tr(),
-            ),
-            const SizedBox(height: 10.0),
-            Text(
-              _dailyPrize,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 36.0,
-                fontWeight: FontWeight.w100,
-                fontFamily: 'skullsandcrossbones',
-              ),
-            ).tr(),
-            const SizedBox(height: 20.0),
-            buttonEnableCompass(context),
-          ],
-        ),
       ),
     );
   }
@@ -351,7 +330,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             ],
           ),
           onPressed: () {
-            BlocProvider.of<LobbyBloc>(context).add(RotateCompassEvent());
             rotateCompass();
           },
           style: ButtonStyle(
