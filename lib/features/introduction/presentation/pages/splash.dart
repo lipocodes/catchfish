@@ -19,7 +19,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   late IntroductionBloc _bloc;
   bool _isTimerSet = false;
   double rightPositionBird = 80.0;
-  double topPositionBird = 120.0;
+  double topPositionBird = 100.0;
 
   late AnimationController animationController;
   double steeringAngle = 0;
@@ -45,6 +45,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     _bloc = BlocProvider.of<IntroductionBloc>(context);
     _bloc.add(LoadingEvent());
     Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
+      //At the 1st seconds, we don't need animation
       if (remainingMilliseconds == 0) {
         t.cancel();
 
@@ -56,24 +57,27 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       } else {
         remainingMilliseconds -= 100;
       }
-      setState(() {
-        enumerator++;
-        if (enumerator < 5) {
-          steeringAngle += 0.3;
-          colorLoadingText = true;
-        } else if (enumerator < 15) {
-        } else if (enumerator < 25) {
-          steeringAngle -= 0.3;
-          colorLoadingText = false;
-        } else {
-          enumerator = 0;
-        }
 
-        if (rightPositionBird >= 10.0) {
-          //rightPositionBird -= 10.0;
-          //topPositionBird -= 10.0;
-        }
-      });
+      if (remainingMilliseconds < 4000) {
+        setState(() {
+          enumerator++;
+          if (enumerator < 5) {
+            steeringAngle += 0.3;
+            colorLoadingText = true;
+          } else if (enumerator < 15) {
+          } else if (enumerator < 25) {
+            steeringAngle -= 0.3;
+            colorLoadingText = false;
+          } else {
+            enumerator = 0;
+          }
+
+          if (rightPositionBird >= 5.0) {
+            rightPositionBird -= 5.0;
+            topPositionBird -= 5.0;
+          }
+        });
+      }
     });
   }
 

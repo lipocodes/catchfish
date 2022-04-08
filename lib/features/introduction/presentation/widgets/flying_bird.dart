@@ -5,9 +5,9 @@ Widget flyingBird(double topPosition, double rightPosition) {
     top: topPosition,
     right: rightPosition,
     child: SizedBox(
-      height: 100,
+      height: 150,
       child: Image.asset(
-        'assets/images/introduction/flying_bird.gif',
+        'assets/images/introduction/parrot.gif',
         fit: BoxFit.cover,
         alignment: Alignment.center,
       ),
