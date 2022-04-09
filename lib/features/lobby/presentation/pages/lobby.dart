@@ -4,7 +4,6 @@ import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/arrow_bottom.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/button_back.dart';
-import 'package:catchfish/features/lobby/presentation/widgets/button_go_to_shop.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/compass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -94,7 +93,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.greenAccent,
+          backgroundColor: Colors.redAccent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -116,6 +115,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
               child: const Text('OK',
                   style: TextStyle(
                     fontSize: 18.0,
+                    color: Colors.blue,
                     fontFamily: 'skullsandcrossbones',
                   )),
             ),
@@ -129,27 +129,23 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   showDailyPrize(String dailyPrize) async {
     await showDialog(
       context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.greenAccent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: const Text("your_daily_prize").tr(),
-          content: Text(dailyPrize),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontFamily: 'skullsandcrossbones',
-                  )),
+      builder: (context) => AlertDialog(
+        content: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Image.asset(
+              "assets/images/lobby/scroll1.jpg",
+            ),
+            Text(
+              dailyPrize.tr(),
+              style: const TextStyle(
+                fontSize: 32,
+                fontFamily: 'skullsandcrossbones',
+              ),
             ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -157,7 +153,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocBuilder<LobbyBloc, LobbyState>(
       builder: (context, state) {
-        print("aaaaaaaaaaaaaaaa=" + state.toString());
         if (state is EnteringLobbyState) {
           return WillPopScope(
             onWillPop: () async {
@@ -181,7 +176,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             ),
           );
         } else if (state is EndRotateCompassState) {
-          print("ppppppppppppppppp");
           return WillPopScope(
             onWillPop: () async {
               performBack();
@@ -248,14 +242,10 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
               ).tr(),
             ),
           ],
-          buttonRotate(context),
-          if (state is EndRotateCompassState) ...[
-            Container(),
-          ] else ...[
-            arrowBottom(),
-          ],
+          buttonRotate(context, state),
+          arrowBottom(),
           compass(context, angle),
-          SizedBox(
+          /* SizedBox(
             height: 30.0,
             child: Text(degreesNet.ceil().toString() + "\u00b0",
                 style: const TextStyle(
@@ -263,7 +253,8 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                   color: Colors.white,
                   fontFamily: 'skullsandcrossbones',
                 )),
-          ),
+          ),*/
+          nextFreeRotation(),
           const SizedBox(
             height: 20.0,
           ),
@@ -272,57 +263,31 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     );
   }
 
-  //button for letting user rotate compass more than once today
-  Widget buttonEnableCompass(BuildContext context) {
-    return SizedBox(
-      width: 300.0,
-      child: TextButton(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("click_to_enable_compass",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'skullsandcrossbones',
-                  )).tr(),
-              const SizedBox(
-                width: 10.0,
-              ),
-              const Icon(Icons.compass_calibration_sharp),
-            ],
-          ),
-          onPressed: () async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setInt("dayLastRotation", 0);
-            prefs.setString('dailyPrize', "");
-            performBack();
-          },
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(Colors.greenAccent),
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: const BorderSide(color: Colors.red))))),
-    );
-  }
-
   //button for activating the rotation of compass
-  Widget buttonRotate(BuildContext context) {
+  Widget buttonRotate(BuildContext context, state) {
     return SizedBox(
       width: 250.0,
       child: TextButton(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("click_to_roll",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'skullsandcrossbones',
-                  )).tr(),
+              if (state is EndRotateCompassState ||
+                  (state is EnteringLobbyState &&
+                      state.hasRotatedTodayYet == true)) ...[
+                const Text("click_to_enable_compass",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'skullsandcrossbones',
+                    )).tr(),
+              ] else ...[
+                const Text("click_to_roll",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'skullsandcrossbones',
+                    )).tr(),
+              ],
               const SizedBox(
                 width: 10.0,
               ),
@@ -341,5 +306,15 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                       borderRadius: BorderRadius.circular(18.0),
                       side: const BorderSide(color: Colors.red))))),
     );
+  }
+
+  Widget nextFreeRotation() {
+    return Text("next_free_rotation".tr(),
+        style: const TextStyle(
+          fontSize: 20.0,
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+          fontFamily: 'skullsandcrossbones',
+        ));
   }
 }

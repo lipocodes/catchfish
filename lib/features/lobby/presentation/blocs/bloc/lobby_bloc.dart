@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/lobby/domain/entities/button_or_arrow.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,7 +28,9 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
       } else if (event is RotateCompassEvent) {
         emit(RotateCompassState());
       } else if (event is EndRotateCompassEvent) {
-        emit(EndRotateCompassState());
+        playSound = PlaySound();
+        playSound.play(path: "assets/sounds/lobby/", fileName: "applause.mp3");
+        emit(const EndRotateCompassState());
       }
     });
   }

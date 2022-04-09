@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 Widget compass(BuildContext context, double angle) {
   return SizedBox(
-    height: 350.0,
-    width: 350.0,
+    height: 300.0,
+    width: 300.0,
     child: Transform.rotate(
       angle: -angle,
       child: Image.asset(

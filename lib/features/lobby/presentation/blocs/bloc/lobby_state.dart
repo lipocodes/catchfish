@@ -22,4 +22,6 @@ class EnteringDailyPrizeState extends LobbyState {
   const EnteringDailyPrizeState() : super();
 }
 
-class EndRotateCompassState extends LobbyState {}
+class EndRotateCompassState extends LobbyState {
+  const EndRotateCompassState();
+}
