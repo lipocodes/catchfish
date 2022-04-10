@@ -134,7 +134,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           alignment: Alignment.center,
           children: <Widget>[
             Image.asset(
-              "assets/images/lobby/scroll1.jpg",
+              "assets/images/lobby/scroll.jpg",
             ),
             Text(
               dailyPrize.tr(),
@@ -206,7 +206,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////
-  //this appears when user hasn't yet rotated compass today
+  //The wheel we see on the screen
   Widget rotate(state) {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -224,24 +224,20 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           const SizedBox(
             height: 30.0,
           ),
-          if (state is EndRotateCompassState) ...[
-            Container(),
-          ] else ...[
-            GestureDetector(
-              onTap: () {
-                showExplantionRotation();
-              },
-              child: const Text(
-                "explanation_compass",
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.red,
-                  decoration: TextDecoration.underline,
-                  fontFamily: 'skullsandcrossbones',
-                ),
-              ).tr(),
-            ),
-          ],
+          GestureDetector(
+            onTap: () {
+              showExplantionRotation();
+            },
+            child: const Text(
+              "explanation_compass",
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.red,
+                decoration: TextDecoration.underline,
+                fontFamily: 'skullsandcrossbones',
+              ),
+            ).tr(),
+          ),
           buttonRotate(context, state),
           arrowBottom(),
           compass(context, angle),
@@ -254,7 +250,11 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                   fontFamily: 'skullsandcrossbones',
                 )),
           ),*/
-          nextFreeRotation(),
+          if (state is EndRotateCompassState ||
+              (state is EnteringLobbyState &&
+                  state.hasRotatedTodayYet == true)) ...[
+            nextFreeRotation(),
+          ],
           const SizedBox(
             height: 20.0,
           ),
@@ -308,6 +308,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     );
   }
 
+  //Text telling user when next free rotation will be available
   Widget nextFreeRotation() {
     return Text("next_free_rotation".tr(),
         style: const TextStyle(
