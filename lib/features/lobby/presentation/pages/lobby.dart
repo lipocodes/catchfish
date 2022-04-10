@@ -169,7 +169,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       buttonBack(performBack),
-                      //buttonGoToShop(),
+                      inventory(),
                     ],
                   ),
                 ]),
@@ -321,5 +321,9 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           fontWeight: FontWeight.w700,
           fontFamily: 'skullsandcrossbones',
         ));
+  }
+
+  Widget inventory() {
+    return Container();
   }
 }
