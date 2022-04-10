@@ -1,1 +1,1 @@
-List<String> dailyPrizes = ['xp', 'money', 'baits'];
+List<String> dailyPrizes = ['money', 'baits', "xp"];

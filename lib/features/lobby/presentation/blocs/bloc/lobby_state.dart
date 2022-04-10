@@ -11,7 +11,15 @@ class LobbyInitial extends LobbyState {}
 
 class EnteringLobbyState extends LobbyState {
   final bool hasRotatedTodayYet;
-  const EnteringLobbyState({required this.hasRotatedTodayYet}) : super();
+  final int inventoryMoney;
+  final int inventoryBaits;
+  final int inventoryXP;
+  const EnteringLobbyState(
+      {required this.hasRotatedTodayYet,
+      required this.inventoryMoney,
+      required this.inventoryBaits,
+      required this.inventoryXP})
+      : super();
 }
 
 class LeavingLobbyState extends LobbyState {}
@@ -24,5 +32,12 @@ class EnteringDailyPrizeState extends LobbyState {
 
 class EndRotateCompassState extends LobbyState {
   final String dailyPrize;
-  const EndRotateCompassState({required this.dailyPrize});
+  final int inventoryMoney;
+  final int inventoryBaits;
+  final int inventoryXP;
+  const EndRotateCompassState(
+      {required this.dailyPrize,
+      required this.inventoryMoney,
+      required this.inventoryBaits,
+      required this.inventoryXP});
 }

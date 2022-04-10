@@ -15,14 +15,26 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
   LobbyBloc() : super(LobbyInitial()) {
     on<LobbyEvent>((event, emit) async {
       if (event is EnteringLobbyEvent) {
-        playSound = PlaySound();
         SharedPreferences prefs = await SharedPreferences.getInstance();
+        int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
+        int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
+        int inventoryXP = prefs.getInt("inventoryXP") ?? 0;
+        playSound = PlaySound();
+
         playSound.play(path: "assets/sounds/lobby/", fileName: "waves.mp3");
         int dayLastRotation = /*prefs.getInt("dayLastRotation") ??*/ 0;
         if (DateTime.now().day == dayLastRotation) {
-          emit(const EnteringLobbyState(hasRotatedTodayYet: true));
+          emit(EnteringLobbyState(
+              hasRotatedTodayYet: true,
+              inventoryMoney: inventoryMoney,
+              inventoryBaits: inventoryBaits,
+              inventoryXP: inventoryXP));
         } else {
-          emit(const EnteringLobbyState(hasRotatedTodayYet: false));
+          emit(EnteringLobbyState(
+              hasRotatedTodayYet: false,
+              inventoryMoney: inventoryMoney,
+              inventoryBaits: inventoryBaits,
+              inventoryXP: inventoryXP));
         }
       } else if (event is LeavingLobbyEvent) {
         playSound.stop();
@@ -33,7 +45,26 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         playSound = PlaySound();
         playSound.play(path: "assets/sounds/lobby/", fileName: "applause.mp3");
         int randomIndex = Random().nextInt(dailyPrizes.length);
-        emit(EndRotateCompassState(dailyPrize: dailyPrizes[randomIndex]));
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
+        if (randomIndex == 0) {
+          inventoryMoney++;
+        }
+        int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
+        if (randomIndex == 1) {
+          inventoryBaits++;
+        }
+        int inventoryXP = prefs.getInt("inventoryXP") ?? 0;
+        if (randomIndex == 2) {
+          inventoryXP++;
+        }
+        emit(EndRotateCompassState(
+            dailyPrize: dailyPrizes[randomIndex],
+            inventoryMoney: inventoryMoney,
+            inventoryBaits: inventoryBaits,
+            inventoryXP: inventoryXP));
       }
     });
   }
