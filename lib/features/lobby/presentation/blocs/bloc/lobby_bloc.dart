@@ -1,4 +1,9 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
+import 'package:catchfish/core/consts/daily_prizes.dart';
+import 'package:catchfish/core/consts/daily_prizes.dart';
+import 'package:catchfish/core/consts/daily_prizes.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +32,8 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
       } else if (event is EndRotateCompassEvent) {
         playSound = PlaySound();
         playSound.play(path: "assets/sounds/lobby/", fileName: "applause.mp3");
-        emit(const EndRotateCompassState());
+        int randomIndex = Random().nextInt(dailyPrizes.length);
+        emit(EndRotateCompassState(dailyPrize: dailyPrizes[randomIndex]));
       }
     });
   }

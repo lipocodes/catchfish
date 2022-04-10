@@ -23,5 +23,6 @@ class EnteringDailyPrizeState extends LobbyState {
 }
 
 class EndRotateCompassState extends LobbyState {
-  const EndRotateCompassState();
+  final String dailyPrize;
+  const EndRotateCompassState({required this.dailyPrize});
 }

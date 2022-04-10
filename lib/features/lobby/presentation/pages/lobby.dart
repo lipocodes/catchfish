@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:catchfish/core/utils/play_sound.dart';
+import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/arrow_bottom.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/button_back.dart';
@@ -18,13 +19,14 @@ class Lobby extends StatefulWidget {
 }
 
 class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
-  double angle = 0.0;
+  double _angle = 0.0;
   double millisecondsElasped = 0.0;
   late PlaySound playSound;
   double degreesNet = 0.0;
   int _dayLastRotation = 0;
   String _dailyPrize = "";
   bool isAfterRotating = false;
+  late SharedPreferences _prefs;
 
   @override
   void initState() {
@@ -37,9 +39,9 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //Retreive existing prefs
   retreivePrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _dayLastRotation = prefs.getInt("dayLastRotation") ?? 0;
-    _dailyPrize = prefs.getString("dailyPrize") ?? "";
+    _prefs = await SharedPreferences.getInstance();
+    _dayLastRotation = _prefs.getInt("dayLastRotation") ?? 0;
+    _dailyPrize = _prefs.getString("dailyPrize") ?? "";
   }
 
   //custom BACK operation
@@ -52,6 +54,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //rotate the compass using a Timer
   void rotateCompass() async {
+    _angle = 0.0;
     playSound = PlaySound();
     playSound.play(path: "assets/sounds/lobby/", fileName: "bounce.mp3");
     var random = Random();
@@ -61,14 +64,13 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
     // we need a large enough number
     double speedInRadians = num * 0.01745329;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
       setState(() {
         if (speedInRadians > 0) {
-          angle += speedInRadians;
+          _angle += speedInRadians;
           speedInRadians -= 0.5;
         } else {
-          double degreesBrute = angle * 57.2957795;
+          double degreesBrute = _angle * 57.2957795;
           degreesNet = degreesBrute % 360;
           t.cancel();
           playSound.stop();
@@ -76,9 +78,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
           BlocProvider.of<LobbyBloc>(context)
               .add(EndRotateCompassEvent(generatedNumber: degreesNet));
-          prefs.setInt("dayLastRotation", DateTime.now().day);
-          prefs.setString('dailyPrize', "10 XP");
-          showDailyPrize("10 XP");
         }
       });
     });
@@ -127,26 +126,28 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //after compass finishes rotating, we show the prize to user
   showDailyPrize(String dailyPrize) async {
-    await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Image.asset(
-              "assets/images/lobby/scroll.jpg",
-            ),
-            Text(
-              dailyPrize.tr(),
-              style: const TextStyle(
-                fontSize: 32,
-                fontFamily: 'skullsandcrossbones',
+    Future.delayed(const Duration(seconds: 1), () {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Image.asset(
+                "assets/images/lobby/scroll.jpg",
               ),
-            ),
-          ],
+              Text(
+                dailyPrize.tr(),
+                style: const TextStyle(
+                  fontSize: 32,
+                  fontFamily: 'skullsandcrossbones',
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   @override
@@ -176,6 +177,9 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             ),
           );
         } else if (state is EndRotateCompassState) {
+          _prefs.setInt("dayLastRotation", DateTime.now().day);
+          _prefs.setString('dailyPrize', state.dailyPrize);
+          showDailyPrize(state.dailyPrize);
           return WillPopScope(
             onWillPop: () async {
               performBack();
@@ -240,7 +244,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           ),
           buttonRotate(context, state),
           arrowBottom(),
-          compass(context, angle),
+          compass(context, _angle),
           /* SizedBox(
             height: 30.0,
             child: Text(degreesNet.ceil().toString() + "\u00b0",
