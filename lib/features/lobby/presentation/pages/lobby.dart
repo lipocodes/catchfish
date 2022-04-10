@@ -31,6 +31,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   int _inventoryXP = 0;
   bool isAfterRotating = false;
   late SharedPreferences _prefs;
+  bool _usedRotationSinceEneteredScreen = false;
 
   @override
   void initState() {
@@ -132,6 +133,9 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //after compass finishes rotating, we show the prize to user
   showDailyPrize(String dailyPrize) async {
+    if (_usedRotationSinceEneteredScreen == false) {
+      return;
+    }
     Future.delayed(const Duration(seconds: 1), () {
       showDialog(
         context: context,
@@ -219,6 +223,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   //The wheel we see on the screen
   Widget rotate(state) {
     return Container(
+      height: 1000,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -232,7 +237,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
       child: Column(
         children: [
           const SizedBox(
-            height: 60.0,
+            height: 90.0,
           ),
           GestureDetector(
             onTap: () {
@@ -305,7 +310,14 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             ],
           ),
           onPressed: () {
-            rotateCompass();
+            if (_usedRotationSinceEneteredScreen == false) {
+              _usedRotationSinceEneteredScreen = true;
+              rotateCompass();
+            } else {
+              Navigator.pop(context, true);
+              Navigator.pop(context, true);
+              Navigator.pushNamed(context, '/');
+            }
           },
           style: ButtonStyle(
               backgroundColor:
