@@ -51,14 +51,17 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
         if (randomIndex == 0) {
           inventoryMoney++;
+          prefs.setInt("inventoryMoney", inventoryMoney);
         }
         int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
         if (randomIndex == 1) {
           inventoryBaits++;
+          prefs.setInt("inventoryBaits", inventoryBaits);
         }
         int inventoryXP = prefs.getInt("inventoryXP") ?? 0;
         if (randomIndex == 2) {
           inventoryXP++;
+          prefs.setInt("inventoryXP", inventoryXP);
         }
         emit(EndRotateCompassState(
             dailyPrize: dailyPrizes[randomIndex],
