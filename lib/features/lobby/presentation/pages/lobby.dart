@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:catchfish/core/utils/inventory.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
@@ -166,9 +167,10 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                 body: Stack(children: [
                   rotate(state),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       buttonBack(performBack),
+                      //in core/utils/inventory.dart
                       inventory(),
                     ],
                   ),
@@ -226,7 +228,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
       child: Column(
         children: [
           const SizedBox(
-            height: 30.0,
+            height: 60.0,
           ),
           GestureDetector(
             onTap: () {
@@ -321,9 +323,5 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           fontWeight: FontWeight.w700,
           fontFamily: 'skullsandcrossbones',
         ));
-  }
-
-  Widget inventory() {
-    return Container();
   }
 }
