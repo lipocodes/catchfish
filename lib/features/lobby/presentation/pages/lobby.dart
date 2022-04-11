@@ -7,6 +7,7 @@ import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart
 import 'package:catchfish/features/lobby/presentation/widgets/arrow_bottom.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/button_back.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/compass.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -92,6 +93,11 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //if user clicks on 'Why rotate this compass?'
   showExplantionRotation() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    if (auth.currentUser == null) {
+      Navigator.pushNamed(context, '/login');
+    }
+
     playSound = PlaySound();
     playSound.play(path: "assets/sounds/lobby/", fileName: "beep.mp3");
     await showDialog(

@@ -4,6 +4,7 @@ import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduc
 import 'package:catchfish/features/introduction/presentation/widgets/boat_steering.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/flying_bird.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/text_loading.dart';
+import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
 import 'package:catchfish/features/login/presentation/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +54,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
         //Navigator.pushNamed(context, '/lobby');
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Login()),
+          MaterialPageRoute(builder: (context) => const Lobby()),
         );
       } else {
         remainingMilliseconds -= 80;
