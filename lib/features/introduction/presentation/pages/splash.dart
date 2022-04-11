@@ -18,15 +18,17 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   late IntroductionBloc _bloc;
   bool _isTimerSet = false;
-  double rightPositionBird = 80.0;
+  double rightPositionBird = 60.0;
   double topPositionBird = 100.0;
 
   late AnimationController animationController;
-  double steeringAngle = 0;
+  double steeringAngle = 0.0;
   int enumerator = 0;
-  int remainingMilliseconds = 5000;
+  int remainingMilliseconds = 4000;
   bool colorLoadingText = false;
   late PlaySound playSound;
+  bool _pngOrGif = false;
+  bool _isEvenTick = false;
 
   @override
   void initState() {
@@ -44,22 +46,23 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     _isTimerSet = true;
     _bloc = BlocProvider.of<IntroductionBloc>(context);
     _bloc.add(LoadingEvent());
-    Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
+    Timer.periodic(const Duration(milliseconds: 80), (Timer t) {
       //At the 1st seconds, we don't need animation
-      if (remainingMilliseconds == 0) {
+      if (remainingMilliseconds <= 0) {
         t.cancel();
-
         Navigator.pushNamed(context, '/lobby');
         /*Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Login()),
         );*/
       } else {
-        remainingMilliseconds -= 100;
+        remainingMilliseconds -= 80;
       }
 
-      if (remainingMilliseconds < 4000) {
+      if (remainingMilliseconds < 2000) {
         setState(() {
+          _pngOrGif = true;
+          _isEvenTick ? _isEvenTick = false : _isEvenTick = true;
           enumerator++;
           if (enumerator < 5) {
             steeringAngle += 0.3;
@@ -74,7 +77,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
 
           if (rightPositionBird >= 5.0) {
             rightPositionBird -= 5.0;
-            topPositionBird -= 5.0;
+            topPositionBird -= 8.0;
           }
         });
       }
@@ -114,7 +117,8 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                 ),
               ),
               if (rightPositionBird > 0.0) ...[
-                flyingBird(topPositionBird, rightPositionBird),
+                flyingBird(
+                    topPositionBird, rightPositionBird, _pngOrGif, _isEvenTick),
               ],
             ]),
           );
