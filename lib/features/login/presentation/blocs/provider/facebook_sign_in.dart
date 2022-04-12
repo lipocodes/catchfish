@@ -22,4 +22,12 @@ class FacebookSignInProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  facebookLogout() async {
+    try {
+      await FacebookAuth.instance.logOut();
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeeee=" + e.toString());
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
+import 'package:catchfish/features/login/presentation/blocs/provider/facebook_sign_in.dart';
 import 'package:catchfish/features/login/presentation/widgets/form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,13 @@ class _LoginState extends State<Login> {
           } else if (snapshot.hasError) {
             return const Center(child: Text("Something Went Wrong!"));
           } else if (snapshot.hasData) {
+            /*final provider1 =
+                Provider.of<GoogleSignInProvider>(context, listen: false);
+            provider1.googleLogout();
+            final provider2 =
+                Provider.of<FacebookSignInProvider>(context, listen: false);
+            provider2.facebookLogout();*/
+
             performBack();
           }
           //else: if we haven't called the Provider yet
