@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:catchfish/core/utils/inventory.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/arrow_bottom.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/button_back.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/compass.dart';
+import 'package:catchfish/features/lobby/presentation/widgets/inventory.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
