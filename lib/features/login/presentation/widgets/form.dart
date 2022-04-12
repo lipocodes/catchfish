@@ -1,3 +1,4 @@
+import 'package:catchfish/features/login/presentation/blocs/provider/facebook_sign_in.dart';
 import 'package:catchfish/features/login/presentation/blocs/provider/google_sign_in.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -50,18 +51,22 @@ Widget form(BuildContext context) {
         icon: const FaIcon(FontAwesomeIcons.google, color: Colors.blue),
       ),
 
-      /*RichText(
-        text: const TextSpan(text: 'Already have an account?', children: [
-          TextSpan(
-            text: "Log in",
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-              color: Colors.white,
-            ),
-          ),
-        ]),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton.icon(
+          label: const Text("Sign Up with Facebook"),
+          onPressed: () {
+            final provider =
+                Provider.of<FacebookSignInProvider>(context, listen: false);
+            provider.facebookLogin();
+          },
+          style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+              onPrimary: Colors.black,
+              minimumSize: const Size(double.infinity, 50)),
+          icon: const FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
+        ),
       ),
-      const Spacer(),*/
     ],
   );
 }

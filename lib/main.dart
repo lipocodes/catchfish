@@ -2,6 +2,7 @@ import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduc
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
+import 'package:catchfish/features/login/presentation/blocs/provider/facebook_sign_in.dart';
 import 'package:catchfish/features/login/presentation/blocs/provider/google_sign_in.dart';
 
 import 'package:catchfish/features/login/presentation/pages/login.dart';
@@ -38,56 +39,54 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<IntroductionBloc>(
-            create: (BuildContext context) => IntroductionBloc()),
-        BlocProvider<LobbyBloc>(
-          create: (BuildContext context) => LobbyBloc(),
-        ),
-      ],
-      child: ChangeNotifierProvider(
-        create: (context) => GoogleSignInProvider(),
-        child: MaterialApp(
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
+        providers: [
+          BlocProvider<IntroductionBloc>(
+              create: (BuildContext context) => IntroductionBloc()),
+          BlocProvider<LobbyBloc>(
+            create: (BuildContext context) => LobbyBloc(),
           ),
-          /*routes: <String, WidgetBuilder>{
-            '/': (BuildContext context) => const Splash(),
-            '/lobby': (BuildContext context) => const Lobby(),
-          },*/
-          onGenerateRoute: (settings) {
-            switch (settings.name) {
-              case '/':
-                return PageTransition(
-                  child: const Splash(),
-                  type: PageTransitionType.fade,
-                  settings: settings,
-                  duration: const Duration(milliseconds: 1000),
-                );
-              case '/login':
-                return PageTransition(
-                  child: const Login(),
-                  type: PageTransitionType.fade,
-                  settings: settings,
-                  duration: const Duration(milliseconds: 1000),
-                );
-              case '/lobby':
-                return PageTransition(
-                  child: const Lobby(),
-                  type: PageTransitionType.fade,
-                  settings: settings,
-                  duration: const Duration(milliseconds: 1000),
-                );
+        ],
+        child: ChangeNotifierProvider(
+          create: (context) => FacebookSignInProvider(),
+          child: ChangeNotifierProvider(
+            create: (context) => GoogleSignInProvider(),
+            child: MaterialApp(
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+              ),
+              onGenerateRoute: (settings) {
+                switch (settings.name) {
+                  case '/':
+                    return PageTransition(
+                      child: const Splash(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  case '/login':
+                    return PageTransition(
+                      child: const Login(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  case '/lobby':
+                    return PageTransition(
+                      child: const Lobby(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
 
-              default:
-                return null;
-            }
-          },
-        ),
-      ),
-    );
+                  default:
+                    return null;
+                }
+              },
+            ),
+          ),
+        ));
   }
 }
