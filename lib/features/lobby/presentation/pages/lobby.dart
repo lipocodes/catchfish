@@ -25,11 +25,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   double millisecondsElasped = 0.0;
   late PlaySound playSound;
   double degreesNet = 0.0;
-  int _dayLastRotation = 0;
-  String _dailyPrize = "";
-  int _inventoryMoney = 0;
-  int _inventoryBaits = 0;
-  int _inventoryXP = 0;
+
   bool isAfterRotating = false;
   late SharedPreferences _prefs;
   bool _usedRotationSinceEneteredScreen = false;
@@ -46,10 +42,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   //Retreive existing prefs
   retreivePrefs() async {
     _prefs = await SharedPreferences.getInstance();
-    _dayLastRotation = _prefs.getInt("dayLastRotation") ?? 0;
-    _inventoryMoney = _prefs.getInt("inventoryMoney") ?? 0;
-    _inventoryBaits = _prefs.getInt("inventoryBaits") ?? 0;
-    _inventoryXP = _prefs.getInt("XP") ?? 0;
   }
 
   //custom BACK operation
@@ -93,11 +85,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
 
   //if user clicks on 'Why rotate this compass?'
   showExplantionRotation() async {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    if (auth.currentUser == null) {
-      Navigator.pushNamed(context, '/login');
-    }
-
     playSound = PlaySound();
     playSound.play(path: "assets/sounds/lobby/", fileName: "beep.mp3");
     await showDialog(
@@ -186,7 +173,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                     children: [
                       buttonBack(performBack),
                       //in core/utils/inventory.dart
-                      inventory(state),
+                      inventory(context, state),
                     ],
                   ),
                 ]),
@@ -210,7 +197,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                     children: [
                       buttonBack(performBack),
                       //in core/utils/inventory.dart
-                      inventory(state),
+                      inventory(context, state),
                     ],
                   ),
                 ]),

@@ -14,11 +14,13 @@ class EnteringLobbyState extends LobbyState {
   final int inventoryMoney;
   final int inventoryBaits;
   final int inventoryXP;
+  final bool isLoggedIn;
   const EnteringLobbyState(
       {required this.hasRotatedTodayYet,
       required this.inventoryMoney,
       required this.inventoryBaits,
-      required this.inventoryXP})
+      required this.inventoryXP,
+      required this.isLoggedIn})
       : super();
 }
 
@@ -35,9 +37,11 @@ class EndRotateCompassState extends LobbyState {
   final int inventoryMoney;
   final int inventoryBaits;
   final int inventoryXP;
+  final bool isLoggedIn;
   const EndRotateCompassState(
       {required this.dailyPrize,
       required this.inventoryMoney,
       required this.inventoryBaits,
-      required this.inventoryXP});
+      required this.inventoryXP,
+      required this.isLoggedIn});
 }

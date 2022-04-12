@@ -1,7 +1,9 @@
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-Widget inventory(state) {
+Widget inventory(BuildContext context, state) {
   if (state is EndRotateCompassState || state is EnteringLobbyState) {
     return Row(
       children: [
@@ -20,7 +22,7 @@ Widget inventory(state) {
               color: Colors.red,
               fontFamily: 'skullsandcrossbones',
             )),
-        const SizedBox(width: 40.0),
+        const SizedBox(width: 20.0),
         SizedBox(
           width: 48.0,
           height: 48.0,
@@ -35,7 +37,7 @@ Widget inventory(state) {
               color: Colors.red,
               fontFamily: 'skullsandcrossbones',
             )),
-        const SizedBox(width: 40.0),
+        const SizedBox(width: 20.0),
         const SizedBox(
           width: 32.0,
           height: 32.0,
@@ -58,6 +60,21 @@ Widget inventory(state) {
                 fontSize: 24.0,
                 color: Colors.red,
                 fontFamily: 'skullsandcrossbones',
+              )),
+        ),
+        const SizedBox(width: 20.0),
+        GestureDetector(
+          onTap: () {
+            if (state.isLoggedIn) {
+              FirebaseAuth.instance.signOut();
+            } else {
+              Navigator.pushNamed(context, '/login');
+            }
+          },
+          child: Text(state.isLoggedIn == false ? "Login".tr() : "Logout".tr(),
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 20.0,
               )),
         ),
       ],
