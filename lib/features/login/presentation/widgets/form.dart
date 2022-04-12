@@ -6,15 +6,17 @@ import 'package:provider/provider.dart';
 
 Widget form(BuildContext context) {
   return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.start,
     children: [
       //const Spacer(),
-      Image.asset(
-        "assets/images/introduction/boat_steering.png",
+      SizedBox(
+        child: Image.asset(
+          "assets/images/introduction/boat_steering.png",
+        ),
       ),
-      const Spacer(),
+      //const Spacer(),
       Align(
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           child: Text(
             "need_login".tr(),
             style: const TextStyle(
@@ -25,7 +27,7 @@ Widget form(BuildContext context) {
           )),
       const SizedBox(height: 8.00),
       Align(
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           child: Text(
             "login_your_account".tr(),
             style: const TextStyle(
@@ -47,10 +49,8 @@ Widget form(BuildContext context) {
             minimumSize: const Size(double.infinity, 50)),
         icon: const FaIcon(FontAwesomeIcons.google, color: Colors.blue),
       ),
-      const SizedBox(
-        height: 40.0,
-      ),
-      RichText(
+
+      /*RichText(
         text: const TextSpan(text: 'Already have an account?', children: [
           TextSpan(
             text: "Log in",
@@ -61,7 +61,7 @@ Widget form(BuildContext context) {
           ),
         ]),
       ),
-      const Spacer(),
+      const Spacer(),*/
     ],
   );
 }
