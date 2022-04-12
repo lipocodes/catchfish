@@ -19,6 +19,7 @@ Widget form(BuildContext context) {
             "need_login".tr(),
             style: const TextStyle(
               fontSize: 24,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           )),
@@ -29,6 +30,7 @@ Widget form(BuildContext context) {
             "login_your_account".tr(),
             style: const TextStyle(
               fontSize: 16.0,
+              color: Colors.white,
             ),
           )),
       const Spacer(),
@@ -54,6 +56,7 @@ Widget form(BuildContext context) {
             text: "Log in",
             style: TextStyle(
               decoration: TextDecoration.underline,
+              color: Colors.white,
             ),
           ),
         ]),

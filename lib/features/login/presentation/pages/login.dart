@@ -38,9 +38,22 @@ class _LoginState extends State<Login> {
           return SafeArea(
             child: Scaffold(
               backgroundColor: Colors.white,
-              body: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: form(context),
+              body: Container(
+                height: 1000,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                      //tenor.com
+                      'assets/images/login/rope.jpg',
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: form(context),
+                ),
               ),
             ),
           );
