@@ -74,7 +74,8 @@ Widget inventory(BuildContext context, state) {
           child: Text(state.isLoggedIn == false ? "Login".tr() : "Logout".tr(),
               style: const TextStyle(
                 color: Colors.red,
-                fontSize: 20.0,
+                fontSize: 24.0,
+                fontFamily: 'skullsandcrossbones',
               )),
         ),
       ],

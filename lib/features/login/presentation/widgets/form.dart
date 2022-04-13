@@ -47,27 +47,32 @@ Widget form(BuildContext context) {
           provider.googleLogin();
         },
         style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            primary: Colors.blue,
+            onPrimary: Colors.white,
+            minimumSize: const Size(double.infinity, 50)),
+        icon: const FaIcon(FontAwesomeIcons.google, color: Colors.white),
+      ),
+      const SizedBox(
+        height: 10.0,
+      ),
+      ElevatedButton.icon(
+        label: const Text("Sign Up with Facebook"),
+        onPressed: () {
+          final provider =
+              Provider.of<FacebookSignInProvider>(context, listen: false);
+          provider.facebookLogin();
+        },
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
             primary: Colors.white,
             onPrimary: Colors.black,
             minimumSize: const Size(double.infinity, 50)),
-        icon: const FaIcon(FontAwesomeIcons.google, color: Colors.blue),
-      ),
-
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ElevatedButton.icon(
-          label: const Text("Sign Up with Facebook"),
-          onPressed: () {
-            final provider =
-                Provider.of<FacebookSignInProvider>(context, listen: false);
-            provider.facebookLogin();
-          },
-          style: ElevatedButton.styleFrom(
-              primary: Colors.white,
-              onPrimary: Colors.black,
-              minimumSize: const Size(double.infinity, 50)),
-          icon: const FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
-        ),
+        icon: const FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
       ),
       if (Platform.isIOS) ...[
         Padding(
@@ -80,8 +85,11 @@ Widget form(BuildContext context) {
               provider.appleLogin();
             },
             style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                onPrimary: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                primary: Colors.yellow,
+                onPrimary: Colors.red,
                 minimumSize: const Size(double.infinity, 50)),
             icon: const FaIcon(FontAwesomeIcons.apple, color: Colors.blue),
           ),

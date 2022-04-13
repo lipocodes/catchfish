@@ -18,6 +18,9 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    AssetImage backgroundImage =
+        const AssetImage("assets/images/login/rope.jpg");
+    precacheImage(backgroundImage, context);
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -42,12 +45,9 @@ class _LoginState extends State<Login> {
               body: Container(
                 height: 1000,
                 width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(
-                      //tenor.com
-                      'assets/images/login/rope.jpg',
-                    ),
+                    image: backgroundImage,
                     fit: BoxFit.cover,
                   ),
                 ),
