@@ -2,6 +2,7 @@ import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduc
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
+import 'package:catchfish/features/login/presentation/blocs/provider/apple_sign_in.dart';
 import 'package:catchfish/features/login/presentation/blocs/provider/facebook_sign_in.dart';
 import 'package:catchfish/features/login/presentation/blocs/provider/google_sign_in.dart';
 
@@ -47,44 +48,47 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: ChangeNotifierProvider(
-          create: (context) => FacebookSignInProvider(),
+          create: (context) => AppleSignInProvider(),
           child: ChangeNotifierProvider(
-            create: (context) => GoogleSignInProvider(),
-            child: MaterialApp(
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
-              ),
-              onGenerateRoute: (settings) {
-                switch (settings.name) {
-                  case '/':
-                    return PageTransition(
-                      child: const Splash(),
-                      type: PageTransitionType.fade,
-                      settings: settings,
-                      duration: const Duration(milliseconds: 1000),
-                    );
-                  case '/login':
-                    return PageTransition(
-                      child: const Login(),
-                      type: PageTransitionType.fade,
-                      settings: settings,
-                      duration: const Duration(milliseconds: 1000),
-                    );
-                  case '/lobby':
-                    return PageTransition(
-                      child: const Lobby(),
-                      type: PageTransitionType.fade,
-                      settings: settings,
-                      duration: const Duration(milliseconds: 1000),
-                    );
+            create: (context) => FacebookSignInProvider(),
+            child: ChangeNotifierProvider(
+              create: (context) => GoogleSignInProvider(),
+              child: MaterialApp(
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                ),
+                onGenerateRoute: (settings) {
+                  switch (settings.name) {
+                    case '/':
+                      return PageTransition(
+                        child: const Splash(),
+                        type: PageTransitionType.fade,
+                        settings: settings,
+                        duration: const Duration(milliseconds: 1000),
+                      );
+                    case '/login':
+                      return PageTransition(
+                        child: const Login(),
+                        type: PageTransitionType.fade,
+                        settings: settings,
+                        duration: const Duration(milliseconds: 1000),
+                      );
+                    case '/lobby':
+                      return PageTransition(
+                        child: const Lobby(),
+                        type: PageTransitionType.fade,
+                        settings: settings,
+                        duration: const Duration(milliseconds: 1000),
+                      );
 
-                  default:
-                    return null;
-                }
-              },
+                    default:
+                      return null;
+                  }
+                },
+              ),
             ),
           ),
         ));
