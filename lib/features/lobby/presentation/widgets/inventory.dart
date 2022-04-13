@@ -63,7 +63,7 @@ Widget inventory(BuildContext context, state) {
               )),
         ),
         const SizedBox(width: 20.0),
-        GestureDetector(
+        /*GestureDetector(
           onTap: () {
             if (state.isLoggedIn) {
               FirebaseAuth.instance.signOut();
@@ -77,7 +77,7 @@ Widget inventory(BuildContext context, state) {
                 fontSize: 24.0,
                 fontFamily: 'skullsandcrossbones',
               )),
-        ),
+        ),*/
       ],
     );
   } else {

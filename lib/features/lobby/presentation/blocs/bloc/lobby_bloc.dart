@@ -27,6 +27,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         } else {
           isLoggedIn = true;
         }
+
         playSound = PlaySound();
 
         playSound.play(path: "assets/sounds/lobby/", fileName: "waves.mp3");

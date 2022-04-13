@@ -14,7 +14,7 @@ Widget form(BuildContext context) {
       //const Spacer(),
       SizedBox(
         child: Image.asset(
-          "assets/images/introduction/boat_steering.png",
+          "assets/images/login/steering.png",
         ),
       ),
       //const Spacer(),

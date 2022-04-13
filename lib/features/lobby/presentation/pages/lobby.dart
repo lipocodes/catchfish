@@ -174,6 +174,26 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                       buttonBack(performBack),
                       //in core/utils/inventory.dart
                       inventory(context, state),
+                      GestureDetector(
+                        onTap: () async {
+                          if (state.isLoggedIn) {
+                            await FirebaseAuth.instance.signOut();
+                            performBack();
+                          } else {
+                            await Navigator.pushNamed(context, '/login');
+                            performBack();
+                          }
+                        },
+                        child: Text(
+                            state.isLoggedIn == false
+                                ? "Login".tr()
+                                : "Logout".tr(),
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 24.0,
+                              fontFamily: 'skullsandcrossbones',
+                            )),
+                      ),
                     ],
                   ),
                 ]),
