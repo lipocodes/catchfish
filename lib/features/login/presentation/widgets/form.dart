@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
 
 Widget form(BuildContext context) {
   return Column(
@@ -68,22 +69,24 @@ Widget form(BuildContext context) {
           icon: const FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
         ),
       ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ElevatedButton.icon(
-          label: const Text("Sign Up with Apple"),
-          onPressed: () {
-            final provider =
-                Provider.of<AppleSignInProvider>(context, listen: false);
-            provider.appleLogin();
-          },
-          style: ElevatedButton.styleFrom(
-              primary: Colors.white,
-              onPrimary: Colors.black,
-              minimumSize: const Size(double.infinity, 50)),
-          icon: const FaIcon(FontAwesomeIcons.apple, color: Colors.blue),
+      if (Platform.isIOS) ...[
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton.icon(
+            label: const Text("Sign Up with Apple"),
+            onPressed: () {
+              final provider =
+                  Provider.of<AppleSignInProvider>(context, listen: false);
+              provider.appleLogin();
+            },
+            style: ElevatedButton.styleFrom(
+                primary: Colors.white,
+                onPrimary: Colors.black,
+                minimumSize: const Size(double.infinity, 50)),
+            icon: const FaIcon(FontAwesomeIcons.apple, color: Colors.blue),
+          ),
         ),
-      ),
+      ],
     ],
   );
 }
