@@ -274,7 +274,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   //button for activating the rotation of compass
   Widget buttonRotate(BuildContext context, state) {
     return SizedBox(
-      width: 250.0,
+      width: 300.0,
       child: TextButton(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

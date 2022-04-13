@@ -40,57 +40,59 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider<IntroductionBloc>(
-              create: (BuildContext context) => IntroductionBloc()),
-          BlocProvider<LobbyBloc>(
-            create: (BuildContext context) => LobbyBloc(),
-          ),
-        ],
-        child: ChangeNotifierProvider(
-          create: (context) => AppleSignInProvider(),
-          child: ChangeNotifierProvider(
-            create: (context) => FacebookSignInProvider(),
-            child: ChangeNotifierProvider(
-              create: (context) => GoogleSignInProvider(),
-              child: MaterialApp(
-                localizationsDelegates: context.localizationDelegates,
-                supportedLocales: context.supportedLocales,
-                locale: context.locale,
-                theme: ThemeData(
-                  primarySwatch: Colors.blue,
-                ),
-                onGenerateRoute: (settings) {
-                  switch (settings.name) {
-                    case '/':
-                      return PageTransition(
-                        child: const Splash(),
-                        type: PageTransitionType.fade,
-                        settings: settings,
-                        duration: const Duration(milliseconds: 1000),
-                      );
-                    case '/login':
-                      return PageTransition(
-                        child: const Login(),
-                        type: PageTransitionType.fade,
-                        settings: settings,
-                        duration: const Duration(milliseconds: 1000),
-                      );
-                    case '/lobby':
-                      return PageTransition(
-                        child: const Lobby(),
-                        type: PageTransitionType.fade,
-                        settings: settings,
-                        duration: const Duration(milliseconds: 1000),
-                      );
-
-                    default:
-                      return null;
-                  }
-                },
-              ),
+      providers: [
+        BlocProvider<IntroductionBloc>(
+            create: (BuildContext context) => IntroductionBloc()),
+        BlocProvider<LobbyBloc>(
+          create: (BuildContext context) => LobbyBloc(),
+        ),
+      ],
+      child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => AppleSignInProvider()),
+            ChangeNotifierProvider(
+              create: (_) => FacebookSignInProvider(),
             ),
-          ),
-        ));
+            ChangeNotifierProvider(
+              create: (_) => GoogleSignInProvider(),
+            ),
+          ],
+          child: MaterialApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            onGenerateRoute: (settings) {
+              switch (settings.name) {
+                case '/':
+                  return PageTransition(
+                    child: const Splash(),
+                    type: PageTransitionType.fade,
+                    settings: settings,
+                    duration: const Duration(milliseconds: 1000),
+                  );
+                case '/login':
+                  return PageTransition(
+                    child: const Login(),
+                    type: PageTransitionType.fade,
+                    settings: settings,
+                    duration: const Duration(milliseconds: 1000),
+                  );
+                case '/lobby':
+                  return PageTransition(
+                    child: const Lobby(),
+                    type: PageTransitionType.fade,
+                    settings: settings,
+                    duration: const Duration(milliseconds: 1000),
+                  );
+
+                default:
+                  return null;
+              }
+            },
+          )),
+    );
   }
 }
