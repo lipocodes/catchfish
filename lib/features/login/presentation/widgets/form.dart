@@ -11,34 +11,31 @@ Widget form(BuildContext context) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
-      //const Spacer(),
-      SizedBox(
-        child: Image.asset(
-          "assets/images/login/steering.png",
-        ),
-      ),
-      //const Spacer(),
       Align(
           alignment: Alignment.center,
           child: Text(
             "need_login".tr(),
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 28,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           )),
-      const SizedBox(height: 8.00),
       Align(
           alignment: Alignment.center,
           child: Text(
             "login_your_account".tr(),
             style: const TextStyle(
-              fontSize: 16.0,
+              fontSize: 18.0,
               color: Colors.white,
             ),
           )),
       const Spacer(),
+      SizedBox(
+        child: Image.asset(
+          "assets/images/login/steering.png",
+        ),
+      ),
       ElevatedButton.icon(
         label: const Text("Sign Up with Google"),
         onPressed: () {

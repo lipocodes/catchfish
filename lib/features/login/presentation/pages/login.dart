@@ -1,3 +1,4 @@
+import 'package:catchfish/core/widgets/main_menu.dart';
 import 'package:catchfish/features/login/presentation/widgets/form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,19 +30,37 @@ class _LoginState extends State<Login> {
           } else if (snapshot.hasError) {
             return const Center(child: Text("Something Went Wrong!"));
           } else if (snapshot.hasData) {
-            /*final provider1 =
-                Provider.of<GoogleSignInProvider>(context, listen: false);
-            provider1.googleLogout();
-            final provider2 =
-                Provider.of<FacebookSignInProvider>(context, listen: false);
-            provider2.facebookLogout();*/
-
             performBack();
           }
           //else: if we haven't called the Provider yet
           return SafeArea(
             child: Scaffold(
-              backgroundColor: Colors.white,
+              extendBodyBehindAppBar: true,
+              //backgroundColor: Colors.white,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: Builder(
+                  builder: (context) => IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  ),
+                ),
+                actions: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      size: 24,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              ),
+              //in core/widgets/main_menu.dart
+              drawer: mainMenu(context),
               body: Container(
                 height: 1000,
                 width: MediaQuery.of(context).size.width,

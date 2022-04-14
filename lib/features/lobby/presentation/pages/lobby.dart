@@ -283,7 +283,8 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
       },
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.transparent,
+          extendBodyBehindAppBar: true,
+          //backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -296,7 +297,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             actions: [
               Row(
                 children: [
-                  buttonBack(performBack),
                   GestureDetector(
                     onTap: () async {
                       if (state.isLoggedIn) {
@@ -317,6 +317,10 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                           fontFamily: 'skullsandcrossbones',
                         )),
                   ),
+                  const SizedBox(
+                    width: 100,
+                  ),
+                  buttonBack(performBack),
                 ],
               ),
             ],
@@ -339,6 +343,9 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             ),
             Column(
               children: [
+                const SizedBox(
+                  height: 50.0,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
