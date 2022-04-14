@@ -11,24 +11,27 @@ Widget form(BuildContext context) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
+      const SizedBox(
+        height: 20.0,
+      ),
       Align(
           alignment: Alignment.center,
           child: Text(
             "need_login".tr(),
             style: const TextStyle(
-              fontSize: 28,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+                fontSize: 28,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'skullsandcrossbones'),
           )),
       Align(
           alignment: Alignment.center,
           child: Text(
             "login_your_account".tr(),
             style: const TextStyle(
-              fontSize: 18.0,
-              color: Colors.white,
-            ),
+                fontSize: 18.0,
+                color: Colors.white,
+                fontFamily: 'skullsandcrossbones'),
           )),
       const Spacer(),
       SizedBox(
