@@ -154,134 +154,79 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     });
   }
 
+  Widget lobbyScreen(state) {
+    return WillPopScope(
+      onWillPop: () async {
+        performBack();
+        return true;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          //in core/widgets/main_menu.dart
+          drawer: mainMenu(context),
+          body: Stack(children: [
+            Container(
+              height: 1000,
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    //tenor.com
+                    'assets/images/lobby/dolphins.gif',
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    buttonBack(performBack),
+                    //in core/utils/inventory.dart
+                    inventory(context, state),
+                    GestureDetector(
+                      onTap: () async {
+                        if (state.isLoggedIn) {
+                          await FirebaseAuth.instance.signOut();
+                          performBack();
+                        } else {
+                          await Navigator.pushNamed(context, '/login');
+                          performBack();
+                        }
+                      },
+                      child: Text(
+                          state.isLoggedIn == false
+                              ? "Login".tr()
+                              : "Logout".tr(),
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 24.0,
+                            fontFamily: 'skullsandcrossbones',
+                          )),
+                    ),
+                  ],
+                ),
+                rotate(state),
+              ],
+            ),
+          ]),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LobbyBloc, LobbyState>(
       builder: (context, state) {
         if (state is EnteringLobbyState) {
-          return WillPopScope(
-            onWillPop: () async {
-              performBack();
-              return true;
-            },
-            child: SafeArea(
-              child: Scaffold(
-                backgroundColor: Colors.white,
-                //in core/widgets/main_menu.dart
-                drawer: mainMenu(context),
-                body: Stack(children: [
-                  Container(
-                    height: 1000,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          //tenor.com
-                          'assets/images/lobby/dolphins.gif',
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          buttonBack(performBack),
-                          //in core/utils/inventory.dart
-                          inventory(context, state),
-                          GestureDetector(
-                            onTap: () async {
-                              if (state.isLoggedIn) {
-                                await FirebaseAuth.instance.signOut();
-                                performBack();
-                              } else {
-                                await Navigator.pushNamed(context, '/login');
-                                performBack();
-                              }
-                            },
-                            child: Text(
-                                state.isLoggedIn == false
-                                    ? "Login".tr()
-                                    : "Logout".tr(),
-                                style: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 24.0,
-                                  fontFamily: 'skullsandcrossbones',
-                                )),
-                          ),
-                        ],
-                      ),
-                      rotate(state),
-                    ],
-                  ),
-                ]),
-              ),
-            ),
-          );
+          return lobbyScreen(state);
         } else if (state is EndRotateCompassState) {
           showDailyPrize(state.dailyPrize);
-          return WillPopScope(
-            onWillPop: () async {
-              performBack();
-              return true;
-            },
-            child: SafeArea(
-              child: Scaffold(
-                drawer: mainMenu(context),
-                backgroundColor: Colors.white,
-                body: Stack(children: [
-                  Container(
-                    height: 1000,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          //tenor.com
-                          'assets/images/lobby/dolphins.gif',
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          buttonBack(performBack),
-                          //in core/utils/inventory.dart
-                          inventory(context, state),
-                          GestureDetector(
-                            onTap: () async {
-                              if (state.isLoggedIn) {
-                                await FirebaseAuth.instance.signOut();
-                                performBack();
-                              } else {
-                                await Navigator.pushNamed(context, '/login');
-                                performBack();
-                              }
-                            },
-                            child: Text(
-                                state.isLoggedIn == false
-                                    ? "Login".tr()
-                                    : "Logout".tr(),
-                                style: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 24.0,
-                                  fontFamily: 'skullsandcrossbones',
-                                )),
-                          ),
-                        ],
-                      ),
-                      rotate(state),
-                    ],
-                  ),
-                ]),
-              ),
-            ),
-          );
+          return lobbyScreen(state);
         } else {
           return Container();
         }
