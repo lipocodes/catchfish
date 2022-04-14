@@ -12,5 +12,6 @@
     "need_login":  "We need you to login!",
     "login_your_account":  "!Login to your account to continue",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "equipment_storage": "Equipment Storage"
 }

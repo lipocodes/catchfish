@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:catchfish/core/utils/play_sound.dart';
+import 'package:catchfish/core/widgets/main_menu.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/arrow_bottom.dart';
@@ -166,34 +167,53 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             child: SafeArea(
               child: Scaffold(
                 backgroundColor: Colors.white,
+                //in core/widgets/main_menu.dart
+                drawer: mainMenu(context),
                 body: Stack(children: [
-                  rotate(state),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      buttonBack(performBack),
-                      //in core/utils/inventory.dart
-                      inventory(context, state),
-                      GestureDetector(
-                        onTap: () async {
-                          if (state.isLoggedIn) {
-                            await FirebaseAuth.instance.signOut();
-                            performBack();
-                          } else {
-                            await Navigator.pushNamed(context, '/login');
-                            performBack();
-                          }
-                        },
-                        child: Text(
-                            state.isLoggedIn == false
-                                ? "Login".tr()
-                                : "Logout".tr(),
-                            style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 24.0,
-                              fontFamily: 'skullsandcrossbones',
-                            )),
+                  Container(
+                    height: 1000,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          //tenor.com
+                          'assets/images/lobby/dolphins.gif',
+                        ),
+                        fit: BoxFit.cover,
                       ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          buttonBack(performBack),
+                          //in core/utils/inventory.dart
+                          inventory(context, state),
+                          GestureDetector(
+                            onTap: () async {
+                              if (state.isLoggedIn) {
+                                await FirebaseAuth.instance.signOut();
+                                performBack();
+                              } else {
+                                await Navigator.pushNamed(context, '/login');
+                                performBack();
+                              }
+                            },
+                            child: Text(
+                                state.isLoggedIn == false
+                                    ? "Login".tr()
+                                    : "Logout".tr(),
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 24.0,
+                                  fontFamily: 'skullsandcrossbones',
+                                )),
+                          ),
+                        ],
+                      ),
+                      rotate(state),
                     ],
                   ),
                 ]),
@@ -209,15 +229,53 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             },
             child: SafeArea(
               child: Scaffold(
+                drawer: mainMenu(context),
                 backgroundColor: Colors.white,
                 body: Stack(children: [
-                  rotate(state),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  Container(
+                    height: 1000,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          //tenor.com
+                          'assets/images/lobby/dolphins.gif',
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Column(
                     children: [
-                      buttonBack(performBack),
-                      //in core/utils/inventory.dart
-                      inventory(context, state),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          buttonBack(performBack),
+                          //in core/utils/inventory.dart
+                          inventory(context, state),
+                          GestureDetector(
+                            onTap: () async {
+                              if (state.isLoggedIn) {
+                                await FirebaseAuth.instance.signOut();
+                                performBack();
+                              } else {
+                                await Navigator.pushNamed(context, '/login');
+                                performBack();
+                              }
+                            },
+                            child: Text(
+                                state.isLoggedIn == false
+                                    ? "Login".tr()
+                                    : "Logout".tr(),
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 24.0,
+                                  fontFamily: 'skullsandcrossbones',
+                                )),
+                          ),
+                        ],
+                      ),
+                      rotate(state),
                     ],
                   ),
                 ]),
@@ -235,18 +293,9 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   ////////////////////////////////////////////////////////////////////
   //The wheel we see on the screen
   Widget rotate(state) {
-    return Container(
-      height: 1000,
+    return SizedBox(
+      height: 600,
       width: MediaQuery.of(context).size.width,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-            //tenor.com
-            'assets/images/lobby/dolphins.gif',
-          ),
-          fit: BoxFit.cover,
-        ),
-      ),
       child: Column(
         children: [
           const SizedBox(
@@ -269,15 +318,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           buttonRotate(context, state),
           arrowBottom(),
           compass(context, _angle),
-          /* SizedBox(
-            height: 30.0,
-            child: Text(degreesNet.ceil().toString() + "\u00b0",
-                style: const TextStyle(
-                  fontSize: 28.0,
-                  color: Colors.white,
-                  fontFamily: 'skullsandcrossbones',
-                )),
-          ),*/
           if (state is EndRotateCompassState ||
               (state is EnteringLobbyState &&
                   state.hasRotatedTodayYet == true)) ...[

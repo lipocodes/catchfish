@@ -22,7 +22,7 @@ Widget inventory(BuildContext context, state) {
               color: Colors.red,
               fontFamily: 'skullsandcrossbones',
             )),
-        const SizedBox(width: 20.0),
+        const SizedBox(width: 40.0),
         SizedBox(
           width: 48.0,
           height: 48.0,
@@ -37,7 +37,7 @@ Widget inventory(BuildContext context, state) {
               color: Colors.red,
               fontFamily: 'skullsandcrossbones',
             )),
-        const SizedBox(width: 20.0),
+        const SizedBox(width: 40.0),
         const SizedBox(
           width: 32.0,
           height: 32.0,
@@ -62,22 +62,7 @@ Widget inventory(BuildContext context, state) {
                 fontFamily: 'skullsandcrossbones',
               )),
         ),
-        const SizedBox(width: 20.0),
-        /*GestureDetector(
-          onTap: () {
-            if (state.isLoggedIn) {
-              FirebaseAuth.instance.signOut();
-            } else {
-              Navigator.pushNamed(context, '/login');
-            }
-          },
-          child: Text(state.isLoggedIn == false ? "Login".tr() : "Logout".tr(),
-              style: const TextStyle(
-                color: Colors.red,
-                fontSize: 24.0,
-                fontFamily: 'skullsandcrossbones',
-              )),
-        ),*/
+        //const SizedBox(width: 20.0),
       ],
     );
   } else {
