@@ -13,5 +13,6 @@
     "login_your_account":  "Login to your account to continue",
     "login": "Login",
     "logout": "Logout",
-    "equipment_storage": "Equipment Storage"
+    "equipment_storage": "Equipment Storage",
+    "quantity": "Quantity: "
 }

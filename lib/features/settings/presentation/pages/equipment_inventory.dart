@@ -1,4 +1,5 @@
 import 'package:catchfish/core/utils/play_sound.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class EquipmentInventory extends StatefulWidget {
@@ -16,7 +17,7 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
   ];
   List<String> items = [
     'Baits',
-    'Rods',
+    'abcdefghijklmnopqrstuvwx',
   ];
   List<int> quatities = [5, 3];
 
@@ -65,8 +66,8 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
           ),
         ),
         child: GridView.count(
-          crossAxisCount: 2,
-          childAspectRatio: (1 / 1),
+          crossAxisCount: 1,
+          childAspectRatio: (2),
           children: List.generate(items.length, (index) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -74,7 +75,7 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
                 decoration: BoxDecoration(
                     color: Colors.transparent,
                     // Red border with the width is equal to 5
-                    border: Border.all(width: 5, color: Colors.red)),
+                    border: Border.all(width: 3, color: Colors.grey)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,14 +84,17 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
                         width: 64,
                         height: 64,
                         child: Image.asset(images[index])),
-                    Text(items[index],
+                    Text(
+                        items[index].length > 24
+                            ? items[index].substring(0, 24)
+                            : items[index],
                         style: const TextStyle(
                           fontSize: 28.0,
                           color: Colors.yellow,
                           fontFamily: 'skullsandcrossbones',
                         )),
                     Text(
-                      quatities[index].toString(),
+                      "quantity".tr() + quatities[index].toString(),
                       style: const TextStyle(
                         fontSize: 28.0,
                         color: Colors.white,
