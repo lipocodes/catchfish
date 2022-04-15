@@ -87,7 +87,10 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   //if user clicks on 'Why rotate this compass?'
   showExplantionRotation() async {
     playSound = PlaySound();
-    playSound.play(path: "assets/sounds/lobby/", fileName: "beep.mp3");
+    playSound.play(
+      path: "assets/sounds/lobby/",
+      fileName: "beep.mp3",
+    );
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -284,7 +287,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
       child: SafeArea(
         child: Scaffold(
           extendBodyBehindAppBar: true,
-          //backgroundColor: Colors.transparent,
+          onDrawerChanged: (isOpened) {},
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,

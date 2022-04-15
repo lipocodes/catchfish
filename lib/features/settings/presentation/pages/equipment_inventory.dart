@@ -1,3 +1,4 @@
+import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:flutter/material.dart';
 
 class EquipmentInventory extends StatefulWidget {
@@ -8,7 +9,7 @@ class EquipmentInventory extends StatefulWidget {
 }
 
 class _EquipmentInventoryState extends State<EquipmentInventory> {
-  //List icons = [Icons.access_alarm_outlined, Icons.access_alarm_outlined];
+  late PlaySound playSound;
   List images = [
     "assets/images/lobby/scroll.jpg",
     "assets/images/lobby/scroll.jpg"
@@ -39,42 +40,69 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    playSound = PlaySound();
+    playSound.play(
+      path: "assets/sounds/settings/",
+      fileName: "bubbles.mp3",
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: (1 / 1),
-        children: List.generate(items.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.yellow,
-                  // Red border with the width is equal to 5
-                  border: Border.all(width: 5, color: Colors.red)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      width: 64, height: 64, child: Image.asset(images[index])),
-                  Text(items[index],
-                      style: const TextStyle(
-                        fontSize: 32.0,
-                        fontFamily: 'skullsandcrossbones',
-                      )),
-                  Text(
-                    quatities[index].toString(),
-                    style: const TextStyle(
-                      fontSize: 28.0,
-                      fontFamily: 'skullsandcrossbones',
-                    ),
-                  ),
-                ],
-              ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              //tenor.com
+              'assets/images/settings/bubbles.gif',
             ),
-          );
-        }).toList(),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: GridView.count(
+          crossAxisCount: 2,
+          childAspectRatio: (1 / 1),
+          children: List.generate(items.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    // Red border with the width is equal to 5
+                    border: Border.all(width: 5, color: Colors.red)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                        width: 64,
+                        height: 64,
+                        child: Image.asset(images[index])),
+                    Text(items[index],
+                        style: const TextStyle(
+                          fontSize: 28.0,
+                          color: Colors.yellow,
+                          fontFamily: 'skullsandcrossbones',
+                        )),
+                    Text(
+                      quatities[index].toString(),
+                      style: const TextStyle(
+                        fontSize: 28.0,
+                        color: Colors.white,
+                        fontFamily: 'skullsandcrossbones',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
