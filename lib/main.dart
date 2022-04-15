@@ -7,6 +7,7 @@ import 'package:catchfish/features/login/presentation/blocs/provider/facebook_si
 import 'package:catchfish/features/login/presentation/blocs/provider/google_sign_in.dart';
 
 import 'package:catchfish/features/login/presentation/pages/login.dart';
+import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -83,6 +84,13 @@ class MyApp extends StatelessWidget {
                 case '/lobby':
                   return PageTransition(
                     child: const Lobby(),
+                    type: PageTransitionType.fade,
+                    settings: settings,
+                    duration: const Duration(milliseconds: 1000),
+                  );
+                case '/equipment_inventory':
+                  return PageTransition(
+                    child: const EquipmentInventory(),
                     type: PageTransitionType.fade,
                     settings: settings,
                     duration: const Duration(milliseconds: 1000),
