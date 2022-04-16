@@ -1,5 +1,8 @@
 import 'package:catchfish/core/utils/play_sound.dart';
+import 'package:catchfish/core/widgets/main_menu.dart';
+import 'package:catchfish/features/settings/presentation/widgets/button_back.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class EquipmentInventory extends StatefulWidget {
@@ -40,6 +43,13 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
     );
   }
 
+  //custom BACK operation
+  performBack() async {
+    Navigator.pop(context, true);
+    Navigator.pop(context, true);
+    Navigator.pushNamed(context, '/');
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -54,7 +64,51 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      onDrawerChanged: (isOpened) {},
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+        actions: [
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  if (auth.currentUser != null) {
+                    await FirebaseAuth.instance.signOut();
+                    performBack();
+                  } else {
+                    await Navigator.pushNamed(context, '/login');
+                    performBack();
+                  }
+                },
+                child: Text(
+                    auth.currentUser == null ? "Login".tr() : "Logout".tr(),
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 24.0,
+                      fontFamily: 'skullsandcrossbones',
+                    )),
+              ),
+              const SizedBox(
+                width: 100,
+              ),
+              buttonBack(context),
+            ],
+          ),
+        ],
+      ),
+      //in core/widgets/main_menu.dart
+      drawer: mainMenu(context),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(

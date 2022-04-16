@@ -311,7 +311,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                       }
                     },
                     child: Text(
-                        state.isLoggedIn == false
+                        FirebaseAuth.instance.currentUser == null
                             ? "Login".tr()
                             : "Logout".tr(),
                         style: const TextStyle(
