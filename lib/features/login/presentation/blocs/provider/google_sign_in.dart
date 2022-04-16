@@ -1,3 +1,4 @@
+import 'package:catchfish/features/login/domain/entities/user_entity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -17,7 +18,18 @@ class GoogleSignInProvider extends ChangeNotifier {
       final googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      var res = await FirebaseAuth.instance.signInWithCredential(credential);
+      if (res.user != null) {
+        String? displayName = res.user!.displayName;
+        String? email = res.user!.email;
+        String? photoURL = res.user!.photoURL;
+        String? phoneNumber = res.user!.phoneNumber;
+        UserEntity(
+            displayName: displayName ?? "",
+            email: email ?? "",
+            photoURL: photoURL ?? "",
+            phoneNumber: phoneNumber ?? "");
+      }
     } catch (e) {}
     notifyListeners();
   }
