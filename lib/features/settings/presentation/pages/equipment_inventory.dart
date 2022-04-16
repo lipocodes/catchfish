@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/core/widgets/main_menu.dart';
 import 'package:catchfish/features/settings/presentation/widgets/app_bar.dart';
-import 'package:catchfish/features/settings/presentation/widgets/button_back.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class EquipmentInventory extends StatefulWidget {
 
 class _EquipmentInventoryState extends State<EquipmentInventory> {
   late PlaySound playSound;
+  bool _showedWarningYet = false;
   List images = [
     "assets/images/lobby/scroll.jpg",
     "assets/images/lobby/scroll.jpg"
@@ -44,6 +46,32 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
     );
   }
 
+  showLoginWarning(BuildContext context) async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    if (auth.currentUser == null && _showedWarningYet == false) {
+      _showedWarningYet = true;
+      Timer(const Duration(seconds: 3), () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+                  backgroundColor: Colors.redAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  title: const Text('not_logged_in').tr(),
+                  content: const Text('text_not_logged_in').tr(),
+                  actions: <Widget>[
+                    IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        })
+                  ],
+                ));
+      });
+    }
+  }
+
   //custom BACK operation
   performBack() async {
     Navigator.pop(context, true);
@@ -65,8 +93,7 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-
+    showLoginWarning(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       onDrawerChanged: (isOpened) {},
