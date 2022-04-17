@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/core/widgets/main_menu.dart';
+import 'package:catchfish/features/settings/presentation/blocs/bloc/inventory_bloc.dart';
 import 'package:catchfish/features/settings/presentation/widgets/app_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EquipmentInventory extends StatefulWidget {
   const EquipmentInventory({Key? key}) : super(key: key);
@@ -84,6 +86,8 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
     // TODO: implement initState
     super.initState();
 
+    BlocProvider.of<InventoryBloc>(context).add(EnteringInventoryEvent());
+
     playSound = PlaySound();
     playSound.play(
       path: "assets/sounds/settings/",
@@ -105,56 +109,66 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
   }
 
   Widget inventoryGrid() {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-            //tenor.com
-            'assets/images/settings/bubbles.gif',
-          ),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: GridView.count(
-        crossAxisCount: 1,
-        childAspectRatio: (2),
-        children: List.generate(items.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  // Red border with the width is equal to 5
-                  border: Border.all(width: 3, color: Colors.grey)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      width: 64, height: 64, child: Image.asset(images[index])),
-                  Text(
-                      items[index].length > 24
-                          ? items[index].substring(0, 24)
-                          : items[index],
-                      style: const TextStyle(
-                        fontSize: 28.0,
-                        color: Colors.yellow,
-                        fontFamily: 'skullsandcrossbones',
-                      )),
-                  Text(
-                    "quantity".tr() + quatities[index].toString(),
-                    style: const TextStyle(
-                      fontSize: 28.0,
-                      color: Colors.white,
-                      fontFamily: 'skullsandcrossbones',
-                    ),
-                  ),
-                ],
+    return BlocBuilder<InventoryBloc, InventoryState>(
+      builder: (context, state) {
+        if (state is EnteringInventoryState) {
+          print("ggggggggggggggg=" +
+              state.inventoryEntity.listInventory.toString());
+        }
+        return Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                //tenor.com
+                'assets/images/settings/bubbles.gif',
               ),
+              fit: BoxFit.cover,
             ),
-          );
-        }).toList(),
-      ),
+          ),
+          child: GridView.count(
+            crossAxisCount: 1,
+            childAspectRatio: (2),
+            children: List.generate(items.length, (index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      // Red border with the width is equal to 5
+                      border: Border.all(width: 3, color: Colors.grey)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          width: 64,
+                          height: 64,
+                          child: Image.asset(images[index])),
+                      Text(
+                          items[index].length > 24
+                              ? items[index].substring(0, 24)
+                              : items[index],
+                          style: const TextStyle(
+                            fontSize: 28.0,
+                            color: Colors.yellow,
+                            fontFamily: 'skullsandcrossbones',
+                          )),
+                      Text(
+                        "quantity".tr() + quatities[index].toString(),
+                        style: const TextStyle(
+                          fontSize: 28.0,
+                          color: Colors.white,
+                          fontFamily: 'skullsandcrossbones',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        );
+      },
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:catchfish/features/login/presentation/blocs/provider/facebook_si
 import 'package:catchfish/features/login/presentation/blocs/provider/google_sign_in.dart';
 
 import 'package:catchfish/features/login/presentation/pages/login.dart';
+import 'package:catchfish/features/settings/presentation/blocs/bloc/inventory_bloc.dart';
 import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => IntroductionBloc()),
         BlocProvider<LobbyBloc>(
           create: (BuildContext context) => LobbyBloc(),
+        ),
+        BlocProvider<InventoryBloc>(
+          create: (BuildContext context) => InventoryBloc(),
         ),
       ],
       child: MultiProvider(
