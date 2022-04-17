@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 Widget inventory(BuildContext context, state) {
+  //if user is not logged in, warn him
+
   if (state is EndRotateCompassState || state is EnteringLobbyState) {
     return Row(
       children: [
