@@ -1,3 +1,4 @@
+import 'package:catchfish/features/login/domain/usecases/saveUserDetails.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,11 +18,13 @@ class FacebookSignInProvider extends ChangeNotifier {
           String? email = res.user!.email;
           String? photoURL = res.user!.photoURL;
           String? phoneNumber = res.user!.phoneNumber;
-          UserEntity(
+          UserEntity userEntity = UserEntity(
               displayName: displayName ?? "",
               email: email ?? "",
               photoURL: photoURL ?? "",
               phoneNumber: phoneNumber ?? "");
+          SaveUserDetails saveUserDetails = SaveUserDetails();
+          saveUserDetails.call(userEntity);
         }
       } else if (result.status == LoginStatus.operationInProgress) {
         print("bbbbbbbbbbbbbbbb");
