@@ -20,10 +20,12 @@ class EquipmentInventory extends StatefulWidget {
 class _EquipmentInventoryState extends State<EquipmentInventory> {
   late PlaySound playSound;
   bool _showedWarningYet = false;
+  List<String> ids = [];
   List<String> images = [];
   List<String> items = [];
   List<int> quatities = [];
   late SharedPreferences prefs;
+  List localListInventory = [];
 
   getGridViewItems(BuildContext context, String gridItem) {
     showDialog(
@@ -79,6 +81,7 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
 
   initilizePrefs() async {
     prefs = await SharedPreferences.getInstance();
+    localListInventory = prefs.getStringList("inventory") ?? [];
   }
 
   @override
@@ -112,29 +115,74 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
     return BlocBuilder<InventoryBloc, InventoryState>(
       builder: (context, state) {
         if (state is EnteringInventoryState) {
+          ids = [];
           images = [];
           items = [];
           quatities = [];
-          List localListInventory = prefs.getStringList("inventory") ?? [];
-          //going over inventory items saved on DB
-          for (int a = 0; a < state.inventoryEntity.listInventory.length; a++) {
-            String temp = state.inventoryEntity.listInventory[a];
-            List<String> list1 = temp.split("^^^");
-            temp = localListInventory[a];
-            List<String> list2 = temp.split("^^^");
-            int lastUpdateInventoryDB = int.parse(list1[3]);
-            int lastUpdateInventoryPrefs = int.parse(list2[3]);
-            //only if item exits on both DB & Prefs & item on DB is newer, show it to the user
-            if (lastUpdateInventoryDB > lastUpdateInventoryPrefs) {
-              images.add(list1[0]);
-              items.add(list1[1]);
-              quatities.add(int.parse(list1[2]));
-            } else {
-              images.add(list2[0]);
-              items.add(list2[1]);
-              quatities.add(int.parse(list2[2]));
+
+          //if user not logged in
+          final FirebaseAuth auth = FirebaseAuth.instance;
+          if (auth.currentUser == null) {
+            //going over items saved on prefs, looking for items existing only on prefs
+            for (int a = 0; a < localListInventory.length; a++) {
+              String t = localListInventory[a];
+              List<String> l = t.split("^^^");
+              ids.add(l[0]);
+              images.add(l[1]);
+              items.add(l[2]);
+              quatities.add(int.parse(l[3]));
             }
           }
+          //if user is logged in
+          else {
+            //going over inventory items saved on DB
+            for (int a = 0;
+                a < state.inventoryEntity.listInventory.length;
+                a++) {
+              bool isItemFoundOnPref = false;
+              String temp = state.inventoryEntity.listInventory[a];
+              List<String> list = temp.split("^^^");
+              String idItem = list[0];
+              String image = list[1];
+              String item = list[2];
+              int quantity = int.parse(list[3]);
+              //going over inventory saved on prefs to check if this item is there also
+              List<String> l = [];
+              for (int b = 0; b < localListInventory.length; b++) {
+                String temp = localListInventory[b];
+                l = temp.split("^^^");
+                if (l[0] == idItem) {
+                  isItemFoundOnPref = true;
+                  break;
+                }
+              }
+              if (isItemFoundOnPref) {
+                ids.add(l[0]);
+                images.add(l[1]);
+                items.add(l[2]);
+                quatities.add(int.parse(l[3]));
+              } else {
+                //if this item is not found anywhere in prefs
+                ids.add(list[0]);
+                images.add(image);
+                items.add(item);
+                quatities.add(quantity);
+              }
+
+              //going over items saved on prefs, looking for items existing only on prefs
+              for (int a = 0; a < localListInventory.length; a++) {
+                String t = localListInventory[a];
+                List<String> l = t.split("^^^");
+                if (!ids.contains(l[0])) {
+                  ids.add(l[0]);
+                  images.add(l[1]);
+                  items.add(l[2]);
+                  quatities.add(int.parse(l[3]));
+                }
+              }
+            }
+          }
+
           return Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -160,10 +208,15 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                            width: 64,
-                            height: 64,
-                            child: Image.network(images[index])),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(800),
+                          child: Image.network(
+                            images[index],
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                         Text(
                             items[index].length > 24
                                 ? items[index].substring(0, 24)
@@ -176,7 +229,7 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
                         Text(
                           "quantity".tr() + quatities[index].toString(),
                           style: const TextStyle(
-                            fontSize: 28.0,
+                            fontSize: 24.0,
                             color: Colors.white,
                             fontFamily: 'skullsandcrossbones',
                           ),
