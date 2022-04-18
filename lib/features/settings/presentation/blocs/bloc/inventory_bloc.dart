@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/settings/domain/entities/inventory_entity.dart';
+import 'package:catchfish/features/settings/domain/entities/inventory_screen_entity.dart';
 import 'package:catchfish/features/settings/domain/usecases/inventory_usecases.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,14 +13,27 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
   InventoryBloc() : super(InventoryInitial()) {
     on<InventoryEvent>((event, emit) async {
       if (event is EnteringInventoryEvent) {
+        PlaySound playSound = PlaySound();
+        playSound.play(
+          path: "assets/sounds/settings/",
+          fileName: "bubbles.mp3",
+        );
+
         final FirebaseAuth auth = FirebaseAuth.instance;
         String email = "";
         if (auth.currentUser != null) {
           email = auth.currentUser!.email!;
           InventoryUsecases inventoryUsecases = InventoryUsecases();
-          InventoryEntity inventoryEntity =
+          InventoryScreenEntity inventoryScreenEntity =
               await inventoryUsecases.getInventoryDB(email);
-          emit(EnteringInventoryState(inventoryEntity: inventoryEntity));
+          emit(EnteringInventoryState(
+              inventoryScreenEntity: inventoryScreenEntity));
+        } else {
+          InventoryUsecases inventoryUsecases = InventoryUsecases();
+          InventoryScreenEntity inventoryScreenEntity =
+              await inventoryUsecases.getInventoryDB(email);
+          emit(EnteringInventoryState(
+              inventoryScreenEntity: inventoryScreenEntity));
         }
       }
     });

@@ -10,8 +10,8 @@ abstract class InventoryState extends Equatable {
 class InventoryInitial extends InventoryState {}
 
 class EnteringInventoryState extends InventoryState {
-  final InventoryEntity inventoryEntity;
-  const EnteringInventoryState({required this.inventoryEntity});
+  final InventoryScreenEntity inventoryScreenEntity;
+  const EnteringInventoryState({required this.inventoryScreenEntity});
   @override
-  List<Object> get props => [inventoryEntity];
+  List<Object> get props => [inventoryScreenEntity];
 }
