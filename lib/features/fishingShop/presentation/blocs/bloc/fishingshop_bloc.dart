@@ -22,7 +22,7 @@ class FishingshopBloc extends Bloc<FishingshopEvent, FishingshopState> {
 
           RetreivePrizeUsecase retreivePrizeUsecase = RetreivePrizeUsecase();
           RetreivePrizeEntity retreivePrizeEntity =
-              await retreivePrizeUsecase.getPrize();
+              await retreivePrizeUsecase.getPrize(email);
           int lastPrizeValuesUpdatePrefs = prefs.getInt(
                 "lastPrizeValuesUpdatePrefs",
               ) ??
