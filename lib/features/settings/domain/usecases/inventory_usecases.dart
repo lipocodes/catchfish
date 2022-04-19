@@ -25,7 +25,6 @@ class InventoryUsecases {
 
     final FirebaseAuth auth = FirebaseAuth.instance;
     if (auth.currentUser == null) {
-      print("aaaaaaaaaaaaaaaaaaa");
       //going over items saved on prefs, looking for items existing only on prefs
       for (int a = 0; a < localListInventory.length; a++) {
         String t = localListInventory[a];
@@ -38,7 +37,6 @@ class InventoryUsecases {
     }
     //if user is logged in
     else {
-      print("bbbbbbbbbbbbbbbbbbbb");
       InventoryEntity inventoryEntity =
           await inventoryRepositoryImpl.getInventoryDB(email);
       //going over inventory items saved on DB
