@@ -16,7 +16,7 @@ Widget inventory(BuildContext context, state) {
           ),
         ),
         const SizedBox(width: 5.0),
-        Text(state.retreiveInventoryEntity.inventoryMoney.toString(),
+        Text(state.retreivePrizeEntity.inventoryMoney.toString(),
             style: const TextStyle(
               fontSize: 24.0,
               color: Colors.red,
@@ -31,7 +31,7 @@ Widget inventory(BuildContext context, state) {
           ),
         ),
         const SizedBox(width: 5.0),
-        Text(state.retreiveInventoryEntity.inventoryBaits.toString(),
+        Text(state.retreivePrizeEntity.inventoryBaits.toString(),
             style: const TextStyle(
               fontSize: 24.0,
               color: Colors.red,
@@ -55,7 +55,7 @@ Widget inventory(BuildContext context, state) {
         //const SizedBox(width: 5.0),
         Padding(
           padding: const EdgeInsets.only(top: 4.0),
-          child: Text(state.retreiveInventoryEntity.inventoryXP.toString(),
+          child: Text(state.retreivePrizeEntity.inventoryXP.toString(),
               style: const TextStyle(
                 fontSize: 24.0,
                 color: Colors.red,
