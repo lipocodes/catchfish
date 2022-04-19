@@ -38,6 +38,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
           //if prize values on DN are fresher than prize values in Prefs
           if (prizeValuesEntity.lastPrizeValuesUpdateDB >
               lastPrizeValuesUpdatePrefs) {
+            //if user is logged in && DB data is newer, update prefs
             await prefs.setInt(
                 "inventoryMoney", prizeValuesEntity.inventoryMoney);
             await prefs.setInt(
@@ -46,7 +47,6 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
           }
         }
 
-        //if user is logged in && DB data is newer, update prefs
         int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
         int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
         int inventoryXP = prefs.getInt("inventoryXP") ?? 0;

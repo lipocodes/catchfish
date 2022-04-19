@@ -3,7 +3,10 @@ import 'package:catchfish/features/fishingShop/domain/entities/retreive_prize_en
 class RetreivePrizeUsecase {
   Future<RetreivePrizeEntity> getPrize() async {
     RetreivePrizeEntity retreivePrizeEntity = RetreivePrizeEntity(
-        inventoryMoney: 10, inventoryBaits: 5, inventoryXP: 3);
+        inventoryMoney: 10,
+        inventoryBaits: 5,
+        inventoryXP: 3,
+        lastPrizeValuesUpdateDB: 1000);
 
     return retreivePrizeEntity;
   }
