@@ -16,5 +16,6 @@
     "equipment_storage": "Equipment Storage",
     "quantity": "Quantity: ",
     "not_logged_in": "Not Logged In",
-    "text_not_logged_in": "You can only view inventory saved on your device.."
+    "text_not_logged_in": "You can only view inventory saved on your device..",
+    "fishing_shop": "Fishing Shop"
 }

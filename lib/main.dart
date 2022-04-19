@@ -1,3 +1,5 @@
+import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
+import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
@@ -51,6 +53,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<InventoryBloc>(
           create: (BuildContext context) => InventoryBloc(),
         ),
+        BlocProvider<FishingshopBloc>(
+          create: (BuildContext context) => FishingshopBloc(),
+        ),
       ],
       child: MultiProvider(
           providers: [
@@ -99,7 +104,13 @@ class MyApp extends StatelessWidget {
                     settings: settings,
                     duration: const Duration(milliseconds: 1000),
                   );
-
+                case '/fishing_shop':
+                  return PageTransition(
+                    child: const FishingShop(),
+                    type: PageTransitionType.fade,
+                    settings: settings,
+                    duration: const Duration(milliseconds: 1000),
+                  );
                 default:
                   return null;
               }
