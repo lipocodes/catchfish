@@ -2,4 +2,5 @@ import 'package:catchfish/features/fishingShop/domain/entities/retreive_prize_en
 
 abstract class FishingShopRepository {
   Future<RetreivePrizeEntity> getPrize(String email);
+  Future<List> getItems();
 }

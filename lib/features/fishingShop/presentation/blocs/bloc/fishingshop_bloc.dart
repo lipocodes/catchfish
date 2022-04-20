@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/fishingShop/domain/entities/retreive_prize_entity.dart';
+import 'package:catchfish/features/fishingShop/domain/entities/retreive_shop_items_entity.dart';
 import 'package:catchfish/features/fishingShop/domain/usecases/retreive_prize_usecase.dart';
+import 'package:catchfish/features/fishingShop/domain/usecases/retreive_shop_items_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,6 +63,14 @@ class FishingshopBloc extends Bloc<FishingshopEvent, FishingshopState> {
         );
 
         emit(EnteringShopState(retreivePrizeEntity: retreivePrizeEntity));
+      } else if (event is RetreiveShopItemsEvent) {
+        RetreiveShopItemsUsecase retreiveShopItemsUsecase =
+            RetreiveShopItemsUsecase();
+        List<RetreiveShopItemsEntity> listItems =
+            await retreiveShopItemsUsecase.getItems();
+        RetreiveShopItemsState retreiveShopItemsState =
+            RetreiveShopItemsState(listItems: listItems);
+        emit(retreiveShopItemsState);
       }
     });
   }

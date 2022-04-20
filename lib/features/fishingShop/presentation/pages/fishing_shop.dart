@@ -2,6 +2,7 @@ import 'package:catchfish/core/widgets/main_menu.dart';
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/widgets/app_bar.dart';
 import 'package:catchfish/features/fishingShop/presentation/widgets/inventory.dart';
+import 'package:catchfish/features/fishingShop/presentation/widgets/shop_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,6 +19,7 @@ class _FishingShopState extends State<FishingShop> {
     // TODO: implement initState
     super.initState();
     BlocProvider.of<FishingshopBloc>(context).add(EnteringShopEvent());
+    BlocProvider.of<FishingshopBloc>(context).add(RetreiveShopItemsEvent());
   }
 
   @override
@@ -38,6 +40,7 @@ class _FishingShopState extends State<FishingShop> {
                   height: 50.0,
                 ),
                 inventory(context, state),
+                shopItems(state),
               ],
             ),
           ),

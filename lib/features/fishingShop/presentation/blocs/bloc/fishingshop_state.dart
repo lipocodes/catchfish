@@ -10,6 +10,11 @@ abstract class FishingshopState extends Equatable {
 class FishingshopInitial extends FishingshopState {}
 
 class EnteringShopState extends FishingshopState {
-  late RetreivePrizeEntity retreivePrizeEntity;
-  EnteringShopState({required this.retreivePrizeEntity});
+  final RetreivePrizeEntity retreivePrizeEntity;
+  const EnteringShopState({required this.retreivePrizeEntity});
+}
+
+class RetreiveShopItemsState extends FishingshopState {
+  final List<RetreiveShopItemsEntity> listItems;
+  const RetreiveShopItemsState({required this.listItems});
 }

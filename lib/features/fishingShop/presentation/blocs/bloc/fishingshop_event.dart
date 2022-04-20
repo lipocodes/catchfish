@@ -8,3 +8,5 @@ abstract class FishingshopEvent extends Equatable {
 }
 
 class EnteringShopEvent extends FishingshopEvent {}
+
+class RetreiveShopItemsEvent extends FishingshopEvent {}
