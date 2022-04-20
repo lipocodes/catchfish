@@ -11,7 +11,7 @@ Widget shopItems(
       image: DecorationImage(
         image: AssetImage(
           //tenor.com
-          'assets/images/settings/bubbles.gif',
+          'assets/images/fishingShop/bubbles.gif',
         ),
         fit: BoxFit.cover,
       ),
@@ -34,14 +34,20 @@ Widget shopItems(
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(400),
-                  child: CachedNetworkImage(
-                    width: 80,
-                    height: 80,
+                  /*child: CachedNetworkImage(
+                    width: 64,
+                    height: 64,
                     imageUrl: listItems[index].image,
                     placeholder: (context, url) =>
                         const CircularProgressIndicator(),
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
+                  ),*/
+                  child: Image.network(
+                    listItems[index].image,
+                    width: 64,
+                    height: 64,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Text(
@@ -57,7 +63,7 @@ Widget shopItems(
                   "price".tr() + listItems[index].price.toString(),
                   style: const TextStyle(
                     fontSize: 24.0,
-                    color: Colors.yellow,
+                    color: Colors.orange,
                     fontFamily: 'skullsandcrossbones',
                   ),
                 ),

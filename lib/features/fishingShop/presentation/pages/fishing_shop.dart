@@ -16,6 +16,10 @@ class FishingShop extends StatefulWidget {
 
 class _FishingShopState extends State<FishingShop> {
   List<RetreiveShopItemsEntity> _listItems = [];
+  int _inventoryMoney = 0;
+  int _inventoryBaits = 0;
+  int _inventoryXP = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -30,6 +34,10 @@ class _FishingShopState extends State<FishingShop> {
       builder: (context, state) {
         if (state is RetreiveShopItemsState) {
           _listItems = state.listItems;
+        } else if (state is EnteringShopState) {
+          _inventoryMoney = state.retreivePrizeEntity.inventoryMoney;
+          _inventoryBaits = state.retreivePrizeEntity.inventoryBaits;
+          _inventoryXP = state.retreivePrizeEntity.inventoryXP;
         }
         return SafeArea(
           child: Scaffold(
@@ -44,7 +52,8 @@ class _FishingShopState extends State<FishingShop> {
                 const SizedBox(
                   height: 50.0,
                 ),
-                inventory(context, state),
+                inventory(
+                    context, _inventoryMoney, _inventoryBaits, _inventoryXP),
                 shopItems(_listItems, context),
               ],
             ),
