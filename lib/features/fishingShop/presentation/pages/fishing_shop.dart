@@ -1,4 +1,5 @@
 import 'package:catchfish/core/widgets/main_menu.dart';
+import 'package:catchfish/features/fishingShop/domain/entities/retreive_shop_items_entity.dart';
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/widgets/app_bar.dart';
 import 'package:catchfish/features/fishingShop/presentation/widgets/inventory.dart';
@@ -14,6 +15,7 @@ class FishingShop extends StatefulWidget {
 }
 
 class _FishingShopState extends State<FishingShop> {
+  List<RetreiveShopItemsEntity> _listItems = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -26,9 +28,12 @@ class _FishingShopState extends State<FishingShop> {
   Widget build(BuildContext context) {
     return BlocBuilder<FishingshopBloc, FishingshopState>(
       builder: (context, state) {
+        if (state is RetreiveShopItemsState) {
+          _listItems = state.listItems;
+        }
         return SafeArea(
           child: Scaffold(
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
             onDrawerChanged: (isOpened) {},
             appBar: appBar(context),
@@ -40,7 +45,7 @@ class _FishingShopState extends State<FishingShop> {
                   height: 50.0,
                 ),
                 inventory(context, state),
-                shopItems(state),
+                shopItems(_listItems),
               ],
             ),
           ),
