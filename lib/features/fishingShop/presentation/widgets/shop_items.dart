@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 Widget shopItems(state) {
   if (state is RetreiveShopItemsState) {
-    print("xxxxxxxxxxxxxxxxxxxx=" + state.listItems[0].id.toString());
+    print("qqqqqqqqqqqqqqqqqqq=" + state.listItems.length.toString());
     return Text(
       state.listItems.length.toString(),
       style: const TextStyle(color: Colors.white),
