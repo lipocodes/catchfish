@@ -9,13 +9,15 @@
     "click_to_enable_compass": "Rotate Again Today",
     "go_to_shop": "Go to Shop",
     "next_free_rotation": "Next free rotation: Tomorrow",
-    "need_login":  "We need you to login",
-    "login_your_account":  "Login to your account to continue",
+    "need_login": "We need you to login",
+    "login_your_account": "Login to your account to continue",
     "login": "Login",
     "logout": "Logout",
     "equipment_storage": "Equipment Storage",
     "quantity": "Quantity: ",
     "not_logged_in": "Not Logged In",
     "text_not_logged_in": "You can only view inventory saved on your device..",
-    "fishing_shop": "Fishing Shop"
+    "fishing_shop": "Fishing Shop",
+    "tokens": "tokens:",
+    "price": "Price:"
 }

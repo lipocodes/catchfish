@@ -1,7 +1,7 @@
 import 'package:catchfish/features/fishingShop/domain/entities/retreive_shop_items_entity.dart';
-import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 Widget shopItems(
     List<RetreiveShopItemsEntity> listItems, BuildContext context) {
@@ -17,6 +17,7 @@ Widget shopItems(
       ),
     ),
     child: GridView.count(
+      padding: EdgeInsets.zero,
       crossAxisCount: 2,
       childAspectRatio: (1),
       children: List.generate(listItems.length, (index) {
@@ -32,12 +33,15 @@ Widget shopItems(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(800),
-                  child: Image.network(
-                    listItems[index].image,
-                    width: 64,
-                    height: 64,
-                    fit: BoxFit.cover,
+                  borderRadius: BorderRadius.circular(400),
+                  child: CachedNetworkImage(
+                    width: 80,
+                    height: 80,
+                    imageUrl: listItems[index].image,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 ),
                 Text(
@@ -45,14 +49,14 @@ Widget shopItems(
                         ? listItems[index].title.substring(0, 10)
                         : listItems[index].title,
                     style: const TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 24.0,
                       color: Colors.yellow,
                       fontFamily: 'skullsandcrossbones',
                     )),
                 Text(
-                  "quantity".tr() + listItems[index].quantity.toString(),
+                  "price".tr() + listItems[index].price.toString(),
                   style: const TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 24.0,
                     color: Colors.yellow,
                     fontFamily: 'skullsandcrossbones',
                   ),
