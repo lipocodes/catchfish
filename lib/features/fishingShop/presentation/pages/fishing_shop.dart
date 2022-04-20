@@ -45,7 +45,7 @@ class _FishingShopState extends State<FishingShop> {
                   height: 50.0,
                 ),
                 inventory(context, state),
-                shopItems(_listItems),
+                shopItems(_listItems, context),
               ],
             ),
           ),
