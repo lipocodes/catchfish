@@ -38,6 +38,10 @@ class _FishingShopState extends State<FishingShop> {
           _inventoryMoney = state.retreivePrizeEntity.inventoryMoney;
           _inventoryBaits = state.retreivePrizeEntity.inventoryBaits;
           _inventoryXP = state.retreivePrizeEntity.inventoryXP;
+        } else if (state is BuyItemWithMoneyPrizeState) {
+          _inventoryMoney = state.inventoryMoney;
+          _inventoryBaits = state.inventoryBaits;
+          _inventoryXP = state.inventoryXP;
         }
         return SafeArea(
           child: Scaffold(

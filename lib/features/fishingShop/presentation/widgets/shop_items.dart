@@ -1,7 +1,9 @@
 import 'package:catchfish/features/fishingShop/domain/entities/retreive_shop_items_entity.dart';
+import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Widget shopItems(
@@ -84,7 +86,15 @@ Widget shopItems(
                               fontFamily: 'skullsandcrossbones',
                             )).tr(),
                         onPressed: () {
-                          print("xxxxxxxxxxxxxxxxxxxx");
+                          if (price <= inventoryMoney) {
+                            BlocProvider.of<FishingshopBloc>(context).add(
+                                BuyItemWithMoneyPrizeEvent(
+                                    id: id,
+                                    image: image,
+                                    title: title,
+                                    price: price));
+                          }
+                          Navigator.pop(context);
                         },
                         style: ButtonStyle(
                           foregroundColor:

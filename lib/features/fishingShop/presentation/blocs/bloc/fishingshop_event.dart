@@ -10,3 +10,15 @@ abstract class FishingshopEvent extends Equatable {
 class EnteringShopEvent extends FishingshopEvent {}
 
 class RetreiveShopItemsEvent extends FishingshopEvent {}
+
+class BuyItemWithMoneyPrizeEvent extends FishingshopEvent {
+  final String id;
+  final String image;
+  final String title;
+  final double price;
+  const BuyItemWithMoneyPrizeEvent(
+      {required this.id,
+      required this.image,
+      required this.title,
+      required this.price});
+}
