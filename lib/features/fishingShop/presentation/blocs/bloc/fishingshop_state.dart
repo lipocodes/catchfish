@@ -20,11 +20,7 @@ class RetreiveShopItemsState extends FishingshopState {
 }
 
 class BuyItemWithMoneyPrizeState extends FishingshopState {
-  final int inventoryMoney;
-  final int inventoryBaits;
-  final int inventoryXP;
-  const BuyItemWithMoneyPrizeState(
-      {required this.inventoryMoney,
-      required this.inventoryBaits,
-      required this.inventoryXP});
+  final RetreivePrizeEntity retreivePrizeEntity;
+
+  const BuyItemWithMoneyPrizeState({required this.retreivePrizeEntity});
 }

@@ -72,8 +72,13 @@ class FishingshopBloc extends Bloc<FishingshopEvent, FishingshopState> {
             RetreiveShopItemsState(listItems: listItems);
         emit(retreiveShopItemsState);
       } else if (event is BuyItemWithMoneyPrizeEvent) {
-        emit(const BuyItemWithMoneyPrizeState(
-            inventoryMoney: 100, inventoryBaits: 50, inventoryXP: 30));
+        emit(BuyItemWithMoneyPrizeState(
+            retreivePrizeEntity: RetreivePrizeEntity(
+                inventoryMoney: 80,
+                inventoryBaits: 70,
+                inventoryXP: 60,
+                lastPrizeValuesUpdateDB:
+                    DateTime.now().millisecondsSinceEpoch)));
       }
     });
   }
