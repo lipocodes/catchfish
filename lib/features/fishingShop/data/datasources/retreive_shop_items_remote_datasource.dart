@@ -12,7 +12,7 @@ class RetreiveShopItemsRemoteDatasource {
         String image = t.docs[a].data()['image'];
         String title = t.docs[a].data()['title'];
         String subtitle = t.docs[a].data()['subtitle'];
-        int quantity = t.docs[a].data()['quantity'];
+        //int quantity = t.docs[a].data()['quantity'];
         double price = 0.0;
         if (t.docs[a].data()['price'].runtimeType != double) {
           int intVar = t.docs[a].data()['price'];
@@ -27,7 +27,7 @@ class RetreiveShopItemsRemoteDatasource {
                 image: image,
                 title: title,
                 subtitle: subtitle,
-                quantity: quantity,
+                // quantity: quantity,
                 price: price);
         listItems.add(retreiveShopItemsModels);
       }
