@@ -19,6 +19,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'dart:ui' as UI;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +44,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    UI.TextDirection direction = UI.TextDirection.ltr;
     return MultiBlocProvider(
       providers: [
         BlocProvider<IntroductionBloc>(
@@ -67,54 +69,57 @@ class MyApp extends StatelessWidget {
               create: (_) => GoogleSignInProvider(),
             ),
           ],
-          child: MaterialApp(
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
+          child: Directionality(
+            textDirection: direction,
+            child: MaterialApp(
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+              ),
+              onGenerateRoute: (settings) {
+                switch (settings.name) {
+                  case '/':
+                    return PageTransition(
+                      child: const Splash(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  case '/login':
+                    return PageTransition(
+                      child: const Login(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  case '/lobby':
+                    return PageTransition(
+                      child: const Lobby(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  case '/equipment_inventory':
+                    return PageTransition(
+                      child: const EquipmentInventory(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  case '/fishing_shop':
+                    return PageTransition(
+                      child: const FishingShop(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  default:
+                    return null;
+                }
+              },
             ),
-            onGenerateRoute: (settings) {
-              switch (settings.name) {
-                case '/':
-                  return PageTransition(
-                    child: const Splash(),
-                    type: PageTransitionType.fade,
-                    settings: settings,
-                    duration: const Duration(milliseconds: 1000),
-                  );
-                case '/login':
-                  return PageTransition(
-                    child: const Login(),
-                    type: PageTransitionType.fade,
-                    settings: settings,
-                    duration: const Duration(milliseconds: 1000),
-                  );
-                case '/lobby':
-                  return PageTransition(
-                    child: const Lobby(),
-                    type: PageTransitionType.fade,
-                    settings: settings,
-                    duration: const Duration(milliseconds: 1000),
-                  );
-                case '/equipment_inventory':
-                  return PageTransition(
-                    child: const EquipmentInventory(),
-                    type: PageTransitionType.fade,
-                    settings: settings,
-                    duration: const Duration(milliseconds: 1000),
-                  );
-                case '/fishing_shop':
-                  return PageTransition(
-                    child: const FishingShop(),
-                    type: PageTransitionType.fade,
-                    settings: settings,
-                    duration: const Duration(milliseconds: 1000),
-                  );
-                default:
-                  return null;
-              }
-            },
           )),
     );
   }
