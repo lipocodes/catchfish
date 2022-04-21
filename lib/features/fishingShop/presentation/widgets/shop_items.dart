@@ -2,11 +2,14 @@ import 'package:catchfish/features/fishingShop/domain/entities/retreive_shop_ite
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Widget shopItems(
     List<RetreiveShopItemsEntity> listItems, BuildContext context) {
   popup(String id, String image, String title, String subtitle,
       double price) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -17,7 +20,7 @@ Widget shopItems(
             borderRadius: BorderRadius.circular(20),
           ),
           content: SizedBox(
-            height: 270.0,
+            height: 300.0,
             child: Column(
               children: [
                 ClipRRect(
@@ -52,7 +55,7 @@ Widget shopItems(
                   "price".tr() + price.toString(),
                   style: const TextStyle(
                     //fontFamily: 'skullsandcrossbones',
-                    fontSize: 28.0,
+                    fontSize: 24.0,
                     color: Colors.brown,
                   ),
                 ),
@@ -60,31 +63,46 @@ Widget shopItems(
             ),
           ),
           actions: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('OK',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.blue,
-                        fontFamily: 'skullsandcrossbones',
-                      )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('OK',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.blue,
+                            fontFamily: 'skullsandcrossbones',
+                          )).tr(),
+                    ),
+                    ElevatedButton(
+                        child: const Text("Buy",
+                            style: TextStyle(
+                              fontSize: 26.0,
+                              fontFamily: 'skullsandcrossbones',
+                            )).tr(),
+                        onPressed: () {
+                          print("xxxxxxxxxxxxxxxxxxxx");
+                        },
+                        style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.red),
+                        )),
+                  ],
                 ),
-                ElevatedButton(
-                    child: const Text("Buy",
-                        style: TextStyle(
-                          fontSize: 26.0,
-                          fontFamily: 'skullsandcrossbones',
-                        )).tr(),
-                    onPressed: () {
-                      print("xxxxxxxxxxxxxxxxxxxx");
-                    },
-                    style: ButtonStyle(
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red),
-                    )),
+                Text(
+                  (price <= inventoryMoney)
+                      ? "money_prize_sufficient".tr()
+                      : "money_prize_not_sufficient".tr(),
+                  style: TextStyle(
+                    //fontFamily: 'skullsandcrossbones',
+                    fontSize: 16.0,
+                    color:
+                        (price <= inventoryMoney) ? Colors.green : Colors.red,
+                  ),
+                ),
               ],
             ),
           ],

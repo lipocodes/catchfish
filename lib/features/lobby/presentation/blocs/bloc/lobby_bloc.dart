@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/core/consts/daily_prizes.dart';
-import 'package:catchfish/core/consts/daily_prizes.dart';
-import 'package:catchfish/core/consts/daily_prizes.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
 import 'package:catchfish/features/lobby/domain/usecases/prize_values_usecase.dart';

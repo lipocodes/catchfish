@@ -20,5 +20,8 @@
     "fishing_shop": "Fishing Shop",
     "tokens": "tokens:",
     "price": "Price:",
-    "buy": "Buy"
+    "buy": "Buy",
+    "money_prize_sufficient": "Money prize - Sufficient",
+    "money_prize_not_sufficient": "Money prize - Not sufficient",
+    "OK": "OK"
 }

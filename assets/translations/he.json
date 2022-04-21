@@ -19,5 +19,8 @@
     "text_not_logged_in": "You can only view inventory saved on your device..",
     "fishing_shop": "Fishing Shop",
     "price": "Price:",
-    "buy": "Buy"
+    "buy": "Buy",
+    "money_prize_sufficient": "Money prize - Sufficient",
+    "money_prize_not_sufficient": "Money prize - Not sufficient",
+    "OK": "OK"
 }
