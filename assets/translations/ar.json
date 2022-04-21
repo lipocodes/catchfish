@@ -19,5 +19,6 @@
     "text_not_logged_in": "You can only view inventory saved on your device..",
     "fishing_shop": "Fishing Shop",
     "tokens": "tokens:",
-    "price": "Price:"
+    "price": "Price:",
+    "buy": "Buy"
 }

@@ -18,5 +18,6 @@
     "not_logged_in": "Not Logged In",
     "text_not_logged_in": "You can only view inventory saved on your device..",
     "fishing_shop": "Fishing Shop",
-    "price": "Price:"
+    "price": "Price:",
+    "buy": "Buy"
 }
