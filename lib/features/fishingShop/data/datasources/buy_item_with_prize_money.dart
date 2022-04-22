@@ -12,6 +12,9 @@ class BuyItemWithMoneyPrizeRemoteDatasource {
         await buyItemWithMoneyPrizeLocalDatasource.retreiveBaitsPref();
     int inventoryXP =
         await buyItemWithMoneyPrizeLocalDatasource.retreiveXPPref();
+    List<String> listInventory =
+        await buyItemWithMoneyPrizeLocalDatasource.retreiveInventoryPref();
+    print("aaaaaaaaaaaaaaaaaaa=" + listInventory.toString());
 
     //deduce the item cost from inventoryMoney
     inventoryMoney -= price;
@@ -50,6 +53,12 @@ class BuyItemWithMoneyPrizeLocalDatasource {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int inventoryLastUpdate = prefs.getInt("lastPrizeValuesUpdateDB") ?? 0;
     return inventoryLastUpdate;
+  }
+
+  Future<List<String>> retreiveInventoryPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> listInventory = prefs.getStringList("inventory") ?? [];
+    return listInventory;
   }
 
   updatePrefs(int inventoryMoney, int inventoryBaits, int inventoryXP) async {
