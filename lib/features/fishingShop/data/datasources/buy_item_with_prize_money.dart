@@ -1,4 +1,8 @@
 import 'package:catchfish/features/fishingShop/data/models/retreive_prize_model.dart';
+import 'package:catchfish/features/fishingShop/domain/entities/retreive_prize_entity.dart';
+import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BuyItemWithMoneyPrizeRemoteDatasource {
@@ -43,6 +47,30 @@ class BuyItemWithMoneyPrizeRemoteDatasource {
     inventoryMoney -= price;
     await buyItemWithMoneyPrizeLocalDatasource.updatePrefs(
         inventoryMoney, inventoryBaits, inventoryXP, listInventory);
+
+    //if user is logged in: update users collection (fileds: inventory, prizeValues)
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    if (auth.currentUser != null) {
+      PrizeValuesEntity prizeEntity = PrizeValuesEntity(
+          inventoryMoney: inventoryMoney,
+          inventoryBaits: inventoryBaits,
+          inventoryXP: inventoryXP,
+          lastPrizeValuesUpdateDB: DateTime.now().millisecondsSinceEpoch);
+      try {
+        String email = auth.currentUser!.email!;
+        var t = await FirebaseFirestore.instance
+            .collection("users")
+            .where('email', isEqualTo: email)
+            .get();
+        String id = t.docs[0].id;
+        await FirebaseFirestore.instance.collection('users').doc(id).update({
+          'prizeValues': prizeEntity.toJson(),
+          'inventory': listInventory,
+        });
+      } catch (e) {
+        print("eeeeeeeeeeeeeeeeeeeeeeee=" + e.toString());
+      }
+    }
 
     RetreivePrizeModel retreivePrizeEntity = RetreivePrizeModel(
         inventoryMoney: inventoryMoney,
