@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/fishingShop/domain/entities/retreive_prize_entity.dart';
 import 'package:catchfish/features/fishingShop/domain/entities/retreive_shop_items_entity.dart';
+import 'package:catchfish/features/fishingShop/domain/usecases/buy_item_with_prize_money_usecase.dart';
 import 'package:catchfish/features/fishingShop/domain/usecases/retreive_prize_usecase.dart';
 import 'package:catchfish/features/fishingShop/domain/usecases/retreive_shop_items_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -72,13 +73,12 @@ class FishingshopBloc extends Bloc<FishingshopEvent, FishingshopState> {
             RetreiveShopItemsState(listItems: listItems);
         emit(retreiveShopItemsState);
       } else if (event is BuyItemWithMoneyPrizeEvent) {
+        BuyItemWithMoneyPrizeUsecase buyItemWithUsecase =
+            BuyItemWithMoneyPrizeUsecase();
+        RetreivePrizeEntity retreivePrizeEntity = await buyItemWithUsecase
+            .buyItem(event.id, event.image, event.title, event.price);
         emit(BuyItemWithMoneyPrizeState(
-            retreivePrizeEntity: RetreivePrizeEntity(
-                inventoryMoney: 80,
-                inventoryBaits: 70,
-                inventoryXP: 60,
-                lastPrizeValuesUpdateDB:
-                    DateTime.now().millisecondsSinceEpoch)));
+            retreivePrizeEntity: retreivePrizeEntity));
       }
     });
   }
