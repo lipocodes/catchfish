@@ -6,7 +6,12 @@ class BuyItemWithMoneyPrizeUsecase {
   Future<RetreivePrizeEntity> buyItem(
       String id, String image, String title, int price) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    String email = auth.currentUser!.email!;
+    String email = "";
+    if (auth.currentUser != null) {
+      email = auth.currentUser!.email!;
+    } else {
+      email = "";
+    }
 
     BuyItemWithPrizeMoneyImpl buyItemWithPrizeMoneyImpl =
         BuyItemWithPrizeMoneyImpl();

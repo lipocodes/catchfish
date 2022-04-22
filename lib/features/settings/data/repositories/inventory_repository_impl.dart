@@ -9,6 +9,7 @@ class InventoryRepositoryImpl implements InventoryRepository {
     RemoteDataSources remoteDataSources = RemoteDataSources();
     InventoryModel inventoryModel =
         await remoteDataSources.getInventoryDB(email);
+
     InventoryEntity inventoryEntity = inventoryModel;
     return inventoryEntity;
   }

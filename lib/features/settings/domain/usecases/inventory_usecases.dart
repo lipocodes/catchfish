@@ -39,6 +39,7 @@ class InventoryUsecases {
     else {
       InventoryEntity inventoryEntity =
           await inventoryRepositoryImpl.getInventoryDB(email);
+
       //going over inventory items saved on DB
       for (int a = 0; a < inventoryEntity.listInventory.length; a++) {
         bool isItemFoundOnPref = false;

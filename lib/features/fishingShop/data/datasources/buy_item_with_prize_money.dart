@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class BuyItemWithMoneyPrizeRemoteDatasource {
   Future<RetreivePrizeModel> buyItem(
       String id, String image, String title, int price) async {
+    bool itemExistsListInventory = false;
     BuyItemWithMoneyPrizeLocalDatasource buyItemWithMoneyPrizeLocalDatasource =
         BuyItemWithMoneyPrizeLocalDatasource();
     int inventoryMoney =
@@ -14,12 +15,34 @@ class BuyItemWithMoneyPrizeRemoteDatasource {
         await buyItemWithMoneyPrizeLocalDatasource.retreiveXPPref();
     List<String> listInventory =
         await buyItemWithMoneyPrizeLocalDatasource.retreiveInventoryPref();
-    print("aaaaaaaaaaaaaaaaaaa=" + listInventory.toString());
+
+    for (int a = 0; a < listInventory.length; a++) {
+      String temp = listInventory[a];
+      List<String> list = temp.split("^^^");
+      if (list[0] == id) {
+        int num = int.parse(list[3]);
+        num++;
+        temp = list[0] +
+            "^^^" +
+            list[1] +
+            "^^^" +
+            list[2] +
+            "^^^" +
+            num.toString();
+        listInventory[a] = temp;
+        itemExistsListInventory = true;
+      }
+    }
+    //if item is new to  user's inventory
+    if (itemExistsListInventory == false) {
+      String temp = id + "^^^" + image + "^^^" + title + "^^^" + "1";
+      listInventory.add(temp);
+    }
 
     //deduce the item cost from inventoryMoney
     inventoryMoney -= price;
     await buyItemWithMoneyPrizeLocalDatasource.updatePrefs(
-        inventoryMoney, inventoryBaits, inventoryXP);
+        inventoryMoney, inventoryBaits, inventoryXP, listInventory);
 
     RetreivePrizeModel retreivePrizeEntity = RetreivePrizeModel(
         inventoryMoney: inventoryMoney,
@@ -61,12 +84,14 @@ class BuyItemWithMoneyPrizeLocalDatasource {
     return listInventory;
   }
 
-  updatePrefs(int inventoryMoney, int inventoryBaits, int inventoryXP) async {
+  updatePrefs(int inventoryMoney, int inventoryBaits, int inventoryXP,
+      List<String> listInventory) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt("inventoryMoney", inventoryMoney);
     await prefs.setInt("inventoryBaits", inventoryBaits);
     await prefs.setInt("inventoryXP", inventoryXP);
     await prefs.setInt(
         "lastPrizeValuesUpdatePrefs", DateTime.now().millisecondsSinceEpoch);
+    await prefs.setStringList("inventory", listInventory);
   }
 }
