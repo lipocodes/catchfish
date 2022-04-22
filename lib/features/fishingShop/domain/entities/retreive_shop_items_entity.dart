@@ -4,7 +4,7 @@ class RetreiveShopItemsEntity {
   String title;
   String subtitle;
   //int quantity;
-  double price;
+  int price;
   RetreiveShopItemsEntity(
       {required this.id,
       required this.image,

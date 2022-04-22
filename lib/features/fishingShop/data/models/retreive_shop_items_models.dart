@@ -6,13 +6,11 @@ class RetreiveShopItemsModels extends RetreiveShopItemsEntity {
       required String image,
       required String title,
       required String subtitle,
-      //required int quantity,
-      required double price})
+      required int price})
       : super(
             id: id,
             image: image,
             title: title,
             subtitle: subtitle,
-            //quantity: quantity,
             price: price);
 }

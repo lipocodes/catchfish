@@ -5,7 +5,7 @@ import 'package:catchfish/features/fishingShop/domain/repositories/buy_item_with
 
 class BuyItemWithPrizeMoneyImpl implements BuyItemWithPrizeMoney {
   Future<RetreivePrizeEntity> buyItemm(
-      String id, String image, String title, double price) async {
+      String id, String image, String title, int price) async {
     BuyItemWithMoneyPrizeRemoteDatasource
         buyItemWithMoneyPrizeRemoteDatasource =
         BuyItemWithMoneyPrizeRemoteDatasource();

@@ -8,8 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Widget shopItems(
     List<RetreiveShopItemsEntity> listItems, BuildContext context) {
-  popup(String id, String image, String title, String subtitle,
-      double price) async {
+  popup(
+      String id, String image, String title, String subtitle, int price) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
     await showDialog(

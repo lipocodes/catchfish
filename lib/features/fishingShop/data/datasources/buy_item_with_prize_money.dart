@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class BuyItemWithMoneyPrizeRemoteDatasource {
   Future<RetreivePrizeModel> buyItem(
-      String id, String image, String title, double price) async {
+      String id, String image, String title, int price) async {
     BuyItemWithMoneyPrizeLocalDatasource buyItemWithMoneyPrizeLocalDatasource =
         BuyItemWithMoneyPrizeLocalDatasource();
     int inventoryMoney =
@@ -12,17 +12,16 @@ class BuyItemWithMoneyPrizeRemoteDatasource {
         await buyItemWithMoneyPrizeLocalDatasource.retreiveBaitsPref();
     int inventoryXP =
         await buyItemWithMoneyPrizeLocalDatasource.retreiveXPPref();
-    int inventoryLastUpdate =
-        await buyItemWithMoneyPrizeLocalDatasource.retreiveLastUpdatePref();
-    print("aaaaaaaaaaaaaaaaaaaaaaa=" + inventoryMoney.toString());
-    print("bbbbbbbbbbbbbbbbbbbb=" + inventoryBaits.toString());
-    print("cccccccccccccccccc=" + inventoryXP.toString());
-    print("ddddddddddddddddddd=" + inventoryLastUpdate.toString());
+
+    //deduce the item cost from inventoryMoney
+    inventoryMoney -= price;
+    await buyItemWithMoneyPrizeLocalDatasource.updatePrefs(
+        inventoryMoney, inventoryBaits, inventoryXP);
 
     RetreivePrizeModel retreivePrizeEntity = RetreivePrizeModel(
-        inventoryMoney: 200,
-        inventoryBaits: 190,
-        inventoryXP: 180,
+        inventoryMoney: inventoryMoney,
+        inventoryBaits: inventoryBaits,
+        inventoryXP: inventoryXP,
         lastPrizeValuesUpdateDB: DateTime.now().millisecondsSinceEpoch);
     return retreivePrizeEntity;
   }

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class BuyItemWithMoneyPrizeUsecase {
   Future<RetreivePrizeEntity> buyItem(
-      String id, String image, String title, double price) async {
+      String id, String image, String title, int price) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     String email = auth.currentUser!.email!;
 

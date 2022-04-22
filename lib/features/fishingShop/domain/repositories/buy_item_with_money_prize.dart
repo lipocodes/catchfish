@@ -2,5 +2,5 @@ import 'package:catchfish/features/fishingShop/domain/entities/retreive_prize_en
 
 abstract class BuyItemWithPrizeMoney {
   Future<RetreivePrizeEntity> buyItemm(
-      String id, String image, String title, double price);
+      String id, String image, String title, int price);
 }

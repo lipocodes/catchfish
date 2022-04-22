@@ -15,7 +15,7 @@ class BuyItemWithMoneyPrizeEvent extends FishingshopEvent {
   final String id;
   final String image;
   final String title;
-  final double price;
+  final int price;
   const BuyItemWithMoneyPrizeEvent(
       {required this.id,
       required this.image,

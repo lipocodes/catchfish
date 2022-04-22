@@ -13,13 +13,7 @@ class RetreiveShopItemsRemoteDatasource {
         String title = t.docs[a].data()['title'];
         String subtitle = t.docs[a].data()['subtitle'];
         //int quantity = t.docs[a].data()['quantity'];
-        double price = 0.0;
-        if (t.docs[a].data()['price'].runtimeType != double) {
-          int intVar = t.docs[a].data()['price'];
-          price = intVar.toDouble();
-        } else {
-          price = t.docs[a].data()['price'];
-        }
+        int price = t.docs[a].data()['price'];
 
         RetreiveShopItemsModels retreiveShopItemsModels =
             RetreiveShopItemsModels(
