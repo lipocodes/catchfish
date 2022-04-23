@@ -11,6 +11,8 @@ import 'package:catchfish/features/login/presentation/blocs/provider/google_sign
 import 'package:catchfish/features/login/presentation/pages/login.dart';
 import 'package:catchfish/features/settings/presentation/blocs/bloc/inventory_bloc.dart';
 import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
+import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
+import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -57,6 +59,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<FishingshopBloc>(
           create: (BuildContext context) => FishingshopBloc(),
+        ),
+        BlocProvider<TokensBloc>(
+          create: (BuildContext context) => TokensBloc(),
         ),
       ],
       child: MultiProvider(
@@ -111,6 +116,13 @@ class MyApp extends StatelessWidget {
                   case '/fishing_shop':
                     return PageTransition(
                       child: const FishingShop(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  case '/buy_tokens':
+                    return PageTransition(
+                      child: const BuyTokens(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 1000),

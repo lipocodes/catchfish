@@ -21,5 +21,6 @@
     "price": "Price:",
     "buy": "Buy",
     "not_enough_tokens": "Not enough tokens",
-    "OK": "OK"
+    "OK": "OK",
+    "buy_tokens" : "Buy Tokens"
 }
