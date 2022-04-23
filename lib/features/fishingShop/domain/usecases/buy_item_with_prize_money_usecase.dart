@@ -17,6 +17,7 @@ class BuyItemWithMoneyPrizeUsecase {
         BuyItemWithPrizeMoneyImpl();
     RetreivePrizeEntity retreivePrizeEntity =
         await buyItemWithPrizeMoneyImpl.buyItemm(id, image, title, price);
+
     return retreivePrizeEntity;
   }
 }

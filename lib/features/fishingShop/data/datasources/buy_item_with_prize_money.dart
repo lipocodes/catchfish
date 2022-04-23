@@ -1,5 +1,4 @@
 import 'package:catchfish/features/fishingShop/data/models/retreive_prize_model.dart';
-import 'package:catchfish/features/fishingShop/domain/entities/retreive_prize_entity.dart';
 import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class BuyItemWithMoneyPrizeRemoteDatasource {
   Future<RetreivePrizeModel> buyItem(
       String id, String image, String title, int price) async {
+    int time = DateTime.now().millisecondsSinceEpoch;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    if (auth.currentUser != null) {}
     bool itemExistsListInventory = false;
     BuyItemWithMoneyPrizeLocalDatasource buyItemWithMoneyPrizeLocalDatasource =
         BuyItemWithMoneyPrizeLocalDatasource();
@@ -22,10 +24,12 @@ class BuyItemWithMoneyPrizeRemoteDatasource {
 
     for (int a = 0; a < listInventory.length; a++) {
       String temp = listInventory[a];
+
       List<String> list = temp.split("^^^");
       if (list[0] == id) {
         int num = int.parse(list[3]);
         num++;
+
         temp = list[0] +
             "^^^" +
             list[1] +
@@ -39,7 +43,15 @@ class BuyItemWithMoneyPrizeRemoteDatasource {
     }
     //if item is new to  user's inventory
     if (itemExistsListInventory == false) {
-      String temp = id + "^^^" + image + "^^^" + title + "^^^" + "1";
+      String temp = id +
+          "^^^" +
+          image +
+          "^^^" +
+          title +
+          "^^^" +
+          "1" +
+          "^^^" +
+          time.toString();
       listInventory.add(temp);
     }
 
@@ -48,8 +60,7 @@ class BuyItemWithMoneyPrizeRemoteDatasource {
     await buyItemWithMoneyPrizeLocalDatasource.updatePrefs(
         inventoryMoney, inventoryBaits, inventoryXP, listInventory);
 
-    //if user is logged in: update users collection (fileds: inventory, prizeValues)
-    final FirebaseAuth auth = FirebaseAuth.instance;
+    //if user is logged in: update users collection (fields: inventory, prizeValues)
     if (auth.currentUser != null) {
       PrizeValuesEntity prizeEntity = PrizeValuesEntity(
           inventoryMoney: inventoryMoney,
@@ -63,6 +74,7 @@ class BuyItemWithMoneyPrizeRemoteDatasource {
             .where('email', isEqualTo: email)
             .get();
         String id = t.docs[0].id;
+
         await FirebaseFirestore.instance.collection('users').doc(id).update({
           'prizeValues': prizeEntity.toJson(),
           'inventory': listInventory,
@@ -115,6 +127,7 @@ class BuyItemWithMoneyPrizeLocalDatasource {
   updatePrefs(int inventoryMoney, int inventoryBaits, int inventoryXP,
       List<String> listInventory) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     await prefs.setInt("inventoryMoney", inventoryMoney);
     await prefs.setInt("inventoryBaits", inventoryBaits);
     await prefs.setInt("inventoryXP", inventoryXP);

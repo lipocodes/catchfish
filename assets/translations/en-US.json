@@ -20,7 +20,6 @@
     "fishing_shop": "Fishing Shop",
     "price": "Price:",
     "buy": "Buy",
-    "money_prize_sufficient": "Money prize - Sufficient",
-    "money_prize_not_sufficient": "Money prize - Not sufficient",
+    "not_enough_tokens": "Not enough tokens!",
     "OK": "OK"
 }

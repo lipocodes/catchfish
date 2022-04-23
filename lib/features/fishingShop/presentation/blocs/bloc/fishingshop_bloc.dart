@@ -73,10 +73,11 @@ class FishingshopBloc extends Bloc<FishingshopEvent, FishingshopState> {
             RetreiveShopItemsState(listItems: listItems);
         emit(retreiveShopItemsState);
       } else if (event is BuyItemWithMoneyPrizeEvent) {
-        BuyItemWithMoneyPrizeUsecase buyItemWithUsecase =
+        BuyItemWithMoneyPrizeUsecase buyItemWithMoneyPrizeUsecase =
             BuyItemWithMoneyPrizeUsecase();
-        RetreivePrizeEntity retreivePrizeEntity = await buyItemWithUsecase
-            .buyItem(event.id, event.image, event.title, event.price);
+        RetreivePrizeEntity retreivePrizeEntity =
+            await buyItemWithMoneyPrizeUsecase.buyItem(
+                event.id, event.image, event.title, event.price);
         emit(BuyItemWithMoneyPrizeState(
             retreivePrizeEntity: retreivePrizeEntity));
       }

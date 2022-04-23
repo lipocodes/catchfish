@@ -79,33 +79,33 @@ Widget shopItems(
                             fontFamily: 'skullsandcrossbones',
                           )).tr(),
                     ),
-                    ElevatedButton(
-                        child: const Text("Buy",
-                            style: TextStyle(
-                              fontSize: 26.0,
-                              fontFamily: 'skullsandcrossbones',
-                            )).tr(),
-                        onPressed: () {
-                          if (price <= inventoryMoney) {
-                            BlocProvider.of<FishingshopBloc>(context).add(
-                                BuyItemWithMoneyPrizeEvent(
-                                    id: id,
-                                    image: image,
-                                    title: title,
-                                    price: price));
-                          }
-                          Navigator.pop(context);
-                        },
-                        style: ButtonStyle(
-                          foregroundColor:
-                              MaterialStateProperty.all<Color>(Colors.red),
-                        )),
+                    if (price <= inventoryMoney) ...[
+                      ElevatedButton(
+                          child: const Text("Buy",
+                              style: TextStyle(
+                                fontSize: 26.0,
+                                fontFamily: 'skullsandcrossbones',
+                              )).tr(),
+                          onPressed: () {
+                            if (price <= inventoryMoney) {
+                              BlocProvider.of<FishingshopBloc>(context).add(
+                                  BuyItemWithMoneyPrizeEvent(
+                                      id: id,
+                                      image: image,
+                                      title: title,
+                                      price: price));
+                            }
+                            Navigator.pop(context);
+                          },
+                          style: ButtonStyle(
+                            foregroundColor:
+                                MaterialStateProperty.all<Color>(Colors.red),
+                          )),
+                    ],
                   ],
                 ),
                 Text(
-                  (price <= inventoryMoney)
-                      ? "money_prize_sufficient".tr()
-                      : "money_prize_not_sufficient".tr(),
+                  (price <= inventoryMoney) ? "" : "not_enough_tokens".tr(),
                   style: TextStyle(
                     //fontFamily: 'skullsandcrossbones',
                     fontSize: 16.0,

@@ -84,6 +84,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         playSound = PlaySound();
         playSound.play(path: "assets/sounds/lobby/", fileName: "applause.mp3");
         int randomIndex = Random().nextInt(dailyPrizes.length);
+        int randomSum = Random().nextInt(10);
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         //save the time when we save date locally
@@ -93,17 +94,17 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
 
         int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
         if (randomIndex == 0) {
-          inventoryMoney++;
+          inventoryMoney += randomSum;
           prefs.setInt("inventoryMoney", inventoryMoney);
         }
         int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
         if (randomIndex == 1) {
-          inventoryBaits++;
+          inventoryBaits += randomSum;
           prefs.setInt("inventoryBaits", inventoryBaits);
         }
         int inventoryXP = prefs.getInt("inventoryXP") ?? 0;
         if (randomIndex == 2) {
-          inventoryXP++;
+          inventoryXP += randomSum;
           prefs.setInt("inventoryXP", inventoryXP);
         }
         final FirebaseAuth auth = FirebaseAuth.instance;
