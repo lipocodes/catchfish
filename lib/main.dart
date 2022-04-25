@@ -12,6 +12,7 @@ import 'package:catchfish/features/login/presentation/pages/login.dart';
 import 'package:catchfish/features/settings/presentation/blocs/bloc/inventory_bloc.dart';
 import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
 import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
+import 'package:catchfish/features/tokens/presentation/blocs/provider/tokens_provider.dart';
 import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,9 @@ class MyApp extends StatelessWidget {
             ),
             ChangeNotifierProvider(
               create: (_) => GoogleSignInProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (_) => TokensProvider(),
             ),
           ],
           child: Directionality(
