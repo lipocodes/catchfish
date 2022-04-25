@@ -22,5 +22,8 @@
     "buy": "Buy",
     "not_enough_tokens": "Not enough tokens!",
     "OK": "OK",
-    "buy_tokens" : "Buy Tokens"
+    "buy_tokens" : "Buy Tokens",
+    "contact": "Contact",
+    "contact_us": "Contact Us",
+    "send": "Send"
 }

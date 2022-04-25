@@ -1,4 +1,5 @@
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
+import 'package:catchfish/features/settings/presentation/pages/contact.dart';
 import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
 import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -32,7 +33,9 @@ Widget mainMenu(BuildContext context) {
             ),
             title: Text('equipment_storage'.tr(),
                 style: const TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 24.0,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
                   fontFamily: 'skullsandcrossbones',
                 )),
             onTap: () {
@@ -61,7 +64,9 @@ Widget mainMenu(BuildContext context) {
             ),
             title: Text('fishing_shop'.tr(),
                 style: const TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 24.0,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
                   fontFamily: 'skullsandcrossbones',
                 )),
             onTap: () {
@@ -89,14 +94,45 @@ Widget mainMenu(BuildContext context) {
             ),
             title: Text('buy_tokens'.tr(),
                 style: const TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 24.0,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
                   fontFamily: 'skullsandcrossbones',
                 )),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const BuyTokens()),
+                MaterialPageRoute(builder: (context) => const BuyToken()),
+              );
+            },
+          ),
+          const Divider(
+            color: Colors.black38,
+            thickness: 5,
+          ),
+          ListTile(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            selected: true,
+            selectedTileColor: Colors.grey[300],
+            tileColor: Colors.blue,
+            leading: const Icon(
+              Icons.mail,
+              color: Colors.greenAccent,
+            ),
+            title: Text('contact'.tr(),
+                style: const TextStyle(
+                  fontSize: 24.0,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'skullsandcrossbones',
+                )),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Contact()),
               );
             },
           ),

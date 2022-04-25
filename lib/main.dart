@@ -10,6 +10,7 @@ import 'package:catchfish/features/login/presentation/blocs/provider/google_sign
 
 import 'package:catchfish/features/login/presentation/pages/login.dart';
 import 'package:catchfish/features/settings/presentation/blocs/bloc/inventory_bloc.dart';
+import 'package:catchfish/features/settings/presentation/pages/contact.dart';
 import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
 import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
 import 'package:catchfish/features/tokens/presentation/blocs/provider/tokens_provider.dart';
@@ -126,7 +127,14 @@ class MyApp extends StatelessWidget {
                     );
                   case '/buy_tokens':
                     return PageTransition(
-                      child: const BuyTokens(),
+                      child: const BuyToken(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  case '/contact':
+                    return PageTransition(
+                      child: const Contact(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 1000),
