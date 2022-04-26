@@ -1,21 +1,42 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as UI;
+import 'package:dio/dio.dart';
 
-Widget contactForm() {
+Widget contactForm(BuildContext context) {
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final contentController = TextEditingController();
   UI.TextDirection direction = UI.TextDirection.ltr;
-  return Directionality(
-    textDirection: direction,
-    child: Padding(
-      padding: const EdgeInsets.only(
-        right: 30.0,
-        left: 30.0,
-      ),
-      child: SingleChildScrollView(
+
+  sendMail(BuildContext context) async {
+    try {
+      String params =
+          "name=${nameController.text}&email=${emailController.text}&phone=${phoneController.text}&content=${contentController.text}";
+      var response =
+          await Dio().get('https://6yamim.xyz/catchfish/mail.php?$params');
+      Navigator.pop(context);
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee=" + e.toString());
+      Navigator.pop(context);
+    }
+  }
+
+  return GestureDetector(
+    onTap: () {
+      FocusScopeNode currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      }
+    },
+    child: Directionality(
+      textDirection: direction,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          right: 30.0,
+          left: 30.0,
+        ),
         child: Column(
           children: [
             const SizedBox(
@@ -28,8 +49,8 @@ Widget contactForm() {
                 )).tr(),
             const Text("catch.fish.app1@gmail.com",
                 style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.w300,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w500,
                 )),
             const SizedBox(
               height: 50.0,
@@ -99,9 +120,12 @@ Widget contactForm() {
                 onPrimary: Colors.white,
               ),
               onPressed: () {
-                print(contentController.text);
+                sendMail(context);
               },
             ),
+            const SizedBox(
+              height: 200.0,
+            )
           ],
         ),
       ),

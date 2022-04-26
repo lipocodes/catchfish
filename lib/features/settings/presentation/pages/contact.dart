@@ -35,6 +35,6 @@ class _ContactState extends State<Contact> {
               ],
             ),
             resizeToAvoidBottomInset: false,
-            body: contactForm()));
+            body: SingleChildScrollView(child: contactForm(context))));
   }
 }
