@@ -23,15 +23,18 @@ Widget contactForm(BuildContext context) {
     }
   }
 
-  return GestureDetector(
-    onTap: () {
-      FocusScopeNode currentFocus = FocusScope.of(context);
-      if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-        FocusManager.instance.primaryFocus?.unfocus();
-      }
-    },
-    child: Directionality(
-      textDirection: direction,
+  return Directionality(
+    textDirection: direction,
+    child: Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+            //tenor.com
+            'assets/images/lobby/dolphins.gif',
+          ),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.only(
           right: 30.0,
@@ -40,7 +43,7 @@ Widget contactForm(BuildContext context) {
         child: Column(
           children: [
             const SizedBox(
-              height: 50.0,
+              height: 60.0,
             ),
             const Text("contact_us",
                 style: TextStyle(
@@ -56,6 +59,9 @@ Widget contactForm(BuildContext context) {
               height: 50.0,
             ),
             TextFormField(
+              style: const TextStyle(
+                fontSize: 24.0,
+              ),
               controller: nameController,
               keyboardType: TextInputType.name,
               decoration: const InputDecoration(
@@ -69,6 +75,9 @@ Widget contactForm(BuildContext context) {
               height: 20.0,
             ),
             TextFormField(
+              style: const TextStyle(
+                fontSize: 24.0,
+              ),
               controller: phoneController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
@@ -82,31 +91,37 @@ Widget contactForm(BuildContext context) {
               height: 20.0,
             ),
             TextFormField(
+              style: const TextStyle(
+                fontSize: 24.0,
+              ),
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
-                labelText: 'email',
+                labelText: 'Email',
               ),
             ),
             const SizedBox(
               height: 20.0,
             ),
             TextFormField(
+              style: const TextStyle(
+                fontSize: 24.0,
+              ),
               controller: contentController,
-              maxLines: 5,
+              maxLines: 4,
               keyboardType: TextInputType.multiline,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
-                labelText: 'content',
+                labelText: 'Content',
               ),
             ),
             const SizedBox(
-              height: 30.0,
+              height: 20.0,
             ),
             ElevatedButton(
               child: Padding(

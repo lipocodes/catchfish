@@ -14,25 +14,12 @@ class _ContactState extends State<Contact> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+            extendBodyBehindAppBar: true,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
-              leading: Builder(
-                builder: (context) => IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
-                ),
-              ),
-              actions: [
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 100,
-                    ),
-                    buttonBack(context),
-                  ],
-                ),
-              ],
+              leading: buttonBack(context),
+              actions: [],
             ),
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(child: contactForm(context))));
