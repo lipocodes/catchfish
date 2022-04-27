@@ -16,19 +16,47 @@ import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.da
 import 'package:catchfish/features/tokens/presentation/blocs/provider/tokens_provider.dart';
 import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as UI;
 
-void main() async {
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_important_channel', 'High Importance Notifications',
+    playSound: true, importance: Importance.high);
+
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  //when there's a background message coming in, Firebase app should be initialized.
+  await Firebase.initializeApp();
+  print("aaaaaaaaaaaaaaaaaaaaa=" + message.messageId.toString());
+}
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
+  //deals with messages coming in when this app in in the background
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  //deals with messages coming in when app is in foreground
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   //FirebaseCrashlytics.instance.crash();
   if (kDebugMode) {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
@@ -45,7 +73,85 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  String token = "";
+
+  getToken() async {
+    String? token = await _fcm.getToken();
+    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: $token");
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+            ),
+          ),
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print("A new message when app is opened");
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        String? title = notification.title ?? "";
+        String? body = notification.body ?? "";
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(title),
+                content: SingleChildScrollView(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(body),
+                  ],
+                )),
+              );
+            });
+      }
+    });
+
+    flutterLocalNotificationsPlugin.show(
+        0,
+        "Title Yoba",
+        "Body Yoba",
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            importance: Importance.high,
+            color: Colors.blue,
+            playSound: true,
+            icon: "@mipmap/ic_launcher",
+          ),
+        ));
+
+    getToken();
+  }
+
   @override
   Widget build(BuildContext context) {
     UI.TextDirection direction = UI.TextDirection.ltr;
