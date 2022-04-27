@@ -96,60 +96,56 @@ class _MyAppState extends State<MyApp> {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
+        try {
+          flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                importance: Importance.high,
+                color: Colors.blue,
+                playSound: true,
+                icon: "@mipmap/ic_launcher",
+              ),
             ),
-          ),
-        );
+          );
+        } catch (e) {
+          print("eeeeeeeeeeeeeeeeeeee=" + e.toString());
+        }
       }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print("A new message when app is opened");
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
-        String? title = notification.title ?? "";
-        String? body = notification.body ?? "";
-        showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text(title),
-                content: SingleChildScrollView(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(body),
-                  ],
-                )),
-              );
-            });
+        try {
+          String? title = notification.title ?? "";
+          String? body = notification.body ?? "";
+          showDialog(
+              context: context,
+              builder: (_) {
+                return AlertDialog(
+                  title: Text(title),
+                  content: SingleChildScrollView(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(body),
+                    ],
+                  )),
+                );
+              });
+        } catch (e) {
+          print("eeeeeeeeeeeeeeeeeeeeeeeee=" + e.toString());
+        }
       }
     });
 
-    flutterLocalNotificationsPlugin.show(
-        0,
-        "Title Yoba",
-        "Body Yoba",
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            importance: Importance.high,
-            color: Colors.blue,
-            playSound: true,
-            icon: "@mipmap/ic_launcher",
-          ),
-        ));
-
-    getToken();
+    //getToken();
   }
 
   @override
