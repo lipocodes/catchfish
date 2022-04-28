@@ -15,7 +15,9 @@ import 'package:catchfish/features/settings/presentation/pages/equipment_invento
 import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
 import 'package:catchfish/features/tokens/presentation/blocs/provider/tokens_provider.dart';
 import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -26,6 +28,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as UI;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_important_channel', 'High Importance Notifications',
@@ -78,13 +82,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   String token = "";
-
-  getToken() async {
-    String? token = await _fcm.getToken();
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: $token");
-  }
 
   @override
   void initState() {
@@ -108,6 +106,10 @@ class _MyAppState extends State<MyApp> {
                 color: Colors.blue,
                 playSound: true,
                 icon: "@mipmap/ic_launcher",
+                styleInformation: const BigPictureStyleInformation(
+                  DrawableResourceAndroidBitmap("shark"),
+                  largeIcon: DrawableResourceAndroidBitmap("shark"),
+                ),
               ),
             ),
           );
@@ -143,8 +145,6 @@ class _MyAppState extends State<MyApp> {
         }
       }
     });
-
-    //getToken();
   }
 
   @override

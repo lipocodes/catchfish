@@ -1,11 +1,19 @@
 import 'package:catchfish/features/login/domain/entities/user_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //save/retreive user details from DB
 class UserDetailsRemoteDataSource {
+  late final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  late SharedPreferences _prefs;
+
   saveUserToDB(UserEntity userEntity) async {
     try {
       final firestoreInstance = FirebaseFirestore.instance;
+      _prefs = await SharedPreferences.getInstance();
+      //retreive FCM token
+      String? token = await _fcm.getToken();
 
       QuerySnapshot res = await firestoreInstance
           .collection("users")
@@ -21,7 +29,8 @@ class UserDetailsRemoteDataSource {
           'displayName': userEntity.displayName,
           'email': userEntity.email,
           'photoURL': userEntity.photoURL,
-          'phoneNumber': userEntity.phoneNumber
+          'phoneNumber': userEntity.phoneNumber,
+          'FCMToken': token,
         });
       } else {
         //need to add a new doc to DB
@@ -29,7 +38,8 @@ class UserDetailsRemoteDataSource {
           'displayName': userEntity.displayName,
           'email': userEntity.email,
           'photoURL': userEntity.photoURL,
-          'phoneNumber': userEntity.phoneNumber
+          'phoneNumber': userEntity.phoneNumber,
+          'FCMToken': token,
         });
       }
     } catch (e) {
