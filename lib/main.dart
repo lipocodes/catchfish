@@ -40,7 +40,36 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //when there's a background message coming in, Firebase app should be initialized.
-  await Firebase.initializeApp();
+  //await Firebase.initializeApp();
+  RemoteNotification? notification = message.notification;
+  AndroidNotification? android = message.notification?.android;
+  if (notification != null && android != null) {
+    try {
+      flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            importance: Importance.max,
+            color: Colors.blue,
+            playSound: true,
+            priority: Priority.high,
+            //sound: const RawResourceAndroidNotificationSound('applause'),
+            icon: "@mipmap/ic_launcher",
+            styleInformation: const BigPictureStyleInformation(
+              DrawableResourceAndroidBitmap("shark"),
+              largeIcon: DrawableResourceAndroidBitmap("shark"),
+            ),
+          ),
+        ),
+      );
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeeeee=" + e.toString());
+    }
+  }
 }
 
 Future<void> main() async {
@@ -103,8 +132,10 @@ class _MyAppState extends State<MyApp> {
                 channel.id,
                 channel.name,
                 importance: Importance.high,
+                priority: Priority.high,
                 color: Colors.blue,
                 playSound: true,
+                //sound: const RawResourceAndroidNotificationSound('applause'),
                 icon: "@mipmap/ic_launcher",
                 styleInformation: const BigPictureStyleInformation(
                   DrawableResourceAndroidBitmap("shark"),
@@ -119,7 +150,7 @@ class _MyAppState extends State<MyApp> {
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    /*FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
@@ -144,7 +175,7 @@ class _MyAppState extends State<MyApp> {
           print("eeeeeeeeeeeeeeeeeeeeeeeee=" + e.toString());
         }
       }
-    });
+    });*/
   }
 
   @override

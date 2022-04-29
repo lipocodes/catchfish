@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "913655764954-c38arcikusp3o67ka1u8k83b9jl0bj88.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.catchfishapp.catchfish",
-            "certificate_hash": "926281d873293b37d1ee981a1ebcd0ce80f72c4f"
-          }
-        },
-        {
           "client_id": "913655764954-eaf9g2qc441pem8hp3erhudja02ljllo.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -37,13 +29,6 @@
             {
               "client_id": "913655764954-eaf9g2qc441pem8hp3erhudja02ljllo.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "913655764954-9qt6cl4q46ht9gqbka6th367mvq1t61l.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.catchfishapp.catchfish"
-              }
             }
           ]
         }
