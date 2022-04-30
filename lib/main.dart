@@ -32,8 +32,11 @@ import 'dart:ui' as UI;
 import 'package:shared_preferences/shared_preferences.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high_important_channel', 'High Importance Notifications',
-    playSound: true, importance: Importance.high);
+  'high_important_channel',
+  'High Importance Notifications',
+  playSound: true,
+  importance: Importance.high,
+);
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -41,6 +44,16 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //when there's a background message coming in, Firebase app should be initialized.
   //await Firebase.initializeApp();
+
+  //We don't allow multiple notification in a row
+  /*SharedPreferences prefs = await SharedPreferences.getInstance();
+  int lastNotificationTime = prefs.getInt("lastNotificationTime") ?? 0;
+  int timeNow = DateTime.now().millisecondsSinceEpoch;
+  if (timeNow - lastNotificationTime < 30 * 1000) {
+    return;
+  }
+  prefs.setInt("lastNotificationTime", timeNow);*/
+
   RemoteNotification? notification = message.notification;
   AndroidNotification? android = message.notification?.android;
   if (notification != null && android != null) {
@@ -59,10 +72,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
             priority: Priority.high,
             //sound: const RawResourceAndroidNotificationSound('applause'),
             icon: "@mipmap/ic_launcher",
-            styleInformation: const BigPictureStyleInformation(
-              DrawableResourceAndroidBitmap("shark"),
-              largeIcon: DrawableResourceAndroidBitmap("shark"),
-            ),
+            largeIcon: const DrawableResourceAndroidBitmap('shark'),
           ),
         ),
       );
@@ -137,10 +147,7 @@ class _MyAppState extends State<MyApp> {
                 playSound: true,
                 //sound: const RawResourceAndroidNotificationSound('applause'),
                 icon: "@mipmap/ic_launcher",
-                styleInformation: const BigPictureStyleInformation(
-                  DrawableResourceAndroidBitmap("shark"),
-                  largeIcon: DrawableResourceAndroidBitmap("shark"),
-                ),
+                largeIcon: const DrawableResourceAndroidBitmap('shark'),
               ),
             ),
           );
@@ -149,33 +156,6 @@ class _MyAppState extends State<MyApp> {
         }
       }
     });
-
-    /*FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        try {
-          String? title = notification.title ?? "";
-          String? body = notification.body ?? "";
-          showDialog(
-              context: context,
-              builder: (_) {
-                return AlertDialog(
-                  title: Text(title),
-                  content: SingleChildScrollView(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(body),
-                    ],
-                  )),
-                );
-              });
-        } catch (e) {
-          print("eeeeeeeeeeeeeeeeeeeeeeeee=" + e.toString());
-        }
-      }
-    });*/
   }
 
   @override
