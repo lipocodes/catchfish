@@ -1,4 +1,5 @@
 import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
+import 'package:catchfish/features/tokens/presentation/widgets/list_prods.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,26 +24,17 @@ class _BuyTokenState extends State<BuyToken> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TokensBloc, TokensState>(
-      listener: (context, state) {
+    return BlocBuilder<TokensBloc, TokensState>(
+      builder: (context, state) {
         if (state is GetOfferedProductsState) {
-          print("vvvvvvvvvvvvvvv=" +
-              state.productsEntity.listProducts.toString());
-        }
-        if (state is BuyTokensState) {
+          return listProds(state, context);
+        } else if (state is BuyTokensState) {
           print("ddddddddddddddd=" + state.tokensEntity.result.toString());
+          return Container();
+        } else {
+          return Container();
         }
       },
-      child: Scaffold(
-        body: Column(children: [
-          ElevatedButton(
-            child: const Text("Buy"),
-            onPressed: () {
-              BlocProvider.of<TokensBloc>(context).add(BuyTokensEvent());
-            },
-          )
-        ]),
-      ),
     );
   }
 }
