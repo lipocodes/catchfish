@@ -6,6 +6,7 @@ Widget prod(state, int prodNum, BuildContext context) {
   List<String> prod = [];
   try {
     String temp = state.productsEntity.listProducts[prodNum];
+
     prod = temp.split("^^^");
     return Padding(
       padding: const EdgeInsets.all(12.0),
