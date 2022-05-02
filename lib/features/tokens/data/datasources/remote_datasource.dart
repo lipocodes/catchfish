@@ -14,6 +14,7 @@ class RemoteDatasource {
       ProductDetailsResponse productDetailResponse =
           await _connection.queryProductDetails(_productIds);
       _products = productDetailResponse.productDetails;
+      print("aaaaaaaaaaaaaaaaaaaaaaaaa=" + _products.length.toString());
       for (int a = 0; a < _products.length; a++) {
         if (productDetailResponse.error == null) {
           String prod = _products[a].id +
