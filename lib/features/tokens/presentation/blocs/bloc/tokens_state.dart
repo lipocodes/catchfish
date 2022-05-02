@@ -10,6 +10,11 @@ abstract class TokensState extends Equatable {
 class TokensInitial extends TokensState {}
 
 class BuyTokensState extends TokensState {
-  TokensEntity tokensEntity = TokensEntity(result: "success");
-  BuyTokensState({required this.tokensEntity});
+  final TokensEntity tokensEntity;
+  const BuyTokensState({required this.tokensEntity});
+}
+
+class GetOfferedProductsState extends TokensState {
+  final ProductsEntity productsEntity;
+  const GetOfferedProductsState({required this.productsEntity});
 }
