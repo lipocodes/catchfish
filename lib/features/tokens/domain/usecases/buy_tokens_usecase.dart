@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/tokens/domain/entities/tokens_entity.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
@@ -12,6 +13,7 @@ class BuyTokensUsecase {
   late StreamSubscription<List<PurchaseDetails>> _subscription;
   //products offerd to purchase
   List<ProductDetails> _products = [];
+  late PlaySound playSound;
 
   initStoreInfo() async {
     //get notified by async changes on purchases list
@@ -35,13 +37,16 @@ class BuyTokensUsecase {
   }
 
   buyProduct() {
-    try {
+    print("xxxxxxxxxxxxxxxxxxx");
+    playSound = PlaySound();
+    playSound.play(path: "assets/sounds/lobby/", fileName: "bounce.mp3");
+    /* {
       final PurchaseParam purchaseParam =
           PurchaseParam(productDetails: _products[0]);
       _connection.buyConsumable(purchaseParam: purchaseParam);
     } catch (e) {
       print("eeeeeeeeeeeeeeeeeeeeeeeee=" + e.toString());
-    }
+    }*/
   }
 
   listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {

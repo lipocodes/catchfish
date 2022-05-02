@@ -5,49 +5,51 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Widget prod(state, int prodNum, BuildContext context) {
   List<String> prod = [];
   try {
-    String temp = state.productsEntity.listProducts[0];
+    String temp = state.productsEntity.listProducts[prodNum];
     prod = temp.split("^^^");
-  } catch (e) {}
-  return Padding(
-    padding: const EdgeInsets.all(12.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          prod[1].replaceAll("(Catch Fish)", ""),
-          style: const TextStyle(
-            fontSize: 28.0,
-            color: Colors.red,
-            fontFamily: 'skullsandcrossbones',
-          ),
-        ),
-        Text(
-          prod[2],
-          style: const TextStyle(
-            fontSize: 28.0,
-            color: Colors.red,
-            fontFamily: 'skullsandcrossbones',
-          ),
-        ),
-        ElevatedButton(
-          child: Text(
-            prod[3],
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            prod[1].replaceAll("(Catch Fish)", ""),
             style: const TextStyle(
               fontSize: 28.0,
               color: Colors.red,
               fontFamily: 'skullsandcrossbones',
             ),
           ),
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+          Text(
+            prod[2],
+            style: const TextStyle(
+              fontSize: 28.0,
+              color: Colors.red,
+              fontFamily: 'skullsandcrossbones',
             ),
           ),
-          onPressed: () {
-            BlocProvider.of<TokensBloc>(context).add(BuyTokensEvent());
-          },
-        ),
-      ],
-    ),
-  );
+          ElevatedButton(
+            child: Text(
+              prod[3],
+              style: const TextStyle(
+                fontSize: 28.0,
+                color: Colors.red,
+                fontFamily: 'skullsandcrossbones',
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+            onPressed: () {
+              BlocProvider.of<TokensBloc>(context).add(BuyTokensEvent());
+            },
+          ),
+        ],
+      ),
+    );
+  } catch (e) {
+    return Container();
+  }
 }

@@ -21,9 +21,8 @@ Widget listProds(state, BuildContext context) {
             child: Column(
               children: [
                 prod(state, 0, context),
-                prod(state, 0, context),
-                prod(state, 0, context),
-                prod(state, 0, context)
+                prod(state, 1, context),
+                prod(state, 2, context),
               ],
             )),
       ),

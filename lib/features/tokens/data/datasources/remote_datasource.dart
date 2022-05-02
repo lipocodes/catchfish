@@ -3,23 +3,19 @@ import 'package:catchfish/features/tokens/domain/entities/products_entity.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 class RemoteDatasource {
-  final _productIds = {
-    'product1',
-    'product2',
-  };
+  final _productIds = {'product1', 'product2', 'product3'};
   //products offerd to purchase
   List<ProductDetails> _products = [];
   final InAppPurchase _connection = InAppPurchase.instance;
-  List<String> _listProd = [];
+  final List<String> _listProd = [];
   buyTokens() async {}
   Future<ProductsEntity> getProducts() async {
-    for (int a = 0; a < _productIds.length; a++) {
-      try {
-        ProductDetailsResponse productDetailResponse =
-            await _connection.queryProductDetails(_productIds);
+    try {
+      ProductDetailsResponse productDetailResponse =
+          await _connection.queryProductDetails(_productIds);
+      _products = productDetailResponse.productDetails;
+      for (int a = 0; a < _products.length; a++) {
         if (productDetailResponse.error == null) {
-          //products in the store
-          _products = productDetailResponse.productDetails;
           String prod = _products[a].id +
               "^^^" +
               _products[a].title +
@@ -29,10 +25,14 @@ class RemoteDatasource {
               _products[a].price;
           _listProd.add(prod);
         }
-      } catch (e) {}
-    }
+      }
 
-    ProductsModel productsModel = ProductsModel(listProducts: _listProd);
-    return productsModel;
+      ProductsModel productsModel = ProductsModel(listProducts: _listProd);
+      return productsModel;
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeeeee=" + e.toString());
+      ProductsModel productsModel = ProductsModel(listProducts: _listProd);
+      return productsModel;
+    }
   }
 }
