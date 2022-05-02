@@ -1,0 +1,3 @@
+class RemoteDatasource {
+  buyTokens() async {}
+}
