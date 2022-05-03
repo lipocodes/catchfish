@@ -44,7 +44,8 @@ Widget prod(state, int prodNum, BuildContext context) {
               ),
             ),
             onPressed: () {
-              BlocProvider.of<TokensBloc>(context).add(BuyTokensEvent());
+              BlocProvider.of<TokensBloc>(context)
+                  .add(BuyTokensEvent(prodID: prod[0]));
             },
           ),
         ],

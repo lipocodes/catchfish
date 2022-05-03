@@ -5,6 +5,7 @@ class GetOfferedProductsUsecase {
   Future<ProductsEntity> getProdcuts() async {
     TokensRepositoryImpl tokensRepositoryImpl = TokensRepositoryImpl();
     ProductsEntity productsEntity = await tokensRepositoryImpl.getProducts();
+
     return productsEntity;
   }
 }

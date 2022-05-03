@@ -5,49 +5,12 @@ import 'package:catchfish/features/tokens/domain/entities/tokens_entity.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 class BuyTokensUsecase {
-  final _productIds = {
-    'token1',
-  };
   final InAppPurchase _connection = InAppPurchase.instance;
   //products that have been purchased by this user
   late StreamSubscription<List<PurchaseDetails>> _subscription;
   //products offerd to purchase
   List<ProductDetails> _products = [];
   late PlaySound playSound;
-
-  initStoreInfo() async {
-    //get notified by async changes on purchases list
-    _connection.purchaseStream.listen((purchaseDetailsList) {
-      listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _subscription.cancel();
-    }, onError: (error) {
-      // handle error here.
-    });
-    ProductDetailsResponse productDetailResponse =
-        await _connection.queryProductDetails(_productIds);
-    if (productDetailResponse.error == null) {
-      /*setState(() {
-        //products in the store
-        _products = productDetailResponse.productDetails;
-        print("ppppppppppppppppppp=" + _products.toString());
-        buyProduct();
-      });*/
-    }
-  }
-
-  buyProduct() {
-    print("xxxxxxxxxxxxxxxxxxx");
-    playSound = PlaySound();
-    playSound.play(path: "assets/sounds/lobby/", fileName: "bounce.mp3");
-    /* {
-      final PurchaseParam purchaseParam =
-          PurchaseParam(productDetails: _products[0]);
-      _connection.buyConsumable(purchaseParam: purchaseParam);
-    } catch (e) {
-      print("eeeeeeeeeeeeeeeeeeeeeeeee=" + e.toString());
-    }*/
-  }
 
   listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
@@ -69,7 +32,28 @@ class BuyTokensUsecase {
     });
   }
 
-  Future<TokensEntity> buyTokens() async {
+  Future<TokensEntity> buyTokens(String prodID) async {
+    //get notified by async changes on purchases list
+    _connection.purchaseStream.listen((purchaseDetailsList) {
+      listenToPurchaseUpdated(purchaseDetailsList);
+    }, onDone: () {
+      _subscription.cancel();
+    }, onError: (error) {
+      // handle error here.
+    });
+    try {
+      ProductDetailsResponse productDetailResponse =
+          await _connection.queryProductDetails({prodID});
+      if (productDetailResponse.error == null) {
+        _products = productDetailResponse.productDetails;
+        final PurchaseParam purchaseParam =
+            PurchaseParam(productDetails: _products[0]);
+        await _connection.buyConsumable(purchaseParam: purchaseParam);
+      }
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeee buyConsumables=" + e.toString());
+    }
+
     TokensEntity tokensEntity = TokensEntity(result: "success");
     return tokensEntity;
   }

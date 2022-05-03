@@ -14,11 +14,6 @@ class RemoteDatasource {
       ProductDetailsResponse productDetailResponse =
           await _connection.queryProductDetails(_productIds);
       _products = productDetailResponse.productDetails;
-      if (_products.length == 0) {
-        productDetailResponse =
-            await _connection.queryProductDetails(_productIds);
-        _products = productDetailResponse.productDetails;
-      }
       print("Number of products for sale=" + _products.length.toString());
       for (int a = 0; a < _products.length; a++) {
         if (productDetailResponse.error == null) {

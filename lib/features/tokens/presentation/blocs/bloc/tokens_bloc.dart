@@ -16,12 +16,19 @@ class TokensBloc extends Bloc<TokensEvent, TokensState> {
             GetOfferedProductsUsecase();
         ProductsEntity productsEntity =
             await getOfferedProductsUsecase.getProdcuts();
-        emit(GetOfferedProductsState(productsEntity: productsEntity));
+        if (productsEntity.listProducts.isEmpty) {
+          Future.delayed(const Duration(milliseconds: 1 * 1000), () async {
+            productsEntity = await getOfferedProductsUsecase.getProdcuts();
+            emit(GetOfferedProductsState(productsEntity: productsEntity));
+          });
+        } else {
+          emit(GetOfferedProductsState(productsEntity: productsEntity));
+        }
       } else if (event is BuyTokensEvent) {
-        print("pppppppppppppppppppppp");
-        //BuyTokensUsecase buyTokensUsecase = BuyTokensUsecase();
-        //TokensEntity tokensEntity = await buyTokensUsecase.buyTokens();
-        //emit(BuyTokensState(tokensEntity: tokensEntity));
+        BuyTokensUsecase buyTokensUsecase = BuyTokensUsecase();
+        TokensEntity tokensEntity =
+            await buyTokensUsecase.buyTokens(event.prodID);
+        emit(BuyTokensState(tokensEntity: tokensEntity));
       }
     });
   }

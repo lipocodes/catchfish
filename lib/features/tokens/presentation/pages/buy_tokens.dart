@@ -29,7 +29,7 @@ class _BuyTokenState extends State<BuyToken> {
         if (state is GetOfferedProductsState) {
           return listProds(state, context);
         } else if (state is BuyTokensState) {
-          print("ddddddddddddddd=" + state.tokensEntity.result.toString());
+          print("jjjjjjjjjjjjjjjjj=" + state.tokensEntity.result.toString());
           return Container();
         } else {
           return Container();

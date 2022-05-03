@@ -18,6 +18,9 @@ class GetOfferedProductsEvent implements TokensEvent {
 }
 
 class BuyTokensEvent implements TokensEvent {
+  late String prodID;
+  BuyTokensEvent({required this.prodID});
+
   @override
   // TODO: implement props
   List<Object> get props => throw UnimplementedError();
