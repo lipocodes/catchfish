@@ -11,23 +11,25 @@ class RemoteDatasource {
   buyTokens() async {}
   Future<ProductsEntity> getProducts() async {
     try {
-      ProductDetailsResponse productDetailResponse =
-          await _connection.queryProductDetails(_productIds);
-      _products = productDetailResponse.productDetails;
-      print("Number of products for sale=" + _products.length.toString());
-      for (int a = 0; a < _products.length; a++) {
-        if (productDetailResponse.error == null) {
-          String prod = _products[a].id +
-              "^^^" +
-              _products[a].title +
-              "^^^" +
-              _products[a].description +
-              "^^^" +
-              _products[a].price;
-          _listProd.add(prod);
+      bool isAvailable = await _connection.isAvailable();
+      if (isAvailable) {
+        ProductDetailsResponse productDetailResponse =
+            await _connection.queryProductDetails(_productIds);
+        _products = productDetailResponse.productDetails;
+        print("Number of products for sale=" + _products.length.toString());
+        for (int a = 0; a < _products.length; a++) {
+          if (productDetailResponse.error == null) {
+            String prod = _products[a].id +
+                "^^^" +
+                _products[a].title +
+                "^^^" +
+                _products[a].description +
+                "^^^" +
+                _products[a].price;
+            _listProd.add(prod);
+          }
         }
       }
-
       ProductsModel productsModel = ProductsModel(listProducts: _listProd);
       return productsModel;
     } catch (e) {
