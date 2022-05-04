@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:catchfish/features/tokens/data/models/products_model.dart';
 import 'package:catchfish/features/tokens/data/models/tokens_model.dart';
 import 'package:catchfish/features/tokens/domain/entities/products_entity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RemoteDatasource {
   final _productIds = {'product1', 'product2', 'product3'};
@@ -13,6 +15,8 @@ class RemoteDatasource {
   final List<String> _listProd = [];
   //products that have been purchased by this user
   late StreamSubscription<List<PurchaseDetails>> _subscription;
+  late SharedPreferences _prefs;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<ProductsEntity> getProducts() async {
     try {
@@ -45,6 +49,46 @@ class RemoteDatasource {
   }
 
   //////////////////////////////////////////////////////////////////////////////////
+  updatePrefsAndDB() async {
+    try {
+      _prefs = await SharedPreferences.getInstance();
+      String prodID = await _prefs.getString(
+            "prodID",
+          ) ??
+          "";
+
+      int inventoryMoney = _prefs.getInt(
+            "inventoryMoney",
+          ) ??
+          0;
+      int inventoryBaits = _prefs.getInt(
+            "inventoryBaits",
+          ) ??
+          0;
+      int inventoryXP = _prefs.getInt(
+            "inventoryXP",
+          ) ??
+          0;
+      if (prodID.contains("Money")) {
+        inventoryMoney = inventoryMoney + 10;
+      } else if (prodID.contains("Baits")) {
+        inventoryBaits = inventoryBaits + 10;
+      } else if (prodID.contains("XP")) {
+        inventoryXP = inventoryXP + 10;
+      }
+
+      _prefs.setInt("inventoryMoney", inventoryMoney);
+      _prefs.setInt("inventoryBaits", inventoryBaits);
+      _prefs.setInt("inventoryXP", inventoryXP);
+
+      if (auth.currentUser == null) {
+        ////////////////////emit
+      }
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeee=" + e.toString());
+    }
+  }
+
   listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.pending) {
@@ -52,15 +96,19 @@ class RemoteDatasource {
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
           print("PurchaseStatus.error!!!!!!!!!");
+          /////////////////// emit
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           print("Purchase successful!!!!!!!!!");
           _connection.completePurchase(purchaseDetails);
+          await updatePrefsAndDB();
         }
       }
     });
   }
 
   Future<TokensModel> buyTokens(String prodID) async {
+    _prefs = await SharedPreferences.getInstance();
+    await _prefs.setString("prodID", prodID);
     //get notified by async changes on purchases list
     _connection.purchaseStream.listen((purchaseDetailsList) {
       listenToPurchaseUpdated(purchaseDetailsList);
