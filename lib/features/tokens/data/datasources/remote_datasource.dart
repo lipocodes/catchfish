@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:catchfish/features/tokens/data/models/products_model.dart';
+import 'package:catchfish/features/tokens/data/models/tokens_model.dart';
 import 'package:catchfish/features/tokens/domain/entities/products_entity.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
@@ -8,7 +11,9 @@ class RemoteDatasource {
   List<ProductDetails> _products = [];
   final InAppPurchase _connection = InAppPurchase.instance;
   final List<String> _listProd = [];
-  buyTokens() async {}
+  //products that have been purchased by this user
+  late StreamSubscription<List<PurchaseDetails>> _subscription;
+
   Future<ProductsEntity> getProducts() async {
     try {
       bool isAvailable = await _connection.isAvailable();
@@ -38,4 +43,49 @@ class RemoteDatasource {
       return productsModel;
     }
   }
+
+  //////////////////////////////////////////////////////////////////////////////////
+  listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        print("Purchase pending!!!!!!!!!!!!!!!");
+      } else {
+        if (purchaseDetails.status == PurchaseStatus.error) {
+          print("PurchaseStatus.error!!!!!!!!!");
+        } else if (purchaseDetails.status == PurchaseStatus.purchased) {
+          print("Purchase successful!!!!!!!!!");
+          _connection.completePurchase(purchaseDetails);
+        }
+      }
+    });
+  }
+
+  buyTokens(String prodID) async {
+    print("zzzzzzzzzzzzzzzzzzz=" + prodID);
+    //get notified by async changes on purchases list
+    /*_connection.purchaseStream.listen((purchaseDetailsList) {
+      listenToPurchaseUpdated(purchaseDetailsList);
+    }, onDone: () {
+      _subscription.cancel();
+    }, onError: (error) {
+      // handle error here.
+    });
+    try {
+      ProductDetailsResponse productDetailResponse =
+          await _connection.queryProductDetails({prodID});
+      if (productDetailResponse.error == null) {
+        _products = productDetailResponse.productDetails;
+        final PurchaseParam purchaseParam =
+            PurchaseParam(productDetails: _products[0]);
+        await _connection.buyConsumable(purchaseParam: purchaseParam);
+      }
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeee buyConsumables=" + e.toString());
+    }*/
+
+    TokensModel tokensEntity = TokensModel(result: "success");
+    return tokensEntity;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
 }

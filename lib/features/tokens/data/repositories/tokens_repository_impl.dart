@@ -7,8 +7,9 @@ import 'package:catchfish/features/tokens/domain/repositories/tokens_repository.
 
 class TokensRepositoryImpl implements TokensRepository {
   @override
-  Future<TokensEntity> buyTokens() async {
-    TokensModel tokensModel = TokensModel(result: "success");
+  Future<TokensEntity> buyTokens(String prodID) async {
+    RemoteDatasource remoteDatasource = RemoteDatasource();
+    TokensModel tokensModel = remoteDatasource.buyTokens(prodID);
     TokensEntity tokensEntity = tokensModel;
     return tokensEntity;
   }
