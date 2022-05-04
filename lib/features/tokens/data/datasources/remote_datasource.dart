@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
-import 'package:catchfish/features/settings/data/datasources/remote_datasource.dart';
 import 'package:catchfish/features/tokens/data/datasources/local_datasource.dart';
 import 'package:catchfish/features/tokens/data/models/products_model.dart';
 import 'package:catchfish/features/tokens/data/models/tokens_model.dart';
@@ -12,7 +11,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RemoteDatasource {
-  final _productIds = {'product1', 'product2', 'product3'};
+  final _productIds = {'product4', 'product5', 'product6'};
   //products offerd to purchase
   List<ProductDetails> _products = [];
   final InAppPurchase _connection = InAppPurchase.instance;
@@ -77,11 +76,11 @@ class RemoteDatasource {
               "inventoryXP",
             ) ??
             0;
-        if (prodID.contains("product1")) {
+        if (prodID.contains("product4")) {
           inventoryMoney = inventoryMoney + 10;
-        } else if (prodID.contains("product2")) {
+        } else if (prodID.contains("product5")) {
           inventoryBaits = inventoryBaits + 10;
-        } else if (prodID.contains("product3")) {
+        } else if (prodID.contains("product6")) {
           inventoryXP = inventoryXP + 10;
         }
         int lastPrizeValuesUpdateDB = DateTime.now().millisecondsSinceEpoch;
@@ -115,10 +114,9 @@ class RemoteDatasource {
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
           print("PurchaseStatus.error!!!!!!!!!");
-          /////////////////// emit
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           print("Purchase successful!!!!!!!!!");
-          _connection.completePurchase(purchaseDetails);
+          await _connection.completePurchase(purchaseDetails);
           await updatePrefsAndDB();
         }
       }
@@ -133,10 +131,7 @@ class RemoteDatasource {
       listenToPurchaseUpdated(purchaseDetailsList);
     }, onDone: () {
       _subscription.cancel();
-      print("kkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-    }, onError: (error) {
-      print("ppppppppppppppppppppppppppp");
-    });
+    }, onError: (error) {});
     try {
       ProductDetailsResponse productDetailResponse =
           await _connection.queryProductDetails({prodID});

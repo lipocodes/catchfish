@@ -30,8 +30,13 @@ class _BuyTokenState extends State<BuyToken> {
           return listProds(state, context);
         } else if (state is BuyTokensState) {
           return listProds(state, context);
-        } else {
+        } else if (state is UpdatePrizeListState) {
+          print("aaaaaaaaaaaaaaaaaaaaa=" + state.inventoryMoney.toString());
+          print("bbbbbbbbbbbbbbbbbbb=" + state.inventoryBaits.toString());
+          print("ccccccccccccccccc=" + state.inventoryXP.toString());
           return listProds(state, context);
+        } else {
+          return Container();
         }
       },
     );

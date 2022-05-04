@@ -18,3 +18,13 @@ class GetOfferedProductsState extends TokensState {
   final ProductsEntity productsEntity;
   const GetOfferedProductsState({required this.productsEntity});
 }
+
+class UpdatePrizeListState extends TokensState {
+  final int inventoryMoney;
+  final int inventoryBaits;
+  final int inventoryXP;
+  const UpdatePrizeListState(
+      {required this.inventoryMoney,
+      required this.inventoryBaits,
+      required this.inventoryXP});
+}

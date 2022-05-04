@@ -19,9 +19,17 @@ class TokensBloc extends Bloc<TokensEvent, TokensState> {
         emit(GetOfferedProductsState(productsEntity: productsEntity));
       } else if (event is BuyTokensEvent) {
         BuyTokensUsecase buyTokensUsecase = BuyTokensUsecase();
-        TokensEntity tokensEntity =
-            await buyTokensUsecase.buyTokens(event.prodID);
+
+        await buyTokensUsecase.buyTokens(event.prodID);
         //emit(BuyTokensState(tokensEntity: tokensEntity));
+      } else if (event is UpdatePrizeListEvent) {
+        int inventoryMoney = event.inventoryMoney;
+        int inventoryBaits = event.inventoryBaits;
+        int inventoryXP = event.inventoryXP;
+        emit(UpdatePrizeListState(
+            inventoryMoney: inventoryMoney,
+            inventoryBaits: inventoryBaits,
+            inventoryXP: inventoryXP));
       }
     });
   }

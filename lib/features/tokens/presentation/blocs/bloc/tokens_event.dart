@@ -18,9 +18,26 @@ class GetOfferedProductsEvent implements TokensEvent {
 }
 
 class BuyTokensEvent implements TokensEvent {
-  late String prodID;
+  late final String prodID;
   BuyTokensEvent({required this.prodID});
 
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+
+  @override
+  // TODO: implement stringify
+  bool? get stringify => throw UnimplementedError();
+}
+
+class UpdatePrizeListEvent implements TokensEvent {
+  late final int inventoryMoney;
+  late final int inventoryBaits;
+  late final int inventoryXP;
+  UpdatePrizeListEvent(
+      {required this.inventoryMoney,
+      required this.inventoryBaits,
+      required this.inventoryXP});
   @override
   // TODO: implement props
   List<Object> get props => throw UnimplementedError();
