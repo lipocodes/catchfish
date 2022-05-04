@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
+import 'package:catchfish/features/settings/data/datasources/remote_datasource.dart';
+import 'package:catchfish/features/tokens/data/datasources/local_datasource.dart';
 import 'package:catchfish/features/tokens/data/models/products_model.dart';
 import 'package:catchfish/features/tokens/data/models/tokens_model.dart';
 import 'package:catchfish/features/tokens/domain/entities/products_entity.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,8 +19,8 @@ class RemoteDatasource {
   final List<String> _listProd = [];
   //products that have been purchased by this user
   late StreamSubscription<List<PurchaseDetails>> _subscription;
-  late SharedPreferences _prefs;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  late SharedPreferences _prefs;
 
   Future<ProductsEntity> getProducts() async {
     try {
@@ -50,43 +54,58 @@ class RemoteDatasource {
 
   //////////////////////////////////////////////////////////////////////////////////
   updatePrefsAndDB() async {
-    try {
-      _prefs = await SharedPreferences.getInstance();
-      String prodID = await _prefs.getString(
-            "prodID",
-          ) ??
-          "";
+    LocalDatasource localDatasource = LocalDatasource();
 
-      int inventoryMoney = _prefs.getInt(
-            "inventoryMoney",
-          ) ??
-          0;
-      int inventoryBaits = _prefs.getInt(
-            "inventoryBaits",
-          ) ??
-          0;
-      int inventoryXP = _prefs.getInt(
-            "inventoryXP",
-          ) ??
-          0;
-      if (prodID.contains("Money")) {
-        inventoryMoney = inventoryMoney + 10;
-      } else if (prodID.contains("Baits")) {
-        inventoryBaits = inventoryBaits + 10;
-      } else if (prodID.contains("XP")) {
-        inventoryXP = inventoryXP + 10;
+    //if user logged in, update in DB
+    if (auth.currentUser != null) {
+      try {
+        _prefs = await SharedPreferences.getInstance();
+        String prodID = _prefs.getString(
+              "prodID",
+            ) ??
+            "";
+
+        int inventoryMoney = _prefs.getInt(
+              "inventoryMoney",
+            ) ??
+            0;
+        int inventoryBaits = _prefs.getInt(
+              "inventoryBaits",
+            ) ??
+            0;
+        int inventoryXP = _prefs.getInt(
+              "inventoryXP",
+            ) ??
+            0;
+        if (prodID.contains("product1")) {
+          inventoryMoney = inventoryMoney + 10;
+        } else if (prodID.contains("product2")) {
+          inventoryBaits = inventoryBaits + 10;
+        } else if (prodID.contains("product3")) {
+          inventoryXP = inventoryXP + 10;
+        }
+        int lastPrizeValuesUpdateDB = DateTime.now().millisecondsSinceEpoch;
+        String email = auth.currentUser!.email ?? "";
+        PrizeValuesEntity prizeValuesEntity = PrizeValuesEntity(
+            inventoryMoney: inventoryMoney,
+            inventoryBaits: inventoryBaits,
+            inventoryXP: inventoryXP,
+            lastPrizeValuesUpdateDB: lastPrizeValuesUpdateDB);
+        var t = await FirebaseFirestore.instance
+            .collection("users")
+            .where('email', isEqualTo: email)
+            .get();
+        String id = t.docs[0].id;
+
+        await FirebaseFirestore.instance.collection('users').doc(id).update({
+          'prizeValues': prizeValuesEntity.toJson(),
+        });
+      } catch (e) {
+        print("eeeeeeeeeeeeeeeeeeee=" + e.toString());
       }
-
-      _prefs.setInt("inventoryMoney", inventoryMoney);
-      _prefs.setInt("inventoryBaits", inventoryBaits);
-      _prefs.setInt("inventoryXP", inventoryXP);
-
-      if (auth.currentUser == null) {
-        ////////////////////emit
-      }
-    } catch (e) {
-      print("eeeeeeeeeeeeeeeeee=" + e.toString());
     }
+    // In every case: update prefs
+    await localDatasource.buyTokens();
   }
 
   listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
@@ -114,8 +133,9 @@ class RemoteDatasource {
       listenToPurchaseUpdated(purchaseDetailsList);
     }, onDone: () {
       _subscription.cancel();
+      print("kkkkkkkkkkkkkkkkkkkkkkkkkkkk");
     }, onError: (error) {
-      // handle error here.
+      print("ppppppppppppppppppppppppppp");
     });
     try {
       ProductDetailsResponse productDetailResponse =
