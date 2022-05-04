@@ -60,10 +60,9 @@ class RemoteDatasource {
     });
   }
 
-  buyTokens(String prodID) async {
-    print("zzzzzzzzzzzzzzzzzzz=" + prodID);
+  Future<TokensModel> buyTokens(String prodID) async {
     //get notified by async changes on purchases list
-    /*_connection.purchaseStream.listen((purchaseDetailsList) {
+    _connection.purchaseStream.listen((purchaseDetailsList) {
       listenToPurchaseUpdated(purchaseDetailsList);
     }, onDone: () {
       _subscription.cancel();
@@ -81,10 +80,10 @@ class RemoteDatasource {
       }
     } catch (e) {
       print("eeeeeeeeeeeeeeeee buyConsumables=" + e.toString());
-    }*/
+    }
 
-    TokensModel tokensEntity = TokensModel(result: "success");
-    return tokensEntity;
+    TokensModel tokensModel = TokensModel(result: "success");
+    return tokensModel;
   }
 
   ////////////////////////////////////////////////////////////////////////////////

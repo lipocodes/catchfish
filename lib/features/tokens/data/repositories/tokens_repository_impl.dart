@@ -9,7 +9,7 @@ class TokensRepositoryImpl implements TokensRepository {
   @override
   Future<TokensEntity> buyTokens(String prodID) async {
     RemoteDatasource remoteDatasource = RemoteDatasource();
-    TokensModel tokensModel = remoteDatasource.buyTokens(prodID);
+    TokensModel tokensModel = await remoteDatasource.buyTokens(prodID);
     TokensEntity tokensEntity = tokensModel;
     return tokensEntity;
   }
