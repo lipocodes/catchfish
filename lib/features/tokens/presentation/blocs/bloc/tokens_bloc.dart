@@ -4,6 +4,7 @@ import 'package:catchfish/features/tokens/domain/entities/tokens_entity.dart';
 import 'package:catchfish/features/tokens/domain/usecases/buy_tokens_usecase.dart';
 import 'package:catchfish/features/tokens/domain/usecases/get_offered_products_usecase.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 part 'tokens_event.dart';
 part 'tokens_state.dart';
@@ -22,14 +23,6 @@ class TokensBloc extends Bloc<TokensEvent, TokensState> {
 
         await buyTokensUsecase.buyTokens(event.prodID);
         //emit(BuyTokensState(tokensEntity: tokensEntity));
-      } else if (event is UpdatePrizeListEvent) {
-        int inventoryMoney = event.inventoryMoney;
-        int inventoryBaits = event.inventoryBaits;
-        int inventoryXP = event.inventoryXP;
-        emit(UpdatePrizeListState(
-            inventoryMoney: inventoryMoney,
-            inventoryBaits: inventoryBaits,
-            inventoryXP: inventoryXP));
       }
     });
   }

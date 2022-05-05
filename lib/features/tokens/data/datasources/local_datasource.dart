@@ -37,15 +37,6 @@ class LocalDatasource {
       _prefs.setInt("inventoryBaits", inventoryBaits);
       _prefs.setInt("inventoryXP", inventoryXP);
       _prefs.setInt("lastPrizeValuesUpdateDB", lastPrizeValuesUpdateDB);
-      final GlobalKey<NavigatorState> navigatorKey =
-          GlobalKey<NavigatorState>();
-      BuildContext? context = navigatorKey.currentContext;
-      if (context != null) {
-        BlocProvider.of<TokensBloc>(context).add(UpdatePrizeListEvent(
-            inventoryMoney: inventoryMoney,
-            inventoryBaits: inventoryBaits,
-            inventoryXP: inventoryXP));
-      }
     } catch (e) {
       print("eeeeeeeeeeeeeeeeeeeee=" + e.toString());
     }
