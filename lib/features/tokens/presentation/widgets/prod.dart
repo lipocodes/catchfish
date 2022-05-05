@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,8 +48,31 @@ Widget prod(state, int prodNum, BuildContext context) {
               ),
             ),
             onPressed: () {
-              BlocProvider.of<TokensBloc>(context)
-                  .add(BuyTokensEvent(prodID: prod[0]));
+              final FirebaseAuth auth = FirebaseAuth.instance;
+              if (auth.currentUser == null) {
+                Timer(const Duration(seconds: 1), () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                            backgroundColor: Colors.redAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            title: const Text('not_logged_in').tr(),
+                            content: const Text('need_log_in').tr(),
+                            actions: <Widget>[
+                              IconButton(
+                                  icon: const Icon(Icons.close),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  })
+                            ],
+                          ));
+                });
+              } else {
+                BlocProvider.of<TokensBloc>(context)
+                    .add(BuyTokensEvent(prodID: prod[0]));
+              }
             },
           ),
         ],

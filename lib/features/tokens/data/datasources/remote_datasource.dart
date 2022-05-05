@@ -55,6 +55,7 @@ class RemoteDatasource {
   updatePrefsAndDB() async {
     LocalDatasource localDatasource = LocalDatasource();
     String updatedPrizeName = "";
+    int updatedPrizeValue = 0;
 
     //if user logged in, update in DB
     if (auth.currentUser != null) {
@@ -80,20 +81,18 @@ class RemoteDatasource {
         if (prodID.contains("product4")) {
           updatedPrizeName = "inventoryMoney";
           inventoryMoney = inventoryMoney + 10;
+          updatedPrizeValue = inventoryMoney;
         } else if (prodID.contains("product5")) {
           updatedPrizeName = "inventoryBaits";
           inventoryBaits = inventoryBaits + 10;
+          updatedPrizeValue = inventoryBaits;
         } else if (prodID.contains("product6")) {
           updatedPrizeName = "inventoryXP";
           inventoryXP = inventoryXP + 10;
+          updatedPrizeValue = inventoryXP;
         }
-        int lastPrizeValuesUpdateDB = DateTime.now().millisecondsSinceEpoch;
+
         String email = auth.currentUser!.email ?? "";
-        PrizeValuesEntity prizeValuesEntity = PrizeValuesEntity(
-            inventoryMoney: inventoryMoney,
-            inventoryBaits: inventoryBaits,
-            inventoryXP: inventoryXP,
-            lastPrizeValuesUpdateDB: lastPrizeValuesUpdateDB);
         var t = await FirebaseFirestore.instance
             .collection("users")
             .where('email', isEqualTo: email)
@@ -101,7 +100,7 @@ class RemoteDatasource {
         String id = t.docs[0].id;
 
         await FirebaseFirestore.instance.collection('users').doc(id).update({
-          'prizeValues.$updatedPrizeName': inventoryBaits,
+          'prizeValues.$updatedPrizeName': updatedPrizeValue,
         });
       } catch (e) {
         print("eeeeeeeeeeeeeeeeeeee=" + e.toString());

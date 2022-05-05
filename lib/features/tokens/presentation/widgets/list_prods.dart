@@ -1,7 +1,14 @@
+import 'package:catchfish/features/tokens/presentation/widgets/button_back.dart';
 import 'package:catchfish/features/tokens/presentation/widgets/prod.dart';
 import 'package:flutter/material.dart';
 
 Widget listProds(state, BuildContext context) {
+  //custom BACK operation
+  performBack() async {
+    Navigator.pop(context, true);
+    Navigator.pushNamed(context, '/');
+  }
+
   return Directionality(
     textDirection: TextDirection.ltr,
     child: SafeArea(
@@ -20,6 +27,15 @@ Widget listProds(state, BuildContext context) {
             ),
             child: Column(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    buttonBack(performBack),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30.0,
+                ),
                 prod(state, 0, context),
                 prod(state, 1, context),
                 prod(state, 2, context),

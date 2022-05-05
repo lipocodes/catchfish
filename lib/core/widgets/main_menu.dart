@@ -99,12 +99,14 @@ Widget mainMenu(BuildContext context) {
                   fontWeight: FontWeight.bold,
                   fontFamily: 'skullsandcrossbones',
                 )),
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context);
-              Navigator.push(
+              await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const BuyToken()),
               );
+              Navigator.pop(context, true);
+              Navigator.pushNamed(context, '/');
             },
           ),
           const Divider(

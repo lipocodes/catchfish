@@ -26,5 +26,6 @@
     "buy_tokens" : "Buy Tokens",
     "contact": "Contact",
     "contact_us": "Contact Us",
-    "send": "Send"
+    "send": "Send",
+    "need_log_in": "Please log in!"
 }
