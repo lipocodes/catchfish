@@ -68,6 +68,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
               inventoryXP: inventoryXP,
               isLoggedIn: isLoggedIn));
         } else {
+          print("ccccccccccccccccccccc=" + inventoryXP.toString());
           emit(EnteringLobbyState(
               hasRotatedTodayYet: false,
               inventoryMoney: inventoryMoney,

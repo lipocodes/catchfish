@@ -1,10 +1,13 @@
+import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/tokens/presentation/widgets/button_back.dart';
 import 'package:catchfish/features/tokens/presentation/widgets/prod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget listProds(state, BuildContext context) {
   //custom BACK operation
   performBack() async {
+    Navigator.pop(context, true);
     Navigator.pop(context, true);
     Navigator.pushNamed(context, '/');
   }

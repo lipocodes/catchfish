@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
 import 'package:catchfish/features/tokens/data/datasources/local_datasource.dart';
 import 'package:catchfish/features/tokens/data/models/products_model.dart';
 import 'package:catchfish/features/tokens/data/models/tokens_model.dart';
@@ -9,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:catchfish/core/utils/play_sound.dart';
 
 class RemoteDatasource {
   final _productIds = {'product4', 'product5', 'product6'};
@@ -56,6 +56,7 @@ class RemoteDatasource {
     LocalDatasource localDatasource = LocalDatasource();
     String updatedPrizeName = "";
     int updatedPrizeValue = 0;
+    late PlaySound playSound;
 
     //if user logged in, update in DB
     if (auth.currentUser != null) {
@@ -98,6 +99,9 @@ class RemoteDatasource {
             .where('email', isEqualTo: email)
             .get();
         String id = t.docs[0].id;
+
+        playSound = PlaySound();
+        playSound.play(path: "assets/sounds/tokens/", fileName: "success.mp3");
 
         await FirebaseFirestore.instance.collection('users').doc(id).update({
           'prizeValues.$updatedPrizeName': updatedPrizeValue,
@@ -143,6 +147,7 @@ class RemoteDatasource {
         _products = productDetailResponse.productDetails;
         final PurchaseParam purchaseParam =
             PurchaseParam(productDetails: _products[0]);
+
         await _connection.buyConsumable(purchaseParam: purchaseParam);
       }
     } catch (e) {

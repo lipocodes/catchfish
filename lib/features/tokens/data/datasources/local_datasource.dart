@@ -1,6 +1,3 @@
-import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalDatasource {
@@ -33,6 +30,7 @@ class LocalDatasource {
         inventoryXP = inventoryXP + 10;
       }
       int lastPrizeValuesUpdateDB = DateTime.now().millisecondsSinceEpoch;
+
       _prefs.setInt("inventoryMoney", inventoryMoney);
       _prefs.setInt("inventoryBaits", inventoryBaits);
       _prefs.setInt("inventoryXP", inventoryXP);

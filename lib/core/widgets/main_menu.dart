@@ -1,10 +1,13 @@
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
+import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/settings/presentation/pages/contact.dart';
 import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
 import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as UI;
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget mainMenu(BuildContext context) {
   UI.TextDirection direction = UI.TextDirection.ltr;
@@ -101,6 +104,7 @@ Widget mainMenu(BuildContext context) {
                 )),
             onTap: () async {
               Navigator.pop(context);
+              BlocProvider.of<LobbyBloc>(context).add(LeavingLobbyEvent());
               await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const BuyToken()),
