@@ -1,4 +1,5 @@
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/main_game_board.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/settings/presentation/pages/contact.dart';
 import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
@@ -24,6 +25,36 @@ Widget mainMenu(BuildContext context) {
           ),
         ),
         child: ListView(children: [
+          ListTile(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            selected: true,
+            selectedTileColor: Colors.grey[300],
+            tileColor: Colors.blue,
+            leading: const Icon(
+              Icons.directions_boat_outlined,
+              color: Colors.greenAccent,
+            ),
+            title: Text('play_game'.tr(),
+                style: const TextStyle(
+                  fontSize: 24.0,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'skullsandcrossbones',
+                )),
+            onTap: () {
+              Navigator.pop(context);
+              //Navigator.pushNamed(context, '/main_game_board');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MainGameBoard()),
+              );
+            },
+          ),
+          const Divider(
+            color: Colors.black38,
+            thickness: 5,
+          ),
           ListTile(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
@@ -92,7 +123,7 @@ Widget mainMenu(BuildContext context) {
             selectedTileColor: Colors.grey[300],
             tileColor: Colors.blue,
             leading: const Icon(
-              Icons.token,
+              Icons.currency_bitcoin,
               color: Colors.greenAccent,
             ),
             title: Text('buy_tokens'.tr(),
