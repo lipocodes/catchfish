@@ -50,7 +50,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        minSdkVersion 19
+        minSdkVersion 20
         applicationId "com.catchfishapp.catchfish"
         //minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
