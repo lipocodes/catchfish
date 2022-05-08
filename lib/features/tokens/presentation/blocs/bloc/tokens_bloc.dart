@@ -13,6 +13,7 @@ class TokensBloc extends Bloc<TokensEvent, TokensState> {
   TokensBloc() : super(TokensInitial()) {
     on<TokensEvent>((event, emit) async {
       if (event is GetOfferedProductsEvent) {
+        print("Event GetOfferedProductsEvent");
         GetOfferedProductsUsecase getOfferedProductsUsecase =
             GetOfferedProductsUsecase();
         ProductsEntity productsEntity =

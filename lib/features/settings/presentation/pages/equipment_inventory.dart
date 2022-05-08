@@ -42,7 +42,7 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     if (auth.currentUser == null && _showedWarningYet == false) {
       _showedWarningYet = true;
-      Timer(const Duration(seconds: 3), () {
+      Timer(const Duration(seconds: 1), () {
         showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(

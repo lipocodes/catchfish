@@ -13,11 +13,11 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
   InventoryBloc() : super(InventoryInitial()) {
     on<InventoryEvent>((event, emit) async {
       if (event is EnteringInventoryEvent) {
-        PlaySound playSound = PlaySound();
+        /*PlaySound playSound = PlaySound();
         playSound.play(
           path: "assets/sounds/settings/",
           fileName: "bubbles.mp3",
-        );
+        );*/
 
         final FirebaseAuth auth = FirebaseAuth.instance;
         String email = "";

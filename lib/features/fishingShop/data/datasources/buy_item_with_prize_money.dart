@@ -60,7 +60,7 @@ class BuyItemWithMoneyPrizeRemoteDatasource {
     await buyItemWithMoneyPrizeLocalDatasource.updatePrefs(
         inventoryMoney, inventoryBaits, inventoryXP, listInventory);
 
-    //if user is logged in: update users collection (fields: inventory, prizeValues)
+    //if user is logged in: update user's collection (fields: inventory, prizeValues)
     if (auth.currentUser != null) {
       PrizeValuesEntity prizeEntity = PrizeValuesEntity(
           inventoryMoney: inventoryMoney,
@@ -78,6 +78,7 @@ class BuyItemWithMoneyPrizeRemoteDatasource {
         await FirebaseFirestore.instance.collection('users').doc(id).update({
           'prizeValues': prizeEntity.toJson(),
           'inventory': listInventory,
+          'lastInventoryUpdateDB': DateTime.now().millisecondsSinceEpoch,
         });
       } catch (e) {
         print("eeeeeeeeeeeeeeeeeeeeeeee=" + e.toString());
@@ -133,6 +134,8 @@ class BuyItemWithMoneyPrizeLocalDatasource {
     await prefs.setInt("inventoryXP", inventoryXP);
     await prefs.setInt(
         "lastPrizeValuesUpdatePrefs", DateTime.now().millisecondsSinceEpoch);
+    await prefs.setInt(
+        "lastInventoryUpdateDB", DateTime.now().millisecondsSinceEpoch);
     await prefs.setStringList("inventory", listInventory);
   }
 }

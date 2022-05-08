@@ -2,7 +2,6 @@ import 'package:catchfish/features/fishingShop/domain/entities/retreive_shop_ite
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -134,8 +133,8 @@ Widget shopItems(
     ),
     child: GridView.count(
       padding: EdgeInsets.zero,
-      crossAxisCount: 2,
-      childAspectRatio: (1),
+      crossAxisCount: 1,
+      childAspectRatio: 2,
       children: List.generate(listItems.length, (index) {
         return GestureDetector(
           onTap: () {
@@ -167,18 +166,18 @@ Widget shopItems(
                     ),
                   ),
                   Text(
-                      listItems[index].title.length > 10
-                          ? listItems[index].title.substring(0, 10)
+                      listItems[index].title.length > 20
+                          ? listItems[index].title.substring(0, 20)
                           : listItems[index].title,
                       style: const TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 24.0,
                         color: Colors.yellow,
                         fontFamily: 'skullsandcrossbones',
                       )),
                   Text(
                     "price".tr() + listItems[index].price.toString(),
                     style: const TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 24.0,
                       color: Colors.orange,
                       fontFamily: 'skullsandcrossbones',
                     ),

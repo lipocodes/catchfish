@@ -16,6 +16,7 @@ class GetPrizeValuesRemoteDatasource {
           inventoryXP: t.docs[0].data()['prizeValues']['inventoryXP'],
           lastPrizeValuesUpdateDB: t.docs[0].data()['prizeValues']
               ['lastPrizeValuesUpdateDB']);
+
       return prizeValuesEntity;
     } catch (e) {
       PrizeValuesEntity prizeValuesEntity = PrizeValuesEntity(

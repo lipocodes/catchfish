@@ -62,7 +62,6 @@ class FishingshopBloc extends Bloc<FishingshopEvent, FishingshopState> {
           inventoryXP: inventoryXP,
           lastPrizeValuesUpdateDB: lastPrizeValuesUpdateDB,
         );
-
         emit(EnteringShopState(retreivePrizeEntity: retreivePrizeEntity));
       } else if (event is RetreiveShopItemsEvent) {
         RetreiveShopItemsUsecase retreiveShopItemsUsecase =

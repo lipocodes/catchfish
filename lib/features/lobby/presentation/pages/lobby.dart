@@ -37,7 +37,6 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     super.initState();
 
     retreivePrefs();
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
     BlocProvider.of<LobbyBloc>(context).add(const EnteringLobbyEvent());
   }
@@ -163,9 +162,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocBuilder<LobbyBloc, LobbyState>(
       builder: (context, state) {
-        print("bbbbbbbbbbbbbbbbbbbbbb=" + state.toString());
         if (state is EnteringLobbyState) {
-          print("ddddddddddddddddddd=" + state.inventoryXP.toString());
           return lobbyScreen(state);
         } else if (state is EndRotateCompassState) {
           showDailyPrize(state.dailyPrize);

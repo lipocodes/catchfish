@@ -5,6 +5,9 @@ import 'package:catchfish/core/consts/daily_prizes.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
 import 'package:catchfish/features/lobby/domain/usecases/prize_values_usecase.dart';
+import 'package:catchfish/features/settings/domain/entities/inventory_entity.dart';
+import 'package:catchfish/features/settings/domain/entities/inventory_screen_entity.dart';
+import 'package:catchfish/features/settings/domain/usecases/inventory_usecases.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,37 +17,71 @@ part 'lobby_state.dart';
 class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
   late PlaySound playSound;
   bool isLoggedIn = false;
+
+  comparePrefsToDBPrizeList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    String email = "";
+    if (auth.currentUser != null) {
+      email = auth.currentUser!.email!;
+      PrizeValuesUsecase prizeValuesUsecase = PrizeValuesUsecase();
+      PrizeValuesEntity prizeValuesEntity =
+          await prizeValuesUsecase.getPrizeValues(
+        email,
+      );
+
+      int lastPrizeValuesUpdatePrefs = prefs.getInt(
+            "lastPrizeValuesUpdatePrefs",
+          ) ??
+          0;
+
+      //if prize values on DN are fresher than prize values in Prefs
+      if (prizeValuesEntity.lastPrizeValuesUpdateDB >
+          lastPrizeValuesUpdatePrefs) {
+        //if user is logged in && DB data is newer, update prefs
+        await prefs.setInt("inventoryMoney", prizeValuesEntity.inventoryMoney);
+        await prefs.setInt("inventoryBaits", prizeValuesEntity.inventoryBaits);
+        await prefs.setInt("inventoryXP", prizeValuesEntity.inventoryXP);
+        await prefs.setInt("lastPrizeValuesUpdatePrefs",
+            prizeValuesEntity.lastPrizeValuesUpdateDB);
+      } else if (prizeValuesEntity.lastPrizeValuesUpdateDB <
+          lastPrizeValuesUpdatePrefs) {
+        int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
+        int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
+        int inventoryXP = prefs.getInt("inventoryXP") ?? 0;
+        PrizeValuesEntity prizeValuesEntity = PrizeValuesEntity(
+            inventoryMoney: inventoryMoney,
+            inventoryBaits: inventoryBaits,
+            inventoryXP: inventoryXP,
+            lastPrizeValuesUpdateDB: lastPrizeValuesUpdatePrefs);
+        await prizeValuesUsecase.savePrizeValues(email, prizeValuesEntity);
+      }
+    }
+  }
+
+  comparePrefsToDBEquipmentList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    String email = "";
+    if (auth.currentUser != null) {
+      email = auth.currentUser!.email!;
+      InventoryUsecases inventoryUsecases = InventoryUsecases();
+
+      await inventoryUsecases.getInventoryDB(email);
+    }
+  }
+
   LobbyBloc() : super(LobbyInitial()) {
     on<LobbyEvent>((event, emit) async {
       if (event is EnteringLobbyEvent) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final FirebaseAuth auth = FirebaseAuth.instance;
         String email = "";
-        if (auth.currentUser != null) {
-          email = auth.currentUser!.email!;
-          PrizeValuesUsecase prizeValuesUsecase = PrizeValuesUsecase();
-          PrizeValuesEntity prizeValuesEntity =
-              await prizeValuesUsecase.getPrizeValues(
-            email,
-          );
-
-          int lastPrizeValuesUpdatePrefs = prefs.getInt(
-                "lastPrizeValuesUpdatePrefs",
-              ) ??
-              0;
-
-          //if prize values on DN are fresher than prize values in Prefs
-          if (prizeValuesEntity.lastPrizeValuesUpdateDB >
-              lastPrizeValuesUpdatePrefs) {
-            //if user is logged in && DB data is newer, update prefs
-            await prefs.setInt(
-                "inventoryMoney", prizeValuesEntity.inventoryMoney);
-            await prefs.setInt(
-                "inventoryBaits", prizeValuesEntity.inventoryBaits);
-            await prefs.setInt("inventoryXP", prizeValuesEntity.inventoryXP);
-          }
-        }
-
+        //When  entering the lobby, if user is logged in - compare prize list && inventory between DB & prefs.
+        //if data on DB is newer, update it
+        //id data on prefs is newer, update the DB
+        await comparePrefsToDBPrizeList();
+        await comparePrefsToDBEquipmentList();
         int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
         int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
         int inventoryXP = prefs.getInt("inventoryXP") ?? 0;
@@ -58,7 +95,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         playSound = PlaySound();
 
         playSound.play(path: "assets/sounds/lobby/", fileName: "waves.mp3");
-        int dayLastRotation = /*prefs.getInt("dayLastRotation") ??*/ 0;
+        int dayLastRotation = prefs.getInt("dayLastRotation") ?? 0;
 
         if (DateTime.now().day == dayLastRotation) {
           emit(EnteringLobbyState(
@@ -68,7 +105,6 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
               inventoryXP: inventoryXP,
               isLoggedIn: isLoggedIn));
         } else {
-          print("ccccccccccccccccccccc=" + inventoryXP.toString());
           emit(EnteringLobbyState(
               hasRotatedTodayYet: false,
               inventoryMoney: inventoryMoney,
