@@ -28,5 +28,6 @@
     "send": "Send",
     "need_log_in": "Please log in!",
     "play_game": "Play Game",
-    "revert": "Revert"
+    "revert": "Revert",
+    "switch_location": "Switch Location"
 }

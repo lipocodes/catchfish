@@ -1,6 +1,5 @@
 import 'dart:math';
-
-import 'package:badges/badges.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -12,12 +11,12 @@ class MainGameBoard extends StatefulWidget {
 }
 
 class _MainGameBoardState extends State<MainGameBoard> {
-  String? chosenValue = "Please choose a location";
+  String? chosenValue = "switch_location".tr();
   late GoogleMapController googleMapController;
   List<String> locationsMarinas = [
-    "Please choose a location",
+    "switch_location".tr(),
     "Haifa^^^32.80551^^^35.03183",
-    "Herzlia^^^32.16266961934^^^34.799000522367294",
+    "Herzlia^^^32.16412206929472^^^34.79452424482926",
     "Tel Aviv^^^32.086293551588625^^^34.76733140869999",
     "Ashkelon^^^31.681840821451587^^^34.556773296821696"
   ];
@@ -30,7 +29,7 @@ class _MainGameBoardState extends State<MainGameBoard> {
     position: LatLng(0, 0),
   );
   CameraPosition initialCameraPosition = const CameraPosition(
-    target: LatLng(32.80551, 35.03183),
+    target: LatLng(0.0, 0.0),
     zoom: 17,
   );
 
@@ -59,6 +58,9 @@ class _MainGameBoardState extends State<MainGameBoard> {
       target: LatLng(marinaLatitude, marinaLongitude),
       zoom: 17,
     );
+    setState(() {
+      chosenValue = marinaName;
+    });
   }
 
   moveToSelectedLocation(int indexSelectedItem) {
@@ -162,26 +164,28 @@ class _MainGameBoardState extends State<MainGameBoard> {
           locationsMarinas[a].substring(0, locationsMarinas[a].indexOf("^^^")));
     }
 
-    return Container(
-      padding: const EdgeInsets.all(0.0),
-      child: DropdownButton<String>(
-        value: chosenValue,
-        //elevation: 5,
-        style: const TextStyle(color: Colors.black),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(0.0),
+          child: DropdownButton<String>(
+            value: chosenValue,
+            //elevation: 5,
+            style: const TextStyle(
+                color: Colors.red, fontSize: 20.0, fontWeight: FontWeight.bold),
 
-        items: items.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        hint: const Text(
-          "Please choose a langauage",
-          style: TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
+            items: items.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+
+            onChanged: onChangedDropDown,
+          ),
         ),
-        onChanged: onChangedDropDown,
-      ),
+      ],
     );
   }
 }
