@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,12 +13,14 @@ class MainGameBoard extends StatefulWidget {
 
 class _MainGameBoardState extends State<MainGameBoard> {
   late GoogleMapController googleMapController;
-  late Marker origin = const Marker(
-    markerId: MarkerId("Origin"),
-    infoWindow: InfoWindow(title: "Origin"),
-    icon: BitmapDescriptor.defaultMarker,
-    position: LatLng(32.80551, 35.03183),
-  );
+  List<String> locationsMarinas = [
+    "Haifa^^^32.80551^^^35.03183",
+    "Herzlia^^^32.16266961934^^^34.799000522367294",
+    "Tel Aviv^^^32.086293551588625^^^34.76733140869999",
+    "Ashkelon^^^31.681840821451587^^^34.556773296821696"
+  ];
+
+  late Marker origin;
   late Marker destination = const Marker(
     markerId: MarkerId("Target"),
     infoWindow: InfoWindow(title: "Target"),
@@ -34,40 +38,82 @@ class _MainGameBoardState extends State<MainGameBoard> {
     googleMapController.dispose();
   }
 
+  //when entering this screen, need to randomly choose  a location
+  chooseRandomLocation() {
+    int random = Random().nextInt(4);
+    String temp1 = locationsMarinas[random];
+    List<String> temp2 = temp1.split("^^^");
+    String marinaName = temp2[0];
+    double marinaLatitude = double.parse(temp2[1]);
+    double marinaLongitude = double.parse(temp2[2]);
+    origin = Marker(
+      markerId: const MarkerId("Origin"),
+      infoWindow: const InfoWindow(title: "Origin"),
+      icon: BitmapDescriptor.defaultMarker,
+      position: LatLng(marinaLatitude, marinaLongitude),
+    );
+
+    initialCameraPosition = CameraPosition(
+      target: LatLng(marinaLatitude, marinaLongitude),
+      zoom: 17,
+    );
+  }
+
+  //change the existing location
+  changeExistingLocation(int indexNewLocation) {
+    chooseRandomLocation();
+    googleMapController
+        .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    chooseRandomLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          GoogleMap(
-            myLocationButtonEnabled: false,
-            zoomControlsEnabled: false,
-            initialCameraPosition: initialCameraPosition,
-            onMapCreated: (controller) => googleMapController = controller,
-            markers: {origin, destination},
-            onLongPress: addMarker,
-          ),
-        ],
-      ),
-      backgroundColor: Theme.of(context).primaryColor,
-      floatingActionButton: Stack(
-        children: [
-          FloatingActionButton(
-              onPressed: () => googleMapController.animateCamera(
-                  CameraUpdate.newCameraPosition(initialCameraPosition))),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: GestureDetector(
-              onTap: () => googleMapController.animateCamera(
-                  CameraUpdate.newCameraPosition(initialCameraPosition)),
-              child: const Icon(
-                Icons.refresh,
-                color: Colors.white,
-                size: 32.0,
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            GoogleMap(
+              myLocationButtonEnabled: true,
+              zoomControlsEnabled: true,
+              initialCameraPosition: initialCameraPosition,
+              onMapCreated: (controller) => googleMapController = controller,
+              markers: {origin, destination},
+              onLongPress: addMarker,
+            ),
+            ElevatedButton(
+              child: const Text('Changed'),
+              onPressed: () {
+                changeExistingLocation(0);
+              },
+            )
+          ],
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
+        floatingActionButton: Stack(
+          children: [
+            FloatingActionButton(
+                onPressed: () => googleMapController.animateCamera(
+                    CameraUpdate.newCameraPosition(initialCameraPosition))),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: GestureDetector(
+                onTap: () => googleMapController.animateCamera(
+                    CameraUpdate.newCameraPosition(initialCameraPosition)),
+                child: const Icon(
+                  Icons.refresh,
+                  color: Colors.white,
+                  size: 32.0,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
