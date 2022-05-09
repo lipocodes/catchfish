@@ -54,8 +54,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
             origin: origin,
             destination: destination,
             initialCameraPosition: initialCameraPosition));
-      } else if (event is RevertLocationEvent) {
-        emit(RevertLocationState());
+      } else if (event is SwitchLocationEvent) {
+        emit(SwitchLocationState());
       }
     });
   }

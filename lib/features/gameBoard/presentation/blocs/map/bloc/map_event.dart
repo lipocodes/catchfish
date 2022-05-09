@@ -17,7 +17,7 @@ class ChooseRandomLocationEvent implements MapEvent {
   bool? get stringify => throw UnimplementedError();
 }
 
-class RevertLocationEvent implements MapEvent {
+class SwitchLocationEvent implements MapEvent {
   @override
   // TODO: implement props
   List<Object> get props => throw UnimplementedError();

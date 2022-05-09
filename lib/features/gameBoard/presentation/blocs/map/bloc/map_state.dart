@@ -21,4 +21,4 @@ class ChooseRandomLocationState extends MapState {
       required this.initialCameraPosition});
 }
 
-class RevertLocationState extends MapState {}
+class SwitchLocationState extends MapState {}
