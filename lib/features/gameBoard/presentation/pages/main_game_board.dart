@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'package:catchfish/features/gameBoard/presentation/blocs/map/bloc/map_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MainGameBoard extends StatefulWidget {
@@ -39,85 +41,73 @@ class _MainGameBoardState extends State<MainGameBoard> {
     googleMapController.dispose();
   }
 
-  //when entering this screen, need to randomly choose  a location
-  chooseRandomLocation() {
-    int random = Random().nextInt(4) + 1;
-    String temp1 = locationsMarinas[random];
-    List<String> temp2 = temp1.split("^^^");
-    String marinaName = temp2[0];
-    double marinaLatitude = double.parse(temp2[1]);
-    double marinaLongitude = double.parse(temp2[2]);
-    origin = Marker(
-      markerId: const MarkerId("Origin"),
-      infoWindow: const InfoWindow(title: "Origin"),
-      icon: BitmapDescriptor.defaultMarker,
-      position: LatLng(marinaLatitude, marinaLongitude),
-    );
-
-    initialCameraPosition = CameraPosition(
-      target: LatLng(marinaLatitude, marinaLongitude),
-      zoom: 17,
-    );
-    setState(() {
-      chosenValue = marinaName;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    chooseRandomLocation();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Stack(
-          children: [
-            map(),
-            dropDown(),
-          ],
-        ),
+        body: mapPage(),
         backgroundColor: Theme.of(context).primaryColor,
-        floatingActionButton: returnToOriginalPosition(),
       ),
     );
   }
 
-  /////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////
-  Widget returnToOriginalPosition() {
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+  Widget mapPage() {
+    BlocProvider.of<MapBloc>(context).add(ChooseRandomLocationEvent());
     return Stack(
       children: [
-        FloatingActionButton(
-            onPressed: () => googleMapController.animateCamera(
-                CameraUpdate.newCameraPosition(initialCameraPosition))),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: GestureDetector(
-            onTap: () => googleMapController.animateCamera(
-                CameraUpdate.newCameraPosition(initialCameraPosition)),
-            child: const Icon(
-              Icons.refresh,
-              color: Colors.white,
-              size: 32.0,
-            ),
-          ),
+        map(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            dropDown(),
+            buttonReturnOriginalPosition(),
+          ],
         ),
       ],
+    );
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+  Widget buttonReturnOriginalPosition() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+      ),
+      child: Text('revert'.tr()),
+      onPressed: () {
+        googleMapController.animateCamera(
+            CameraUpdate.newCameraPosition(initialCameraPosition));
+      },
     );
   }
 
   ///////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
   Widget map() {
-    return GoogleMap(
-      myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
-      initialCameraPosition: initialCameraPosition,
-      onMapCreated: (controller) => googleMapController = controller,
-      markers: {origin, destination},
+    return BlocBuilder<MapBloc, MapState>(
+      builder: (context, state) {
+        if (state is ChooseRandomLocationState) {
+          return GoogleMap(
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
+            initialCameraPosition: state.initialCameraPosition,
+            onMapCreated: (controller) => googleMapController = controller,
+            markers: {state.origin, state.destination},
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 
@@ -145,13 +135,6 @@ class _MainGameBoardState extends State<MainGameBoard> {
           .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
     }
 
-    //change the existing location
-    changeExistingLocation(int indexNewLocation) {
-      chooseRandomLocation();
-      googleMapController
-          .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
-    }
-
     void onChangedDropDown(String? selection) {
       for (int a = 1; a < locationsMarinas.length; a++) {
         String temp1 = locationsMarinas[a];
@@ -174,32 +157,42 @@ class _MainGameBoardState extends State<MainGameBoard> {
           locationsMarinas[a].substring(0, locationsMarinas[a].indexOf("^^^")));
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(0.0),
-          child: DropdownButton<String>(
-            value: chosenValue,
-            //elevation: 5,
-            style: const TextStyle(
-                color: Colors.red, fontSize: 20.0, fontWeight: FontWeight.bold),
-            icon: const Padding(
-                //Icon at tail, arrow bottom is default icon
-                padding: EdgeInsets.only(left: 20),
-                child: Icon(Icons.arrow_circle_down_sharp)),
-            dropdownColor: Colors.blueAccent.shade100,
-            items: items.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+    return BlocBuilder<MapBloc, MapState>(
+      builder: (context, state) {
+        if (state is ChooseRandomLocationState) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(0.0),
+                child: DropdownButton<String>(
+                  value: state.marinaName,
+                  //elevation: 5,
+                  style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                  icon: const Padding(
+                      //Icon at tail, arrow bottom is default icon
+                      padding: EdgeInsets.only(left: 20),
+                      child: Icon(Icons.arrow_circle_down_sharp)),
+                  dropdownColor: Colors.blueAccent.shade100,
+                  items: items.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
 
-            onChanged: onChangedDropDown,
-          ),
-        ),
-      ],
+                  onChanged: onChangedDropDown,
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }
