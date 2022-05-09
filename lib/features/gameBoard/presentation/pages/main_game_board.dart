@@ -12,8 +12,10 @@ class MainGameBoard extends StatefulWidget {
 }
 
 class _MainGameBoardState extends State<MainGameBoard> {
+  String? chosenValue = "Please choose a location";
   late GoogleMapController googleMapController;
   List<String> locationsMarinas = [
+    "Please choose a location",
     "Haifa^^^32.80551^^^35.03183",
     "Herzlia^^^32.16266961934^^^34.799000522367294",
     "Tel Aviv^^^32.086293551588625^^^34.76733140869999",
@@ -59,6 +61,26 @@ class _MainGameBoardState extends State<MainGameBoard> {
     );
   }
 
+  moveToSelectedLocation(int indexSelectedItem) {
+    String temp1 = locationsMarinas[indexSelectedItem];
+    List<String> temp2 = temp1.split("^^^");
+    double marinaLatitude = double.parse(temp2[1]);
+    double marinaLongitude = double.parse(temp2[2]);
+    origin = Marker(
+      markerId: const MarkerId("Origin"),
+      infoWindow: const InfoWindow(title: "Origin"),
+      icon: BitmapDescriptor.defaultMarker,
+      position: LatLng(marinaLatitude, marinaLongitude),
+    );
+
+    initialCameraPosition = CameraPosition(
+      target: LatLng(marinaLatitude, marinaLongitude),
+      zoom: 17,
+    );
+    googleMapController
+        .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
+  }
+
   //change the existing location
   changeExistingLocation(int indexNewLocation) {
     chooseRandomLocation();
@@ -86,12 +108,7 @@ class _MainGameBoardState extends State<MainGameBoard> {
               markers: {origin, destination},
               onLongPress: addMarker,
             ),
-            ElevatedButton(
-              child: const Text('Changed'),
-              onPressed: () {
-                changeExistingLocation(0);
-              },
-            )
+            dropDown(),
           ],
         ),
         backgroundColor: Theme.of(context).primaryColor,
@@ -120,5 +137,51 @@ class _MainGameBoardState extends State<MainGameBoard> {
 
   void addMarker(LatLng pos) {
     print("addMarker!");
+  }
+
+  void onChangedDropDown(String? selection) {
+    for (int a = 1; a < locationsMarinas.length; a++) {
+      String temp1 = locationsMarinas[a];
+      List<String> temp2 = temp1.split("^^^");
+      String locationName = temp2[0];
+      if (locationName == selection) {
+        moveToSelectedLocation(a);
+      }
+    }
+    setState(() {
+      chosenValue = selection;
+    });
+  }
+
+  Widget dropDown() {
+    List<String> items = [];
+    items.add(locationsMarinas[0]);
+
+    for (int a = 1; a < locationsMarinas.length; a++) {
+      items.add(
+          locationsMarinas[a].substring(0, locationsMarinas[a].indexOf("^^^")));
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(0.0),
+      child: DropdownButton<String>(
+        value: chosenValue,
+        //elevation: 5,
+        style: const TextStyle(color: Colors.black),
+
+        items: items.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        hint: const Text(
+          "Please choose a langauage",
+          style: TextStyle(
+              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+        onChanged: onChangedDropDown,
+      ),
+    );
   }
 }
