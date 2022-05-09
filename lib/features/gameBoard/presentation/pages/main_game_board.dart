@@ -41,7 +41,7 @@ class _MainGameBoardState extends State<MainGameBoard> {
 
   //when entering this screen, need to randomly choose  a location
   chooseRandomLocation() {
-    int random = Random().nextInt(4);
+    int random = Random().nextInt(4) + 1;
     String temp1 = locationsMarinas[random];
     List<String> temp2 = temp1.split("^^^");
     String marinaName = temp2[0];
@@ -103,8 +103,8 @@ class _MainGameBoardState extends State<MainGameBoard> {
         body: Stack(
           children: [
             GoogleMap(
-              myLocationButtonEnabled: true,
-              zoomControlsEnabled: true,
+              myLocationButtonEnabled: false,
+              zoomControlsEnabled: false,
               initialCameraPosition: initialCameraPosition,
               onMapCreated: (controller) => googleMapController = controller,
               markers: {origin, destination},
@@ -174,7 +174,11 @@ class _MainGameBoardState extends State<MainGameBoard> {
             //elevation: 5,
             style: const TextStyle(
                 color: Colors.red, fontSize: 20.0, fontWeight: FontWeight.bold),
-
+            icon: const Padding(
+                //Icon at tail, arrow bottom is default icon
+                padding: EdgeInsets.only(left: 20),
+                child: Icon(Icons.arrow_circle_down_sharp)),
+            dropdownColor: Colors.blueAccent.shade100,
             items: items.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
