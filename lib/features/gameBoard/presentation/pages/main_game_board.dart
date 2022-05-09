@@ -77,16 +77,24 @@ class _MainGameBoardState extends State<MainGameBoard> {
   /////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
   Widget buttonReturnOriginalPosition() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-      ),
-      child: Text('revert'.tr()),
-      onPressed: () {
-        googleMapController.animateCamera(
-            CameraUpdate.newCameraPosition(initialCameraPosition));
+    return BlocBuilder<MapBloc, MapState>(
+      builder: (context, state) {
+        if (state is ChooseRandomLocationState) {
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+            child: Text('revert'.tr()),
+            onPressed: () {
+              googleMapController.animateCamera(
+                  CameraUpdate.newCameraPosition(state.initialCameraPosition));
+            },
+          );
+        } else {
+          return Container();
+        }
       },
     );
   }
