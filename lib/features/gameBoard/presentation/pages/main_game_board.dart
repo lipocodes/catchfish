@@ -63,33 +63,6 @@ class _MainGameBoardState extends State<MainGameBoard> {
     });
   }
 
-  moveToSelectedLocation(int indexSelectedItem) {
-    String temp1 = locationsMarinas[indexSelectedItem];
-    List<String> temp2 = temp1.split("^^^");
-    double marinaLatitude = double.parse(temp2[1]);
-    double marinaLongitude = double.parse(temp2[2]);
-    origin = Marker(
-      markerId: const MarkerId("Origin"),
-      infoWindow: const InfoWindow(title: "Origin"),
-      icon: BitmapDescriptor.defaultMarker,
-      position: LatLng(marinaLatitude, marinaLongitude),
-    );
-
-    initialCameraPosition = CameraPosition(
-      target: LatLng(marinaLatitude, marinaLongitude),
-      zoom: 17,
-    );
-    googleMapController
-        .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
-  }
-
-  //change the existing location
-  changeExistingLocation(int indexNewLocation) {
-    chooseRandomLocation();
-    googleMapController
-        .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
-  }
-
   @override
   void initState() {
     super.initState();
@@ -102,60 +75,97 @@ class _MainGameBoardState extends State<MainGameBoard> {
       child: Scaffold(
         body: Stack(
           children: [
-            GoogleMap(
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
-              initialCameraPosition: initialCameraPosition,
-              onMapCreated: (controller) => googleMapController = controller,
-              markers: {origin, destination},
-              onLongPress: addMarker,
-            ),
+            map(),
             dropDown(),
           ],
         ),
         backgroundColor: Theme.of(context).primaryColor,
-        floatingActionButton: Stack(
-          children: [
-            FloatingActionButton(
-                onPressed: () => googleMapController.animateCamera(
-                    CameraUpdate.newCameraPosition(initialCameraPosition))),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: GestureDetector(
-                onTap: () => googleMapController.animateCamera(
-                    CameraUpdate.newCameraPosition(initialCameraPosition)),
-                child: const Icon(
-                  Icons.refresh,
-                  color: Colors.white,
-                  size: 32.0,
-                ),
-              ),
-            ),
-          ],
-        ),
+        floatingActionButton: returnToOriginalPosition(),
       ),
     );
   }
 
-  void addMarker(LatLng pos) {
-    print("addMarker!");
+  /////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+  Widget returnToOriginalPosition() {
+    return Stack(
+      children: [
+        FloatingActionButton(
+            onPressed: () => googleMapController.animateCamera(
+                CameraUpdate.newCameraPosition(initialCameraPosition))),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: GestureDetector(
+            onTap: () => googleMapController.animateCamera(
+                CameraUpdate.newCameraPosition(initialCameraPosition)),
+            child: const Icon(
+              Icons.refresh,
+              color: Colors.white,
+              size: 32.0,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
-  void onChangedDropDown(String? selection) {
-    for (int a = 1; a < locationsMarinas.length; a++) {
-      String temp1 = locationsMarinas[a];
-      List<String> temp2 = temp1.split("^^^");
-      String locationName = temp2[0];
-      if (locationName == selection) {
-        moveToSelectedLocation(a);
-      }
-    }
-    setState(() {
-      chosenValue = selection;
-    });
+  ///////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  Widget map() {
+    return GoogleMap(
+      myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
+      initialCameraPosition: initialCameraPosition,
+      onMapCreated: (controller) => googleMapController = controller,
+      markers: {origin, destination},
+    );
   }
 
+//////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
   Widget dropDown() {
+    moveToSelectedLocation(int indexSelectedItem) {
+      String temp1 = locationsMarinas[indexSelectedItem];
+      List<String> temp2 = temp1.split("^^^");
+      double marinaLatitude = double.parse(temp2[1]);
+      double marinaLongitude = double.parse(temp2[2]);
+      origin = Marker(
+        markerId: const MarkerId("Origin"),
+        infoWindow: const InfoWindow(title: "Origin"),
+        icon: BitmapDescriptor.defaultMarker,
+        position: LatLng(marinaLatitude, marinaLongitude),
+      );
+
+      initialCameraPosition = CameraPosition(
+        target: LatLng(marinaLatitude, marinaLongitude),
+        zoom: 17,
+      );
+      googleMapController
+          .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
+    }
+
+    //change the existing location
+    changeExistingLocation(int indexNewLocation) {
+      chooseRandomLocation();
+      googleMapController
+          .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
+    }
+
+    void onChangedDropDown(String? selection) {
+      for (int a = 1; a < locationsMarinas.length; a++) {
+        String temp1 = locationsMarinas[a];
+        List<String> temp2 = temp1.split("^^^");
+        String locationName = temp2[0];
+        if (locationName == selection) {
+          moveToSelectedLocation(a);
+        }
+      }
+      setState(() {
+        chosenValue = selection;
+      });
+    }
+
     List<String> items = [];
     items.add(locationsMarinas[0]);
 
