@@ -31,5 +31,18 @@
     "play_game": "Play Game",
     "weather": "Weather",
     "choose_another_location": "Choose Another Location",
-    "switch_location": "Switch Location"
+    "switch_location": "Switch Location",
+    "weather:": "Weather: ",
+    "temp:": "Temp: ",
+    "feels_like:": "Feels Like: ",
+    "max_temp:": "Max Temp: ",
+    "min_temp:": "Min Temp: ",
+    "humidity:": "Humidity: ",
+    "cloudiness:" :"Cloudiness: ",
+    "wind_degree:": "Wind Degree: ",
+    "wind_gust:" : "Wind Gust: ",
+    "wind_speed:": "Wind Speed: ",
+    "pressure:" : "Pressure: ",
+    "sunrise:" : "Sunrise: ",
+    "sunset": "Sunset: "
 }

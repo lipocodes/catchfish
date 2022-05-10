@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:weather/weather.dart';
+import 'dart:ui' as UI;
 
 class Map extends StatefulWidget {
   const Map({Key? key}) : super(key: key);
@@ -72,8 +73,28 @@ class _MapState extends State<Map> {
       showDialog(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-                title: const Text('Forecast for Today:'),
-                content: Text(weatherDetails),
+                backgroundColor: Colors.redAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                title: const Text(
+                  'Forecast for Today:',
+                  textDirection: UI.TextDirection.ltr,
+                  style: TextStyle(
+                    fontFamily: 'skullsandcrossbones',
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                content: Text(
+                  weatherDetails,
+                  textDirection: UI.TextDirection.ltr,
+                  style: const TextStyle(
+                    fontFamily: 'skullsandcrossbones',
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 actions: <Widget>[
                   IconButton(
                       icon: const Icon(Icons.close),
@@ -108,7 +129,6 @@ class _MapState extends State<Map> {
               floatingActionButton: returnToOriginalPosition(),
             );
           } else {
-            print("pppppppppppppppppppppppppppp");
             return Scaffold(
               body: Stack(
                 children: [
@@ -262,7 +282,9 @@ class _MapState extends State<Map> {
             items: items.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value),
+                child: Text(
+                  value,
+                ),
               );
             }).toList(),
 
