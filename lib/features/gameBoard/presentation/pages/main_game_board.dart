@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:math';
+import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:weather/weather.dart';
 
@@ -64,6 +67,24 @@ class _MapState extends State<Map> {
     });
   }
 
+  showWeatherDetails(String weatherDetails) {
+    Timer(const Duration(seconds: 1), () {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+                title: const Text('Forecast for Today:'),
+                content: Text(weatherDetails),
+                actions: <Widget>[
+                  IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      })
+                ],
+              ));
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -73,14 +94,32 @@ class _MapState extends State<Map> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            mapPage(),
-          ],
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
-        floatingActionButton: returnToOriginalPosition(),
+      child: BlocBuilder<WeatherBloc, WeatherState>(
+        builder: (context, state) {
+          if (state is GetWeatherState) {
+            showWeatherDetails(state.weatherDetails);
+            return Scaffold(
+              body: Stack(
+                children: [
+                  mapPage(),
+                ],
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              floatingActionButton: returnToOriginalPosition(),
+            );
+          } else {
+            print("pppppppppppppppppppppppppppp");
+            return Scaffold(
+              body: Stack(
+                children: [
+                  mapPage(),
+                ],
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              floatingActionButton: returnToOriginalPosition(),
+            );
+          }
+        },
       ),
     );
   }
@@ -114,18 +153,9 @@ class _MapState extends State<Map> {
       label: Text('weather'.tr()),
       icon: const Icon(Icons.cloud, size: 24.0, color: Colors.white),
       onPressed: () async {
-        WeatherFactory wf = WeatherFactory("f5032883316e150d0391daf1cb11d680");
-        Weather w = await wf.currentWeatherByLocation(
-            initialCameraPosition.target.latitude,
-            initialCameraPosition.target.longitude);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Text(w.toString()),
-            );
-          },
-        );
+        BlocProvider.of<WeatherBloc>(context).add(GetWeatherEvent(
+            latitude: initialCameraPosition.target.latitude,
+            longitude: initialCameraPosition.target.longitude));
       },
     );
   }
@@ -203,6 +233,7 @@ class _MapState extends State<Map> {
       setState(() {
         chosenValue = selection;
       });
+      BlocProvider.of<WeatherBloc>(context).add(InitialEvent());
     }
 
     List<String> items = [];

@@ -1,5 +1,6 @@
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/main_game_board.dart';
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
@@ -160,6 +161,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<TokensBloc>(
           create: (BuildContext context) => TokensBloc(),
+        ),
+        BlocProvider<WeatherBloc>(
+          create: (BuildContext context) => WeatherBloc(),
         ),
       ],
       child: MultiProvider(
