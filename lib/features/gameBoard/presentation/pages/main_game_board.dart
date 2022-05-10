@@ -3,14 +3,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MainGameBoard extends StatefulWidget {
-  const MainGameBoard({Key? key}) : super(key: key);
+class Map extends StatefulWidget {
+  const Map({Key? key}) : super(key: key);
 
   @override
-  State<MainGameBoard> createState() => _MainGameBoardState();
+  State<Map> createState() => _MapState();
 }
 
-class _MainGameBoardState extends State<MainGameBoard> {
+class _MapState extends State<Map> {
   String? chosenValue = "switch_location".tr();
   late GoogleMapController googleMapController;
   List<String> locationsMarinas = [
@@ -79,6 +79,7 @@ class _MainGameBoardState extends State<MainGameBoard> {
           ],
         ),
         backgroundColor: Theme.of(context).primaryColor,
+        floatingActionButton: returnToOriginalPosition(),
       ),
     );
   }
@@ -93,7 +94,6 @@ class _MainGameBoardState extends State<MainGameBoard> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             dropDown(),
-            buttonReturnOriginalPosition(),
           ],
         ),
       ],
@@ -102,18 +102,26 @@ class _MainGameBoardState extends State<MainGameBoard> {
 
   /////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
-  Widget buttonReturnOriginalPosition() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
+
+  Widget returnToOriginalPosition() {
+    return Stack(
+      children: [
+        FloatingActionButton(
+            onPressed: () => googleMapController.animateCamera(
+                CameraUpdate.newCameraPosition(initialCameraPosition))),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: GestureDetector(
+            onTap: () => googleMapController.animateCamera(
+                CameraUpdate.newCameraPosition(initialCameraPosition)),
+            child: const Icon(
+              Icons.refresh,
+              color: Colors.white,
+              size: 32.0,
+            ),
+          ),
         ),
-      ),
-      child: Text('revert'.tr()),
-      onPressed: () {
-        googleMapController.animateCamera(
-            CameraUpdate.newCameraPosition(initialCameraPosition));
-      },
+      ],
     );
   }
 
@@ -149,13 +157,6 @@ class _MainGameBoardState extends State<MainGameBoard> {
         target: LatLng(marinaLatitude, marinaLongitude),
         zoom: 17,
       );
-      googleMapController
-          .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
-    }
-
-    //change the existing location
-    changeExistingLocation(int indexNewLocation) {
-      chooseRandomLocation();
       googleMapController
           .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
     }

@@ -1,6 +1,5 @@
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
-import 'package:catchfish/features/gameBoard/presentation/blocs/map/bloc/map_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/main_game_board.dart';
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
@@ -9,7 +8,6 @@ import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
 import 'package:catchfish/features/login/presentation/blocs/provider/apple_sign_in.dart';
 import 'package:catchfish/features/login/presentation/blocs/provider/facebook_sign_in.dart';
 import 'package:catchfish/features/login/presentation/blocs/provider/google_sign_in.dart';
-
 import 'package:catchfish/features/login/presentation/pages/login.dart';
 import 'package:catchfish/features/settings/presentation/blocs/bloc/inventory_bloc.dart';
 import 'package:catchfish/features/settings/presentation/pages/contact.dart';
@@ -17,9 +15,7 @@ import 'package:catchfish/features/settings/presentation/pages/equipment_invento
 import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
 import 'package:catchfish/features/tokens/presentation/blocs/provider/tokens_provider.dart';
 import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -30,8 +26,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as UI;
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_important_channel',
@@ -44,18 +38,6 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  //when there's a background message coming in, Firebase app should be initialized.
-  //await Firebase.initializeApp();
-
-  //We don't allow multiple notification in a row
-  /*SharedPreferences prefs = await SharedPreferences.getInstance();
-  int lastNotificationTime = prefs.getInt("lastNotificationTime") ?? 0;
-  int timeNow = DateTime.now().millisecondsSinceEpoch;
-  if (timeNow - lastNotificationTime < 30 * 1000) {
-    return;
-  }
-  prefs.setInt("lastNotificationTime", timeNow);*/
-
   RemoteNotification? notification = message.notification;
   AndroidNotification? android = message.notification?.android;
   if (notification != null && android != null) {
@@ -179,9 +161,6 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<TokensBloc>(
           create: (BuildContext context) => TokensBloc(),
         ),
-        BlocProvider<MapBloc>(
-          create: (BuildContext context) => MapBloc(),
-        ),
       ],
       child: MultiProvider(
           providers: [
@@ -256,9 +235,9 @@ class _MyAppState extends State<MyApp> {
                       settings: settings,
                       duration: const Duration(milliseconds: 1000),
                     );
-                  case '/main_game_board':
+                  case '/map':
                     return PageTransition(
-                      child: const MainGameBoard(),
+                      child: const Map(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 2000),

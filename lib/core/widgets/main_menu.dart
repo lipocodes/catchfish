@@ -47,7 +47,7 @@ Widget mainMenu(BuildContext context) {
               //Navigator.pushNamed(context, '/main_game_board');
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MainGameBoard()),
+                MaterialPageRoute(builder: (context) => const Map()),
               );
             },
           ),
