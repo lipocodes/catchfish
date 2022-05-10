@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:weather/weather.dart';
 
 class Map extends StatefulWidget {
   const Map({Key? key}) : super(key: key);
@@ -112,8 +113,19 @@ class _MapState extends State<Map> {
       ),
       label: Text('weather'.tr()),
       icon: const Icon(Icons.cloud, size: 24.0, color: Colors.white),
-      onPressed: () {
-        print("ppppppppppppppppppppp");
+      onPressed: () async {
+        WeatherFactory wf = WeatherFactory("f5032883316e150d0391daf1cb11d680");
+        Weather w = await wf.currentWeatherByLocation(
+            initialCameraPosition.target.latitude,
+            initialCameraPosition.target.longitude);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text(w.toString()),
+            );
+          },
+        );
       },
     );
   }
