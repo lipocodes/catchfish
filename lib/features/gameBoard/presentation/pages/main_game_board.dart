@@ -94,9 +94,27 @@ class _MapState extends State<Map> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             dropDown(),
+            buttonWeather(),
           ],
         ),
       ],
+    );
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+  Widget buttonWeather() {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+      ),
+      label: Text('weather'.tr()),
+      icon: const Icon(Icons.cloud, size: 24.0, color: Colors.white),
+      onPressed: () {
+        print("ppppppppppppppppppppp");
+      },
     );
   }
 
