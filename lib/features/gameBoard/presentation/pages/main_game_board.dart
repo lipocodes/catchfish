@@ -282,8 +282,10 @@ class _MapState extends State<Map> {
             items: items.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(
-                  value,
+                child: Center(
+                  child: Text(
+                    value,
+                  ),
                 ),
               );
             }).toList(),
