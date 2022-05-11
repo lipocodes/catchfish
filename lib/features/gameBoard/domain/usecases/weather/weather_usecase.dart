@@ -1,6 +1,6 @@
-import 'package:catchfish/features/gameBoard/data/models/weather_model.dart';
+import 'package:catchfish/features/gameBoard/data/models/weather/weather_model.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/weather_repository_impl.dart';
-import 'package:catchfish/features/gameBoard/domain/entities/weather_entity.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/weather/weather_entity.dart';
 
 class WeatherUsecase {
   Future<WeatherEntity> getWeatherDetails(

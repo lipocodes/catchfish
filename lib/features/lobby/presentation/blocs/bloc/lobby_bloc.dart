@@ -5,8 +5,6 @@ import 'package:catchfish/core/consts/daily_prizes.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
 import 'package:catchfish/features/lobby/domain/usecases/prize_values_usecase.dart';
-import 'package:catchfish/features/settings/domain/entities/inventory_entity.dart';
-import 'package:catchfish/features/settings/domain/entities/inventory_screen_entity.dart';
 import 'package:catchfish/features/settings/domain/usecases/inventory_usecases.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/core/widgets/main_menu.dart';
-import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/arrow_bottom.dart';
 import 'package:catchfish/features/lobby/presentation/widgets/button_back.dart';

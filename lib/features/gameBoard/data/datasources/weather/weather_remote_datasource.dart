@@ -1,4 +1,4 @@
-import 'package:catchfish/features/gameBoard/data/models/weather_model.dart';
+import 'package:catchfish/features/gameBoard/data/models/weather/weather_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:weather/weather.dart';
 

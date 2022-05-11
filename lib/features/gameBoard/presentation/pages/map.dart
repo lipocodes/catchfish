@@ -5,8 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:weather/weather.dart';
 import 'dart:ui' as UI;
+import 'package:catchfish/core/consts/marinas.dart';
 
 class Map extends StatefulWidget {
   const Map({Key? key}) : super(key: key);
@@ -18,13 +18,6 @@ class Map extends StatefulWidget {
 class _MapState extends State<Map> {
   String? chosenValue = "switch_location".tr();
   late GoogleMapController googleMapController;
-  List<String> locationsMarinas = [
-    "switch_location".tr(),
-    "Haifa^^^32.80551^^^35.03183",
-    "Herzlia^^^32.16412206929472^^^34.79452424482926",
-    "Tel Aviv^^^32.086293551588625^^^34.76733140869999",
-    "Ashkelon^^^31.681840821451587^^^34.556773296821696"
-  ];
 
   late Marker origin;
   late Marker destination = const Marker(

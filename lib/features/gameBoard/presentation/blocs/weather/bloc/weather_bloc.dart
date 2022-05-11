@@ -1,9 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:catchfish/features/gameBoard/domain/entities/weather_entity.dart';
-import 'package:catchfish/features/gameBoard/domain/usecases/weather_usecase.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/weather/weather_entity.dart';
+import 'package:catchfish/features/gameBoard/domain/usecases/weather/weather_usecase.dart';
 import 'package:equatable/equatable.dart';
-import 'package:weather/weather.dart';
 
 part 'weather_event.dart';
 part 'weather_state.dart';

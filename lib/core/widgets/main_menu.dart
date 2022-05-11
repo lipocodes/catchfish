@@ -1,5 +1,5 @@
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
-import 'package:catchfish/features/gameBoard/presentation/pages/main_game_board.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/map.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/settings/presentation/pages/contact.dart';
 import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
