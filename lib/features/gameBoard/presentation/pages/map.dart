@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:catchfish/features/fishingShop/presentation/widgets/button_back.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/map/button_go_navigation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -143,11 +145,24 @@ class _MapState extends State<Map> {
     return Stack(
       children: [
         map(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        Column(
           children: [
-            dropDown(),
-            buttonWeather(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                buttonGoNavigation(context),
+                buttonBack(
+                  context,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                dropDown(),
+                buttonWeather(),
+              ],
+            ),
           ],
         ),
       ],

@@ -42,5 +42,6 @@
     "wind_speed:": "Wind Speed: ",
     "pressure:" : "Pressure: ",
     "sunrise:" : "Sunrise: ",
-    "sunset": "Sunset: "
+    "sunset": "Sunset: ",
+    "go_to_boat": "Go to Boat"
 }

@@ -1,7 +1,9 @@
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/map.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart';
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
@@ -165,6 +167,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<WeatherBloc>(
           create: (BuildContext context) => WeatherBloc(),
         ),
+        BlocProvider<NavigationBloc>(
+          create: (BuildContext context) => NavigationBloc(),
+        ),
       ],
       child: MultiProvider(
           providers: [
@@ -242,6 +247,13 @@ class _MyAppState extends State<MyApp> {
                   case '/map':
                     return PageTransition(
                       child: const Map(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 2000),
+                    );
+                  case '/navigation':
+                    return PageTransition(
+                      child: const Navigation(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 2000),
