@@ -1,7 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-Widget buttonGoNavigation(BuildContext context) {
+Widget buttonGoNavigation(
+  BuildContext context,
+) {
   return ElevatedButton.icon(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(
@@ -11,6 +14,7 @@ Widget buttonGoNavigation(BuildContext context) {
     label: Text('go_to_boat'.tr()),
     icon: const Icon(Icons.cloud, size: 24.0, color: Colors.white),
     onPressed: () async {
+      //googleMapController.dispose();
       Navigator.pushNamed(context, '/navigation');
     },
   );

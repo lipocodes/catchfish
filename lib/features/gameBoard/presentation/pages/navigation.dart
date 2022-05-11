@@ -15,7 +15,7 @@ class _NavigationState extends State<Navigation> {
         child: Scaffold(
             extendBodyBehindAppBar: true,
             appBar: AppBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.blue,
               elevation: 0,
               leading: buttonBack(context),
               actions: [],
