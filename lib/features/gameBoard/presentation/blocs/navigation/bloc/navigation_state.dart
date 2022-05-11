@@ -10,3 +10,7 @@ abstract class NavigationState extends Equatable {
 class NavigationInitial extends NavigationState {}
 
 class EnteringNavigationState extends NavigationState {}
+
+class ShowMapState extends NavigationState {}
+
+class LeavingNavigationState extends NavigationState {}

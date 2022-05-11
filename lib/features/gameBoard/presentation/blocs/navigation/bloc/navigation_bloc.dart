@@ -9,6 +9,10 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
     on<NavigationEvent>((event, emit) {
       if (event is EnteringNavigationEvent) {
         emit(EnteringNavigationState());
+      } else if (event is ShowMapEvent) {
+        emit(ShowMapState());
+      } else if (event is LeavingNavigationEvent) {
+        emit(LeavingNavigationState());
       }
     });
   }

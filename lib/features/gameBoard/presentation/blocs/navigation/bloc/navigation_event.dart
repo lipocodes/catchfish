@@ -16,3 +16,23 @@ class EnteringNavigationEvent implements NavigationEvent {
   // TODO: implement stringify
   bool? get stringify => throw UnimplementedError();
 }
+
+class ShowMapEvent implements NavigationEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+
+  @override
+  // TODO: implement stringify
+  bool? get stringify => throw UnimplementedError();
+}
+
+class LeavingNavigationEvent implements NavigationEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+
+  @override
+  // TODO: implement stringify
+  bool? get stringify => throw UnimplementedError();
+}

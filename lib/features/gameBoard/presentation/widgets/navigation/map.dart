@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-Widget map() {
-  return Container();
+Widget map(
+    CameraPosition initialCameraPosition,
+    GoogleMapController googleMapController,
+    Marker origin,
+    Marker destination) {
+  return GoogleMap(
+    myLocationButtonEnabled: false,
+    zoomControlsEnabled: false,
+    initialCameraPosition: initialCameraPosition,
+    onMapCreated: (controller) => googleMapController = controller,
+    markers: {origin, destination},
+  );
 }
