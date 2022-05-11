@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui' as UI;
 import 'package:catchfish/core/consts/marinas.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Map extends StatefulWidget {
   const Map({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
+  late SharedPreferences _prefs;
   String? chosenValue = "switch_location".tr();
   late GoogleMapController googleMapController;
 
@@ -40,7 +42,7 @@ class _MapState extends State<Map> {
   }
 
   //when entering this screen, need to randomly choose  a location
-  chooseRandomLocation() {
+  chooseRandomLocation() async {
     int random = Random().nextInt(4) + 1;
     String temp1 = locationsMarinas[random];
     List<String> temp2 = temp1.split("^^^");
@@ -58,6 +60,8 @@ class _MapState extends State<Map> {
       target: LatLng(marinaLatitude, marinaLongitude),
       zoom: 17,
     );
+    await _prefs.setDouble("marinaLatitude", marinaLatitude);
+    await _prefs.setDouble("marinaLongitude", marinaLongitude);
     setState(() {
       chosenValue = marinaName;
     });
@@ -101,9 +105,15 @@ class _MapState extends State<Map> {
     });
   }
 
+  //Retreive existing prefs
+  retreivePrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
   @override
   void initState() {
     super.initState();
+    retreivePrefs();
     chooseRandomLocation();
   }
 
@@ -144,7 +154,7 @@ class _MapState extends State<Map> {
   Widget mapPage() {
     return Stack(
       children: [
-        map(),
+        //map(),
         Column(
           children: [
             Row(
@@ -229,7 +239,7 @@ class _MapState extends State<Map> {
 /////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
   Widget dropDown() {
-    moveToSelectedLocation(int indexSelectedItem) {
+    moveToSelectedLocation(int indexSelectedItem) async {
       String temp1 = locationsMarinas[indexSelectedItem];
       List<String> temp2 = temp1.split("^^^");
       double marinaLatitude = double.parse(temp2[1]);
@@ -245,6 +255,8 @@ class _MapState extends State<Map> {
         target: LatLng(marinaLatitude, marinaLongitude),
         zoom: 17,
       );
+      await _prefs.setDouble("marinaLatitude", marinaLatitude);
+      await _prefs.setDouble("marinaLongitude", marinaLongitude);
       googleMapController
           .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
     }
