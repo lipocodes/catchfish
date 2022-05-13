@@ -113,6 +113,7 @@ class _MyAppState extends State<MyApp> {
 
   bool checkPointInsidePolygon(double y, double x, int indexMarina) {
     //Based on Ray Casting algorithm for checking if a point is inside a polygon
+
     int numIntersections = 0;
     List<String> list = polygonsMarinas[indexMarina];
     //taking every 2 adjacent vertices of the polygon
@@ -147,7 +148,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    checkPointInsidePolygon(32.814360, 35.029811, 1);
+    checkPointInsidePolygon(32.835167, 35.050628, 1);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
