@@ -96,6 +96,25 @@ class _NavigationState extends State<Navigation> {
                   _prepareDataForMap();
                   return Container();
                 } else if (state is ShowMapState) {
+                  List<LatLng> polygonLatLong1 = [
+                    const LatLng(32.813035, 35.035301),
+                    const LatLng(32.811953, 35.035601),
+                    const LatLng(32.811358, 35.033906),
+                    const LatLng(32.813035, 35.035301),
+                  ];
+
+                  Set<Polygon> poly = <Polygon>{
+                    Polygon(
+                      polygonId: const PolygonId("1"),
+                      points: polygonLatLong1,
+                      fillColor: Colors.red,
+                      strokeColor: Colors.red,
+                      strokeWidth: 10,
+                      onTap: () {
+                        // Do something
+                      },
+                    ),
+                  };
                   return GoogleMap(
                     myLocationButtonEnabled: false,
                     zoomControlsEnabled: false,
@@ -103,6 +122,7 @@ class _NavigationState extends State<Navigation> {
                     onMapCreated: (controller) =>
                         _googleMapController = controller,
                     markers: {_origin, _destination},
+                    polygons: poly,
                   );
                 } else {
                   return Container();

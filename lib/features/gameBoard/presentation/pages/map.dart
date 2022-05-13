@@ -154,7 +154,7 @@ class _MapState extends State<Map> {
   Widget mapPage() {
     return Stack(
       children: [
-        //map(),
+        map(),
         Column(
           children: [
             Row(
@@ -226,12 +226,31 @@ class _MapState extends State<Map> {
   ///////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
   Widget map() {
+    List<LatLng> polygonLatLong1 = [
+      const LatLng(32.806262, 35.031642),
+      const LatLng(32.804621, 35.031277),
+      const LatLng(32.804946, 35.029818),
+      const LatLng(32.806605, 35.030462),
+    ];
+    Set<Polygon> poly = <Polygon>{
+      Polygon(
+        polygonId: const PolygonId("1"),
+        points: polygonLatLong1,
+        fillColor: Colors.blueAccent,
+        strokeColor: Colors.blue,
+        strokeWidth: 2,
+        onTap: () {
+          // Do something
+        },
+      ),
+    };
     return GoogleMap(
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       initialCameraPosition: initialCameraPosition,
       onMapCreated: (controller) => googleMapController = controller,
       markers: {origin, destination},
+      polygons: poly,
     );
   }
 
