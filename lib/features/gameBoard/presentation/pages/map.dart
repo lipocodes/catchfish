@@ -59,13 +59,19 @@ class _MapState extends State<Map> {
           'assets/images/gameBoard/boat.png'),
       position: LatLng(marinaLatitude, marinaLongitude),
     );
+    List<String> destinationPoints = destinationPointsMarinas[_random];
+    int rand = Random().nextInt(destinationPoints.length);
+    String destinationPoint = destinationPoints[rand];
+    List<String> temp3 = destinationPoint.split(",");
+    double y = double.parse(temp3[0]);
+    double x = double.parse(temp3[1]);
     destination = Marker(
       markerId: const MarkerId("Destination"),
       infoWindow: const InfoWindow(title: "Destination"),
       icon: await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(size: Size(64, 64)),
           'assets/images/gameBoard/anchor.png'),
-      position: const LatLng(32.805773, 35.030542),
+      position: LatLng(y, x),
     );
 
     initialCameraPosition = CameraPosition(
@@ -288,13 +294,21 @@ class _MapState extends State<Map> {
             'assets/images/gameBoard/boat.png'),
         position: LatLng(marinaLatitude, marinaLongitude),
       );
+      List<String> destinationPoints = destinationPointsMarinas[_random];
+      int rand = Random().nextInt(destinationPoints.length);
+      String destinationPoint = destinationPoints[rand];
+      List<String> temp3 = destinationPoint.split(",");
+      double y = double.parse(temp3[0]);
+      double x = double.parse(temp3[1]);
+      _prefs.setDouble("yDestination", y);
+      _prefs.setDouble("xDestination", x);
       destination = Marker(
         markerId: const MarkerId("Destination"),
         infoWindow: const InfoWindow(title: "Destination"),
         icon: await BitmapDescriptor.fromAssetImage(
             const ImageConfiguration(size: Size(64, 64)),
             'assets/images/gameBoard/anchor.png'),
-        position: const LatLng(32.805773, 35.030542),
+        position: LatLng(y, x),
       );
       initialCameraPosition = CameraPosition(
         target: LatLng(marinaLatitude, marinaLongitude),

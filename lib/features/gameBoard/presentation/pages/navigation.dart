@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
@@ -45,13 +47,16 @@ class _NavigationState extends State<Navigation> {
           'assets/images/gameBoard/boat.png'),
       position: LatLng(_marinaLatitude, _marinaLongitude),
     );
+
+    double y = _prefs.getDouble("yDestination") ?? 0.0;
+    double x = _prefs.getDouble("xDestination") ?? 0.0;
     _destination = Marker(
       markerId: const MarkerId("destination"),
       infoWindow: const InfoWindow(title: "destination"),
       icon: await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(size: Size(64, 64)),
           'assets/images/gameBoard/anchor.png'),
-      position: const LatLng(32.805773, 35.030542),
+      position: LatLng(y, x),
     );
     _initialCameraPosition = CameraPosition(
       target: LatLng(_marinaLatitude, _marinaLongitude),
