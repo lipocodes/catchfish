@@ -42,7 +42,7 @@ class _NavigationState extends State<Navigation> {
       infoWindow: const InfoWindow(title: "Origin"),
       icon: await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(size: Size(64, 64)),
-          'assets/images/gameBoard/boat_steering.png'),
+          'assets/images/gameBoard/boat.png'),
       position: LatLng(_marinaLatitude, _marinaLongitude),
     );
     _destination = Marker(

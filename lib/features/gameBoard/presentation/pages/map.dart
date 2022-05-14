@@ -56,7 +56,7 @@ class _MapState extends State<Map> {
       infoWindow: const InfoWindow(title: "Origin"),
       icon: await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(size: Size(64, 64)),
-          'assets/images/gameBoard/boat_steering.png'),
+          'assets/images/gameBoard/boat.png'),
       position: LatLng(marinaLatitude, marinaLongitude),
     );
     destination = Marker(
@@ -285,7 +285,7 @@ class _MapState extends State<Map> {
         infoWindow: const InfoWindow(title: "Origin"),
         icon: await BitmapDescriptor.fromAssetImage(
             const ImageConfiguration(size: Size(64, 64)),
-            'assets/images/gameBoard/boat_steering.png'),
+            'assets/images/gameBoard/boat.png'),
         position: LatLng(marinaLatitude, marinaLongitude),
       );
       destination = Marker(
