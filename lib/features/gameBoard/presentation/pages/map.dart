@@ -22,6 +22,7 @@ class _MapState extends State<Map> {
   late SharedPreferences _prefs;
   String? chosenValue = "switch_location".tr();
   late GoogleMapController googleMapController;
+  int _random = 0;
 
   late Marker origin;
   late Marker destination = const Marker(
@@ -43,8 +44,8 @@ class _MapState extends State<Map> {
 
   //when entering this screen, need to randomly choose  a location
   chooseRandomLocation() async {
-    int random = Random().nextInt(4) + 1;
-    String temp1 = locationsMarinas[random];
+    _random = Random().nextInt(4) + 1;
+    String temp1 = locationsMarinas[_random];
     List<String> temp2 = temp1.split("^^^");
     String marinaName = temp2[0];
     double marinaLatitude = double.parse(temp2[1]);
@@ -226,12 +227,16 @@ class _MapState extends State<Map> {
   ///////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
   Widget map() {
-    List<LatLng> polygonLatLong1 = [
-      const LatLng(32.806262, 35.031642),
-      const LatLng(32.804621, 35.031277),
-      const LatLng(32.804946, 35.029818),
-      const LatLng(32.806605, 35.030462),
-    ];
+    List<LatLng> polygonLatLong1 = [];
+    _random = 1;
+    List<String> pointsPolygon = polygonsMarinas[_random];
+    for (int a = 0; a < pointsPolygon.length; a++) {
+      String temp1 = pointsPolygon[a];
+      List<String> temp2 = temp1.split(",");
+      double y = double.parse(temp2[0]);
+      double x = double.parse(temp2[1]);
+      polygonLatLong1.add(LatLng(y, x));
+    }
     Set<Polygon> poly = <Polygon>{
       Polygon(
         polygonId: const PolygonId("1"),
@@ -274,6 +279,7 @@ class _MapState extends State<Map> {
         target: LatLng(marinaLatitude, marinaLongitude),
         zoom: 17,
       );
+      await _prefs.setInt("indexMarina", _random);
       await _prefs.setDouble("marinaLatitude", marinaLatitude);
       await _prefs.setDouble("marinaLongitude", marinaLongitude);
       googleMapController

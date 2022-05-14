@@ -1,3 +1,4 @@
+import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   late SharedPreferences _prefs;
+  int _indexMarina = 0;
   double _marinaLatitude = 0.0;
   double _marinaLongitude = 0.0;
   late GoogleMapController _googleMapController;
@@ -58,6 +60,7 @@ class _NavigationState extends State<Navigation> {
   //Retreive existing prefs
   _retreivePrefs() async {
     _prefs = await SharedPreferences.getInstance();
+    _indexMarina = _prefs.getInt("indexMarina") ?? 0;
     _marinaLatitude = _prefs.getDouble("marinaLatitude") ?? 0.0;
     _marinaLongitude = _prefs.getDouble("marinaLongitude") ?? 0.0;
   }
@@ -96,20 +99,23 @@ class _NavigationState extends State<Navigation> {
                   _prepareDataForMap();
                   return Container();
                 } else if (state is ShowMapState) {
-                  List<LatLng> polygonLatLong1 = [
-                    const LatLng(32.813035, 35.035301),
-                    const LatLng(32.811953, 35.035601),
-                    const LatLng(32.811358, 35.033906),
-                    const LatLng(32.813035, 35.035301),
-                  ];
+                  List<LatLng> polygonLatLong1 = [];
 
+                  List<String> pointsPolygon = polygonsMarinas[_indexMarina];
+                  for (int a = 0; a < pointsPolygon.length; a++) {
+                    String temp1 = pointsPolygon[a];
+                    List<String> temp2 = temp1.split(",");
+                    double y = double.parse(temp2[0]);
+                    double x = double.parse(temp2[1]);
+                    polygonLatLong1.add(LatLng(y, x));
+                  }
                   Set<Polygon> poly = <Polygon>{
                     Polygon(
                       polygonId: const PolygonId("1"),
                       points: polygonLatLong1,
-                      fillColor: Colors.red,
-                      strokeColor: Colors.red,
-                      strokeWidth: 10,
+                      fillColor: Colors.blueAccent,
+                      strokeColor: Colors.blue,
+                      strokeWidth: 2,
                       onTap: () {
                         // Do something
                       },
