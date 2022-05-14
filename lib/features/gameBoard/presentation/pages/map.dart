@@ -44,13 +44,13 @@ class _MapState extends State<Map> {
 
   //when entering this screen, need to randomly choose  a location
   chooseRandomLocation() async {
-    Future.delayed(const Duration(milliseconds: 1000), () {});
     _random = Random().nextInt(4) + 1;
     String temp1 = locationsMarinas[_random];
     List<String> temp2 = temp1.split("^^^");
     String marinaName = temp2[0];
     double marinaLatitude = double.parse(temp2[1]);
     double marinaLongitude = double.parse(temp2[2]);
+
     origin = Marker(
       markerId: const MarkerId("Origin"),
       infoWindow: const InfoWindow(title: "Origin"),
