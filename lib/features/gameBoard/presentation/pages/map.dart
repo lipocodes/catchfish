@@ -44,6 +44,7 @@ class _MapState extends State<Map> {
 
   //when entering this screen, need to randomly choose  a location
   chooseRandomLocation() async {
+    Future.delayed(const Duration(milliseconds: 1000), () {});
     _random = Random().nextInt(4) + 1;
     String temp1 = locationsMarinas[_random];
     List<String> temp2 = temp1.split("^^^");
@@ -53,8 +54,18 @@ class _MapState extends State<Map> {
     origin = Marker(
       markerId: const MarkerId("Origin"),
       infoWindow: const InfoWindow(title: "Origin"),
-      icon: BitmapDescriptor.defaultMarker,
+      icon: await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(size: Size(64, 64)),
+          'assets/images/gameBoard/boat_steering.png'),
       position: LatLng(marinaLatitude, marinaLongitude),
+    );
+    destination = Marker(
+      markerId: const MarkerId("Destination"),
+      infoWindow: const InfoWindow(title: "Destination"),
+      icon: await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(size: Size(64, 64)),
+          'assets/images/gameBoard/anchor.png'),
+      position: const LatLng(32.805773, 35.030542),
     );
 
     initialCameraPosition = CameraPosition(
@@ -115,6 +126,7 @@ class _MapState extends State<Map> {
   void initState() {
     super.initState();
     retreivePrefs();
+
     chooseRandomLocation();
   }
 
@@ -271,10 +283,19 @@ class _MapState extends State<Map> {
       origin = Marker(
         markerId: const MarkerId("Origin"),
         infoWindow: const InfoWindow(title: "Origin"),
-        icon: BitmapDescriptor.defaultMarker,
+        icon: await BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(size: Size(64, 64)),
+            'assets/images/gameBoard/boat_steering.png'),
         position: LatLng(marinaLatitude, marinaLongitude),
       );
-
+      destination = Marker(
+        markerId: const MarkerId("Destination"),
+        infoWindow: const InfoWindow(title: "Destination"),
+        icon: await BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(size: Size(64, 64)),
+            'assets/images/gameBoard/anchor.png'),
+        position: const LatLng(32.805773, 35.030542),
+      );
       initialCameraPosition = CameraPosition(
         target: LatLng(marinaLatitude, marinaLongitude),
         zoom: 17,

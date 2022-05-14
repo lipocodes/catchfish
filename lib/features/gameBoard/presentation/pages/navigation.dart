@@ -40,14 +40,18 @@ class _NavigationState extends State<Navigation> {
     _origin = Marker(
       markerId: const MarkerId("Origin"),
       infoWindow: const InfoWindow(title: "Origin"),
-      icon: BitmapDescriptor.defaultMarker,
+      icon: await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(size: Size(64, 64)),
+          'assets/images/gameBoard/boat_steering.png'),
       position: LatLng(_marinaLatitude, _marinaLongitude),
     );
     _destination = Marker(
       markerId: const MarkerId("destination"),
       infoWindow: const InfoWindow(title: "destination"),
-      icon: BitmapDescriptor.defaultMarker,
-      position: LatLng(_marinaLatitude - 0.001, _marinaLongitude - 0.001),
+      icon: await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(size: Size(64, 64)),
+          'assets/images/gameBoard/anchor.png'),
+      position: const LatLng(32.805773, 35.030542),
     );
     _initialCameraPosition = CameraPosition(
       target: LatLng(_marinaLatitude, _marinaLongitude),
