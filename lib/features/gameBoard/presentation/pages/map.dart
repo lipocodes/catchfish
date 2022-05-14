@@ -80,6 +80,7 @@ class _MapState extends State<Map> {
     );
     await _prefs.setDouble("marinaLatitude", marinaLatitude);
     await _prefs.setDouble("marinaLongitude", marinaLongitude);
+
     setState(() {
       chosenValue = marinaName;
     });
