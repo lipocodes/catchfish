@@ -147,7 +147,7 @@ class _NavigationState extends State<Navigation> {
                     ),
                   };
                   return _isMapOpened
-                      ? GoogleMap(
+                      ? /*GoogleMap(
                           myLocationButtonEnabled: false,
                           zoomControlsEnabled: false,
                           initialCameraPosition: _initialCameraPosition,
@@ -155,7 +155,8 @@ class _NavigationState extends State<Navigation> {
                               _googleMapController = controller,
                           markers: {_origin, _destination},
                           polygons: poly,
-                        )
+                        )*/
+                      Container()
                       : sailing(context);
                 } else {
                   return Container();

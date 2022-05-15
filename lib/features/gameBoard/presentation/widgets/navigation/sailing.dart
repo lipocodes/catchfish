@@ -1,3 +1,4 @@
+import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/boat_steering.dart';
 import 'package:flutter/material.dart';
 
 Widget sailing(BuildContext context) {
@@ -8,10 +9,16 @@ Widget sailing(BuildContext context) {
       image: DecorationImage(
         image: AssetImage(
           //tenor.com
-          'assets/images/lobby/dolphins.gif',
+          'assets/images/gameBoard/waves.gif',
         ),
         fit: BoxFit.cover,
       ),
     ),
+    child: Column(children: [
+      const SizedBox(
+        height: 50.0,
+      ),
+      boatSteering(context, 0),
+    ]),
   );
 }
