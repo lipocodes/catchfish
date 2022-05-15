@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/sailing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,6 +17,7 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  bool _isMapOpened = false;
   late SharedPreferences _prefs;
   int _indexMarina = 0;
   double _marinaLatitude = 0.0;
@@ -99,7 +101,21 @@ class _NavigationState extends State<Navigation> {
               backgroundColor: Colors.blue,
               elevation: 0,
               leading: buttonBack(context),
-              actions: [],
+              actions: [
+                IconButton(
+                    icon: _isMapOpened
+                        ? const Icon(Icons.map,
+                            color: Color.fromARGB(255, 243, 13, 13), size: 34.0)
+                        : const Icon(Icons.map,
+                            color: Color(0xFF0000FF), size: 34.0),
+                    onPressed: () {
+                      setState(() {
+                        _isMapOpened
+                            ? _isMapOpened = false
+                            : _isMapOpened = true;
+                      });
+                    }),
+              ],
             ),
             resizeToAvoidBottomInset: false,
             body: BlocBuilder<NavigationBloc, NavigationState>(
@@ -130,15 +146,17 @@ class _NavigationState extends State<Navigation> {
                       },
                     ),
                   };
-                  return GoogleMap(
-                    myLocationButtonEnabled: false,
-                    zoomControlsEnabled: false,
-                    initialCameraPosition: _initialCameraPosition,
-                    onMapCreated: (controller) =>
-                        _googleMapController = controller,
-                    markers: {_origin, _destination},
-                    polygons: poly,
-                  );
+                  return _isMapOpened
+                      ? GoogleMap(
+                          myLocationButtonEnabled: false,
+                          zoomControlsEnabled: false,
+                          initialCameraPosition: _initialCameraPosition,
+                          onMapCreated: (controller) =>
+                              _googleMapController = controller,
+                          markers: {_origin, _destination},
+                          polygons: poly,
+                        )
+                      : sailing(context);
                 } else {
                   return Container();
                 }
