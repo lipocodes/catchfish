@@ -268,15 +268,15 @@ class _MapState extends State<Map> {
         },
       ),
     };
-    return /*GoogleMap(
+    GoogleMap(
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       initialCameraPosition: initialCameraPosition,
       onMapCreated: (controller) => googleMapController = controller,
       markers: {origin, destination},
       polygons: poly,
-    )*/
-        Container();
+    );
+    return Container();
   }
 
 //////////////////////////////////////////////////////////////////////////////
