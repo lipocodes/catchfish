@@ -16,9 +16,9 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         emit(LeavingNavigationState());
       } else if (event is SpinSteeringWheelEvent) {
         if (event.isClockwise) {
-          steeringAngle += 1.0;
+          steeringAngle += 0.04;
         } else {
-          steeringAngle -= 1.0;
+          steeringAngle -= 0.04;
         }
         emit(SpinSteeringWheelState(steeringAngle: steeringAngle));
       }
