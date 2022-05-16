@@ -1,7 +1,9 @@
+import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/boat_steering.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-Widget sailing(BuildContext context) {
+Widget sailing(BuildContext context, double steeringAngle) {
   return Container(
     height: 1000,
     width: MediaQuery.of(context).size.width,
@@ -18,7 +20,7 @@ Widget sailing(BuildContext context) {
       const SizedBox(
         height: 50.0,
       ),
-      boatSteering(context, 0),
+      boatSteering(context, steeringAngle),
     ]),
   );
 }

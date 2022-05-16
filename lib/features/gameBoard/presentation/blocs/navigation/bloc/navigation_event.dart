@@ -36,3 +36,16 @@ class LeavingNavigationEvent implements NavigationEvent {
   // TODO: implement stringify
   bool? get stringify => throw UnimplementedError();
 }
+
+class SpinSteeringWheelEvent implements NavigationEvent {
+  final bool isClockwise;
+  SpinSteeringWheelEvent({required this.isClockwise});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+
+  @override
+  // TODO: implement stringify
+  bool? get stringify => throw UnimplementedError();
+}

@@ -123,7 +123,8 @@ class _NavigationState extends State<Navigation> {
                 if (state is EnteringNavigationState) {
                   _prepareDataForMap();
                   return Container();
-                } else if (state is ShowMapState) {
+                } else if (state is ShowMapState ||
+                    state is SpinSteeringWheelState) {
                   List<LatLng> polygonLatLong1 = [];
 
                   List<String> pointsPolygon = polygonsMarinas[_indexMarina];
@@ -146,8 +147,9 @@ class _NavigationState extends State<Navigation> {
                       },
                     ),
                   };
+                  BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
                   return _isMapOpened
-                      ? /*GoogleMap(
+                      ? GoogleMap(
                           myLocationButtonEnabled: false,
                           zoomControlsEnabled: false,
                           initialCameraPosition: _initialCameraPosition,
@@ -155,9 +157,10 @@ class _NavigationState extends State<Navigation> {
                               _googleMapController = controller,
                           markers: {_origin, _destination},
                           polygons: poly,
-                        )*/
-                      Container()
-                      : sailing(context);
+                        )
+                      : state is SpinSteeringWheelState
+                          ? sailing(context, state.steeringAngle)
+                          : sailing(context, 0.0);
                 } else {
                   return Container();
                 }

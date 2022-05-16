@@ -1,4 +1,6 @@
+import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget boatSteering(BuildContext context, double steeringAngle) {
   double xLastMeasure = 0.0;
@@ -27,67 +29,81 @@ Widget boatSteering(BuildContext context, double steeringAngle) {
       angle: steeringAngle,
       child: GestureDetector(
         onPanStart: (v) {
-          print("aaaaaaaaaaaaaaaaaaaaaaaa=" + v.localPosition.dx.toString());
           xLastMeasure = v.localPosition.dx;
           yLastMeasure = v.localPosition.dy;
+          BlocProvider.of<NavigationBloc>(context)
+              .add(SpinSteeringWheelEvent(isClockwise: true));
         },
         onPanUpdate: (v) {
-          // print("xxxxxxxxxxxxxxxxxxxxxxxxxxx=" + v.localPosition.dx.toString());
           if (v.localPosition.dx > xLastMeasure &&
               v.localPosition.dx > xStartQuarter1 &&
               v.localPosition.dx < xEndQuarter1 &&
               v.localPosition.dy > yStartQuarter1 &&
               v.localPosition.dy < yEndQuarter1) {
             print("Clockwise,1st quarter.");
+            BlocProvider.of<NavigationBloc>(context)
+                .add(SpinSteeringWheelEvent(isClockwise: true));
           } else if (v.localPosition.dx < xLastMeasure &&
               v.localPosition.dx > xStartQuarter2 &&
               v.localPosition.dx < xEndQuarter2 &&
               v.localPosition.dy > yStartQuarter2 &&
               v.localPosition.dy < yEndQuarter2) {
             print("Clockwise,2nd quarter.");
+            BlocProvider.of<NavigationBloc>(context)
+                .add(SpinSteeringWheelEvent(isClockwise: true));
           } else if (v.localPosition.dx < xLastMeasure &&
               v.localPosition.dx > xStartQuarter3 &&
               v.localPosition.dx < xEndQuarter3 &&
               v.localPosition.dy > yStartQuarter3 &&
               v.localPosition.dy < yEndQuarter3) {
             print("Clockwise,3rd quarter.");
+            BlocProvider.of<NavigationBloc>(context)
+                .add(SpinSteeringWheelEvent(isClockwise: true));
           } else if (v.localPosition.dx > xLastMeasure &&
               v.localPosition.dx > xStartQuarter4 &&
               v.localPosition.dx < xEndQuarter4 &&
               v.localPosition.dy > yStartQuarter4 &&
               v.localPosition.dy < yEndQuarter4) {
             print("Clockwise,4th quarter.");
+            BlocProvider.of<NavigationBloc>(context)
+                .add(SpinSteeringWheelEvent(isClockwise: true));
           } else if (v.localPosition.dx < xLastMeasure &&
               v.localPosition.dx > xStartQuarter4 &&
               v.localPosition.dx < xEndQuarter4 &&
               v.localPosition.dy > yStartQuarter4 &&
               v.localPosition.dy < yEndQuarter4) {
             print("Counter clockwise,4th quarter.");
+            BlocProvider.of<NavigationBloc>(context)
+                .add(SpinSteeringWheelEvent(isClockwise: false));
           } else if (v.localPosition.dx > xLastMeasure &&
               v.localPosition.dx > xStartQuarter3 &&
               v.localPosition.dx < xEndQuarter3 &&
               v.localPosition.dy > yStartQuarter3 &&
               v.localPosition.dy < yEndQuarter3) {
             print("Counter clockwise,3rd quarter.");
+            BlocProvider.of<NavigationBloc>(context)
+                .add(SpinSteeringWheelEvent(isClockwise: false));
           } else if (v.localPosition.dx > xLastMeasure &&
               v.localPosition.dx > xStartQuarter2 &&
               v.localPosition.dx < xEndQuarter2 &&
               v.localPosition.dy > yStartQuarter2 &&
               v.localPosition.dy < yEndQuarter2) {
             print("Counter clockwise,2nd quarter.");
+            BlocProvider.of<NavigationBloc>(context)
+                .add(SpinSteeringWheelEvent(isClockwise: false));
           } else if (v.localPosition.dx < xLastMeasure &&
               v.localPosition.dx > xStartQuarter1 &&
               v.localPosition.dx < xEndQuarter1 &&
               v.localPosition.dy > yStartQuarter1 &&
               v.localPosition.dy < yEndQuarter1) {
             print("Anti clockwise,1st quarter.");
+            BlocProvider.of<NavigationBloc>(context)
+                .add(SpinSteeringWheelEvent(isClockwise: false));
           }
           xLastMeasure = v.localPosition.dx;
           yLastMeasure = v.localPosition.dy;
         },
-        onPanEnd: (v) {
-          print("ccccccccccccccccccccccccccc");
-        },
+        onPanEnd: (v) {},
         child: Image.asset(
           'assets/images/gameBoard/boat_steering.png',
           fit: BoxFit.cover,

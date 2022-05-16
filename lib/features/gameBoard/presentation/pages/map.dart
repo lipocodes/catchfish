@@ -268,7 +268,7 @@ class _MapState extends State<Map> {
         },
       ),
     };
-    GoogleMap(
+    return GoogleMap(
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       initialCameraPosition: initialCameraPosition,
@@ -276,7 +276,6 @@ class _MapState extends State<Map> {
       markers: {origin, destination},
       polygons: poly,
     );
-    return Container();
   }
 
 //////////////////////////////////////////////////////////////////////////////

@@ -14,3 +14,8 @@ class EnteringNavigationState extends NavigationState {}
 class ShowMapState extends NavigationState {}
 
 class LeavingNavigationState extends NavigationState {}
+
+class SpinSteeringWheelState extends NavigationState {
+  final double steeringAngle;
+  const SpinSteeringWheelState({required this.steeringAngle});
+}
