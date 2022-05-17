@@ -1,11 +1,10 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignition.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/boat_steering.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/gear.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-Widget sailing(BuildContext context, double steeringAngle, bool isBoatRunning) {
+Widget sailing(BuildContext context, double steeringAngle, bool isBoatRunning,
+    String statusGear) {
   return Container(
     height: 1000,
     width: MediaQuery.of(context).size.width,
@@ -18,12 +17,16 @@ Widget sailing(BuildContext context, double steeringAngle, bool isBoatRunning) {
         fit: BoxFit.cover,
       ),
     ),
-    child: Column(children: [
-      const SizedBox(
-        height: 50.0,
-      ),
+    child: Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
       boatSteering(context, steeringAngle),
+      const SizedBox(
+        height: 10.0,
+      ),
       buttonIgnition(context, isBoatRunning),
+      const SizedBox(
+        height: 10.0,
+      ),
+      gear(context, statusGear),
     ]),
   );
 }

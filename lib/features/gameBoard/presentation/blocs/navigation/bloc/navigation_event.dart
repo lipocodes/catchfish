@@ -61,3 +61,16 @@ class IgnitionEvent implements NavigationEvent {
   // TODO: implement stringify
   bool? get stringify => throw UnimplementedError();
 }
+
+class GearEvent implements NavigationEvent {
+  final String selectedNewPosition;
+  GearEvent({required this.selectedNewPosition});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+
+  @override
+  // TODO: implement stringify
+  bool? get stringify => throw UnimplementedError();
+}

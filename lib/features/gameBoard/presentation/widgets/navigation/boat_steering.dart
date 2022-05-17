@@ -23,7 +23,7 @@ Widget boatSteering(BuildContext context, double steeringAngle) {
   double yEndQuarter4 = 158;
 
   return SizedBox(
-    height: MediaQuery.of(context).size.height * 0.4,
+    height: MediaQuery.of(context).size.height * 0.5,
     //width: MediaQuery.of(context).size.width * 0.9,
     child: Transform.rotate(
       angle: steeringAngle,

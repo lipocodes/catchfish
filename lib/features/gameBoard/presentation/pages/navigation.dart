@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
@@ -98,7 +96,7 @@ class _NavigationState extends State<Navigation> {
         child: Scaffold(
             extendBodyBehindAppBar: true,
             appBar: AppBar(
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.transparent,
               elevation: 0,
               leading: buttonBack(context),
               actions: [
@@ -126,10 +124,13 @@ class _NavigationState extends State<Navigation> {
                 } else if (state is ShowMapState ||
                     state is SpinSteeringWheelState) {
                   bool isBoatRunning = false;
+                  String statusGear = "N";
                   if (state is ShowMapState) {
                     isBoatRunning = state.isBoatRunning;
+                    statusGear = state.statusGear;
                   } else if (state is SpinSteeringWheelState) {
                     isBoatRunning = state.isBoatRunning;
+                    statusGear = state.statusGear;
                   }
                   List<LatLng> polygonLatLong1 = [];
 
@@ -167,11 +168,17 @@ class _NavigationState extends State<Navigation> {
                         )*/
                       Container()
                       : state is SpinSteeringWheelState
-                          ? sailing(context, state.steeringAngle, isBoatRunning)
-                          : sailing(context, 0.0, isBoatRunning);
+                          ? sailing(context, state.steeringAngle, isBoatRunning,
+                              statusGear)
+                          : sailing(context, 0.0, isBoatRunning, statusGear);
                 } else if (state is IgnitionState) {
                   BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
-                  return sailing(context, 0.0, state.isBoatRunning);
+                  return sailing(
+                      context, 0.0, state.isBoatRunning, state.statusGear);
+                } else if (state is GearState) {
+                  BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
+                  return sailing(
+                      context, 0.0, state.isBoatRunning, state.statusGear);
                 } else {
                   return Container();
                 }
