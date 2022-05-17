@@ -125,6 +125,12 @@ class _NavigationState extends State<Navigation> {
                   return Container();
                 } else if (state is ShowMapState ||
                     state is SpinSteeringWheelState) {
+                  bool isBoatRunning = false;
+                  if (state is ShowMapState) {
+                    isBoatRunning = state.isBoatRunning;
+                  } else if (state is SpinSteeringWheelState) {
+                    isBoatRunning = state.isBoatRunning;
+                  }
                   List<LatLng> polygonLatLong1 = [];
 
                   List<String> pointsPolygon = polygonsMarinas[_indexMarina];
@@ -161,8 +167,11 @@ class _NavigationState extends State<Navigation> {
                         )*/
                       Container()
                       : state is SpinSteeringWheelState
-                          ? sailing(context, state.steeringAngle)
-                          : sailing(context, 0.0);
+                          ? sailing(context, state.steeringAngle, isBoatRunning)
+                          : sailing(context, 0.0, isBoatRunning);
+                } else if (state is IgnitionState) {
+                  BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
+                  return sailing(context, 0.0, state.isBoatRunning);
                 } else {
                   return Container();
                 }

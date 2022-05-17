@@ -114,6 +114,7 @@ flutter:
     - assets/images/tokens/
     - assets/sounds/tokens/
     - assets/images/gameBoard/
+    - assets/sounds/gameBoard/
 
     
   #   - images/a_dot_burr.jpeg
