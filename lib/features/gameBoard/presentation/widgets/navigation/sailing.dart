@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignition.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/boat_steering.dart';

@@ -1,14 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:equatable/equatable.dart';
-
+import 'package:audioplayers/audioplayers.dart';
 part 'navigation_event.dart';
 part 'navigation_state.dart';
 
 class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   double steeringAngle = 0.0;
   bool isBoatRunning = false;
-  PlaySound playSound = PlaySound();
+  final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
+  AudioPlayer audioPlayer1 = AudioPlayer();
+  AudioPlayer audioPlayer2 = AudioPlayer();
+  playBackgroundAudio() async {
+    audioPlayer1 = await audioCache.play("ignition.mp3");
+    audioPlayer2 = await audioCache.loop("engine.mp3");
+  }
+
+  stopBackgroundAudio() async {
+    audioPlayer1.stop();
+    audioPlayer2.stop();
+  }
+
   NavigationBloc() : super(NavigationInitial()) {
     on<NavigationEvent>((event, emit) {
       if (event is EnteringNavigationEvent) {
@@ -18,27 +30,21 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
       } else if (event is LeavingNavigationEvent) {
         emit(LeavingNavigationState());
       } else if (event is SpinSteeringWheelEvent) {
-        if (event.isClockwise) {
+        if (event.isClockwise && isBoatRunning) {
           steeringAngle += 0.04;
-        } else {
+        } else if (isBoatRunning) {
           steeringAngle -= 0.04;
         }
         emit(SpinSteeringWheelState(
             steeringAngle: steeringAngle, isBoatRunning: isBoatRunning));
       } else if (event is IgnitionEvent) {
         if (isBoatRunning) {
-          print("aaaaaaaaaaaaaaaaaaaaaa");
           isBoatRunning = false;
-          playSound.stop();
+          stopBackgroundAudio();
           emit(const IgnitionState(isBoatRunning: false));
         } else {
-          print("bbbbbbbbbbbbbbbbbbbbbb");
           isBoatRunning = true;
-          for (int a = 0; a < 3; a++) {
-            playSound.play(
-                path: "assets/sounds/gameBoard/", fileName: "ignition1.mp3");
-            playSound.stop();
-          }
+          playBackgroundAudio();
         }
         emit(const IgnitionState(isBoatRunning: true));
       }
