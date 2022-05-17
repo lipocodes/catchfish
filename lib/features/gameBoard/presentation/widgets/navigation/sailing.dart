@@ -26,7 +26,7 @@ Widget sailing(BuildContext context, double steeringAngle, bool isBoatRunning,
       const SizedBox(
         height: 10.0,
       ),
-      gear(context, statusGear),
+      isBoatRunning ? gear(context, statusGear) : Container(),
     ]),
   );
 }

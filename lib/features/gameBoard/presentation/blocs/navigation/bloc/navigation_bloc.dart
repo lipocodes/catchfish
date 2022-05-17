@@ -52,20 +52,15 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         }
         emit(IgnitionState(isBoatRunning: true, statusGear: statusGear));
       } else if (event is GearEvent) {
-        bool isItLegalMove = false;
         if (event.selectedNewPosition == "F2" && statusGear == "F1") {
-          isItLegalMove = true;
           statusGear = event.selectedNewPosition;
         } else if (event.selectedNewPosition == "F1" &&
             (statusGear == "F2" || statusGear == "N")) {
-          isItLegalMove = true;
           statusGear = event.selectedNewPosition;
         } else if (event.selectedNewPosition == "N" &&
             (statusGear == "F1" || statusGear == "R")) {
-          isItLegalMove = true;
           statusGear = event.selectedNewPosition;
         } else if (event.selectedNewPosition == "R" && statusGear == "N") {
-          isItLegalMove = true;
           statusGear = event.selectedNewPosition;
         }
         emit(GearState(isBoatRunning: isBoatRunning, statusGear: statusGear));
