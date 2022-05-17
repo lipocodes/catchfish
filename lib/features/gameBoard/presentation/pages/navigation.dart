@@ -85,104 +85,109 @@ class _NavigationState extends State<Navigation> {
 
   @override
   void dispose() {
-    BlocProvider.of<NavigationBloc>(context).add(LeavingNavigationEvent());
     super.dispose();
     _googleMapController.dispose();
+  }
+
+  returnBack() {
+    BlocProvider.of<NavigationBloc>(context).add(LeavingNavigationEvent());
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              leading: buttonBack(context),
-              actions: [
-                IconButton(
-                    icon: _isMapOpened
-                        ? const Icon(Icons.map,
-                            color: Color.fromARGB(255, 243, 13, 13), size: 34.0)
-                        : const Icon(Icons.map,
-                            color: Color(0xFF0000FF), size: 34.0),
-                    onPressed: () {
-                      setState(() {
-                        _isMapOpened
-                            ? _isMapOpened = false
-                            : _isMapOpened = true;
-                      });
-                    }),
-              ],
-            ),
-            resizeToAvoidBottomInset: false,
-            body: BlocBuilder<NavigationBloc, NavigationState>(
-              builder: (context, state) {
-                if (state is EnteringNavigationState) {
-                  _prepareDataForMap();
-                  return Container();
-                } else if (state is ShowMapState ||
-                    state is SpinSteeringWheelState) {
-                  bool isBoatRunning = false;
-                  String statusGear = "N";
-                  if (state is ShowMapState) {
-                    isBoatRunning = state.isBoatRunning;
-                    statusGear = state.statusGear;
-                  } else if (state is SpinSteeringWheelState) {
-                    isBoatRunning = state.isBoatRunning;
-                    statusGear = state.statusGear;
-                  }
-                  List<LatLng> polygonLatLong1 = [];
-
-                  List<String> pointsPolygon = polygonsMarinas[_indexMarina];
-                  for (int a = 0; a < pointsPolygon.length; a++) {
-                    String temp1 = pointsPolygon[a];
-                    List<String> temp2 = temp1.split(",");
-                    double y = double.parse(temp2[0]);
-                    double x = double.parse(temp2[1]);
-                    polygonLatLong1.add(LatLng(y, x));
-                  }
-                  Set<Polygon> poly = <Polygon>{
-                    Polygon(
-                      polygonId: const PolygonId("1"),
-                      points: polygonLatLong1,
-                      fillColor: Colors.blueAccent,
-                      strokeColor: Colors.blue,
-                      strokeWidth: 2,
-                      onTap: () {
-                        // Do something
-                      },
-                    ),
-                  };
-                  BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
-
-                  return _isMapOpened
-                      ? /*GoogleMap(
-                          myLocationButtonEnabled: false,
-                          zoomControlsEnabled: false,
-                          initialCameraPosition: _initialCameraPosition,
-                          onMapCreated: (controller) =>
-                              _googleMapController = controller,
-                          markers: {_origin, _destination},
-                          polygons: poly,
-                        )*/
-                      Container()
-                      : state is SpinSteeringWheelState
-                          ? sailing(context, state.steeringAngle, isBoatRunning,
-                              statusGear)
-                          : sailing(context, 0.0, isBoatRunning, statusGear);
-                } else if (state is IgnitionState) {
-                  BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
-                  return sailing(
-                      context, 0.0, state.isBoatRunning, state.statusGear);
-                } else if (state is GearState) {
-                  BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
-                  return sailing(
-                      context, 0.0, state.isBoatRunning, state.statusGear);
-                } else {
-                  return Container();
+        child: WillPopScope(
+      onWillPop: () => returnBack(),
+      child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: buttonBack(context),
+            actions: [
+              IconButton(
+                  icon: _isMapOpened
+                      ? const Icon(Icons.map,
+                          color: Color.fromARGB(255, 243, 13, 13), size: 34.0)
+                      : const Icon(Icons.map,
+                          color: Color(0xFF0000FF), size: 34.0),
+                  onPressed: () {
+                    setState(() {
+                      _isMapOpened ? _isMapOpened = false : _isMapOpened = true;
+                    });
+                  }),
+            ],
+          ),
+          resizeToAvoidBottomInset: false,
+          body: BlocBuilder<NavigationBloc, NavigationState>(
+            builder: (context, state) {
+              if (state is EnteringNavigationState) {
+                _prepareDataForMap();
+                return Container();
+              } else if (state is ShowMapState ||
+                  state is SpinSteeringWheelState) {
+                bool isBoatRunning = false;
+                String statusGear = "N";
+                if (state is ShowMapState) {
+                  isBoatRunning = state.isBoatRunning;
+                  statusGear = state.statusGear;
+                } else if (state is SpinSteeringWheelState) {
+                  isBoatRunning = state.isBoatRunning;
+                  statusGear = state.statusGear;
                 }
-              },
-            )));
+                List<LatLng> polygonLatLong1 = [];
+
+                List<String> pointsPolygon = polygonsMarinas[_indexMarina];
+                for (int a = 0; a < pointsPolygon.length; a++) {
+                  String temp1 = pointsPolygon[a];
+                  List<String> temp2 = temp1.split(",");
+                  double y = double.parse(temp2[0]);
+                  double x = double.parse(temp2[1]);
+                  polygonLatLong1.add(LatLng(y, x));
+                }
+                Set<Polygon> poly = <Polygon>{
+                  Polygon(
+                    polygonId: const PolygonId("1"),
+                    points: polygonLatLong1,
+                    fillColor: Colors.blueAccent,
+                    strokeColor: Colors.blue,
+                    strokeWidth: 2,
+                    onTap: () {
+                      // Do something
+                    },
+                  ),
+                };
+                BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
+
+                return _isMapOpened
+                    ? /*GoogleMap(
+                            myLocationButtonEnabled: false,
+                            zoomControlsEnabled: false,
+                            initialCameraPosition: _initialCameraPosition,
+                            onMapCreated: (controller) =>
+                                _googleMapController = controller,
+                            markers: {_origin, _destination},
+                            polygons: poly,
+                          )*/
+                    Container()
+                    : state is SpinSteeringWheelState
+                        ? sailing(context, state.steeringAngle, isBoatRunning,
+                            statusGear)
+                        : sailing(context, 0.0, isBoatRunning, statusGear);
+              } else if (state is IgnitionState) {
+                BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
+                return sailing(
+                    context, 0.0, state.isBoatRunning, state.statusGear);
+              } else if (state is GearState) {
+                BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
+                return sailing(
+                    context, 0.0, state.isBoatRunning, state.statusGear);
+              } else {
+                return Container();
+              }
+            },
+          )),
+    ));
   }
 }

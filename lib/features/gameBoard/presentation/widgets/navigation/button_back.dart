@@ -1,4 +1,6 @@
+import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget buttonBack(BuildContext context) {
   return IconButton(
@@ -8,6 +10,7 @@ Widget buttonBack(BuildContext context) {
       color: Colors.blue,
     ),
     onPressed: () {
+      BlocProvider.of<NavigationBloc>(context).add(LeavingNavigationEvent());
       Navigator.pop(context);
     },
   );

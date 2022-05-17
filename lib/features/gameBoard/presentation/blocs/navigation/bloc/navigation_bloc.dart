@@ -11,9 +11,9 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
   AudioPlayer audioPlayer1 = AudioPlayer();
   AudioPlayer audioPlayer2 = AudioPlayer();
-  playBackgroundAudio() async {
+  playBackgroundAudio(String engineSound) async {
     audioPlayer1 = await audioCache.play("ignition.mp3");
-    audioPlayer2 = await audioCache.loop("engine.mp3");
+    audioPlayer2 = await audioCache.loop(engineSound);
   }
 
   stopBackgroundAudio() async {
@@ -29,6 +29,10 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         emit(
             ShowMapState(isBoatRunning: isBoatRunning, statusGear: statusGear));
       } else if (event is LeavingNavigationEvent) {
+        stopBackgroundAudio();
+        statusGear = "N";
+        steeringAngle = 0.0;
+        isBoatRunning = false;
         emit(LeavingNavigationState());
       } else if (event is SpinSteeringWheelEvent) {
         if (event.isClockwise && isBoatRunning) {
@@ -48,7 +52,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         } else {
           isBoatRunning = true;
           statusGear = "N";
-          playBackgroundAudio();
+          playBackgroundAudio("engine.mp3");
         }
         emit(IgnitionState(isBoatRunning: true, statusGear: statusGear));
       } else if (event is GearEvent) {
