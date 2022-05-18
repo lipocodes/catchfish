@@ -128,7 +128,9 @@ class _NavigationState extends State<Navigation> {
             builder: (context, state) {
               if (state is EnteringNavigationState) {
                 _prepareDataForMap();
-                BlocProvider.of<MotionBloc>(context).add(IdleEvent());
+                BlocProvider.of<MotionBloc>(context).add(NewCoordinatesEvent(
+                    xCoordinate: _marinaLatitude,
+                    yCoordinate: _marinaLongitude));
                 return Container();
               } else if (state is ShowMapState ||
                   state is SpinSteeringWheelState) {
@@ -169,9 +171,10 @@ class _NavigationState extends State<Navigation> {
                     ? BlocBuilder<MotionBloc, MotionState>(
                         builder: (context, state) {
                           if (state is NewCoordinatesState) {
+                            _marinaLatitude = state.xCoordinate;
+                            _marinaLongitude = state.yCoordinate;
                             _initialCameraPosition = CameraPosition(
-                              target:
-                                  LatLng(state.xCoordinate, state.yCoordinate),
+                              target: LatLng(_marinaLatitude, _marinaLongitude),
                               zoom: 17,
                             );
                             _origin = Marker(
@@ -179,7 +182,7 @@ class _NavigationState extends State<Navigation> {
                               infoWindow: const InfoWindow(title: "Origin"),
                               icon: BitmapDescriptor.defaultMarker,
                               position:
-                                  LatLng(state.xCoordinate, state.yCoordinate),
+                                  LatLng(_marinaLatitude, _marinaLongitude),
                             );
 
                             /*_googleMapController.animateCamera(
@@ -189,8 +192,10 @@ class _NavigationState extends State<Navigation> {
                                 .add(IdleEvent());
                           } else if (state is IdleState) {
                             Timer timer = Timer(const Duration(seconds: 5), () {
-                              BlocProvider.of<MotionBloc>(context)
-                                  .add(const NewCoordinatesEvent());
+                              BlocProvider.of<MotionBloc>(context).add(
+                                  NewCoordinatesEvent(
+                                      xCoordinate: _marinaLatitude,
+                                      yCoordinate: _marinaLongitude));
                             });
                           }
 

@@ -8,7 +8,9 @@ abstract class MotionEvent extends Equatable {
 }
 
 class NewCoordinatesEvent extends MotionEvent {
-  const NewCoordinatesEvent();
+  double xCoordinate;
+  double yCoordinate;
+  NewCoordinatesEvent({required this.xCoordinate, required this.yCoordinate});
 }
 
 class IdleEvent extends MotionEvent {}
