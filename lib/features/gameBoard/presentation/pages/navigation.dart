@@ -19,6 +19,7 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  String _statusGear = "N";
   bool _isMapOpened = false;
   late SharedPreferences _prefs;
   int _indexMarina = 0;
@@ -128,20 +129,18 @@ class _NavigationState extends State<Navigation> {
             builder: (context, state) {
               if (state is EnteringNavigationState) {
                 _prepareDataForMap();
-                BlocProvider.of<MotionBloc>(context).add(NewCoordinatesEvent(
-                    xCoordinate: _marinaLatitude,
-                    yCoordinate: _marinaLongitude));
+
                 return Container();
               } else if (state is ShowMapState ||
                   state is SpinSteeringWheelState) {
                 bool isBoatRunning = false;
-                String statusGear = "N";
+
                 if (state is ShowMapState) {
                   isBoatRunning = state.isBoatRunning;
-                  statusGear = state.statusGear;
+                  _statusGear = state.statusGear;
                 } else if (state is SpinSteeringWheelState) {
                   isBoatRunning = state.isBoatRunning;
-                  statusGear = state.statusGear;
+                  _statusGear = state.statusGear;
                 }
                 List<LatLng> polygonLatLong1 = [];
 
@@ -195,7 +194,9 @@ class _NavigationState extends State<Navigation> {
                               BlocProvider.of<MotionBloc>(context).add(
                                   NewCoordinatesEvent(
                                       xCoordinate: _marinaLatitude,
-                                      yCoordinate: _marinaLongitude));
+                                      yCoordinate: _marinaLongitude,
+                                      indexMarina: _indexMarina,
+                                      statusGear: _statusGear));
                             });
                           }
 
@@ -213,14 +214,22 @@ class _NavigationState extends State<Navigation> {
                       )
                     : state is SpinSteeringWheelState
                         ? sailing(context, state.steeringAngle, isBoatRunning,
-                            statusGear)
-                        : sailing(context, 0.0, isBoatRunning, statusGear);
+                            _statusGear)
+                        : sailing(context, 0.0, isBoatRunning, _statusGear);
               } else if (state is IgnitionState) {
                 BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
                 return sailing(
                     context, 0.0, state.isBoatRunning, state.statusGear);
               } else if (state is GearState) {
                 BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
+                if (state.statusGear != "N") {
+                  BlocProvider.of<MotionBloc>(context).add(NewCoordinatesEvent(
+                      xCoordinate: _marinaLatitude,
+                      yCoordinate: _marinaLongitude,
+                      indexMarina: _indexMarina,
+                      statusGear: _statusGear));
+                }
+
                 return sailing(
                     context, 0.0, state.isBoatRunning, state.statusGear);
               } else {

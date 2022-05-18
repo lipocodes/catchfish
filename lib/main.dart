@@ -112,44 +112,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String token = "";
 
-  bool checkPointInsidePolygon(double y, double x, int indexMarina) {
-    //Based on Ray Casting algorithm for checking if a point is inside a polygon
-
-    int numIntersections = 0;
-    List<String> list = polygonsMarinas[indexMarina];
-    //taking every 2 adjacent vertices of the polygon
-    for (int a = 0; a < list.length - 1; a++) {
-      String temp1 = list[a];
-      List<String> temp2 = temp1.split(",");
-      //geting their coordinates
-      double y1 = double.parse(temp2[0]);
-      double x1 = double.parse(temp2[1]);
-      temp1 = list[a + 1];
-      temp2 = temp1.split(",");
-      double y2 = double.parse(temp2[0]);
-      double x2 = double.parse(temp2[1]);
-      //checking if the ckecked point intesects with the edge run by (x1,y1) and (x2,y2)
-      //condition 1: if longitudePoint is between y1,y2
-      if (y < y1 == y < y2) {
-        continue;
-      }
-      //condition 2: if we draw an horizontal line from our point to the edge run by (x1,y1) and (x2,y2),
-      // is value x of this intersection bigger than value x of our point
-      if (x >= ((x2 - x1) * (y - y1) / (y2 - y1) + x1)) {
-        double temp = ((x2 - x1) * (x - y1) / (y2 - y1) + x1);
-        continue;
-      }
-      numIntersections = numIntersections + 1;
-    }
-    print("cccccccccccccccccccccc=" + numIntersections.toString());
-    return false;
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    checkPointInsidePolygon(32.835167, 35.050628, 1);
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;

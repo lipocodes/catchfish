@@ -46,9 +46,11 @@ class _MapState extends State<Map> {
   chooseRandomLocation() async {
     _random = Random().nextInt(4) + 1;
     String temp1 = locationsMarinas[_random];
+
     List<String> temp2 = temp1.split("^^^");
     String marinaName = temp2[0];
     double marinaLatitude = double.parse(temp2[1]);
+
     double marinaLongitude = double.parse(temp2[2]);
 
     origin = Marker(
@@ -78,6 +80,7 @@ class _MapState extends State<Map> {
       target: LatLng(marinaLatitude, marinaLongitude),
       zoom: 17,
     );
+
     await _prefs.setDouble("marinaLatitude", marinaLatitude);
     await _prefs.setDouble("marinaLongitude", marinaLongitude);
 
@@ -285,8 +288,10 @@ class _MapState extends State<Map> {
   Widget dropDown() {
     moveToSelectedLocation(int indexSelectedItem) async {
       String temp1 = locationsMarinas[indexSelectedItem];
+
       List<String> temp2 = temp1.split("^^^");
       double marinaLatitude = double.parse(temp2[1]);
+
       double marinaLongitude = double.parse(temp2[2]);
       origin = Marker(
         markerId: const MarkerId("Origin"),
@@ -302,6 +307,7 @@ class _MapState extends State<Map> {
       List<String> temp3 = destinationPoint.split(",");
       double y = double.parse(temp3[0]);
       double x = double.parse(temp3[1]);
+
       _prefs.setDouble("yDestination", y);
       _prefs.setDouble("xDestination", x);
       destination = Marker(

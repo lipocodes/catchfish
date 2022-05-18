@@ -10,7 +10,14 @@ abstract class MotionEvent extends Equatable {
 class NewCoordinatesEvent extends MotionEvent {
   double xCoordinate;
   double yCoordinate;
-  NewCoordinatesEvent({required this.xCoordinate, required this.yCoordinate});
+  int indexMarina;
+  String statusGear;
+  NewCoordinatesEvent({
+    required this.xCoordinate,
+    required this.yCoordinate,
+    required this.indexMarina,
+    required this.statusGear,
+  });
 }
 
 class IdleEvent extends MotionEvent {}
