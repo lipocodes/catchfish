@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:catchfish/core/consts/marinas.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/map.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/sailing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -124,6 +128,7 @@ class _NavigationState extends State<Navigation> {
             builder: (context, state) {
               if (state is EnteringNavigationState) {
                 _prepareDataForMap();
+                BlocProvider.of<MotionBloc>(context).add(IdleEvent());
                 return Container();
               } else if (state is ShowMapState ||
                   state is SpinSteeringWheelState) {
@@ -161,7 +166,35 @@ class _NavigationState extends State<Navigation> {
                 BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
 
                 return _isMapOpened
-                    ? /*GoogleMap(
+                    ? BlocBuilder<MotionBloc, MotionState>(
+                        builder: (context, state) {
+                          if (state is NewCoordinatesState) {
+                            _initialCameraPosition = CameraPosition(
+                              target:
+                                  LatLng(state.xCoordinate, state.yCoordinate),
+                              zoom: 17,
+                            );
+                            _origin = Marker(
+                              markerId: const MarkerId("Origin"),
+                              infoWindow: const InfoWindow(title: "Origin"),
+                              icon: BitmapDescriptor.defaultMarker,
+                              position:
+                                  LatLng(state.xCoordinate, state.yCoordinate),
+                            );
+
+                            /*_googleMapController.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                    _initialCameraPosition));*/
+                            BlocProvider.of<MotionBloc>(context)
+                                .add(IdleEvent());
+                          } else if (state is IdleState) {
+                            Timer timer = Timer(const Duration(seconds: 5), () {
+                              BlocProvider.of<MotionBloc>(context)
+                                  .add(const NewCoordinatesEvent());
+                            });
+                          }
+
+                          return GoogleMap(
                             myLocationButtonEnabled: false,
                             zoomControlsEnabled: false,
                             initialCameraPosition: _initialCameraPosition,
@@ -169,8 +202,10 @@ class _NavigationState extends State<Navigation> {
                                 _googleMapController = controller,
                             markers: {_origin, _destination},
                             polygons: poly,
-                          )*/
-                    Container()
+                          );
+                          //return Container();
+                        },
+                      )
                     : state is SpinSteeringWheelState
                         ? sailing(context, state.steeringAngle, isBoatRunning,
                             statusGear)
