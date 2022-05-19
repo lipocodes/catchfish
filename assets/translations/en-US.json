@@ -43,5 +43,9 @@
     "pressure:" : "Pressure: ",
     "sunrise:" : "Sunrise: ",
     "sunset": "Sunset: ",
-    "go_to_boat": "Go to Boat"
+    "go_to_boat": "Go to Boat",
+    "cancel": "Cancel",
+    "leave_game": "Leave Game",
+    "text_leave_game": "Leave this game?"
+    
 }

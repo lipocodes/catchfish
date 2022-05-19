@@ -263,23 +263,23 @@ class _MapState extends State<Map> {
       Polygon(
         polygonId: const PolygonId("1"),
         points: polygonLatLong1,
-        fillColor: Colors.blueAccent,
-        strokeColor: Colors.blue,
+        fillColor: Colors.transparent,
+        strokeColor: Colors.transparent,
         strokeWidth: 2,
         onTap: () {
           // Do something
         },
       ),
     };
-    /*return GoogleMap(
+    return GoogleMap(
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       initialCameraPosition: initialCameraPosition,
       onMapCreated: (controller) => googleMapController = controller,
       markers: {origin, destination},
       polygons: poly,
-    );*/
-    return Container();
+    );
+    //return Container();
   }
 
 //////////////////////////////////////////////////////////////////////////////

@@ -99,6 +99,17 @@ class _NavigationState extends State<Navigation> {
     Navigator.pop(context);
   }
 
+  updateOriginMarker() async {
+    _origin = Marker(
+      markerId: const MarkerId("Origin"),
+      infoWindow: const InfoWindow(title: "Origin"),
+      icon: await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(size: Size(64, 64)),
+          'assets/images/gameBoard/boat.png'),
+      position: LatLng(_marinaLatitude, _marinaLongitude),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -156,8 +167,8 @@ class _NavigationState extends State<Navigation> {
                   Polygon(
                     polygonId: const PolygonId("1"),
                     points: polygonLatLong1,
-                    fillColor: Colors.blueAccent,
-                    strokeColor: Colors.blue,
+                    fillColor: Colors.transparent,
+                    strokeColor: Colors.transparent,
                     strokeWidth: 2,
                     onTap: () {
                       // Do something
@@ -176,13 +187,7 @@ class _NavigationState extends State<Navigation> {
                               target: LatLng(_marinaLatitude, _marinaLongitude),
                               zoom: 17,
                             );
-                            _origin = Marker(
-                              markerId: const MarkerId("Origin"),
-                              infoWindow: const InfoWindow(title: "Origin"),
-                              icon: BitmapDescriptor.defaultMarker,
-                              position:
-                                  LatLng(_marinaLatitude, _marinaLongitude),
-                            );
+                            updateOriginMarker();
 
                             /*_googleMapController.animateCamera(
                                 CameraUpdate.newCameraPosition(
