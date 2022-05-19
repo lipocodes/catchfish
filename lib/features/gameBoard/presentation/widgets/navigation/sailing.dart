@@ -1,6 +1,7 @@
 import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignition.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/boat_steering.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/gear.dart';
+import 'package:catchfish/features/lobby/presentation/widgets/compass.dart';
 import 'package:flutter/material.dart';
 
 Widget sailing(BuildContext context, double steeringAngle, bool isBoatRunning,
@@ -22,7 +23,14 @@ Widget sailing(BuildContext context, double steeringAngle, bool isBoatRunning,
       const SizedBox(
         height: 10.0,
       ),
-      buttonIgnition(context, isBoatRunning),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          SizedBox(
+              width: 200.0, height: 200.0, child: compass(context, 3.14159265)),
+          buttonIgnition(context, isBoatRunning),
+        ],
+      ),
       const SizedBox(
         height: 10.0,
       ),

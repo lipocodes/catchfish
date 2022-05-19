@@ -74,3 +74,5 @@ List<List<String>> destinationPointsMarinas = [
   [],
   [],
 ];
+
+List<double> initialAngleBoatMarinas = [0, 240, 0, 0, 0, 0];
