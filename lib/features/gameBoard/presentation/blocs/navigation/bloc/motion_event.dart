@@ -12,12 +12,13 @@ class NewCoordinatesEvent extends MotionEvent {
   double yCoordinate;
   int indexMarina;
   String statusGear;
-  NewCoordinatesEvent({
-    required this.xCoordinate,
-    required this.yCoordinate,
-    required this.indexMarina,
-    required this.statusGear,
-  });
+  bool isBoatRunning;
+  NewCoordinatesEvent(
+      {required this.xCoordinate,
+      required this.yCoordinate,
+      required this.indexMarina,
+      required this.statusGear,
+      required this.isBoatRunning});
 }
 
 class IdleEvent extends MotionEvent {}

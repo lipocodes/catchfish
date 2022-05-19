@@ -50,6 +50,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
       } else if (event is IgnitionEvent) {
         if (isBoatRunning) {
           isBoatRunning = false;
+
           stopBackgroundAudio();
           emit(IgnitionState(isBoatRunning: false, statusGear: statusGear));
         } else {

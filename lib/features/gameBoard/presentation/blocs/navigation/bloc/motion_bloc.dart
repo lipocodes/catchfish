@@ -54,7 +54,9 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
       if (event is NewCoordinatesEvent) {
         bool isLegalMove = checkPointInsidePolygon(event.yCoordinate - 0.0001,
             event.xCoordinate - 0.0001, event.indexMarina);
-        if (isLegalMove && event.statusGear != "N") {
+        if (isLegalMove &&
+            event.statusGear != "N" &&
+            event.isBoatRunning == true) {
           event.xCoordinate -= 0.0001;
           event.yCoordinate -= 0.0001;
         }

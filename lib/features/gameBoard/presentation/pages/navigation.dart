@@ -6,6 +6,7 @@ import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/map.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/sailing.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -19,6 +20,7 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  bool _isBoatRunning = false;
   String _statusGear = "N";
   bool _isMapOpened = false;
   late SharedPreferences _prefs;
@@ -94,9 +96,56 @@ class _NavigationState extends State<Navigation> {
     _googleMapController.dispose();
   }
 
-  returnBack() {
-    BlocProvider.of<NavigationBloc>(context).add(LeavingNavigationEvent());
-    Navigator.pop(context);
+  returnBack() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.redAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text(
+            "leave_game",
+            style: TextStyle(
+              fontFamily: 'skullsandcrossbones',
+            ),
+          ).tr(),
+          content: const Text(
+            "text_leave_game",
+            style: TextStyle(
+              fontFamily: 'skullsandcrossbones',
+            ),
+          ).tr(),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                BlocProvider.of<NavigationBloc>(context)
+                    .add(LeavingNavigationEvent());
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: const Text('OK',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.blue,
+                    fontFamily: 'skullsandcrossbones',
+                  )).tr(),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('cancel',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.blue,
+                    fontFamily: 'skullsandcrossbones',
+                  )).tr(),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   updateOriginMarker() async {
@@ -201,11 +250,12 @@ class _NavigationState extends State<Navigation> {
                                       xCoordinate: _marinaLatitude,
                                       yCoordinate: _marinaLongitude,
                                       indexMarina: _indexMarina,
-                                      statusGear: _statusGear));
+                                      statusGear: _statusGear,
+                                      isBoatRunning: _isBoatRunning));
                             });
                           }
 
-                          return GoogleMap(
+                          /*return GoogleMap(
                             myLocationButtonEnabled: false,
                             zoomControlsEnabled: false,
                             initialCameraPosition: _initialCameraPosition,
@@ -213,8 +263,8 @@ class _NavigationState extends State<Navigation> {
                                 _googleMapController = controller,
                             markers: {_origin, _destination},
                             polygons: poly,
-                          );
-                          //return Container();
+                          );*/
+                          return Container();
                         },
                       )
                     : state is SpinSteeringWheelState
@@ -222,6 +272,7 @@ class _NavigationState extends State<Navigation> {
                             _statusGear)
                         : sailing(context, 0.0, isBoatRunning, _statusGear);
               } else if (state is IgnitionState) {
+                _isBoatRunning = state.isBoatRunning;
                 BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
                 return sailing(
                     context, 0.0, state.isBoatRunning, state.statusGear);
@@ -232,7 +283,8 @@ class _NavigationState extends State<Navigation> {
                       xCoordinate: _marinaLatitude,
                       yCoordinate: _marinaLongitude,
                       indexMarina: _indexMarina,
-                      statusGear: _statusGear));
+                      statusGear: _statusGear,
+                      isBoatRunning: _isBoatRunning));
                 }
 
                 return sailing(
