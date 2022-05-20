@@ -52,14 +52,66 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
   MotionBloc() : super(MotionInitial()) {
     on<MotionEvent>((event, emit) {
       if (event is NewCoordinatesEvent) {
-        print("wwwwwwwwwwwwwwwwww=" + event.steeringAngle.toString());
-        bool isLegalMove = checkPointInsidePolygon(event.yCoordinate - 0.0001,
-            event.xCoordinate - 0.0001, event.indexMarina);
+        double standardUnit = 0.00005;
+        int angleDegrees = (event.steeringAngle * 57.2957795).floor();
+
+        int gapTo0 = 0;
+        int gapTo90 = 0;
+        int gapTo180 = 0;
+        int gapTo270 = 0;
+
+        double impactAxisX = 1;
+        double impactAxisY = 1;
+        if (angleDegrees < 90) {
+          if (angleDegrees < 1) {
+            gapTo0 = 1;
+          } else {
+            gapTo0 = angleDegrees;
+          }
+          impactAxisX = gapTo0 / 90;
+          impactAxisY = (90 - gapTo0) / 90;
+        } else if (angleDegrees < 180) {
+          if (angleDegrees - 90 < 1) {
+            gapTo90 = 1;
+          } else {
+            gapTo90 = angleDegrees - 90;
+          }
+
+          impactAxisX = (90 - gapTo90) / 90;
+          impactAxisY = -(gapTo90 / 90);
+        } else if (angleDegrees < 270) {
+          if (angleDegrees - 180 < 1) {
+            gapTo180 = 1;
+          } else {
+            gapTo180 = angleDegrees - 180;
+          }
+          impactAxisX = -(gapTo180 / 90);
+          impactAxisY = -(90 - gapTo180) / 90;
+        } else if (angleDegrees < 360) {
+          if (angleDegrees - 270 < 1) {
+            gapTo270 = 1;
+          } else {
+            gapTo270 = angleDegrees - 270;
+          }
+
+          impactAxisX = -(90 - gapTo270) / 90;
+          impactAxisY = gapTo270 / 90;
+        }
+        ///////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////
+        double coordinateChangeX = impactAxisY * standardUnit;
+        double coordinateChangeY = impactAxisX * standardUnit;
+
+        bool isLegalMove = checkPointInsidePolygon(
+            event.yCoordinate + coordinateChangeX,
+            event.xCoordinate + coordinateChangeY,
+            event.indexMarina);
+
         if (isLegalMove &&
             event.statusGear != "N" &&
             event.isBoatRunning == true) {
-          event.xCoordinate -= 0.0001;
-          event.yCoordinate -= 0.0001;
+          event.xCoordinate += coordinateChangeX;
+          event.yCoordinate += coordinateChangeY;
         }
 
         emit(NewCoordinatesState(

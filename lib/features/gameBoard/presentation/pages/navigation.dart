@@ -246,7 +246,7 @@ class _NavigationState extends State<Navigation> {
                             BlocProvider.of<MotionBloc>(context)
                                 .add(IdleEvent());
                           } else if (state is IdleState) {
-                            Timer timer = Timer(const Duration(seconds: 5), () {
+                            Timer timer = Timer(const Duration(seconds: 1), () {
                               BlocProvider.of<MotionBloc>(context).add(
                                   NewCoordinatesEvent(
                                       xCoordinate: _marinaLatitude,
@@ -258,7 +258,7 @@ class _NavigationState extends State<Navigation> {
                             });
                           }
 
-                          /* GoogleMap(
+                          return GoogleMap(
                             myLocationButtonEnabled: false,
                             zoomControlsEnabled: false,
                             initialCameraPosition: _initialCameraPosition,
@@ -266,8 +266,8 @@ class _NavigationState extends State<Navigation> {
                                 _googleMapController = controller,
                             markers: {_origin, _destination},
                             polygons: poly,
-                          );*/
-                          return Container();
+                          );
+                          //return Container();
                         },
                       )
                     : sailing(
