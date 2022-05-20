@@ -14,7 +14,11 @@ class EnteringNavigationState extends NavigationState {}
 class ShowMapState extends NavigationState {
   final bool isBoatRunning;
   final String statusGear;
-  const ShowMapState({required this.isBoatRunning, required this.statusGear});
+  final double steeringAngle;
+  const ShowMapState(
+      {required this.isBoatRunning,
+      required this.statusGear,
+      required this.steeringAngle});
 }
 
 class LeavingNavigationState extends NavigationState {}
@@ -32,11 +36,19 @@ class SpinSteeringWheelState extends NavigationState {
 class IgnitionState extends NavigationState {
   final bool isBoatRunning;
   final String statusGear;
-  const IgnitionState({required this.isBoatRunning, required this.statusGear});
+  final double steeringAngle;
+  const IgnitionState(
+      {required this.isBoatRunning,
+      required this.statusGear,
+      required this.steeringAngle});
 }
 
 class GearState extends NavigationState {
   final bool isBoatRunning;
   final String statusGear;
-  const GearState({required this.isBoatRunning, required this.statusGear});
+  final double steeringAngle;
+  const GearState(
+      {required this.isBoatRunning,
+      required this.statusGear,
+      required this.steeringAngle});
 }

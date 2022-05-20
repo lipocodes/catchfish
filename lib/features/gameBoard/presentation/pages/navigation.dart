@@ -20,6 +20,7 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  double _steeringAngle = 0.0;
   bool _isBoatRunning = false;
   String _statusGear = "N";
   bool _isMapOpened = false;
@@ -198,6 +199,7 @@ class _NavigationState extends State<Navigation> {
                 if (state is ShowMapState) {
                   isBoatRunning = state.isBoatRunning;
                   _statusGear = state.statusGear;
+                  _steeringAngle = state.steeringAngle;
                 } else if (state is SpinSteeringWheelState) {
                   isBoatRunning = state.isBoatRunning;
                   _statusGear = state.statusGear;
@@ -267,16 +269,17 @@ class _NavigationState extends State<Navigation> {
                           return Container();
                         },
                       )
-                    : state is SpinSteeringWheelState
-                        ? sailing(context, state.steeringAngle, isBoatRunning,
-                            _statusGear)
-                        : sailing(context, 0.0, isBoatRunning, _statusGear);
+                    : sailing(
+                        context, _steeringAngle, isBoatRunning, _statusGear);
               } else if (state is IgnitionState) {
                 _isBoatRunning = state.isBoatRunning;
+                _steeringAngle = state.steeringAngle;
+
                 BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
-                return sailing(
-                    context, 0.0, state.isBoatRunning, state.statusGear);
+                return sailing(context, _steeringAngle, state.isBoatRunning,
+                    state.statusGear);
               } else if (state is GearState) {
+                _steeringAngle = state.steeringAngle;
                 BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
                 if (state.statusGear != "N") {
                   BlocProvider.of<MotionBloc>(context).add(NewCoordinatesEvent(
@@ -288,7 +291,11 @@ class _NavigationState extends State<Navigation> {
                 }
 
                 return sailing(
-                    context, 0.0, state.isBoatRunning, state.statusGear);
+                  context,
+                  _steeringAngle,
+                  state.isBoatRunning,
+                  state.statusGear,
+                );
               } else {
                 return Container();
               }

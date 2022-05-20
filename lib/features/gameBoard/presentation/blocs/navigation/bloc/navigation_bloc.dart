@@ -6,7 +6,7 @@ part 'navigation_state.dart';
 
 class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   late String statusGear = "N";
-  double steeringAngle = 0.0;
+  double steeringAngle = 0;
   bool isBoatRunning = false;
   final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
   AudioPlayer audioPlayer1 = AudioPlayer();
@@ -29,8 +29,10 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
       if (event is EnteringNavigationEvent) {
         emit(EnteringNavigationState());
       } else if (event is ShowMapEvent) {
-        emit(
-            ShowMapState(isBoatRunning: isBoatRunning, statusGear: statusGear));
+        emit(ShowMapState(
+            isBoatRunning: isBoatRunning,
+            statusGear: statusGear,
+            steeringAngle: steeringAngle));
       } else if (event is LeavingNavigationEvent) {
         stopBackgroundAudio();
         statusGear = "N";
@@ -38,10 +40,13 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         isBoatRunning = false;
         emit(LeavingNavigationState());
       } else if (event is SpinSteeringWheelEvent) {
-        if (event.isClockwise && isBoatRunning) {
-          steeringAngle += 0.03;
-        } else if (isBoatRunning) {
-          steeringAngle -= 0.03;
+        if (event.isClockwise &&
+            isBoatRunning &&
+            statusGear != "N" &&
+            steeringAngle < 6.28318531) {
+          steeringAngle += 0.17453293;
+        } else if (isBoatRunning && statusGear != "N" && steeringAngle > 0) {
+          steeringAngle -= 0.17453293;
         }
         emit(SpinSteeringWheelState(
             steeringAngle: steeringAngle,
@@ -52,14 +57,21 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
           isBoatRunning = false;
 
           stopBackgroundAudio();
-          emit(IgnitionState(isBoatRunning: false, statusGear: statusGear));
+          emit(IgnitionState(
+              isBoatRunning: false,
+              statusGear: statusGear,
+              steeringAngle: steeringAngle));
         } else {
           isBoatRunning = true;
           statusGear = "N";
           playBackgroundAudio(true, "N.mp3");
         }
-        emit(IgnitionState(isBoatRunning: true, statusGear: statusGear));
+        emit(IgnitionState(
+            isBoatRunning: true,
+            statusGear: statusGear,
+            steeringAngle: steeringAngle));
       } else if (event is GearEvent) {
+        print("aaaaaaaaaaaaaaaaaaaaaa=" + event.selectedNewPosition.toString());
         if (event.selectedNewPosition == "F2" && statusGear == "F1") {
           statusGear = event.selectedNewPosition;
           stopBackgroundAudio();
@@ -79,7 +91,10 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
           stopBackgroundAudio();
           playBackgroundAudio(false, "R.mp3");
         }
-        emit(GearState(isBoatRunning: isBoatRunning, statusGear: statusGear));
+        emit(GearState(
+            isBoatRunning: isBoatRunning,
+            statusGear: statusGear,
+            steeringAngle: steeringAngle));
       }
     });
   }

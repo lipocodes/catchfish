@@ -46,5 +46,7 @@
     "go_to_boat": "Go to Boat",
     "cancel": "Cancel",
     "leave_game": "Leave Game",
-    "text_leave_game": "Leave this game?"
+    "text_leave_game": "Leave this game?",
+    "right": "Right",
+    "left": "Left"
 }

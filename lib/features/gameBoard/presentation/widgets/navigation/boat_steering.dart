@@ -21,21 +21,20 @@ Widget boatSteering(BuildContext context, double steeringAngle) {
   double xEndQuarter4 = 180.0;
   double yStartQuarter4 = 24;
   double yEndQuarter4 = 158;
-
   return SizedBox(
-    height: MediaQuery.of(context).size.height * 0.5,
+    height: MediaQuery.of(context).size.height * 0.4,
     //width: MediaQuery.of(context).size.width * 0.9,
     child: Transform.rotate(
       angle: steeringAngle,
       child: GestureDetector(
         onPanStart: (v) {
-          xLastMeasure = v.localPosition.dx;
+          /*xLastMeasure = v.localPosition.dx;
           yLastMeasure = v.localPosition.dy;
           BlocProvider.of<NavigationBloc>(context)
-              .add(SpinSteeringWheelEvent(isClockwise: true));
+              .add(SpinSteeringWheelEvent(isClockwise: true));*/
         },
         onPanUpdate: (v) {
-          if (v.localPosition.dx > xLastMeasure &&
+          /*if (v.localPosition.dx > xLastMeasure &&
               v.localPosition.dx > xStartQuarter1 &&
               v.localPosition.dx < xEndQuarter1 &&
               v.localPosition.dy > yStartQuarter1 &&
@@ -101,7 +100,7 @@ Widget boatSteering(BuildContext context, double steeringAngle) {
                 .add(SpinSteeringWheelEvent(isClockwise: false));
           }
           xLastMeasure = v.localPosition.dx;
-          yLastMeasure = v.localPosition.dy;
+          yLastMeasure = v.localPosition.dy;*/
         },
         onPanEnd: (v) {},
         child: Image.asset(
