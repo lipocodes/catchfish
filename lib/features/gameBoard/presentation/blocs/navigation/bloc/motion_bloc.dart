@@ -101,6 +101,10 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
         //////////////////////////////////////////////////////////////////////
         double coordinateChangeX = impactAxisY * standardUnit;
         double coordinateChangeY = impactAxisX * standardUnit;
+        if (event.statusGear == "F2") {
+          coordinateChangeX *= 2;
+          coordinateChangeY *= 2;
+        }
 
         bool isLegalMove = checkPointInsidePolygon(
             event.yCoordinate + coordinateChangeX,
@@ -108,10 +112,15 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
             event.indexMarina);
 
         if (isLegalMove &&
-            event.statusGear != "N" &&
+            (event.statusGear == "F1" || event.statusGear == "F2") &&
             event.isBoatRunning == true) {
           event.xCoordinate += coordinateChangeX;
           event.yCoordinate += coordinateChangeY;
+        } else if (isLegalMove &&
+            event.statusGear == "R" &&
+            event.isBoatRunning == true) {
+          event.xCoordinate -= coordinateChangeX;
+          event.yCoordinate -= coordinateChangeY;
         }
 
         emit(NewCoordinatesState(
