@@ -39,7 +39,9 @@ class LeavingNavigationEvent implements NavigationEvent {
 
 class SpinSteeringWheelEvent implements NavigationEvent {
   final bool isClockwise;
-  SpinSteeringWheelEvent({required this.isClockwise});
+  final double steeringAngle;
+  SpinSteeringWheelEvent(
+      {required this.isClockwise, required this.steeringAngle});
 
   @override
   // TODO: implement props

@@ -52,6 +52,7 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
   MotionBloc() : super(MotionInitial()) {
     on<MotionEvent>((event, emit) {
       if (event is NewCoordinatesEvent) {
+        print("wwwwwwwwwwwwwwwwww=" + event.steeringAngle.toString());
         bool isLegalMove = checkPointInsidePolygon(event.yCoordinate - 0.0001,
             event.xCoordinate - 0.0001, event.indexMarina);
         if (isLegalMove &&

@@ -31,7 +31,7 @@ Widget sailing(
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          buttonSpinRight(context),
+          buttonSpinRight(context, steeringAngle),
           SizedBox(
             height: 30.0,
             child:
@@ -42,7 +42,7 @@ Widget sailing(
                       fontWeight: FontWeight.bold,
                     )),
           ),
-          buttonSpinLeft(context),
+          buttonSpinLeft(context, steeringAngle),
         ],
       ),
       boatSteering(context, steeringAngle),

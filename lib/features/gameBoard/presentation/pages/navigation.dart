@@ -253,11 +253,12 @@ class _NavigationState extends State<Navigation> {
                                       yCoordinate: _marinaLongitude,
                                       indexMarina: _indexMarina,
                                       statusGear: _statusGear,
-                                      isBoatRunning: _isBoatRunning));
+                                      isBoatRunning: _isBoatRunning,
+                                      steeringAngle: _steeringAngle));
                             });
                           }
 
-                          /*return GoogleMap(
+                          /* GoogleMap(
                             myLocationButtonEnabled: false,
                             zoomControlsEnabled: false,
                             initialCameraPosition: _initialCameraPosition,
@@ -287,7 +288,8 @@ class _NavigationState extends State<Navigation> {
                       yCoordinate: _marinaLongitude,
                       indexMarina: _indexMarina,
                       statusGear: _statusGear,
-                      isBoatRunning: _isBoatRunning));
+                      isBoatRunning: _isBoatRunning,
+                      steeringAngle: _steeringAngle));
                 }
 
                 return sailing(
