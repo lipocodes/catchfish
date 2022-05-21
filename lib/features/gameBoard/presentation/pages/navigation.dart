@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
@@ -243,6 +244,23 @@ class _NavigationState extends State<Navigation> {
                                     _initialCameraPosition));*/
                             BlocProvider.of<MotionBloc>(context)
                                 .add(IdleEvent());
+                            //checking if we arrived at destination point
+                            double y = _prefs.getDouble("yDestination") ?? 0.0;
+                            double x = _prefs.getDouble("xDestination") ?? 0.0;
+                            if (pow(_marinaLatitude - y, 2) +
+                                    pow(_marinaLongitude - x, 2) <
+                                pow(0.001, 2)) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content:
+                                    const Text("text_origin_now_destination",
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w900,
+                                        )).tr(),
+                              ));
+                            }
                           } else if (state is IdleState) {
                             Timer timer = Timer(const Duration(seconds: 1), () {
                               BlocProvider.of<MotionBloc>(context).add(
