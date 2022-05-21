@@ -7,6 +7,7 @@ part 'navigation_event.dart';
 part 'navigation_state.dart';
 
 class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
+  bool _isStartingMove = true;
   late SharedPreferences _prefs;
   int _indexMarina = 0;
   late String statusGear = "N";
@@ -15,12 +16,13 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
   AudioPlayer audioPlayer1 = AudioPlayer();
   AudioPlayer audioPlayer2 = AudioPlayer();
-  playBackgroundAudio(bool needIgnition, String engineSound) async {
-    if (needIgnition) {
-      audioPlayer1 = await audioCache.play("ignition.mp3");
+  playBackgroundAudio(String firstSound, String secondSound) async {
+    if (firstSound.isNotEmpty) {
+      audioPlayer1 = await audioCache.play(firstSound);
     }
-
-    audioPlayer2 = await audioCache.loop(engineSound);
+    if (secondSound.isNotEmpty) {
+      audioPlayer2 = await audioCache.loop(secondSound);
+    }
   }
 
   stopBackgroundAudio() async {
@@ -78,7 +80,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         } else {
           isBoatRunning = true;
           statusGear = "N";
-          playBackgroundAudio(true, "N.mp3");
+          playBackgroundAudio("ignition.mp3", "N.mp3");
         }
         emit(IgnitionState(
             isBoatRunning: true,
@@ -88,21 +90,30 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         if (event.selectedNewPosition == "F2" && statusGear == "F1") {
           statusGear = event.selectedNewPosition;
           stopBackgroundAudio();
-          playBackgroundAudio(false, "F2.mp3");
+
+          playBackgroundAudio("", "F2.mp3");
         } else if (event.selectedNewPosition == "F1" &&
             (statusGear == "F2" || statusGear == "N")) {
+          if (_isStartingMove) {
+            _isStartingMove = false;
+            stopBackgroundAudio();
+
+            playBackgroundAudio("horn.mp3", "F1.mp3");
+          } else {
+            stopBackgroundAudio();
+
+            playBackgroundAudio("", "F1.mp3");
+          }
           statusGear = event.selectedNewPosition;
-          stopBackgroundAudio();
-          playBackgroundAudio(false, "F1.mp3");
         } else if (event.selectedNewPosition == "N" &&
             (statusGear == "F1" || statusGear == "R")) {
           statusGear = event.selectedNewPosition;
           stopBackgroundAudio();
-          playBackgroundAudio(false, "N.mp3");
+          playBackgroundAudio("", "N.mp3");
         } else if (event.selectedNewPosition == "R" && statusGear == "N") {
           statusGear = event.selectedNewPosition;
           stopBackgroundAudio();
-          playBackgroundAudio(false, "R.mp3");
+          playBackgroundAudio("", "R.mp3");
         }
         emit(GearState(
             isBoatRunning: isBoatRunning,
