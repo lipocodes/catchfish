@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
-import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignition.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/sailing.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -80,6 +79,7 @@ class _NavigationState extends State<Navigation> {
   _retreivePrefs() async {
     _prefs = await SharedPreferences.getInstance();
     _indexMarina = _prefs.getInt("indexMarina") ?? 0;
+    print("hhhhhhhhhhhhhhhhhhh=" + _indexMarina.toString());
     _marinaLatitude = _prefs.getDouble("marinaLatitude") ?? 0.0;
     _marinaLongitude = _prefs.getDouble("marinaLongitude") ?? 0.0;
   }
@@ -206,6 +206,7 @@ class _NavigationState extends State<Navigation> {
                 List<LatLng> polygonLatLong1 = [];
 
                 List<String> pointsPolygon = polygonsMarinas[_indexMarina];
+
                 for (int a = 0; a < pointsPolygon.length; a++) {
                   String temp1 = pointsPolygon[a];
                   List<String> temp2 = temp1.split(",");
@@ -217,9 +218,9 @@ class _NavigationState extends State<Navigation> {
                   Polygon(
                     polygonId: const PolygonId("1"),
                     points: polygonLatLong1,
-                    fillColor: Colors.transparent,
-                    strokeColor: Colors.transparent,
-                    strokeWidth: 2,
+                    fillColor: Colors.blue,
+                    strokeColor: Colors.blue,
+                    strokeWidth: 10,
                     onTap: () {
                       // Do something
                     },

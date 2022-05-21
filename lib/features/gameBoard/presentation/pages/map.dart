@@ -250,7 +250,7 @@ class _MapState extends State<Map> {
   //////////////////////////////////////////////////////////////////////////////
   Widget map() {
     List<LatLng> polygonLatLong1 = [];
-    _random = 1;
+    //_random = 1;
     List<String> pointsPolygon = polygonsMarinas[_random];
     for (int a = 0; a < pointsPolygon.length; a++) {
       String temp1 = pointsPolygon[a];
