@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/core/consts/marinas.dart';
 import 'package:equatable/equatable.dart';
@@ -6,8 +7,13 @@ part 'motion_event.dart';
 part 'motion_state.dart';
 
 class MotionBloc extends Bloc<MotionEvent, MotionState> {
-  /////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////
+  final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
+  AudioPlayer audioPlayer = AudioPlayer();
+
+  playBackgroundAudio(String engineSound) async {
+    audioPlayer = await audioCache.play(engineSound);
+  }
+
   bool checkPointInsidePolygon(double x, double y, int indexMarina) {
     //Based on Ray Casting algorithm for checking if a point is inside a polygon
 
@@ -39,8 +45,9 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
       }
       numIntersections = numIntersections + 1;
     }
-    print("cccccccccccccccc=" + numIntersections.toString());
+
     if (numIntersections % 2 == 0) {
+      playBackgroundAudio("spark.mp3");
       return false;
     } else {
       return true;
