@@ -80,7 +80,7 @@ class _MapState extends State<Map> {
       target: LatLng(marinaLatitude, marinaLongitude),
       zoom: 17,
     );
-
+    await _prefs.setInt("indexMarina", _random);
     await _prefs.setDouble("marinaLatitude", marinaLatitude);
     await _prefs.setDouble("marinaLongitude", marinaLongitude);
 
@@ -322,7 +322,7 @@ class _MapState extends State<Map> {
         target: LatLng(marinaLatitude, marinaLongitude),
         zoom: 17,
       );
-      await _prefs.setInt("indexMarina", _random);
+      await _prefs.setInt("indexMarina", indexSelectedItem);
       await _prefs.setDouble("marinaLatitude", marinaLatitude);
       await _prefs.setDouble("marinaLongitude", marinaLongitude);
       googleMapController

@@ -79,7 +79,7 @@ class _NavigationState extends State<Navigation> {
   _retreivePrefs() async {
     _prefs = await SharedPreferences.getInstance();
     _indexMarina = _prefs.getInt("indexMarina") ?? 0;
-    print("hhhhhhhhhhhhhhhhhhh=" + _indexMarina.toString());
+    print("qqqqqqqqqqqqqqqqqqqqqqqqq=" + _indexMarina.toString());
     _marinaLatitude = _prefs.getDouble("marinaLatitude") ?? 0.0;
     _marinaLongitude = _prefs.getDouble("marinaLongitude") ?? 0.0;
   }
