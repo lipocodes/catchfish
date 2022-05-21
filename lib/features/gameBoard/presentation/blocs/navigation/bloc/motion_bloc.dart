@@ -59,7 +59,7 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
   MotionBloc() : super(MotionInitial()) {
     on<MotionEvent>((event, emit) {
       if (event is NewCoordinatesEvent) {
-        double standardUnit = 0.00005;
+        double standardUnit = 0.0001;
         int angleDegrees = (event.steeringAngle * 57.2957795).floor();
 
         int gapTo0 = 0;

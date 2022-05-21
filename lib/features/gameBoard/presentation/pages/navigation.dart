@@ -173,6 +173,15 @@ class _NavigationState extends State<Navigation> {
             leading: buttonBack(context),
             actions: [
               IconButton(
+                  icon: const Icon(Icons.skip_next,
+                      color: Color.fromARGB(255, 243, 13, 13), size: 34.0),
+                  onPressed: () {
+                    print("xxxxxxxxxxxxxxxxxx");
+                  }),
+              const SizedBox(
+                width: 40.0,
+              ),
+              IconButton(
                   icon: _isMapOpened
                       ? const Icon(Icons.map,
                           color: Color.fromARGB(255, 243, 13, 13), size: 34.0)
