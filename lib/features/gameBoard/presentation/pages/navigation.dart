@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignition.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
-import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/map.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/sailing.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +20,7 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  bool _skipPerformed = false;
   double _steeringAngle = 0.0;
   bool _isBoatRunning = false;
   String _statusGear = "N";
@@ -172,29 +173,17 @@ class _NavigationState extends State<Navigation> {
             elevation: 0,
             leading: buttonBack(context),
             actions: [
-              IconButton(
-                  icon: const Icon(Icons.skip_next,
-                      color: Color.fromARGB(255, 243, 13, 13), size: 34.0),
-                  onPressed: () {
-                    print("xxxxxxxxxxxxxxxxxx");
-                  }),
+              if (!_skipPerformed) ...[
+                buttonSkip(
+                  context,
+                ),
+              ],
               const SizedBox(
-                width: 40.0,
+                width: 80.0,
               ),
-              IconButton(
-                  icon: _isMapOpened
-                      ? const Icon(Icons.map,
-                          color: Color.fromARGB(255, 243, 13, 13), size: 34.0)
-                      : const Icon(Icons.map,
-                          color: Color(0xFF0000FF), size: 34.0),
-                  onPressed: () {
-                    setState(() {
-                      _isMapOpened ? _isMapOpened = false : _isMapOpened = true;
-                    });
-                  }),
+              buttonMap(),
             ],
           ),
-          resizeToAvoidBottomInset: false,
           body: BlocBuilder<NavigationBloc, NavigationState>(
             builder: (context, state) {
               if (state is EnteringNavigationState) {
@@ -314,4 +303,105 @@ class _NavigationState extends State<Navigation> {
           )),
     ));
   }
+
+  ////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+  Widget buttonSkip(BuildContext context) {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+      ),
+      label: Text('skip'.tr()),
+      icon: const Icon(Icons.rotate_left, size: 24.0, color: Colors.white),
+      onPressed: () async {
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Colors.redAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: const Text(
+                "skip_navigation",
+                style: TextStyle(
+                  fontFamily: 'skullsandcrossbones',
+                ),
+              ).tr(),
+              content: const Text(
+                "text_skip_navigation",
+                style: TextStyle(
+                  fontFamily: 'skullsandcrossbones',
+                ),
+              ).tr(),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _skipPerformed = true;
+                    });
+
+                    Navigator.pop(context);
+
+                    double y = _prefs.getDouble("yDestination") ?? 0.0;
+                    double x = _prefs.getDouble("xDestination") ?? 0.0;
+                    _marinaLatitude = y;
+                    _marinaLongitude = x;
+                    updateOriginMarker();
+
+                    _initialCameraPosition = CameraPosition(
+                      target: LatLng(y, x),
+                      zoom: 12,
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("text_origin_now_destination",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w900,
+                          )).tr(),
+                    ));
+                  },
+                  child: const Text('OK',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.blue,
+                        fontFamily: 'skullsandcrossbones',
+                      )).tr(),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('cancel',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.blue,
+                        fontFamily: 'skullsandcrossbones',
+                      )).tr(),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget buttonMap() {
+    return IconButton(
+        icon: _isMapOpened
+            ? const Icon(Icons.map,
+                color: Color.fromARGB(255, 243, 13, 13), size: 34.0)
+            : const Icon(Icons.map, color: Color(0xFF0000FF), size: 34.0),
+        onPressed: () {
+          setState(() {
+            _isMapOpened ? _isMapOpened = false : _isMapOpened = true;
+          });
+        });
+  }
+  ////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
 }

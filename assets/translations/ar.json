@@ -50,5 +50,9 @@
     "leave_game": "Leave Game",
     "text_leave_game": "Leave this game?",
     "right": "Right",
-    "left": "Left"
+    "left": "Left",
+    "skip_navigation": "Skip Navigation",
+    "text_skip_navigation": "Skip to next mission?",
+    "skip": "Skip",
+    "text_origin_now_destination": "Your boat is now at destination point"
 }
