@@ -103,10 +103,12 @@ class _NavigationState extends State<Navigation> {
   //when entering this screen, need to randomly choose  a location
   chooseRandomLocation() async {
     _random = Random().nextInt(4) + 1;
+    _indexMarina = _random;
     String temp1 = locationsMarinas[_random];
 
     List<String> temp2 = temp1.split("^^^");
     String marinaName = temp2[0];
+
     double marinaLatitude = double.parse(temp2[1]);
 
     double marinaLongitude = double.parse(temp2[2]);
@@ -321,7 +323,7 @@ class _NavigationState extends State<Navigation> {
                     List<LatLng> polygonLatLong1 = [];
 
                     List<String> pointsPolygon = polygonsMarinas[_indexMarina];
-
+                    print("xxxxxxxxxxxxxxxxxxxxx=" + _indexMarina.toString());
                     for (int a = 0; a < pointsPolygon.length; a++) {
                       String temp1 = pointsPolygon[a];
                       List<String> temp2 = temp1.split(",");
@@ -359,7 +361,6 @@ class _NavigationState extends State<Navigation> {
                                 markers: {_origin, _destination},
                                 polygons: poly,
                               ),
-                              returnToOriginalPosition(),
                             ],
                           ),
                         ),
@@ -450,12 +451,14 @@ class _NavigationState extends State<Navigation> {
 
   Widget dropDown() {
     moveToSelectedLocation(int indexSelectedItem) async {
+      _indexMarina = indexSelectedItem;
       String temp1 = locationsMarinas[indexSelectedItem];
 
       List<String> temp2 = temp1.split("^^^");
       double marinaLatitude = double.parse(temp2[1]);
 
       double marinaLongitude = double.parse(temp2[2]);
+
       origin = Marker(
         markerId: const MarkerId("Origin"),
         infoWindow: const InfoWindow(title: "Origin"),

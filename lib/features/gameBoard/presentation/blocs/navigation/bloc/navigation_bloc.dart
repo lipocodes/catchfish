@@ -56,12 +56,14 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         emit(LeavingNavigationState());
       } else if (event is SpinSteeringWheelEvent) {
         _steeringAngle = event.steeringAngle;
-        if (event.isClockwise &&
-            isBoatRunning &&
-            statusGear != "N" &&
-            _steeringAngle < 6.28318531) {
+        if (event.isClockwise && _steeringAngle <= 6.10865238) {
           _steeringAngle += 0.17453293;
-        } else if (isBoatRunning && statusGear != "N" && _steeringAngle > 0) {
+        } else if (event.isClockwise && _steeringAngle > 6.10865238) {
+          _steeringAngle = 0;
+        } else if (!event.isClockwise && _steeringAngle >= 0.17453293) {
+          _steeringAngle -= 0.17453293;
+        } else if (!event.isClockwise && _steeringAngle < 0.17453293) {
+          _steeringAngle = 6.28318531;
           _steeringAngle -= 0.17453293;
         }
         emit(SpinSteeringWheelState(
