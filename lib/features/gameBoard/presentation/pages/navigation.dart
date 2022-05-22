@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignition.dart';
 
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
@@ -11,7 +12,7 @@ import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/but
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_spin_right.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/compass.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/gear.dart';
-
+import 'dart:ui' as UI;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,15 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  int _random = 0;
+  late Marker origin;
+  late Marker destination = const Marker(
+    markerId: MarkerId("Target"),
+    infoWindow: InfoWindow(title: "Target"),
+    icon: BitmapDescriptor.defaultMarker,
+    position: LatLng(0, 0),
+  );
+  String? chosenValue = "switch_location".tr();
   bool _skipPerformed = false;
   double _steeringAngle = 0.0;
   bool _isBoatRunning = false;
@@ -52,6 +62,95 @@ class _NavigationState extends State<Navigation> {
     target: LatLng(0.0, 0.0),
     zoom: 17,
   );
+
+  showWeatherDetails(String weatherDetails) {
+    Timer(const Duration(seconds: 1), () {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+                backgroundColor: Colors.redAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                title: const Text(
+                  'Forecast for Today:',
+                  textDirection: UI.TextDirection.ltr,
+                  style: TextStyle(
+                    fontFamily: 'skullsandcrossbones',
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                content: Text(
+                  weatherDetails,
+                  textDirection: UI.TextDirection.ltr,
+                  style: const TextStyle(
+                    fontFamily: 'skullsandcrossbones',
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                actions: <Widget>[
+                  IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      })
+                ],
+              ));
+    });
+  }
+
+  //when entering this screen, need to randomly choose  a location
+  chooseRandomLocation() async {
+    _random = Random().nextInt(4) + 1;
+    String temp1 = locationsMarinas[_random];
+
+    List<String> temp2 = temp1.split("^^^");
+    String marinaName = temp2[0];
+    double marinaLatitude = double.parse(temp2[1]);
+
+    double marinaLongitude = double.parse(temp2[2]);
+
+    origin = Marker(
+      markerId: const MarkerId("Origin"),
+      infoWindow: const InfoWindow(title: "Origin"),
+      icon: await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(size: Size(64, 64)),
+          'assets/images/gameBoard/boat.png'),
+      position: LatLng(marinaLatitude, marinaLongitude),
+    );
+    CameraPosition initialCameraPosition = const CameraPosition(
+      target: LatLng(0.0, 0.0),
+      zoom: 17,
+    );
+    List<String> destinationPoints = destinationPointsMarinas[_random];
+    int rand = Random().nextInt(destinationPoints.length);
+    String destinationPoint = destinationPoints[rand];
+    List<String> temp3 = destinationPoint.split(",");
+    double y = double.parse(temp3[0]);
+    double x = double.parse(temp3[1]);
+    destination = Marker(
+      markerId: const MarkerId("Destination"),
+      infoWindow: const InfoWindow(title: "Destination"),
+      icon: await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(size: Size(64, 64)),
+          'assets/images/gameBoard/anchor.png'),
+      position: LatLng(y, x),
+    );
+
+    initialCameraPosition = CameraPosition(
+      target: LatLng(marinaLatitude, marinaLongitude),
+      zoom: 17,
+    );
+    await _prefs.setInt("indexMarina", _random);
+    await _prefs.setDouble("marinaLatitude", marinaLatitude);
+    await _prefs.setDouble("marinaLongitude", marinaLongitude);
+
+    setState(() {
+      chosenValue = marinaName;
+    });
+  }
 
   _prepareDataForMap() async {
     _origin = Marker(
@@ -95,6 +194,7 @@ class _NavigationState extends State<Navigation> {
     super.initState();
 
     _retreivePrefs();
+    chooseRandomLocation();
     BlocProvider.of<NavigationBloc>(context).add(EnteringNavigationEvent());
   }
 
@@ -173,17 +273,25 @@ class _NavigationState extends State<Navigation> {
         child: WillPopScope(
       onWillPop: () => returnBack(),
       child: Scaffold(
-          extendBodyBehindAppBar: true,
+          //extendBodyBehindAppBar: true,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: buttonBack(context),
             actions: [
-              if (!_skipPerformed) ...[
-                buttonSkip(
-                  context,
-                ),
-              ],
+              Row(
+                children: [
+                  buttonWeather(),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  if (!_skipPerformed) ...[
+                    buttonSkip(
+                      context,
+                    ),
+                  ],
+                ],
+              ),
             ],
           ),
           body: BlocBuilder<NavigationBloc, NavigationState>(
@@ -229,16 +337,24 @@ class _NavigationState extends State<Navigation> {
                 };
                 BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
 
-                return Stack(
+                return Column(
                   children: [
-                    GoogleMap(
-                      myLocationButtonEnabled: false,
-                      zoomControlsEnabled: false,
-                      initialCameraPosition: _initialCameraPosition,
-                      onMapCreated: (controller) =>
-                          _googleMapController = controller,
-                      markers: {_origin, _destination},
-                      polygons: poly,
+                    SizedBox(
+                      height: 500.0,
+                      child: Stack(
+                        children: [
+                          GoogleMap(
+                            myLocationButtonEnabled: false,
+                            zoomControlsEnabled: false,
+                            initialCameraPosition: _initialCameraPosition,
+                            onMapCreated: (controller) =>
+                                _googleMapController = controller,
+                            markers: {_origin, _destination},
+                            polygons: poly,
+                          ),
+                          returnToOriginalPosition(),
+                        ],
+                      ),
                     ),
                     sailing(
                       context,
@@ -284,6 +400,142 @@ class _NavigationState extends State<Navigation> {
 
   ////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
+  Widget returnToOriginalPosition() {
+    return Stack(
+      children: [
+        FloatingActionButton(
+            onPressed: () => _googleMapController.animateCamera(
+                CameraUpdate.newCameraPosition(_initialCameraPosition))),
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: GestureDetector(
+            onTap: () => _googleMapController.animateCamera(
+                CameraUpdate.newCameraPosition(_initialCameraPosition)),
+            child: const Icon(
+              Icons.refresh,
+              color: Colors.white,
+              size: 24.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buttonWeather() {
+    return ElevatedButton.icon(
+      label: Text('weather'.tr()),
+      icon: const Icon(Icons.cloud, size: 24.0, color: Colors.white),
+      onPressed: () async {
+        BlocProvider.of<WeatherBloc>(context).add(GetWeatherEvent(
+            latitude: _initialCameraPosition.target.latitude,
+            longitude: _initialCameraPosition.target.longitude));
+      },
+    );
+  }
+
+  Widget dropDown() {
+    moveToSelectedLocation(int indexSelectedItem) async {
+      String temp1 = locationsMarinas[indexSelectedItem];
+
+      List<String> temp2 = temp1.split("^^^");
+      double marinaLatitude = double.parse(temp2[1]);
+
+      double marinaLongitude = double.parse(temp2[2]);
+      origin = Marker(
+        markerId: const MarkerId("Origin"),
+        infoWindow: const InfoWindow(title: "Origin"),
+        icon: await BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(size: Size(64, 64)),
+            'assets/images/gameBoard/boat.png'),
+        position: LatLng(marinaLatitude, marinaLongitude),
+      );
+      List<String> destinationPoints = destinationPointsMarinas[_random];
+      int rand = Random().nextInt(destinationPoints.length);
+      String destinationPoint = destinationPoints[rand];
+      List<String> temp3 = destinationPoint.split(",");
+      double y = double.parse(temp3[0]);
+      double x = double.parse(temp3[1]);
+
+      _prefs.setDouble("yDestination", y);
+      _prefs.setDouble("xDestination", x);
+      destination = Marker(
+        markerId: const MarkerId("Destination"),
+        infoWindow: const InfoWindow(title: "Destination"),
+        icon: await BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(size: Size(64, 64)),
+            'assets/images/gameBoard/anchor.png'),
+        position: LatLng(y, x),
+      );
+      _initialCameraPosition = CameraPosition(
+        target: LatLng(marinaLatitude, marinaLongitude),
+        zoom: 17,
+      );
+      await _prefs.setInt("indexMarina", indexSelectedItem);
+      await _prefs.setDouble("marinaLatitude", marinaLatitude);
+      await _prefs.setDouble("marinaLongitude", marinaLongitude);
+      _googleMapController.animateCamera(
+          CameraUpdate.newCameraPosition(_initialCameraPosition));
+    }
+
+    void onChangedDropDown(String? selection) {
+      for (int a = 1; a < locationsMarinas.length; a++) {
+        String temp1 = locationsMarinas[a];
+        List<String> temp2 = temp1.split("^^^");
+        String locationName = temp2[0];
+        if (locationName == selection) {
+          moveToSelectedLocation(a);
+        }
+      }
+      setState(() {
+        chosenValue = selection;
+      });
+      BlocProvider.of<WeatherBloc>(context).add(InitialEvent());
+    }
+
+    List<String> items = [];
+    items.add(locationsMarinas[0]);
+
+    for (int a = 1; a < locationsMarinas.length; a++) {
+      items.add(
+          locationsMarinas[a].substring(0, locationsMarinas[a].indexOf("^^^")));
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(0.0),
+          child: DropdownButton<String>(
+            value: chosenValue,
+            //elevation: 5,
+            style: const TextStyle(
+                color: Colors.red, fontSize: 20.0, fontWeight: FontWeight.bold),
+            icon: const Padding(
+                //Icon at tail, arrow bottom is default icon
+                padding: EdgeInsets.only(left: 20),
+                child: Icon(Icons.arrow_circle_down_sharp)),
+            dropdownColor: Colors.blueAccent.shade100,
+            items: items.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Center(
+                  child: Text(
+                    value,
+                  ),
+                ),
+              );
+            }).toList(),
+
+            onChanged: onChangedDropDown,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget sailing(
     BuildContext context,
     double steeringAngle,
@@ -294,7 +546,9 @@ class _NavigationState extends State<Navigation> {
       bottom: 0.0,
       child: Column(
         children: [
+          dropDown(),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               buttonSpinRight(context, _steeringAngle),
               const SizedBox(
@@ -309,11 +563,14 @@ class _NavigationState extends State<Navigation> {
                       fontWeight: FontWeight.bold,
                     )),
               ),
+              const SizedBox(
+                width: 10.0,
+              ),
               buttonSpinLeft(context, _steeringAngle),
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                   width: 64.0,
@@ -329,11 +586,6 @@ class _NavigationState extends State<Navigation> {
 
   Widget buttonSkip(BuildContext context) {
     return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-      ),
       label: Text('skip'.tr()),
       icon: const Icon(Icons.rotate_left, size: 24.0, color: Colors.white),
       onPressed: () async {

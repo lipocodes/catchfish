@@ -8,7 +8,7 @@ Widget buttonBack(BuildContext context) {
     icon: const Icon(
       Icons.arrow_back,
       size: 28,
-      color: Colors.white,
+      color: Colors.blue,
     ),
     onPressed: () async {
       await showDialog(
