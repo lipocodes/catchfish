@@ -11,6 +11,7 @@ class WeatherUsecase {
 
     WeatherEntity weatherEntity =
         WeatherEntity(weatherDetails: weatherModel.weatherDetails);
+
     return weatherEntity;
   }
 }

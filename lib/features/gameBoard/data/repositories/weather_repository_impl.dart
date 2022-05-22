@@ -9,6 +9,7 @@ class WeatherRepositoryImpl implements WeatherRepository {
     WeatherRemoteDatasource weatherRemoteDatasource = WeatherRemoteDatasource();
     WeatherModel weatherModel =
         await weatherRemoteDatasource.getWeatherDetails(latitude, longitude);
+
     return weatherModel;
   }
 }

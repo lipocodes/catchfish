@@ -7,6 +7,7 @@ class WeatherRemoteDatasource {
       double latitude, double longitude) async {
     WeatherFactory wf = WeatherFactory("f5032883316e150d0391daf1cb11d680");
     Weather w = await wf.currentWeatherByLocation(latitude, longitude);
+
     String str = "";
     String cloudiness = w.cloudiness.toString();
     String weatherDescription = w.weatherDescription.toString();
@@ -68,6 +69,7 @@ class WeatherRemoteDatasource {
           sunset.substring(sunset.indexOf(" ") + 1) +
           "\n";
     }
+
     WeatherModel weatherModel = WeatherModel(weatherDetails: str);
     return weatherModel;
   }

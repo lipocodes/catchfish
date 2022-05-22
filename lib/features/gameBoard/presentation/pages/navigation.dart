@@ -10,7 +10,6 @@ import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignitio
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_spin_left.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_spin_right.dart';
-import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/compass.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/gear.dart';
 import 'dart:ui' as UI;
 import 'package:easy_localization/easy_localization.dart';
@@ -272,129 +271,142 @@ class _NavigationState extends State<Navigation> {
     return SafeArea(
         child: WillPopScope(
       onWillPop: () => returnBack(),
-      child: Scaffold(
-          //extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: buttonBack(context),
-            actions: [
-              Row(
-                children: [
-                  buttonWeather(),
-                  const SizedBox(
-                    width: 10.0,
+      child: BlocBuilder<WeatherBloc, WeatherState>(
+        builder: (context, state) {
+          if (state is GetWeatherState) {
+            BlocProvider.of<WeatherBloc>(context).add(InitialEvent());
+            showWeatherDetails(state.weatherDetails);
+          }
+
+          return Scaffold(
+              //extendBodyBehindAppBar: true,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: buttonBack(context),
+                actions: [
+                  Row(
+                    children: [
+                      buttonWeather(),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      if (!_skipPerformed) ...[
+                        buttonSkip(
+                          context,
+                        ),
+                      ],
+                    ],
                   ),
-                  if (!_skipPerformed) ...[
-                    buttonSkip(
-                      context,
-                    ),
-                  ],
                 ],
               ),
-            ],
-          ),
-          body: BlocBuilder<NavigationBloc, NavigationState>(
-            builder: (context, state) {
-              if (state is EnteringNavigationState) {
-                _prepareDataForMap();
+              body: BlocBuilder<NavigationBloc, NavigationState>(
+                builder: (context, state) {
+                  if (state is EnteringNavigationState) {
+                    _prepareDataForMap();
 
-                return Container();
-              } else if (state is ShowMapState ||
-                  state is SpinSteeringWheelState) {
-                bool isBoatRunning = false;
+                    return Container();
+                  } else if (state is ShowMapState ||
+                      state is SpinSteeringWheelState) {
+                    bool isBoatRunning = false;
 
-                if (state is ShowMapState) {
-                  isBoatRunning = state.isBoatRunning;
-                  _statusGear = state.statusGear;
-                  _steeringAngle = state.steeringAngle;
-                } else if (state is SpinSteeringWheelState) {
-                  isBoatRunning = state.isBoatRunning;
-                  _statusGear = state.statusGear;
-                }
-                List<LatLng> polygonLatLong1 = [];
+                    if (state is ShowMapState) {
+                      isBoatRunning = state.isBoatRunning;
+                      _statusGear = state.statusGear;
+                      _steeringAngle = state.steeringAngle;
+                    } else if (state is SpinSteeringWheelState) {
+                      isBoatRunning = state.isBoatRunning;
+                      _statusGear = state.statusGear;
+                    }
+                    List<LatLng> polygonLatLong1 = [];
 
-                List<String> pointsPolygon = polygonsMarinas[_indexMarina];
+                    List<String> pointsPolygon = polygonsMarinas[_indexMarina];
 
-                for (int a = 0; a < pointsPolygon.length; a++) {
-                  String temp1 = pointsPolygon[a];
-                  List<String> temp2 = temp1.split(",");
-                  double y = double.parse(temp2[0]);
-                  double x = double.parse(temp2[1]);
-                  polygonLatLong1.add(LatLng(y, x));
-                }
-                Set<Polygon> poly = <Polygon>{
-                  Polygon(
-                    polygonId: const PolygonId("1"),
-                    points: polygonLatLong1,
-                    fillColor: Colors.blue,
-                    strokeColor: Colors.blue,
-                    strokeWidth: 10,
-                    onTap: () {
-                      // Do something
-                    },
-                  ),
-                };
-                BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
-
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 500.0,
-                      child: Stack(
-                        children: [
-                          GoogleMap(
-                            myLocationButtonEnabled: false,
-                            zoomControlsEnabled: false,
-                            initialCameraPosition: _initialCameraPosition,
-                            onMapCreated: (controller) =>
-                                _googleMapController = controller,
-                            markers: {_origin, _destination},
-                            polygons: poly,
-                          ),
-                          returnToOriginalPosition(),
-                        ],
+                    for (int a = 0; a < pointsPolygon.length; a++) {
+                      String temp1 = pointsPolygon[a];
+                      List<String> temp2 = temp1.split(",");
+                      double y = double.parse(temp2[0]);
+                      double x = double.parse(temp2[1]);
+                      polygonLatLong1.add(LatLng(y, x));
+                    }
+                    Set<Polygon> poly = <Polygon>{
+                      Polygon(
+                        polygonId: const PolygonId("1"),
+                        points: polygonLatLong1,
+                        fillColor: Colors.blue,
+                        strokeColor: Colors.blue,
+                        strokeWidth: 10,
+                        onTap: () {
+                          // Do something
+                        },
                       ),
-                    ),
-                    sailing(
+                    };
+                    BlocProvider.of<NavigationBloc>(context)
+                        .add(ShowMapEvent());
+
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: 500.0,
+                          child: Stack(
+                            children: [
+                              GoogleMap(
+                                myLocationButtonEnabled: false,
+                                zoomControlsEnabled: false,
+                                initialCameraPosition: _initialCameraPosition,
+                                onMapCreated: (controller) =>
+                                    _googleMapController = controller,
+                                markers: {_origin, _destination},
+                                polygons: poly,
+                              ),
+                              returnToOriginalPosition(),
+                            ],
+                          ),
+                        ),
+                        sailing(
+                          context,
+                          _steeringAngle,
+                          _isBoatRunning,
+                          _statusGear,
+                        ),
+                      ],
+                    );
+                  } else if (state is IgnitionState) {
+                    _isBoatRunning = state.isBoatRunning;
+                    _steeringAngle = state.steeringAngle;
+
+                    BlocProvider.of<NavigationBloc>(context)
+                        .add(ShowMapEvent());
+                    return sailing(context, _steeringAngle, state.isBoatRunning,
+                        state.statusGear);
+                  } else if (state is GearState) {
+                    _steeringAngle = state.steeringAngle;
+                    BlocProvider.of<NavigationBloc>(context)
+                        .add(ShowMapEvent());
+                    if (state.statusGear != "N") {
+                      BlocProvider.of<MotionBloc>(context).add(
+                          NewCoordinatesEvent(
+                              xCoordinate: _marinaLatitude,
+                              yCoordinate: _marinaLongitude,
+                              indexMarina: _indexMarina,
+                              statusGear: _statusGear,
+                              isBoatRunning: _isBoatRunning,
+                              steeringAngle: _steeringAngle));
+                    }
+
+                    return sailing(
                       context,
                       _steeringAngle,
-                      _isBoatRunning,
-                      _statusGear,
-                    ),
-                  ],
-                );
-              } else if (state is IgnitionState) {
-                _isBoatRunning = state.isBoatRunning;
-                _steeringAngle = state.steeringAngle;
-
-                BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
-                return sailing(context, _steeringAngle, state.isBoatRunning,
-                    state.statusGear);
-              } else if (state is GearState) {
-                _steeringAngle = state.steeringAngle;
-                BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
-                if (state.statusGear != "N") {
-                  BlocProvider.of<MotionBloc>(context).add(NewCoordinatesEvent(
-                      xCoordinate: _marinaLatitude,
-                      yCoordinate: _marinaLongitude,
-                      indexMarina: _indexMarina,
-                      statusGear: _statusGear,
-                      isBoatRunning: _isBoatRunning,
-                      steeringAngle: _steeringAngle));
-                }
-
-                return sailing(
-                  context,
-                  _steeringAngle,
-                  state.isBoatRunning,
-                  state.statusGear,
-                );
-              } else {
-                return Container();
-              }
-            },
-          )),
+                      state.isBoatRunning,
+                      state.statusGear,
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              ));
+        },
+      ),
     ));
   }
 

@@ -15,7 +15,8 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         WeatherUsecase weatherUsecase = WeatherUsecase();
         WeatherEntity weatherEntity = await weatherUsecase.getWeatherDetails(
             event.latitude, event.longitude);
-
+        print("dddddddddddddddddddddd=" +
+            weatherEntity.weatherDetails.toString());
         GetWeatherState getWeatherState =
             GetWeatherState(weatherDetails: weatherEntity.weatherDetails);
 
