@@ -4,8 +4,14 @@ import 'dart:math';
 import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignition.dart';
+
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
-import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/sailing.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_spin_left.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_spin_right.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/compass.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/gear.dart';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,7 +85,6 @@ class _NavigationState extends State<Navigation> {
   _retreivePrefs() async {
     _prefs = await SharedPreferences.getInstance();
     _indexMarina = _prefs.getInt("indexMarina") ?? 0;
-    print("qqqqqqqqqqqqqqqqqqqqqqqqq=" + _indexMarina.toString());
     _marinaLatitude = _prefs.getDouble("marinaLatitude") ?? 0.0;
     _marinaLongitude = _prefs.getDouble("marinaLongitude") ?? 0.0;
   }
@@ -179,10 +184,6 @@ class _NavigationState extends State<Navigation> {
                   context,
                 ),
               ],
-              const SizedBox(
-                width: 80.0,
-              ),
-              buttonMap(),
             ],
           ),
           body: BlocBuilder<NavigationBloc, NavigationState>(
@@ -228,67 +229,25 @@ class _NavigationState extends State<Navigation> {
                 };
                 BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
 
-                return _isMapOpened
-                    ? BlocBuilder<MotionBloc, MotionState>(
-                        builder: (context, state) {
-                          if (state is NewCoordinatesState) {
-                            _marinaLatitude = state.xCoordinate;
-                            _marinaLongitude = state.yCoordinate;
-                            _initialCameraPosition = CameraPosition(
-                              target: LatLng(_marinaLatitude, _marinaLongitude),
-                              zoom: 17,
-                            );
-                            updateOriginMarker();
-
-                            /*_googleMapController.animateCamera(
-                                CameraUpdate.newCameraPosition(
-                                    _initialCameraPosition));*/
-                            BlocProvider.of<MotionBloc>(context)
-                                .add(IdleEvent());
-                            //checking if we arrived at destination point
-                            double y = _prefs.getDouble("yDestination") ?? 0.0;
-                            double x = _prefs.getDouble("xDestination") ?? 0.0;
-                            if (pow(_marinaLatitude - y, 2) +
-                                    pow(_marinaLongitude - x, 2) <
-                                pow(0.001, 2)) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content:
-                                    const Text("text_origin_now_destination",
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.w900,
-                                        )).tr(),
-                              ));
-                            }
-                          } else if (state is IdleState) {
-                            Timer timer = Timer(const Duration(seconds: 1), () {
-                              BlocProvider.of<MotionBloc>(context).add(
-                                  NewCoordinatesEvent(
-                                      xCoordinate: _marinaLatitude,
-                                      yCoordinate: _marinaLongitude,
-                                      indexMarina: _indexMarina,
-                                      statusGear: _statusGear,
-                                      isBoatRunning: _isBoatRunning,
-                                      steeringAngle: _steeringAngle));
-                            });
-                          }
-
-                          return GoogleMap(
-                            myLocationButtonEnabled: false,
-                            zoomControlsEnabled: false,
-                            initialCameraPosition: _initialCameraPosition,
-                            onMapCreated: (controller) =>
-                                _googleMapController = controller,
-                            markers: {_origin, _destination},
-                            polygons: poly,
-                          );
-                          //return Container();
-                        },
-                      )
-                    : sailing(
-                        context, _steeringAngle, isBoatRunning, _statusGear);
+                return Stack(
+                  children: [
+                    GoogleMap(
+                      myLocationButtonEnabled: false,
+                      zoomControlsEnabled: false,
+                      initialCameraPosition: _initialCameraPosition,
+                      onMapCreated: (controller) =>
+                          _googleMapController = controller,
+                      markers: {_origin, _destination},
+                      polygons: poly,
+                    ),
+                    sailing(
+                      context,
+                      _steeringAngle,
+                      _isBoatRunning,
+                      _statusGear,
+                    ),
+                  ],
+                );
               } else if (state is IgnitionState) {
                 _isBoatRunning = state.isBoatRunning;
                 _steeringAngle = state.steeringAngle;
@@ -325,6 +284,49 @@ class _NavigationState extends State<Navigation> {
 
   ////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////
+  Widget sailing(
+    BuildContext context,
+    double steeringAngle,
+    bool isBoatRunning,
+    String statusGear,
+  ) {
+    return Positioned(
+      bottom: 0.0,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              buttonSpinRight(context, _steeringAngle),
+              const SizedBox(
+                width: 10.0,
+              ),
+              Center(
+                child: Text(
+                    (_steeringAngle * 57.2957795).floor().toString() + "\u00b0",
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+              buttonSpinLeft(context, _steeringAngle),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(
+                  width: 64.0,
+                  height: 64.0,
+                  child: buttonIgnition(context, isBoatRunning)),
+              isBoatRunning ? gear(context, _statusGear) : Container(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget buttonSkip(BuildContext context) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
