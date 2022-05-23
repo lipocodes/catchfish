@@ -103,29 +103,28 @@ class _NavigationState extends State<Navigation> {
   //when entering this screen, need to randomly choose  a location
   chooseRandomLocation() async {
     _random = Random().nextInt(4) + 1;
-    _indexMarina = _random;
+
     String temp1 = locationsMarinas[_random];
 
     List<String> temp2 = temp1.split("^^^");
     String marinaName = temp2[0];
 
-    double marinaLatitude = double.parse(temp2[1]);
-
-    double marinaLongitude = double.parse(temp2[2]);
-
+    _marinaLatitude = double.parse(temp2[1]);
+    _marinaLongitude = double.parse(temp2[2]);
+    print("aaaaaaaaaaaaaaaaaaa=" +
+        _marinaLatitude.toString() +
+        " " +
+        _marinaLongitude.toString());
     origin = Marker(
       markerId: const MarkerId("Origin"),
       infoWindow: const InfoWindow(title: "Origin"),
       icon: await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(size: Size(64, 64)),
           'assets/images/gameBoard/boat.png'),
-      position: LatLng(marinaLatitude, marinaLongitude),
+      position: LatLng(_marinaLatitude, _marinaLongitude),
     );
-    CameraPosition initialCameraPosition = const CameraPosition(
-      target: LatLng(0.0, 0.0),
-      zoom: 17,
-    );
-    List<String> destinationPoints = destinationPointsMarinas[_random];
+
+    /*List<String> destinationPoints = destinationPointsMarinas[_random];
     int rand = Random().nextInt(destinationPoints.length);
     String destinationPoint = destinationPoints[rand];
     List<String> temp3 = destinationPoint.split(",");
@@ -138,15 +137,18 @@ class _NavigationState extends State<Navigation> {
           const ImageConfiguration(size: Size(64, 64)),
           'assets/images/gameBoard/anchor.png'),
       position: LatLng(y, x),
-    );
-
-    initialCameraPosition = CameraPosition(
-      target: LatLng(marinaLatitude, marinaLongitude),
+    );*/
+    print("bbbbbbbbbbbbbbbbbbb=" +
+        _marinaLatitude.toString() +
+        " " +
+        _marinaLongitude.toString());
+    CameraPosition initialCameraPosition = CameraPosition(
+      target: LatLng(_marinaLatitude, _marinaLongitude),
       zoom: 17,
     );
     await _prefs.setInt("indexMarina", _random);
-    await _prefs.setDouble("marinaLatitude", marinaLatitude);
-    await _prefs.setDouble("marinaLongitude", marinaLongitude);
+    await _prefs.setDouble("marinaLatitude", _marinaLatitude);
+    await _prefs.setDouble("marinaLongitude", _marinaLongitude);
 
     setState(() {
       chosenValue = marinaName;
@@ -185,8 +187,8 @@ class _NavigationState extends State<Navigation> {
   _retreivePrefs() async {
     _prefs = await SharedPreferences.getInstance();
     _indexMarina = _prefs.getInt("indexMarina") ?? 0;
-    _marinaLatitude = _prefs.getDouble("marinaLatitude") ?? 0.0;
-    _marinaLongitude = _prefs.getDouble("marinaLongitude") ?? 0.0;
+    //_marinaLatitude = _prefs.getDouble("marinaLatitude") ?? 0.0;
+    //_marinaLongitude = _prefs.getDouble("marinaLongitude") ?? 0.0;
   }
 
   @override
@@ -323,7 +325,7 @@ class _NavigationState extends State<Navigation> {
                     List<LatLng> polygonLatLong1 = [];
 
                     List<String> pointsPolygon = polygonsMarinas[_indexMarina];
-                    print("xxxxxxxxxxxxxxxxxxxxx=" + _indexMarina.toString());
+
                     for (int a = 0; a < pointsPolygon.length; a++) {
                       String temp1 = pointsPolygon[a];
                       List<String> temp2 = temp1.split(",");
@@ -504,6 +506,7 @@ class _NavigationState extends State<Navigation> {
           moveToSelectedLocation(a);
         }
       }
+
       setState(() {
         chosenValue = selection;
       });
@@ -517,7 +520,6 @@ class _NavigationState extends State<Navigation> {
       items.add(
           locationsMarinas[a].substring(0, locationsMarinas[a].indexOf("^^^")));
     }
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -678,18 +680,6 @@ class _NavigationState extends State<Navigation> {
     );
   }
 
-  Widget buttonMap() {
-    return IconButton(
-        icon: _isMapOpened
-            ? const Icon(Icons.map,
-                color: Color.fromARGB(255, 243, 13, 13), size: 34.0)
-            : const Icon(Icons.map, color: Color(0xFF0000FF), size: 34.0),
-        onPressed: () {
-          setState(() {
-            _isMapOpened ? _isMapOpened = false : _isMapOpened = true;
-          });
-        });
-  }
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
 }
