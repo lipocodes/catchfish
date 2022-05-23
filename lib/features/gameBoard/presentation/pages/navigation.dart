@@ -111,10 +111,7 @@ class _NavigationState extends State<Navigation> {
 
     _marinaLatitude = double.parse(temp2[1]);
     _marinaLongitude = double.parse(temp2[2]);
-    print("aaaaaaaaaaaaaaaaaaa=" +
-        _marinaLatitude.toString() +
-        " " +
-        _marinaLongitude.toString());
+
     origin = Marker(
       markerId: const MarkerId("Origin"),
       infoWindow: const InfoWindow(title: "Origin"),
@@ -124,7 +121,7 @@ class _NavigationState extends State<Navigation> {
       position: LatLng(_marinaLatitude, _marinaLongitude),
     );
 
-    /*List<String> destinationPoints = destinationPointsMarinas[_random];
+    List<String> destinationPoints = destinationPointsMarinas[_random];
     int rand = Random().nextInt(destinationPoints.length);
     String destinationPoint = destinationPoints[rand];
     List<String> temp3 = destinationPoint.split(",");
@@ -137,11 +134,8 @@ class _NavigationState extends State<Navigation> {
           const ImageConfiguration(size: Size(64, 64)),
           'assets/images/gameBoard/anchor.png'),
       position: LatLng(y, x),
-    );*/
-    print("bbbbbbbbbbbbbbbbbbb=" +
-        _marinaLatitude.toString() +
-        " " +
-        _marinaLongitude.toString());
+    );
+
     CameraPosition initialCameraPosition = CameraPosition(
       target: LatLng(_marinaLatitude, _marinaLongitude),
       zoom: 17,
@@ -187,8 +181,6 @@ class _NavigationState extends State<Navigation> {
   _retreivePrefs() async {
     _prefs = await SharedPreferences.getInstance();
     _indexMarina = _prefs.getInt("indexMarina") ?? 0;
-    //_marinaLatitude = _prefs.getDouble("marinaLatitude") ?? 0.0;
-    //_marinaLongitude = _prefs.getDouble("marinaLongitude") ?? 0.0;
   }
 
   @override
