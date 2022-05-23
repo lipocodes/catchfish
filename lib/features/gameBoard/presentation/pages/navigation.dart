@@ -251,7 +251,7 @@ class _NavigationState extends State<Navigation> {
       icon: await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(size: Size(64, 64)),
           'assets/images/gameBoard/boat.png'),
-      position: LatLng(_marinaLatitude, _marinaLongitude),
+      position: LatLng(_yDestination, _xDestination),
     );
   }
 
@@ -623,16 +623,7 @@ class _NavigationState extends State<Navigation> {
 
                     Navigator.pop(context);
 
-                    double y = _prefs.getDouble("yDestination") ?? 0.0;
-                    double x = _prefs.getDouble("xDestination") ?? 0.0;
-                    _marinaLatitude = y;
-                    _marinaLongitude = x;
                     updateOriginMarker();
-
-                    _initialCameraPosition = CameraPosition(
-                      target: LatLng(y, x),
-                      zoom: 12,
-                    );
 
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: const Text("text_origin_now_destination",
