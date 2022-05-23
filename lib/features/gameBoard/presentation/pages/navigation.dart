@@ -310,7 +310,7 @@ class _NavigationState extends State<Navigation> {
                     List<LatLng> polygonLatLong1 = [];
 
                     List<String> pointsPolygon = polygonsMarinas[_indexMarina];
-                    print("bbbbbbbbbbbbbbbbbbbbb=" + _indexMarina.toString());
+
                     for (int a = 0; a < pointsPolygon.length; a++) {
                       String temp1 = pointsPolygon[a];
                       List<String> temp2 = temp1.split(",");
@@ -332,7 +332,7 @@ class _NavigationState extends State<Navigation> {
                     };
                     BlocProvider.of<NavigationBloc>(context)
                         .add(ShowMapEvent());
-
+                    print("bbbbbbbbbbbbbbbbbbb=" + _destination.toString());
                     return Column(
                       children: [
                         SizedBox(
@@ -440,13 +440,12 @@ class _NavigationState extends State<Navigation> {
     moveToSelectedLocation(int indexSelectedItem) async {
       _indexMarina = indexSelectedItem;
       String temp1 = locationsMarinas[indexSelectedItem];
-
       List<String> temp2 = temp1.split("^^^");
       double marinaLatitude = double.parse(temp2[1]);
 
       double marinaLongitude = double.parse(temp2[2]);
 
-      origin = Marker(
+      _origin = Marker(
         markerId: const MarkerId("Origin"),
         infoWindow: const InfoWindow(title: "Origin"),
         icon: await BitmapDescriptor.fromAssetImage(
@@ -454,16 +453,17 @@ class _NavigationState extends State<Navigation> {
             'assets/images/gameBoard/boat.png'),
         position: LatLng(marinaLatitude, marinaLongitude),
       );
-      List<String> destinationPoints = destinationPointsMarinas[_random];
+      List<String> destinationPoints =
+          destinationPointsMarinas[indexSelectedItem];
       int rand = Random().nextInt(destinationPoints.length);
       String destinationPoint = destinationPoints[rand];
       List<String> temp3 = destinationPoint.split(",");
       double y = double.parse(temp3[0]);
       double x = double.parse(temp3[1]);
-
-      _prefs.setDouble("yDestination", y);
-      _prefs.setDouble("xDestination", x);
-      destination = Marker(
+      print("bbbbbbbbbbbbbbbbbbbbb=" + y.toString());
+      //_prefs.setDouble("yDestination", y);
+      //_prefs.setDouble("xDestination", x);
+      _destination = Marker(
         markerId: const MarkerId("Destination"),
         infoWindow: const InfoWindow(title: "Destination"),
         icon: await BitmapDescriptor.fromAssetImage(
@@ -471,14 +471,15 @@ class _NavigationState extends State<Navigation> {
             'assets/images/gameBoard/anchor.png'),
         position: LatLng(y, x),
       );
+
       _initialCameraPosition = CameraPosition(
         target: LatLng(marinaLatitude, marinaLongitude),
         zoom: 17,
       );
 
-      await _prefs.setInt("indexMarina", indexSelectedItem);
-      await _prefs.setDouble("marinaLatitude", marinaLatitude);
-      await _prefs.setDouble("marinaLongitude", marinaLongitude);
+      //await _prefs.setInt("indexMarina", indexSelectedItem);
+      //await _prefs.setDouble("marinaLatitude", marinaLatitude);
+      //await _prefs.setDouble("marinaLongitude", marinaLongitude);
       _googleMapController.animateCamera(
           CameraUpdate.newCameraPosition(_initialCameraPosition));
     }
