@@ -26,6 +26,8 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  double _xDestination = 0.0;
+  double _yDestination = 0.0;
   int _random = 0;
   late Marker origin;
   late Marker destination = const Marker(
@@ -103,7 +105,7 @@ class _NavigationState extends State<Navigation> {
   //when entering this screen, need to randomly choose  a location
   chooseRandomLocation() async {
     _random = Random().nextInt(4) + 1;
-
+    _indexMarina = _random;
     String temp1 = locationsMarinas[_random];
 
     List<String> temp2 = temp1.split("^^^");
@@ -125,16 +127,8 @@ class _NavigationState extends State<Navigation> {
     int rand = Random().nextInt(destinationPoints.length);
     String destinationPoint = destinationPoints[rand];
     List<String> temp3 = destinationPoint.split(",");
-    double y = double.parse(temp3[0]);
-    double x = double.parse(temp3[1]);
-    destination = Marker(
-      markerId: const MarkerId("Destination"),
-      infoWindow: const InfoWindow(title: "Destination"),
-      icon: await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(size: Size(64, 64)),
-          'assets/images/gameBoard/anchor.png'),
-      position: LatLng(y, x),
-    );
+    _yDestination = double.parse(temp3[0]);
+    _xDestination = double.parse(temp3[1]);
 
     CameraPosition initialCameraPosition = CameraPosition(
       target: LatLng(_marinaLatitude, _marinaLongitude),
@@ -159,15 +153,13 @@ class _NavigationState extends State<Navigation> {
       position: LatLng(_marinaLatitude, _marinaLongitude),
     );
 
-    double y = _prefs.getDouble("yDestination") ?? 0.0;
-    double x = _prefs.getDouble("xDestination") ?? 0.0;
     _destination = Marker(
       markerId: const MarkerId("destination"),
       infoWindow: const InfoWindow(title: "destination"),
       icon: await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(size: Size(64, 64)),
           'assets/images/gameBoard/anchor.png'),
-      position: LatLng(y, x),
+      position: LatLng(_yDestination, _xDestination),
     );
     _initialCameraPosition = CameraPosition(
       target: LatLng(_marinaLatitude, _marinaLongitude),
@@ -180,7 +172,7 @@ class _NavigationState extends State<Navigation> {
   //Retreive existing prefs
   _retreivePrefs() async {
     _prefs = await SharedPreferences.getInstance();
-    _indexMarina = _prefs.getInt("indexMarina") ?? 0;
+    //_indexMarina = _prefs.getInt("indexMarina") ?? 0;
   }
 
   @override
@@ -189,6 +181,7 @@ class _NavigationState extends State<Navigation> {
     super.initState();
 
     _retreivePrefs();
+
     chooseRandomLocation();
     BlocProvider.of<NavigationBloc>(context).add(EnteringNavigationEvent());
   }
@@ -317,7 +310,7 @@ class _NavigationState extends State<Navigation> {
                     List<LatLng> polygonLatLong1 = [];
 
                     List<String> pointsPolygon = polygonsMarinas[_indexMarina];
-
+                    print("bbbbbbbbbbbbbbbbbbbbb=" + _indexMarina.toString());
                     for (int a = 0; a < pointsPolygon.length; a++) {
                       String temp1 = pointsPolygon[a];
                       List<String> temp2 = temp1.split(",");
@@ -482,6 +475,7 @@ class _NavigationState extends State<Navigation> {
         target: LatLng(marinaLatitude, marinaLongitude),
         zoom: 17,
       );
+
       await _prefs.setInt("indexMarina", indexSelectedItem);
       await _prefs.setDouble("marinaLatitude", marinaLatitude);
       await _prefs.setDouble("marinaLongitude", marinaLongitude);
