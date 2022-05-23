@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 
 List<String> locationsMarinas = [
   "switch_location".tr(),
-  "Haifa^^^32.806282^^^35.031855",
-  "Herzlia^^^32.1626437^^^34.7935295",
-  "Tel Aviv^^^32.1078332^^^34.7734666",
-  "Ashkelon^^^31.683135^^^34.554869"
+  "Haifa^^^32.805682^^^35.030918",
+  "Herzlia^^^32.163612^^^34.792686",
+  "Tel Aviv^^^32.108925^^^34.774081",
+  "Ashkelon^^^31.683170^^^34.555308"
 ];
 
 List<List<String>> polygonsMarinas = [

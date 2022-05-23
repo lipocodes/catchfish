@@ -332,7 +332,7 @@ class _NavigationState extends State<Navigation> {
                     };
                     BlocProvider.of<NavigationBloc>(context)
                         .add(ShowMapEvent());
-                    print("bbbbbbbbbbbbbbbbbbb=" + _destination.toString());
+
                     return Column(
                       children: [
                         SizedBox(
@@ -440,6 +440,7 @@ class _NavigationState extends State<Navigation> {
     moveToSelectedLocation(int indexSelectedItem) async {
       _indexMarina = indexSelectedItem;
       String temp1 = locationsMarinas[indexSelectedItem];
+
       List<String> temp2 = temp1.split("^^^");
       double marinaLatitude = double.parse(temp2[1]);
 
@@ -453,6 +454,7 @@ class _NavigationState extends State<Navigation> {
             'assets/images/gameBoard/boat.png'),
         position: LatLng(marinaLatitude, marinaLongitude),
       );
+
       List<String> destinationPoints =
           destinationPointsMarinas[indexSelectedItem];
       int rand = Random().nextInt(destinationPoints.length);
@@ -460,9 +462,7 @@ class _NavigationState extends State<Navigation> {
       List<String> temp3 = destinationPoint.split(",");
       double y = double.parse(temp3[0]);
       double x = double.parse(temp3[1]);
-      print("bbbbbbbbbbbbbbbbbbbbb=" + y.toString());
-      //_prefs.setDouble("yDestination", y);
-      //_prefs.setDouble("xDestination", x);
+
       _destination = Marker(
         markerId: const MarkerId("Destination"),
         infoWindow: const InfoWindow(title: "Destination"),
@@ -477,9 +477,6 @@ class _NavigationState extends State<Navigation> {
         zoom: 17,
       );
 
-      //await _prefs.setInt("indexMarina", indexSelectedItem);
-      //await _prefs.setDouble("marinaLatitude", marinaLatitude);
-      //await _prefs.setDouble("marinaLongitude", marinaLongitude);
       _googleMapController.animateCamera(
           CameraUpdate.newCameraPosition(_initialCameraPosition));
     }
