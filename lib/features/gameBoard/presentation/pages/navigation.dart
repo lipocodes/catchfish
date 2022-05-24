@@ -244,7 +244,7 @@ class _NavigationState extends State<Navigation> {
     );
   }
 
-  skipOriginMarker() async {
+  updateOriginMarker() async {
     _origin = Marker(
       markerId: const MarkerId("Origin"),
       infoWindow: const InfoWindow(title: "Origin"),
@@ -252,28 +252,6 @@ class _NavigationState extends State<Navigation> {
           const ImageConfiguration(size: Size(64, 64)),
           'assets/images/gameBoard/boat.png'),
       position: LatLng(_yDestination, _xDestination),
-    );
-  }
-
-  updateCoordinatesOriginMarker() async {
-    _origin = Marker(
-      markerId: const MarkerId("Origin"),
-      infoWindow: const InfoWindow(title: "Origin"),
-      icon: await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(size: Size(64, 64)),
-          'assets/images/gameBoard/boat.png'),
-      position: LatLng(_yDestination, _xDestination),
-    );
-  }
-
-  updateMewCoordinatesOriginMarker() async {
-    _origin = Marker(
-      markerId: const MarkerId("Origin"),
-      infoWindow: const InfoWindow(title: "Origin"),
-      icon: await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(size: Size(64, 64)),
-          'assets/images/gameBoard/boat.png'),
-      position: LatLng(_marinaLatitude, _marinaLongitude),
     );
   }
 
@@ -289,50 +267,49 @@ class _NavigationState extends State<Navigation> {
             showWeatherDetails(state.weatherDetails);
           }
 
-          return BlocBuilder<MotionBloc, MotionState>(
-            builder: (context, state) {
-              if (state is NewCoordinatesState) {
-                print("aaaaaaaaaaaaaaaaaaaaaaaaa");
-                _marinaLatitude = state.xCoordinate;
-                _marinaLongitude = state.yCoordinate;
-                _prepareDataForMap();
-                BlocProvider.of<MotionBloc>(context).add(IdleEvent());
-              } else if (state is IdleState) {
-                print("bbbbbbbbbbbbbbbbbbbbbb");
-                Timer timer = Timer(const Duration(seconds: 5), () {
-                  BlocProvider.of<MotionBloc>(context).add(NewCoordinatesEvent(
-                      xCoordinate: _marinaLatitude,
-                      yCoordinate: _marinaLongitude,
-                      isBoatRunning: _isBoatRunning,
-                      statusGear: _statusGear,
-                      indexMarina: _indexMarina,
-                      steeringAngle: _steeringAngle));
-                });
-              }
-              print("ccccccccccccccccccccc");
-              return Scaffold(
-                  //extendBodyBehindAppBar: true,
-                  appBar: AppBar(
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                    leading: buttonBack(context),
-                    actions: [
-                      Row(
-                        children: [
-                          buttonWeather(),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          if (!_skipPerformed) ...[
-                            buttonSkip(
-                              context,
-                            ),
-                          ],
-                        ],
+          return Scaffold(
+              //extendBodyBehindAppBar: true,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: buttonBack(context),
+                actions: [
+                  Row(
+                    children: [
+                      buttonWeather(),
+                      const SizedBox(
+                        width: 10.0,
                       ),
+                      if (!_skipPerformed) ...[
+                        buttonSkip(
+                          context,
+                        ),
+                      ],
                     ],
                   ),
-                  body: BlocBuilder<NavigationBloc, NavigationState>(
+                ],
+              ),
+              body: BlocBuilder<MotionBloc, MotionState>(
+                builder: (context, state) {
+                  if (state is NewCoordinatesState) {
+                    _marinaLatitude = state.xCoordinate;
+                    _marinaLongitude = state.yCoordinate;
+
+                    _prepareDataForMap();
+                    BlocProvider.of<MotionBloc>(context).add(IdleEvent());
+                  } else if (state is IdleState) {
+                    Timer timer = Timer(const Duration(seconds: 5), () {
+                      BlocProvider.of<MotionBloc>(context).add(
+                          NewCoordinatesEvent(
+                              xCoordinate: _marinaLatitude,
+                              yCoordinate: _marinaLongitude,
+                              isBoatRunning: _isBoatRunning,
+                              statusGear: _statusGear,
+                              indexMarina: _indexMarina,
+                              steeringAngle: _steeringAngle));
+                    });
+                  }
+                  return BlocBuilder<NavigationBloc, NavigationState>(
                     builder: (context, state) {
                       if (state is EnteringNavigationState) {
                         _prepareDataForMap();
@@ -376,7 +353,8 @@ class _NavigationState extends State<Navigation> {
                         };
                         BlocProvider.of<NavigationBloc>(context)
                             .add(ShowMapEvent());
-
+                        print(
+                            "ccccccccccccccccccccccccc=" + _origin.toString());
                         return Column(
                           children: [
                             SizedBox(
@@ -437,9 +415,9 @@ class _NavigationState extends State<Navigation> {
                         return Container();
                       }
                     },
-                  ));
-            },
-          );
+                  );
+                },
+              ));
         },
       ),
     ));
@@ -667,7 +645,7 @@ class _NavigationState extends State<Navigation> {
 
                     Navigator.pop(context);
 
-                    skipOriginMarker();
+                    updateOriginMarker();
 
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: const Text("text_origin_now_destination",
