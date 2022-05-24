@@ -255,6 +255,17 @@ class _NavigationState extends State<Navigation> {
     );
   }
 
+  updateCoordinatesOriginMarker() async {
+    _origin = Marker(
+      markerId: const MarkerId("Origin"),
+      infoWindow: const InfoWindow(title: "Origin"),
+      icon: await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(size: Size(64, 64)),
+          'assets/images/gameBoard/boat.png'),
+      position: LatLng(_yDestination, _xDestination),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -338,7 +349,7 @@ class _NavigationState extends State<Navigation> {
                         if (state is NewCoordinatesState) {
                           _marinaLatitude = state.xCoordinate;
                           _marinaLongitude = state.xCoordinate;
-                          //updateOriginMarker();
+                          updateCoordinatesOriginMarker();
                         }
 
                         return Column(
