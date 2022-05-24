@@ -111,4 +111,4 @@ List<List<String>> destinationPointsMarinas = [
   ["31.685801, 34.555835", "31.685290, 34.556908", "31.684486, 34.557830"],
 ];
 
-List<double> initialAngleBoatMarinas = [0, 240, 290, 30, 20, 20];
+List<double> initialAngleBoatMarinas = [0, 300, 30, 0, 50];

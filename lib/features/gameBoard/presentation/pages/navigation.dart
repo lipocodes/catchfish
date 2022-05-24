@@ -244,7 +244,7 @@ class _NavigationState extends State<Navigation> {
     );
   }
 
-  updateOriginMarker() async {
+  skipOriginMarker() async {
     _origin = Marker(
       markerId: const MarkerId("Origin"),
       infoWindow: const InfoWindow(title: "Origin"),
@@ -333,31 +333,42 @@ class _NavigationState extends State<Navigation> {
                     BlocProvider.of<NavigationBloc>(context)
                         .add(ShowMapEvent());
 
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: 500.0,
-                          child: Stack(
-                            children: [
-                              GoogleMap(
-                                myLocationButtonEnabled: false,
-                                zoomControlsEnabled: false,
-                                initialCameraPosition: _initialCameraPosition,
-                                onMapCreated: (controller) =>
-                                    _googleMapController = controller,
-                                markers: {_origin, _destination},
-                                polygons: poly,
+                    return BlocBuilder<MotionBloc, MotionState>(
+                      builder: (context, state) {
+                        if (state is NewCoordinatesState) {
+                          _marinaLatitude = state.xCoordinate;
+                          _marinaLongitude = state.xCoordinate;
+                          //updateOriginMarker();
+                        }
+
+                        return Column(
+                          children: [
+                            SizedBox(
+                              height: 500.0,
+                              child: Stack(
+                                children: [
+                                  GoogleMap(
+                                    myLocationButtonEnabled: false,
+                                    zoomControlsEnabled: false,
+                                    initialCameraPosition:
+                                        _initialCameraPosition,
+                                    onMapCreated: (controller) =>
+                                        _googleMapController = controller,
+                                    markers: {_origin, _destination},
+                                    polygons: poly,
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        sailing(
-                          context,
-                          _steeringAngle,
-                          _isBoatRunning,
-                          _statusGear,
-                        ),
-                      ],
+                            ),
+                            sailing(
+                              context,
+                              _steeringAngle,
+                              _isBoatRunning,
+                              _statusGear,
+                            ),
+                          ],
+                        );
+                      },
                     );
                   } else if (state is IgnitionState) {
                     _isBoatRunning = state.isBoatRunning;
@@ -620,7 +631,7 @@ class _NavigationState extends State<Navigation> {
 
                     Navigator.pop(context);
 
-                    updateOriginMarker();
+                    skipOriginMarker();
 
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: const Text("text_origin_now_destination",

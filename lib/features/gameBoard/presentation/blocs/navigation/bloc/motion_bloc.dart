@@ -45,10 +45,10 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
       }
       numIntersections = numIntersections + 1;
     }
-
+    print("aaaaaaaaaaaaaaaaaaaaa=" + numIntersections.toString());
     if (numIntersections % 2 == 0) {
       playBackgroundAudio("spark.mp3");
-      return false;
+      return true;
     } else {
       return true;
     }
