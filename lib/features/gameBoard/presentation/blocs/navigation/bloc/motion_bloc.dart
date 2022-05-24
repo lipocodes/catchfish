@@ -45,9 +45,9 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
       }
       numIntersections = numIntersections + 1;
     }
-    print("aaaaaaaaaaaaaaaaaaaaa=" + numIntersections.toString());
+
     if (numIntersections % 2 == 0) {
-      playBackgroundAudio("spark.mp3");
+      //playBackgroundAudio("spark.mp3");
       return true;
     } else {
       return true;
@@ -59,7 +59,6 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
   MotionBloc() : super(MotionInitial()) {
     on<MotionEvent>((event, emit) {
       if (event is NewCoordinatesEvent) {
-        print("aaaaaaaaaaaaaaaaaaaaaaa");
         double standardUnit = 0.0001;
         int angleDegrees = (event.steeringAngle * 57.2957795).floor();
 
@@ -134,7 +133,6 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
         emit(NewCoordinatesState(
             xCoordinate: event.xCoordinate, yCoordinate: event.yCoordinate));
       } else if (event is IdleEvent) {
-        print("bbbbbbbbbbbbbbbbbbbbbb");
         emit(IdleState());
       }
     });
