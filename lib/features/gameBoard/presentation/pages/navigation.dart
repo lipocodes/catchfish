@@ -151,7 +151,7 @@ class _NavigationState extends State<Navigation> {
     });
   }
 
-  _prepareDataForMap() async {
+  _updateOriginMarkerUponNewCoordinate() async {
     _origin = Marker(
       markerId: const MarkerId("Origin"),
       infoWindow: const InfoWindow(title: "Origin"),
@@ -160,29 +160,10 @@ class _NavigationState extends State<Navigation> {
           'assets/images/gameBoard/boat.png'),
       position: LatLng(_marinaLatitude, _marinaLongitude),
     );
-
-    List<String> destinationPoints = destinationPointsMarinas[_indexMarina];
-    int rand = Random().nextInt(destinationPoints.length);
-    String destinationPoint = destinationPoints[rand];
-    List<String> temp3 = destinationPoint.split(",");
-    _yDestination = double.parse(temp3[0]);
-    _xDestination = double.parse(temp3[1]);
-
-    _destination = Marker(
-      markerId: const MarkerId("destination"),
-      infoWindow: const InfoWindow(title: "destination"),
-      icon: await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(size: Size(64, 64)),
-          'assets/images/gameBoard/anchor.png'),
-      position: LatLng(_yDestination, _xDestination),
-    );
     _initialCameraPosition = CameraPosition(
       target: LatLng(_marinaLatitude, _marinaLongitude),
       zoom: 17,
     );
-    print("aaaaaaaaaaaaaaaaaaaaaaaa=" + _initialCameraPosition.toString());
-    // _googleMapController
-    //   .animateCamera(CameraUpdate.newCameraPosition(_initialCameraPosition));
     BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
   }
 
@@ -302,7 +283,7 @@ class _NavigationState extends State<Navigation> {
                   if (state is NewCoordinatesState) {
                     _marinaLatitude = state.xCoordinate;
                     _marinaLongitude = state.yCoordinate;
-
+                    _updateOriginMarkerUponNewCoordinate();
                     BlocProvider.of<MotionBloc>(context).add(IdleEvent());
                   } else if (state is IdleState) {
                     Timer timer = Timer(const Duration(seconds: 5), () {
@@ -319,8 +300,7 @@ class _NavigationState extends State<Navigation> {
                   return BlocBuilder<NavigationBloc, NavigationState>(
                     builder: (context, state) {
                       if (state is EnteringNavigationState) {
-                        _prepareDataForMap();
-
+                        _updateOriginMarkerUponNewCoordinate();
                         return Container();
                       } else if (state is ShowMapState ||
                           state is SpinSteeringWheelState) {
@@ -334,7 +314,7 @@ class _NavigationState extends State<Navigation> {
                           isBoatRunning = state.isBoatRunning;
                           _statusGear = state.statusGear;
                         }
-                        _prepareDataForMap();
+
                         List<LatLng> polygonLatLong1 = [];
 
                         List<String> pointsPolygon =
