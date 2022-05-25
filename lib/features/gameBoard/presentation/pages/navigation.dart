@@ -155,9 +155,10 @@ class _NavigationState extends State<Navigation> {
     _origin = Marker(
       markerId: const MarkerId("Origin"),
       infoWindow: const InfoWindow(title: "Origin"),
-      icon: await BitmapDescriptor.fromAssetImage(
+      /*icon: await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(size: Size(64, 64)),
-          'assets/images/gameBoard/boat.png'),
+          'assets/images/gameBoard/boat.png'),*/
+      icon: await BitmapDescriptor.defaultMarker,
       position: LatLng(_marinaLatitude, _marinaLongitude),
     );
     _initialCameraPosition = CameraPosition(

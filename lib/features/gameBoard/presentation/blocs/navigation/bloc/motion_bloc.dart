@@ -9,6 +9,8 @@ part 'motion_state.dart';
 class MotionBloc extends Bloc<MotionEvent, MotionState> {
   final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
   AudioPlayer audioPlayer = AudioPlayer();
+  double _lastApprovedCoordinateChangeX = 0.0;
+  double _lastApprovedCoordinateChangeY = 0.0;
 
   playBackgroundAudio(String engineSound) async {
     audioPlayer = await audioCache.play(engineSound);
@@ -48,7 +50,7 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
 
     if (numIntersections % 2 == 0) {
       //playBackgroundAudio("spark.mp3");
-      return true;
+      return false;
     } else {
       return true;
     }
@@ -117,6 +119,17 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
             event.yCoordinate + coordinateChangeX,
             event.xCoordinate + coordinateChangeY,
             event.indexMarina);
+        if (isLegalMove) {
+          _lastApprovedCoordinateChangeX = coordinateChangeX;
+          _lastApprovedCoordinateChangeY = coordinateChangeY;
+        } else if (!isLegalMove) {
+          event.xCoordinate -= _lastApprovedCoordinateChangeX;
+          event.yCoordinate -= _lastApprovedCoordinateChangeY;
+          _lastApprovedCoordinateChangeX = 0.0;
+          _lastApprovedCoordinateChangeY = 0.0;
+          checkPointInsidePolygon(
+              event.yCoordinate, event.xCoordinate, event.indexMarina);
+        }
 
         if (isLegalMove &&
             (event.statusGear == "F1" || event.statusGear == "F2") &&
