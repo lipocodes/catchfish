@@ -305,7 +305,7 @@ class _NavigationState extends State<Navigation> {
                     _updateOriginMarkerUponNewCoordinate();
                     BlocProvider.of<MotionBloc>(context).add(IdleEvent());
                   } else if (state is IdleState) {
-                    Timer timer = Timer(const Duration(seconds: 5), () {
+                    Timer timer = Timer(const Duration(seconds: 1), () {
                       BlocProvider.of<MotionBloc>(context).add(
                           NewCoordinatesEvent(
                               xCoordinate: _marinaLatitude,
