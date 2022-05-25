@@ -10,7 +10,12 @@ Widget buttonSpinRight(BuildContext context, double steeringAngle) {
         borderRadius: BorderRadius.circular(30.0),
       ),
     ),
-    label: Text('right'.tr()),
+    label: Text(
+      'right'.tr(),
+      style: const TextStyle(
+        fontFamily: 'skullsandcrossbones',
+      ),
+    ),
     icon: const Icon(Icons.rotate_right, size: 24.0, color: Colors.white),
     onPressed: () async {
       BlocProvider.of<NavigationBloc>(context).add(SpinSteeringWheelEvent(

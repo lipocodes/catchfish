@@ -49,7 +49,7 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
     }
 
     if (numIntersections % 2 == 0) {
-      //playBackgroundAudio("spark.mp3");
+      playBackgroundAudio("spark.mp3");
       return false;
     } else {
       return true;

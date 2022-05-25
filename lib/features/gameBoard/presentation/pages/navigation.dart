@@ -161,6 +161,7 @@ class _NavigationState extends State<Navigation> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text("arrived_at_destination",
             style: TextStyle(
+              fontFamily: 'skullsandcrossbones',
               color: Colors.blue,
               fontSize: 20.0,
               fontWeight: FontWeight.w900,
@@ -460,7 +461,12 @@ class _NavigationState extends State<Navigation> {
 
   Widget buttonWeather() {
     return ElevatedButton.icon(
-      label: Text('weather'.tr()),
+      label: Text(
+        'weather'.tr(),
+        style: const TextStyle(
+          fontFamily: 'skullsandcrossbones',
+        ),
+      ),
       icon: const Icon(Icons.cloud, size: 24.0, color: Colors.white),
       onPressed: () async {
         BlocProvider.of<WeatherBloc>(context).add(GetWeatherEvent(
@@ -503,7 +509,10 @@ class _NavigationState extends State<Navigation> {
             value: chosenValue,
             //elevation: 5,
             style: const TextStyle(
-                color: Colors.red, fontSize: 20.0, fontWeight: FontWeight.bold),
+                fontFamily: 'skullsandcrossbones',
+                color: Colors.red,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold),
             icon: const Padding(
                 //Icon at tail, arrow bottom is default icon
                 padding: EdgeInsets.only(left: 20),
@@ -515,6 +524,9 @@ class _NavigationState extends State<Navigation> {
                 child: Center(
                   child: Text(
                     value,
+                    style: const TextStyle(
+                      fontFamily: 'skullsandcrossbones',
+                    ),
                   ),
                 ),
               );
@@ -552,6 +564,7 @@ class _NavigationState extends State<Navigation> {
                       fontSize: 20.0,
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'skullsandcrossbones',
                     )),
               ),
               const SizedBox(
@@ -577,7 +590,12 @@ class _NavigationState extends State<Navigation> {
 
   Widget buttonSkip(BuildContext context) {
     return ElevatedButton.icon(
-      label: Text('skip'.tr()),
+      label: Text(
+        'skip'.tr(),
+        style: const TextStyle(
+          fontFamily: 'skullsandcrossbones',
+        ),
+      ),
       icon: const Icon(Icons.rotate_left, size: 24.0, color: Colors.white),
       onPressed: () async {
         await showDialog(
@@ -618,6 +636,7 @@ class _NavigationState extends State<Navigation> {
                             color: Colors.blue,
                             fontSize: 20.0,
                             fontWeight: FontWeight.w900,
+                            fontFamily: 'skullsandcrossbones',
                           )).tr(),
                     ));
                   },
