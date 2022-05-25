@@ -152,20 +152,38 @@ class _NavigationState extends State<Navigation> {
   }
 
   _updateOriginMarkerUponNewCoordinate() async {
-    _origin = Marker(
-      markerId: const MarkerId("Origin"),
-      infoWindow: const InfoWindow(title: "Origin"),
-      /*icon: await BitmapDescriptor.fromAssetImage(
+    //check if we have arrived at the destination
+    var distance = pow(
+        pow((_yDestination - _marinaLatitude), 2) +
+            pow((_xDestination - _marinaLongitude), 2),
+        0.5);
+    if (distance <= 0.0005) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text("arrived_at_destination",
+            style: TextStyle(
+              color: Colors.blue,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w900,
+            )).tr(),
+      ));
+    } else {
+      _origin = Marker(
+        markerId: const MarkerId("Origin"),
+        infoWindow: const InfoWindow(title: "Origin"),
+        /*icon: await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(size: Size(64, 64)),
           'assets/images/gameBoard/boat.png'),*/
-      icon: await BitmapDescriptor.defaultMarker,
-      position: LatLng(_marinaLatitude, _marinaLongitude),
-    );
-    _initialCameraPosition = CameraPosition(
-      target: LatLng(_marinaLatitude, _marinaLongitude),
-      zoom: 17,
-    );
-    BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
+        icon: await BitmapDescriptor.defaultMarker,
+        position: LatLng(_marinaLatitude, _marinaLongitude),
+      );
+      _initialCameraPosition = CameraPosition(
+        target: LatLng(_marinaLatitude, _marinaLongitude),
+        zoom: 17,
+      );
+      //_googleMapController.animateCamera(
+      //  CameraUpdate.newCameraPosition(_initialCameraPosition));
+      BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
+    }
   }
 
   @override

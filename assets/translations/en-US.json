@@ -52,5 +52,6 @@
     "skip_navigation": "Skip Navigation",
     "text_skip_navigation": "Skip to next mission?",
     "skip": "Skip",
-    "text_origin_now_destination": "Your boat is now at destination point"
+    "text_origin_now_destination": "Your boat is now at destination point",
+    "arrived_at_destination": "Congartulations, you have arrived at the destination!"
 }
