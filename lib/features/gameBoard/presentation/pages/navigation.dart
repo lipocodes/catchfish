@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({Key? key}) : super(key: key);
@@ -26,6 +27,8 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
+  AudioPlayer audioPlayer = AudioPlayer();
   double _xDestination = 0.0;
   double _yDestination = 0.0;
   int _random = 0;
@@ -160,15 +163,44 @@ class _NavigationState extends State<Navigation> {
             pow((_xDestination - _marinaLongitude), 2),
         0.5);
     if (distance <= 0.0005) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text("arrived_at_destination",
-            style: TextStyle(
-              fontFamily: 'skullsandcrossbones',
-              color: Colors.blue,
-              fontSize: 20.0,
-              fontWeight: FontWeight.w900,
-            )).tr(),
-      ));
+      await audioCache.play("cheers.mp3");
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.redAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: const Text(
+              "cheers",
+              style: TextStyle(
+                fontFamily: 'skullsandcrossbones',
+              ),
+            ).tr(),
+            content: const Text(
+              "arrived_at_destination",
+              style: TextStyle(
+                fontFamily: 'skullsandcrossbones',
+              ),
+            ).tr(),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  print("aaaaaaaaaaaaaaaaaaaaaa");
+                },
+                child: const Text('next',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.blue,
+                      fontFamily: 'skullsandcrossbones',
+                    )).tr(),
+              ),
+            ],
+          );
+        },
+      );
     } else {
       _origin = Marker(
         markerId: const MarkerId("Origin"),
