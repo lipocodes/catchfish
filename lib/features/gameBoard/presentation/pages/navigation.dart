@@ -146,6 +146,8 @@ class _NavigationState extends State<Navigation> {
       _googleMapController.animateCamera(
           CameraUpdate.newCameraPosition(_initialCameraPosition));
     }
+    _steeringAngle = initialAngleBoatMarinas[_indexMarina];
+    print("aaa=" + _steeringAngle.toString());
     setState(() {
       chosenValue = marinaName;
     });
@@ -181,8 +183,6 @@ class _NavigationState extends State<Navigation> {
         target: LatLng(_marinaLatitude, _marinaLongitude),
         zoom: 17,
       );
-      //_googleMapController.animateCamera(
-      //  CameraUpdate.newCameraPosition(_initialCameraPosition));
       BlocProvider.of<NavigationBloc>(context).add(ShowMapEvent());
     }
   }
@@ -320,16 +320,19 @@ class _NavigationState extends State<Navigation> {
                   return BlocBuilder<NavigationBloc, NavigationState>(
                     builder: (context, state) {
                       if (state is EnteringNavigationState) {
+                        print("bbb=" + _steeringAngle.toString());
                         _updateOriginMarkerUponNewCoordinate();
                         return Container();
                       } else if (state is ShowMapState ||
                           state is SpinSteeringWheelState) {
+                        print("ccc=" + _steeringAngle.toString());
                         bool isBoatRunning = false;
 
                         if (state is ShowMapState) {
                           isBoatRunning = state.isBoatRunning;
                           _statusGear = state.statusGear;
-                          _steeringAngle = state.steeringAngle;
+                          //_steeringAngle = state.steeringAngle;
+                          print("ddd=" + _steeringAngle.toString());
                         } else if (state is SpinSteeringWheelState) {
                           isBoatRunning = state.isBoatRunning;
                           _statusGear = state.statusGear;
@@ -558,8 +561,7 @@ class _NavigationState extends State<Navigation> {
                 width: 10.0,
               ),
               Center(
-                child: Text(
-                    (_steeringAngle * 57.2957795).floor().toString() + "\u00b0",
+                child: Text((_steeringAngle).floor().toString() + "\u00b0",
                     style: const TextStyle(
                       fontSize: 20.0,
                       color: Colors.red,
