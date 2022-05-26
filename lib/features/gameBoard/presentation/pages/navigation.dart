@@ -147,7 +147,7 @@ class _NavigationState extends State<Navigation> {
           CameraUpdate.newCameraPosition(_initialCameraPosition));
     }
     _steeringAngle = initialAngleBoatMarinas[_indexMarina];
-    print("aaa=" + _steeringAngle.toString());
+
     setState(() {
       chosenValue = marinaName;
     });
@@ -320,22 +320,21 @@ class _NavigationState extends State<Navigation> {
                   return BlocBuilder<NavigationBloc, NavigationState>(
                     builder: (context, state) {
                       if (state is EnteringNavigationState) {
-                        print("bbb=" + _steeringAngle.toString());
                         _updateOriginMarkerUponNewCoordinate();
                         return Container();
                       } else if (state is ShowMapState ||
                           state is SpinSteeringWheelState) {
-                        print("ccc=" + _steeringAngle.toString());
                         bool isBoatRunning = false;
 
                         if (state is ShowMapState) {
                           isBoatRunning = state.isBoatRunning;
                           _statusGear = state.statusGear;
                           //_steeringAngle = state.steeringAngle;
-                          print("ddd=" + _steeringAngle.toString());
+
                         } else if (state is SpinSteeringWheelState) {
                           isBoatRunning = state.isBoatRunning;
                           _statusGear = state.statusGear;
+                          _steeringAngle = state.steeringAngle * 57.2957795;
                         }
 
                         List<LatLng> polygonLatLong1 = [];

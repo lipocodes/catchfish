@@ -19,7 +19,7 @@ Widget buttonSpinLeft(BuildContext context, double steeringAngle) {
     icon: const Icon(Icons.rotate_left, size: 24.0, color: Colors.white),
     onPressed: () async {
       BlocProvider.of<NavigationBloc>(context).add(SpinSteeringWheelEvent(
-          isClockwise: false, steeringAngle: steeringAngle));
+          isClockwise: false, steeringAngle: steeringAngle / 57.2957795));
     },
   );
 }
