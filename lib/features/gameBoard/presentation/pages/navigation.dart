@@ -29,7 +29,7 @@ class _NavigationState extends State<Navigation> {
   double _xDestination = 0.0;
   double _yDestination = 0.0;
   int _random = 0;
-
+  bool _hasUserStartedNavigation = false;
   String? chosenValue = "switch_location".tr();
   bool _skipPerformed = false;
   double _steeringAngle = 0.0;
@@ -404,6 +404,9 @@ class _NavigationState extends State<Navigation> {
                         _steeringAngle = state.steeringAngle;
 
                         if (state.statusGear != "N") {
+                          if (_hasUserStartedNavigation == false) {
+                            _hasUserStartedNavigation = true;
+                          }
                           BlocProvider.of<MotionBloc>(context).add(
                               NewCoordinatesEvent(
                                   xCoordinate: _marinaLatitude,
@@ -502,43 +505,47 @@ class _NavigationState extends State<Navigation> {
       items.add(
           locationsMarinas[a].substring(0, locationsMarinas[a].indexOf("^^^")));
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(0.0),
-          child: DropdownButton<String>(
-            value: chosenValue,
-            //elevation: 5,
-            style: const TextStyle(
-                fontFamily: 'skullsandcrossbones',
-                color: Colors.red,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold),
-            icon: const Padding(
-                //Icon at tail, arrow bottom is default icon
-                padding: EdgeInsets.only(left: 20),
-                child: Icon(Icons.arrow_circle_down_sharp)),
-            dropdownColor: Colors.blueAccent.shade100,
-            items: items.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Center(
-                  child: Text(
-                    value,
-                    style: const TextStyle(
-                      fontFamily: 'skullsandcrossbones',
+    if (_statusGear == "N") {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(0.0),
+            child: DropdownButton<String>(
+              value: chosenValue,
+              //elevation: 5,
+              style: const TextStyle(
+                  fontFamily: 'skullsandcrossbones',
+                  color: Colors.red,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold),
+              icon: const Padding(
+                  //Icon at tail, arrow bottom is default icon
+                  padding: EdgeInsets.only(left: 20),
+                  child: Icon(Icons.arrow_circle_down_sharp)),
+              dropdownColor: Colors.blueAccent.shade100,
+              items: items.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Center(
+                    child: Text(
+                      value,
+                      style: const TextStyle(
+                        fontFamily: 'skullsandcrossbones',
+                      ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              }).toList(),
 
-            onChanged: onChangedDropDown,
+              onChanged: onChangedDropDown,
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget sailing(
@@ -551,7 +558,7 @@ class _NavigationState extends State<Navigation> {
       bottom: 0.0,
       child: Column(
         children: [
-          dropDown(),
+          _hasUserStartedNavigation ? Container() : dropDown(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
