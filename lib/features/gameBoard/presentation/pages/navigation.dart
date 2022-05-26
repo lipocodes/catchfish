@@ -27,6 +27,7 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  bool _showedWelcomeDialog = false;
   final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
   AudioPlayer audioPlayer = AudioPlayer();
   double _xDestination = 0.0;
@@ -63,39 +64,7 @@ class _NavigationState extends State<Navigation> {
 
   showWeatherDetails(String weatherDetails) {
     Timer(const Duration(seconds: 1), () {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-                backgroundColor: Colors.redAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                title: const Text(
-                  'Forecast for Today:',
-                  textDirection: UI.TextDirection.ltr,
-                  style: TextStyle(
-                    fontFamily: 'skullsandcrossbones',
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                content: Text(
-                  weatherDetails,
-                  textDirection: UI.TextDirection.ltr,
-                  style: const TextStyle(
-                    fontFamily: 'skullsandcrossbones',
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                actions: <Widget>[
-                  IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      })
-                ],
-              ));
+      popDialog('Forecast for Today:', weatherDetails);
     });
   }
 
@@ -156,6 +125,46 @@ class _NavigationState extends State<Navigation> {
     });
   }
 
+  popDialogGoNextPhase() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.redAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text(
+            "cheers",
+            style: TextStyle(
+              fontFamily: 'skullsandcrossbones',
+            ),
+          ).tr(),
+          content: const Text(
+            "arrived_at_destination",
+            style: TextStyle(
+              fontFamily: 'skullsandcrossbones',
+            ),
+          ).tr(),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                print("aaaaaaaaaaaaaaaaaaaaaa");
+              },
+              child: const Text('next',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.blue,
+                    fontFamily: 'skullsandcrossbones',
+                  )).tr(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   _updateOriginMarkerUponNewCoordinate() async {
     //check if we have arrived at the destination
     var distance = pow(
@@ -164,43 +173,7 @@ class _NavigationState extends State<Navigation> {
         0.5);
     if (distance <= 0.0005) {
       await audioCache.play("cheers.mp3");
-      await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Colors.redAccent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: const Text(
-              "cheers",
-              style: TextStyle(
-                fontFamily: 'skullsandcrossbones',
-              ),
-            ).tr(),
-            content: const Text(
-              "arrived_at_destination",
-              style: TextStyle(
-                fontFamily: 'skullsandcrossbones',
-              ),
-            ).tr(),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  print("aaaaaaaaaaaaaaaaaaaaaa");
-                },
-                child: const Text('next',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.blue,
-                      fontFamily: 'skullsandcrossbones',
-                    )).tr(),
-              ),
-            ],
-          );
-        },
-      );
+      popDialogGoNextPhase();
     } else {
       _origin = Marker(
         markerId: const MarkerId("Origin"),
@@ -294,6 +267,45 @@ class _NavigationState extends State<Navigation> {
           'assets/images/gameBoard/boat.png'),
       position: LatLng(_yDestination, _xDestination),
     );
+    popDialogGoNextPhase();
+  }
+
+  popDialog(String title, String content) {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+                backgroundColor: Colors.redAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                title: Text(
+                  title,
+                  textDirection: UI.TextDirection.ltr,
+                  style: const TextStyle(
+                    fontFamily: 'skullsandcrossbones',
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ).tr(),
+                content: Text(
+                  content,
+                  textDirection: UI.TextDirection.ltr,
+                  style: const TextStyle(
+                    fontFamily: 'skullsandcrossbones',
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ).tr(),
+                actions: <Widget>[
+                  IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      })
+                ],
+              ));
+    });
   }
 
   @override
@@ -359,6 +371,11 @@ class _NavigationState extends State<Navigation> {
                         bool isBoatRunning = false;
 
                         if (state is ShowMapState) {
+                          if (!_showedWelcomeDialog) {
+                            _showedWelcomeDialog = true;
+                            popDialog('navigation_title', "navigation_content");
+                          }
+
                           isBoatRunning = state.isBoatRunning;
                           _statusGear = state.statusGear;
                           //_steeringAngle = state.steeringAngle;
@@ -669,16 +686,6 @@ class _NavigationState extends State<Navigation> {
                     Navigator.pop(context);
 
                     updateOriginMarker();
-
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: const Text("text_origin_now_destination",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w900,
-                            fontFamily: 'skullsandcrossbones',
-                          )).tr(),
-                    ));
                   },
                   child: const Text('OK',
                       style: TextStyle(
