@@ -426,14 +426,14 @@ class _NavigationState extends State<Navigation> {
                         );
                       } else if (state is IgnitionState) {
                         _isBoatRunning = state.isBoatRunning;
-                        _steeringAngle = state.steeringAngle;
+                        //_steeringAngle = state.steeringAngle;
 
                         BlocProvider.of<NavigationBloc>(context)
                             .add(ShowMapEvent());
                         return sailing(context, _steeringAngle,
                             state.isBoatRunning, state.statusGear);
                       } else if (state is GearState) {
-                        _steeringAngle = state.steeringAngle;
+                        //_steeringAngle = state.steeringAngle;
 
                         if (state.statusGear != "N") {
                           if (_hasUserStartedNavigation == false) {
