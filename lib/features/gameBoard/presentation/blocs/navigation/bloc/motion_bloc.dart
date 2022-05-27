@@ -62,7 +62,7 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
     on<MotionEvent>((event, emit) {
       if (event is NewCoordinatesEvent) {
         double standardUnit = 0.0001;
-        int angleDegrees = (event.steeringAngle * 57.2957795).floor();
+        int angleDegrees = (event.steeringAngle).floor();
 
         int gapTo0 = 0;
         int gapTo90 = 0;
@@ -119,14 +119,14 @@ class MotionBloc extends Bloc<MotionEvent, MotionState> {
             event.yCoordinate + coordinateChangeX,
             event.xCoordinate + coordinateChangeY,
             event.indexMarina);
+
         if (isLegalMove) {
           _lastApprovedCoordinateChangeX = coordinateChangeX;
           _lastApprovedCoordinateChangeY = coordinateChangeY;
         } else if (!isLegalMove) {
           event.xCoordinate -= _lastApprovedCoordinateChangeX;
           event.yCoordinate -= _lastApprovedCoordinateChangeY;
-          _lastApprovedCoordinateChangeX = 0.0;
-          _lastApprovedCoordinateChangeY = 0.0;
+
           checkPointInsidePolygon(
               event.yCoordinate, event.xCoordinate, event.indexMarina);
         }
