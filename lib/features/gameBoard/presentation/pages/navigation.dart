@@ -5,6 +5,7 @@ import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/phase1.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignition.dart';
 
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
@@ -150,7 +151,10 @@ class _NavigationState extends State<Navigation> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                print("aaaaaaaaaaaaaaaaaaaaaa");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Phase1()),
+                );
               },
               child: const Text('next',
                   style: TextStyle(
@@ -178,10 +182,10 @@ class _NavigationState extends State<Navigation> {
       _origin = Marker(
         markerId: const MarkerId("Origin"),
         infoWindow: const InfoWindow(title: "Origin"),
-        /*icon: await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(size: Size(64, 64)),
-          'assets/images/gameBoard/boat.png'),*/
-        icon: await BitmapDescriptor.defaultMarker,
+        icon: await BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(size: Size(64, 64)),
+            'assets/images/gameBoard/boat.png'),
+        //icon: await BitmapDescriptor.defaultMarker,
         position: LatLng(_marinaLatitude, _marinaLongitude),
       );
       _initialCameraPosition = CameraPosition(
@@ -267,6 +271,8 @@ class _NavigationState extends State<Navigation> {
           'assets/images/gameBoard/boat.png'),
       position: LatLng(_yDestination, _xDestination),
     );
+    BlocProvider.of<NavigationBloc>(context)
+        .add(GearEvent(selectedNewPosition: 'N'));
     popDialogGoNextPhase();
   }
 
@@ -411,8 +417,8 @@ class _NavigationState extends State<Navigation> {
                           ),
                         };
 
-                        BlocProvider.of<NavigationBloc>(context)
-                            .add(ShowMapEvent());
+                        //BlocProvider.of<NavigationBloc>(context)
+                        //  .add(ShowMapEvent());
 
                         return Column(
                           children: [
@@ -450,8 +456,6 @@ class _NavigationState extends State<Navigation> {
                         return sailing(context, _steeringAngle,
                             state.isBoatRunning, state.statusGear);
                       } else if (state is GearState) {
-                        //_steeringAngle = state.steeringAngle;
-
                         if (state.statusGear != "N") {
                           if (_hasUserStartedNavigation == false) {
                             _hasUserStartedNavigation = true;
@@ -603,45 +607,42 @@ class _NavigationState extends State<Navigation> {
     bool isBoatRunning,
     String statusGear,
   ) {
-    return Positioned(
-      bottom: 0.0,
-      child: Column(
-        children: [
-          _hasUserStartedNavigation ? Container() : dropDown(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buttonSpinRight(context, _steeringAngle),
-              const SizedBox(
-                width: 10.0,
-              ),
-              Center(
-                child: Text((_steeringAngle).floor().toString() + "\u00b0",
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'skullsandcrossbones',
-                    )),
-              ),
-              const SizedBox(
-                width: 10.0,
-              ),
-              buttonSpinLeft(context, _steeringAngle),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                  width: 64.0,
-                  height: 64.0,
-                  child: buttonIgnition(context, isBoatRunning)),
-              isBoatRunning ? gear(context, _statusGear) : Container(),
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        _hasUserStartedNavigation ? Container() : dropDown(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buttonSpinRight(context, _steeringAngle),
+            const SizedBox(
+              width: 10.0,
+            ),
+            Center(
+              child: Text((_steeringAngle).floor().toString() + "\u00b0",
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'skullsandcrossbones',
+                  )),
+            ),
+            const SizedBox(
+              width: 10.0,
+            ),
+            buttonSpinLeft(context, _steeringAngle),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+                width: 64.0,
+                height: 64.0,
+                child: buttonIgnition(context, isBoatRunning)),
+            isBoatRunning ? gear(context, _statusGear) : Container(),
+          ],
+        ),
+      ],
     );
   }
 
