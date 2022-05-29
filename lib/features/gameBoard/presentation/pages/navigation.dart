@@ -5,7 +5,7 @@ import 'package:catchfish/core/consts/marinas.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
-import 'package:catchfish/features/gameBoard/presentation/pages/phase1.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignition.dart';
 
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
@@ -153,7 +153,7 @@ class _NavigationState extends State<Navigation> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Phase1()),
+                  MaterialPageRoute(builder: (context) => const Fishing()),
                 );
               },
               child: const Text('next',

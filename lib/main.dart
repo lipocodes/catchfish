@@ -4,7 +4,7 @@ import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart';
-import 'package:catchfish/features/gameBoard/presentation/pages/phase1.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
@@ -258,7 +258,7 @@ class _MyAppState extends State<MyApp> {
                     );
                   case '/phase1':
                     return PageTransition(
-                      child: const Phase1(),
+                      child: const Fishing(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 2000),
