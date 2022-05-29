@@ -1,3 +1,4 @@
+import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/pulse_generator.dart';
 import 'package:flutter/material.dart';
 
 class Fishing extends StatefulWidget {
@@ -10,6 +11,10 @@ class Fishing extends StatefulWidget {
 class _FishingState extends State<Fishing> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      children: [
+        pulseGenerator(),
+      ],
+    );
   }
 }

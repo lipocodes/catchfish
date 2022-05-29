@@ -6,7 +6,7 @@ import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
-import 'package:catchfish/features/gameBoard/presentation/widgets/button_ignition.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_ignition.dart';
 
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_back.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_spin_left.dart';
