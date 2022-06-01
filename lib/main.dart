@@ -1,5 +1,7 @@
+import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
+import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
@@ -19,6 +21,7 @@ import 'package:catchfish/features/settings/presentation/pages/equipment_invento
 import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
 import 'package:catchfish/features/tokens/presentation/blocs/provider/tokens_provider.dart';
 import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
+import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +34,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as UI;
 import 'package:catchfish/core/consts/marinas.dart';
+import 'injection_container.dart' as di;
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_important_channel',
@@ -72,6 +76,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> main() async {
+  await di.init();
+
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();

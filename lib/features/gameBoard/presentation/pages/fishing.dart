@@ -1,4 +1,6 @@
+import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/pulse_generator.dart';
+import 'package:catchfish/injection_container.dart';
 import 'package:flutter/material.dart';
 
 class Fishing extends StatefulWidget {
