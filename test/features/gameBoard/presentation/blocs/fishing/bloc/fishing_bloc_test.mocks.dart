@@ -108,8 +108,9 @@ class MockFishingUsecase extends _i1.Mock implements _i6.FishingUsecase {
               _FakeEither_1<_i7.Failure, _i8.PulseEntity>())) as _i4
           .Future<_i3.Either<_i7.Failure, _i8.PulseEntity>>);
   @override
-  _i3.Either<_i7.Failure, _i8.PulseEntity> getPulse() =>
+  _i4.Future<_i3.Either<_i7.Failure, _i8.PulseEntity>> getPulse() =>
       (super.noSuchMethod(Invocation.method(#getPulse, []),
-              returnValue: _FakeEither_1<_i7.Failure, _i8.PulseEntity>())
-          as _i3.Either<_i7.Failure, _i8.PulseEntity>);
+          returnValue: Future<_i3.Either<_i7.Failure, _i8.PulseEntity>>.value(
+              _FakeEither_1<_i7.Failure, _i8.PulseEntity>())) as _i4
+          .Future<_i3.Either<_i7.Failure, _i8.PulseEntity>>);
 }

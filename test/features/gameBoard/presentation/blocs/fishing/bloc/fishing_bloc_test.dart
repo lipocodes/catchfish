@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/core/errors/failures.dart';
@@ -8,6 +10,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'fishing_bloc_test.mocks.dart';
 import 'package:catchfish/injection_container.dart' as di;
 
@@ -31,12 +34,26 @@ void main() {
     test('Verifying that BLOC is OK', () async {
       final fishingBloc = sl.get<FishingBloc>();
       mockFishingUsecase = sl.get<MockFishingUsecase>();
-      when(mockFishingUsecase.getPulse()).thenReturn(Left(GeneralFailure()));
-      fishingBloc.add(const GetPulseEvent());
-
-      expectLater(fishingBloc.stream,
-          emitsInOrder([GetPulseState(pulseLength: 1.0, pulseStrength: 0.1)]));
-      //expectLater(fishingBloc.stream,emitsInOrder([const ErrorGetPulseState(message: "")]));
+      //running the code of getPulse()
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int myLevel = prefs.getInt("myLevel") ?? 1;
+      int random = Random().nextInt(10);
+      double pulseStrength = (myLevel * random).toDouble();
+      double pulseLength = 1.0;
+      //when(mockFishingUsecase.getPulse()).thenReturn(Left(GeneralFailure()));
+      when(mockFishingUsecase.getPulse()).thenAnswer((_) async => Right(
+          PulseEntity(pulseStrength: pulseStrength, pulseLength: pulseLength)));
+      //creating a new event for fishingBloc
+      fishingBloc.add(GetPulseEvent(fishingUsecase: mockFishingUsecase));
+      //because fishingBloc runs getPulse() and emits a state accordingly
+      expectLater(
+          fishingBloc.stream,
+          emitsInOrder([
+            GetPulseState(
+                pulseLength: pulseStrength, pulseStrength: pulseLength)
+          ]));
+      //expectLater(fishingBloc.stream,
+      //  emitsInOrder([const ErrorGetPulseState(message: "")]));
     });
   });
 }

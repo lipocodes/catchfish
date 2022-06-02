@@ -9,15 +9,16 @@ part 'fishing_state.dart';
 
 class FishingBloc extends Bloc<FishingEvent, FishingState> {
   FishingBloc() : super(FishingInitial()) {
-    on<FishingEvent>((event, emit) {
+    on<FishingEvent>((event, emit) async {
       if (event is GetPulseEvent) {
         //sl.get<FishingUsecase>().getPulse()
-        final res = sl.get<FishingUsecase>().getPulse();
+        final res = await event.fishingUsecase.getPulse();
         res.fold(
           (failure) => emit(const ErrorGetPulseState(
               message: "Error in getting a new pulse!")),
-          (pulseEntity) =>
-              emit(GetPulseState(pulseLength: 1.0, pulseStrength: 0.1)),
+          (pulseEntity) => emit(GetPulseState(
+              pulseLength: pulseEntity.pulseLength,
+              pulseStrength: pulseEntity.pulseStrength)),
         );
       }
     });

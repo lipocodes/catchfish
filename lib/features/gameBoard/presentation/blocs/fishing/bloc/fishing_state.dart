@@ -12,7 +12,7 @@ class FishingInitial extends FishingState {}
 class GetPulseState extends FishingState {
   final double pulseStrength;
   final double pulseLength;
-  GetPulseState({required this.pulseStrength, required this.pulseLength});
+  const GetPulseState({required this.pulseStrength, required this.pulseLength});
 }
 
 class ErrorGetPulseState extends FishingState {

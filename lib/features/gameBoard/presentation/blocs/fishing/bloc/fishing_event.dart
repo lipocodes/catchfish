@@ -8,5 +8,6 @@ abstract class FishingEvent extends Equatable {
 }
 
 class GetPulseEvent extends FishingEvent {
-  const GetPulseEvent();
+  final FishingUsecase fishingUsecase;
+  const GetPulseEvent({required this.fishingUsecase});
 }
