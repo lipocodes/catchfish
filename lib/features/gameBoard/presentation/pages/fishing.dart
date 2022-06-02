@@ -14,7 +14,8 @@ class _FishingState extends State<Fishing> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(body: Center(child: Container(child: pulseGenerator()))),
+      home:
+          Scaffold(body: Center(child: Container(child: pulseGenerator(1.0)))),
     );
   }
 }
