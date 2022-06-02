@@ -37,9 +37,10 @@ void main() {
       //running the code of getPulse()
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int myLevel = prefs.getInt("myLevel") ?? 1;
-      int random = Random().nextInt(10);
+      int random = 1 + Random().nextInt(10);
       double pulseStrength = (myLevel * random).toDouble();
       double pulseLength = 0.0;
+
       if (random == 10) {
         pulseLength = 2 - myLevel * 0.1;
       } else {
@@ -57,6 +58,7 @@ void main() {
             GetPulseState(
                 pulseLength: pulseStrength, pulseStrength: pulseLength)
           ]));
+
       //expectLater(fishingBloc.stream,
       //  emitsInOrder([const ErrorGetPulseState(message: "")]));
     });
