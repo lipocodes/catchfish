@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'fishing_bloc_test.mocks.dart';
 import 'package:catchfish/injection_container.dart' as di;
 
+// in console: dart run build_runner build, in order to create mock file for the classes mentioned in @GenerateMocks
 @GenerateMocks(
     [FishingBloc, FishingUsecase]) //CMD:   dart run build_runner build
 void main() {
