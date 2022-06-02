@@ -21,9 +21,14 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int myLevel = prefs.getInt("myLevel") ?? 1;
+      double pulseLength = 0.0;
       int random = Random().nextInt(10);
-      double pulseStrength = (myLevel * random).toDouble();
-      double pulseLength = 1.0;
+      if (random == 10) {
+        pulseLength = 2 - myLevel * 0.1;
+      } else {
+        pulseLength = random / 10;
+      }
+      double pulseStrength = 1.0;
       PulseEntity pulseEntity =
           PulseEntity(pulseStrength: pulseStrength, pulseLength: pulseLength);
       return Right(pulseEntity);

@@ -39,7 +39,12 @@ void main() {
       int myLevel = prefs.getInt("myLevel") ?? 1;
       int random = Random().nextInt(10);
       double pulseStrength = (myLevel * random).toDouble();
-      double pulseLength = 1.0;
+      double pulseLength = 0.0;
+      if (random == 10) {
+        pulseLength = 2 - myLevel * 0.1;
+      } else {
+        pulseLength = random / 10;
+      }
       //when(mockFishingUsecase.getPulse()).thenReturn(Left(GeneralFailure()));
       when(mockFishingUsecase.getPulse()).thenAnswer((_) async => Right(
           PulseEntity(pulseStrength: pulseStrength, pulseLength: pulseLength)));
