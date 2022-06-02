@@ -66,6 +66,7 @@ dependencies:
   google_maps_flutter: ^2.1.4
   badges: ^2.0.2
   weather: ^2.0.1
+  
  
 
   

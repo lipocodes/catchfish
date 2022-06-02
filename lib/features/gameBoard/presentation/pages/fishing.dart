@@ -13,10 +13,8 @@ class Fishing extends StatefulWidget {
 class _FishingState extends State<Fishing> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        pulseGenerator(),
-      ],
+    return MaterialApp(
+      home: Scaffold(body: Center(child: Container(child: pulseGenerator()))),
     );
   }
 }
