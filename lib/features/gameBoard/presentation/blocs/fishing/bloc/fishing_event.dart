@@ -11,3 +11,5 @@ class GetPulseEvent extends FishingEvent {
   final FishingUsecase fishingUsecase;
   const GetPulseEvent({required this.fishingUsecase});
 }
+
+class BetweenPulsesEvent extends FishingEvent {}

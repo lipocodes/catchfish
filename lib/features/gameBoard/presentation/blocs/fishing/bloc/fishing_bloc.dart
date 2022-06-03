@@ -20,6 +20,8 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
               pulseLength: pulseEntity.pulseLength,
               pulseStrength: pulseEntity.pulseStrength)),
         );
+      } else if (event is BetweenPulsesEvent) {
+        emit(BetweenPulsesState());
       }
     });
   }

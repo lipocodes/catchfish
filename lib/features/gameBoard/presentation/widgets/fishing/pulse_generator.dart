@@ -1,7 +1,44 @@
+import 'dart:async';
+
+import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart';
+import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-Widget pulseGenerator(double angle) {
+Widget pulseGenerator(BuildContext context) {
+  double angle = 0.0;
+// runs every 5 seconds
+  Timer.periodic(const Duration(seconds: 5), (timer) {
+    BlocProvider.of<FishingBloc>(context)
+        .add(GetPulseEvent(fishingUsecase: sl.get<FishingUsecase>()));
+  });
+
+  return BlocBuilder<FishingBloc, FishingState>(
+    builder: (context, state) {
+      if (state is GetPulseState) {
+        BlocProvider.of<FishingBloc>(context).add(BetweenPulsesEvent());
+
+        //red area of gauge: 160 degrees=2.7925268 radians
+        if (state.pulseLength > 1) {
+          angle = 2.7925268;
+        } else {
+          double possibleRange = 2.7925268 + 2.61799388;
+          double selectedPointInGauge = possibleRange * state.pulseLength;
+          angle = selectedPointInGauge - 2.7925268;
+        }
+        return gui(angle);
+      } else if (state is BetweenPulsesState) {
+        return gui(angle);
+      } else {
+        return Container();
+      }
+    },
+  );
+}
+
+Widget gui(double angle) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: [

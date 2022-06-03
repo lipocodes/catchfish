@@ -15,6 +15,8 @@ class GetPulseState extends FishingState {
   const GetPulseState({required this.pulseStrength, required this.pulseLength});
 }
 
+class BetweenPulsesState extends FishingState {}
+
 class ErrorGetPulseState extends FishingState {
   final String message;
   const ErrorGetPulseState({required this.message});

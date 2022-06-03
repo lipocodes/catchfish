@@ -2,6 +2,7 @@ import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
@@ -180,6 +181,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<MotionBloc>(
           create: (BuildContext context) => MotionBloc(),
+        ),
+        BlocProvider<FishingBloc>(
+          create: (BuildContext context) => FishingBloc(),
         ),
       ],
       child: MultiProvider(
