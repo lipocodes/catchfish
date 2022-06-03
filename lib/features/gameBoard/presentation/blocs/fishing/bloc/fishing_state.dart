@@ -21,3 +21,8 @@ class ErrorGetPulseState extends FishingState {
   final String message;
   const ErrorGetPulseState({required this.message});
 }
+
+class RedButtonPressedState extends FishingState {
+  final bool isFishCaught;
+  const RedButtonPressedState({required this.isFishCaught});
+}

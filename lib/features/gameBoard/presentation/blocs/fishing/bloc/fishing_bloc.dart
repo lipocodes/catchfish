@@ -22,6 +22,9 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         );
       } else if (event is BetweenPulsesEvent) {
         emit(BetweenPulsesState());
+      } else if (event is RedButtonPressedEvent) {
+        bool isFishCaught = true;
+        emit(RedButtonPressedState(isFishCaught: isFishCaught));
       }
     });
   }

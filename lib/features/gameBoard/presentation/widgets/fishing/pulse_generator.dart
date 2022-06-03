@@ -28,9 +28,12 @@ Widget pulseGenerator(BuildContext context) {
           double selectedPointInGauge = possibleRange * state.pulseLength;
           angle = selectedPointInGauge - 2.7925268;
         }
-        return gui(angle);
+        return gui(context, angle);
       } else if (state is BetweenPulsesState) {
-        return gui(angle);
+        return gui(context, angle);
+      } else if (state is RedButtonPressedState) {
+        print("xxxxxxxxxxxxxxxxxxx=" + state.isFishCaught.toString());
+        return gui(context, angle);
       } else {
         return Container();
       }
@@ -38,7 +41,7 @@ Widget pulseGenerator(BuildContext context) {
   );
 }
 
-Widget gui(double angle) {
+Widget gui(BuildContext context, double angle) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: [
@@ -74,28 +77,33 @@ Widget gui(double angle) {
           ),
         ],
       ),
-      SizedBox(
-        height: 120.0,
-        width: 136.0,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Image.asset(
-              //pixabay.com
-              'assets/images/gameBoard/redButton.png',
-              fit: BoxFit.fill,
-              height: double.infinity,
-              width: double.infinity,
-              alignment: Alignment.center,
-            ),
-            Text(
-              "catch".tr(),
-              style: const TextStyle(
-                  fontSize: 24.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700),
-            ),
-          ],
+      GestureDetector(
+        onLongPress: () {
+          BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent());
+        },
+        child: SizedBox(
+          height: 120.0,
+          width: 136.0,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset(
+                //pixabay.com
+                'assets/images/gameBoard/redButton.png',
+                fit: BoxFit.fill,
+                height: double.infinity,
+                width: double.infinity,
+                alignment: Alignment.center,
+              ),
+              Text(
+                "catch".tr(),
+                style: const TextStyle(
+                    fontSize: 24.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
         ),
       ),
     ],

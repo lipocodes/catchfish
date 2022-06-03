@@ -13,3 +13,5 @@ class GetPulseEvent extends FishingEvent {
 }
 
 class BetweenPulsesEvent extends FishingEvent {}
+
+class RedButtonPressedEvent extends FishingEvent {}
