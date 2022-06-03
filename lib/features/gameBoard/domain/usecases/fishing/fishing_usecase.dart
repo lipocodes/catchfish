@@ -12,6 +12,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   late SharedPreferences _prefs;
   final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
   AudioPlayer audioPlayer = AudioPlayer();
+  bool _isItCatchingTime = false;
   FishingUsecase();
 
   playBackgroundAudio(String engineSound) async {
@@ -32,6 +33,11 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       int random = 1 + Random().nextInt(10);
       if (random == 10) {
         pulseLength = 2 - myLevel * 0.1;
+        _isItCatchingTime = true;
+        int milli = (pulseLength * 1000).toInt();
+        Future.delayed(Duration(milliseconds: milli), () {
+          _isItCatchingTime = false;
+        });
         playBackgroundAudio("strongSignal.mp3");
       } else {
         pulseLength = random / 10;
@@ -48,7 +54,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
   Future<Either<Failure, bool>> isFishCaught() async {
     try {
-      bool isFishCaught = false;
+      bool isFishCaught = _isItCatchingTime;
       return Right(isFishCaught);
     } catch (e) {
       return Left(GeneralFailure());
