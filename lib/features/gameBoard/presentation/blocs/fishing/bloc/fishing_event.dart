@@ -14,4 +14,7 @@ class GetPulseEvent extends FishingEvent {
 
 class BetweenPulsesEvent extends FishingEvent {}
 
-class RedButtonPressedEvent extends FishingEvent {}
+class RedButtonPressedEvent extends FishingEvent {
+  final FishingUsecase fishingUsecase;
+  const RedButtonPressedEvent({required this.fishingUsecase});
+}

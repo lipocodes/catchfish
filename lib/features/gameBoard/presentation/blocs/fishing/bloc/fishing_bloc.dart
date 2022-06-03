@@ -25,14 +25,13 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
       } else if (event is BetweenPulsesEvent) {
         emit(BetweenPulsesState());
       } else if (event is RedButtonPressedEvent) {
-        final res = await _fishingUsecase.isFishCaught();
+        final res = await event.fishingUsecase.isFishCaught();
+
         res.fold(
           (failure) => emit(const ErrorRedButtonPressedState(
               message: "Error in dealing wuth red button press!")),
           (success) => emit(RedButtonPressedState(isFishCaught: success)),
         );
-        bool isFishCaught = true;
-        emit(RedButtonPressedState(isFishCaught: isFishCaught));
       }
     });
   }

@@ -29,10 +29,8 @@ void main() {
 
   tearDown(() {});
 
-  group(
-      "Tests validating that the BLOC call & received data from the relevant usecase",
-      () {
-    test('Verifying that BLOC is OK', () async {
+  group("Testing BLOC FishingBloc", () {
+    test('testing GetPulseEvent', () async {
       final fishingBloc = sl.get<FishingBloc>();
       mockFishingUsecase = sl.get<MockFishingUsecase>();
       //running the code of getPulse()
@@ -63,5 +61,25 @@ void main() {
       //expectLater(fishingBloc.stream,
       //  emitsInOrder([const ErrorGetPulseState(message: "")]));
     });
+
+    //////////////////////////////////////////////////////////////////////
+    test('testing BetweenPulseEvent', () {
+      final fishingBloc = sl.get<FishingBloc>();
+      fishingBloc.add(BetweenPulsesEvent());
+      expectLater(fishingBloc.stream, emitsInOrder([BetweenPulsesState()]));
+    });
+    /////////////////////////////////////////////////////////////////////
+
+    test('testing RedButtonPressedEvent', () {
+      final fishingBloc = sl.get<FishingBloc>();
+      mockFishingUsecase = sl.get<MockFishingUsecase>();
+      when(mockFishingUsecase.isFishCaught())
+          .thenAnswer((_) async => const Right(true));
+      fishingBloc
+          .add(RedButtonPressedEvent(fishingUsecase: mockFishingUsecase));
+      expectLater(fishingBloc.stream,
+          emitsInOrder([const RedButtonPressedState(isFishCaught: true)]));
+    });
+    ////////////////////////////////////////////////////////////////////////
   });
 }

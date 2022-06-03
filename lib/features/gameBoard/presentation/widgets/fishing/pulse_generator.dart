@@ -79,7 +79,8 @@ Widget gui(BuildContext context, double angle) {
       ),
       GestureDetector(
         onLongPress: () {
-          BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent());
+          BlocProvider.of<FishingBloc>(context).add(
+              RedButtonPressedEvent(fishingUsecase: sl.get<FishingUsecase>()));
         },
         child: SizedBox(
           height: 120.0,
