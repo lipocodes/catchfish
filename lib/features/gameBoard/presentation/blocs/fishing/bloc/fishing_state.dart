@@ -26,3 +26,8 @@ class RedButtonPressedState extends FishingState {
   final bool isFishCaught;
   const RedButtonPressedState({required this.isFishCaught});
 }
+
+class ErrorRedButtonPressedState extends FishingState {
+  final String message;
+  const ErrorRedButtonPressedState({required this.message});
+}

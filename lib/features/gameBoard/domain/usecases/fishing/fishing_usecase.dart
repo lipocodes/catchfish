@@ -45,4 +45,13 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<Failure, bool>> isFishCaught() async {
+    try {
+      bool isFishCaught = false;
+      return Right(isFishCaught);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }
