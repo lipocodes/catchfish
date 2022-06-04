@@ -26,9 +26,11 @@ class _FishingState extends State<Fishing> {
           fishingUsecase: sl.get<FishingUsecase>(),
           currentCountdownTime: _currentTime));
       if (_seconds == 5) {
-        _seconds = 0;
-        BlocProvider.of<FishingBloc>(context)
-            .add(GetPulseEvent(fishingUsecase: sl.get<FishingUsecase>()));
+        Timer(const Duration(milliseconds: 100), () {
+          _seconds = 0;
+          BlocProvider.of<FishingBloc>(context)
+              .add(GetPulseEvent(fishingUsecase: sl.get<FishingUsecase>()));
+        });
       } else {
         _seconds++;
       }
