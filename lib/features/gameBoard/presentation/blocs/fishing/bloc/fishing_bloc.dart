@@ -20,7 +20,8 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
               message: "Error in getting a new pulse!")),
           (pulseEntity) => emit(GetPulseState(
               pulseLength: pulseEntity.pulseLength,
-              pulseStrength: pulseEntity.pulseStrength)),
+              pulseStrength: pulseEntity.pulseStrength,
+              angle: pulseEntity.angle)),
         );
       } else if (event is BetweenPulsesEvent) {
         emit(BetweenPulsesState());
@@ -32,6 +33,19 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
               message: "Error in dealing wuth red button press!")),
           (success) => emit(RedButtonPressedState(isFishCaught: success)),
         );
+      } else if (event is TimerTickEvent) {
+        String currentCountdownTime = event.currentCountdownTime;
+        _fishingUsecase = event.fishingUsecase;
+        final res = await _fishingUsecase.calculateNewCoundownTime(
+            _fishingUsecase, currentCountdownTime);
+        res.fold(
+          (failure) => emit(const ErrorRedButtonPressedState(
+              message: "Error in dealing with countdown tick!")),
+          (success) =>
+              emit(TimerTickState(newCountdownTime: currentCountdownTime)),
+        );
+      } else if (event is AfterTimerTickEvent) {
+        emit(AfterTimerTickState());
       }
     });
   }

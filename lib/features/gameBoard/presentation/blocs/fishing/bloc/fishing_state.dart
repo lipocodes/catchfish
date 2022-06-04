@@ -12,7 +12,11 @@ class FishingInitial extends FishingState {}
 class GetPulseState extends FishingState {
   final double pulseStrength;
   final double pulseLength;
-  const GetPulseState({required this.pulseStrength, required this.pulseLength});
+  final double angle;
+  const GetPulseState(
+      {required this.pulseStrength,
+      required this.pulseLength,
+      required this.angle});
 }
 
 class BetweenPulsesState extends FishingState {}
@@ -31,3 +35,11 @@ class ErrorRedButtonPressedState extends FishingState {
   final String message;
   const ErrorRedButtonPressedState({required this.message});
 }
+
+class TimerTickState extends FishingState {
+  final String newCountdownTime;
+
+  const TimerTickState({required this.newCountdownTime});
+}
+
+class AfterTimerTickState extends FishingState {}

@@ -139,4 +139,13 @@ class MockFishingUsecase extends _i1.Mock implements _i7.FishingUsecase {
               returnValue: Future<_i4.Either<_i8.Failure, bool>>.value(
                   _FakeEither_3<_i8.Failure, bool>()))
           as _i5.Future<_i4.Either<_i8.Failure, bool>>);
+  @override
+  _i5.Future<_i4.Either<_i8.Failure, String>> calculateNewCoundownTime(
+          _i7.FishingUsecase? fishingUsecase, String? currentCountdownTime) =>
+      (super.noSuchMethod(
+              Invocation.method(#calculateNewCoundownTime,
+                  [fishingUsecase, currentCountdownTime]),
+              returnValue: Future<_i4.Either<_i8.Failure, String>>.value(
+                  _FakeEither_3<_i8.Failure, String>()))
+          as _i5.Future<_i4.Either<_i8.Failure, String>>);
 }

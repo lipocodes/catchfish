@@ -10,35 +10,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Widget pulseGenerator(BuildContext context) {
   double angle = 0.0;
 // runs every 5 seconds
-  Timer.periodic(const Duration(seconds: 5), (timer) {
+  /*Timer.periodic(const Duration(seconds: 5), (timer) {
     BlocProvider.of<FishingBloc>(context)
         .add(GetPulseEvent(fishingUsecase: sl.get<FishingUsecase>()));
-  });
+  });*/
 
-  return BlocBuilder<FishingBloc, FishingState>(
-    builder: (context, state) {
-      if (state is GetPulseState) {
-        BlocProvider.of<FishingBloc>(context).add(BetweenPulsesEvent());
-
-        //red area of gauge: 160 degrees=2.7925268 radians
-        if (state.pulseLength > 1) {
-          angle = 2.7925268;
-        } else {
-          double possibleRange = 2.7925268 + 2.61799388;
-          double selectedPointInGauge = possibleRange * state.pulseLength;
-          angle = selectedPointInGauge - 2.7925268;
-        }
-        return gui(context, angle);
-      } else if (state is BetweenPulsesState) {
-        return gui(context, angle);
-      } else if (state is RedButtonPressedState) {
-        print("xxxxxxxxxxxxxxxxxxx=" + state.isFishCaught.toString());
-        return gui(context, angle);
-      } else {
-        return Container();
-      }
-    },
-  );
+  return gui(context, angle);
 }
 
 Widget gui(BuildContext context, double angle) {

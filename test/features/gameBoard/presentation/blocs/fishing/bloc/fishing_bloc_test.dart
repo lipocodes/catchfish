@@ -19,10 +19,10 @@ import 'package:catchfish/injection_container.dart' as di;
     [FishingBloc, FishingUsecase]) //CMD:   dart run build_runner build
 void main() {
   late MockFishingUsecase mockFishingUsecase;
-
+  late FishingBloc fishingBloc;
   setUp(() async {
     await di.init();
-
+    fishingBloc = sl.get<FishingBloc>();
     mockFishingUsecase = MockFishingUsecase();
     sl.registerLazySingleton<MockFishingUsecase>(() => MockFishingUsecase());
   });
@@ -31,9 +31,6 @@ void main() {
 
   group("Testing BLOC FishingBloc", () {
     test('testing GetPulseEvent', () async {
-      final fishingBloc = sl.get<FishingBloc>();
-      mockFishingUsecase = sl.get<MockFishingUsecase>();
-      //running the code of getPulse()
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int myLevel = prefs.getInt("myLevel") ?? 1;
       int random = 1 + Random().nextInt(10);
@@ -47,7 +44,10 @@ void main() {
       }
       //when(mockFishingUsecase.getPulse()).thenReturn(Left(GeneralFailure()));
       when(mockFishingUsecase.getPulse()).thenAnswer((_) async => Right(
-          PulseEntity(pulseStrength: pulseStrength, pulseLength: pulseLength)));
+          PulseEntity(
+              pulseStrength: pulseStrength,
+              pulseLength: pulseLength,
+              angle: 0.0)));
       //creating a new event for fishingBloc
       fishingBloc.add(GetPulseEvent(fishingUsecase: mockFishingUsecase));
       //because fishingBloc runs getPulse() and emits a state accordingly
@@ -55,7 +55,10 @@ void main() {
           fishingBloc.stream,
           emitsInOrder([
             GetPulseState(
-                pulseLength: pulseStrength, pulseStrength: pulseLength)
+              pulseLength: pulseStrength,
+              pulseStrength: pulseLength,
+              angle: 0.0,
+            )
           ]));
 
       //expectLater(fishingBloc.stream,
@@ -64,15 +67,12 @@ void main() {
 
     //////////////////////////////////////////////////////////////////////
     test('testing BetweenPulseEvent', () {
-      final fishingBloc = sl.get<FishingBloc>();
       fishingBloc.add(BetweenPulsesEvent());
       expectLater(fishingBloc.stream, emitsInOrder([BetweenPulsesState()]));
     });
     /////////////////////////////////////////////////////////////////////
 
     test('testing RedButtonPressedEvent', () {
-      final fishingBloc = sl.get<FishingBloc>();
-      mockFishingUsecase = sl.get<MockFishingUsecase>();
       when(mockFishingUsecase.isFishCaught())
           .thenAnswer((_) async => const Right(true));
       fishingBloc
@@ -81,5 +81,18 @@ void main() {
           emitsInOrder([const RedButtonPressedState(isFishCaught: true)]));
     });
     ////////////////////////////////////////////////////////////////////////
+    test('testing CountdownTickEvent', () {
+      String currentCountdownTime = "05:00";
+      when(mockFishingUsecase.calculateNewCoundownTime(
+              mockFishingUsecase, currentCountdownTime))
+          .thenAnswer((_) async => const Right("04:59"));
+      fishingBloc.add(TimerTickEvent(
+          fishingUsecase: mockFishingUsecase,
+          currentCountdownTime: currentCountdownTime));
+      expectLater(fishingBloc.stream,
+          emitsInOrder([const TimerTickState(newCountdownTime: "04:59")]));
+    });
+
+    //////////////////////////////////////////////////////////////////////
   });
 }

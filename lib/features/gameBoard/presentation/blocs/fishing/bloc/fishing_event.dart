@@ -18,3 +18,13 @@ class RedButtonPressedEvent extends FishingEvent {
   final FishingUsecase fishingUsecase;
   const RedButtonPressedEvent({required this.fishingUsecase});
 }
+
+class TimerTickEvent extends FishingEvent {
+  final FishingUsecase fishingUsecase;
+  final String currentCountdownTime;
+
+  const TimerTickEvent(
+      {required this.fishingUsecase, required this.currentCountdownTime});
+}
+
+class AfterTimerTickEvent extends FishingEvent {}
