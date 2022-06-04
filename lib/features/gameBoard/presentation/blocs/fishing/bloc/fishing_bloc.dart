@@ -38,11 +38,11 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         _fishingUsecase = event.fishingUsecase;
         final res = await _fishingUsecase.calculateNewCoundownTime(
             _fishingUsecase, currentCountdownTime);
+
         res.fold(
           (failure) => emit(const ErrorRedButtonPressedState(
               message: "Error in dealing with countdown tick!")),
-          (success) =>
-              emit(TimerTickState(newCountdownTime: currentCountdownTime)),
+          (success) => emit(TimerTickState(newCountdownTime: success)),
         );
       } else if (event is AfterTimerTickEvent) {
         emit(AfterTimerTickState());

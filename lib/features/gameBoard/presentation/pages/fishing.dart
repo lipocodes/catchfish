@@ -6,6 +6,7 @@ import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/pulse_
 import 'package:catchfish/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:async';
 
 class Fishing extends StatefulWidget {
   const Fishing({Key? key}) : super(key: key);
@@ -15,28 +16,66 @@ class Fishing extends StatefulWidget {
 }
 
 class _FishingState extends State<Fishing> {
+  String _currentTime = "05:00";
+  double angle = 0.0;
+  int _seconds = 0;
   @override
   Widget build(BuildContext context) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
+          fishingUsecase: sl.get<FishingUsecase>(),
+          currentCountdownTime: _currentTime));
+      if (_seconds == 5) {
+        _seconds = 0;
+        BlocProvider.of<FishingBloc>(context)
+            .add(GetPulseEvent(fishingUsecase: sl.get<FishingUsecase>()));
+      } else {
+        _seconds++;
+      }
+    });
     return SafeArea(
       child: MaterialApp(
         home: Scaffold(
             body: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                energy(),
-                countdown(context),
-              ],
+            BlocBuilder<FishingBloc, FishingState>(
+              builder: (context, state) {
+                if (state is TimerTickState) {
+                  BlocProvider.of<FishingBloc>(context)
+                      .add(AfterTimerTickEvent());
+
+                  _currentTime = state.newCountdownTime;
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      energy(),
+                      countdown(context, _currentTime),
+                    ],
+                  );
+                } else {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      energy(),
+                      countdown(context, _currentTime),
+                    ],
+                  );
+                }
+              },
             ),
             BlocBuilder<FishingBloc, FishingState>(
               builder: (context, state) {
                 if (state is GetPulseState) {
+                  angle = state.angle;
                   BlocProvider.of<FishingBloc>(context)
                       .add(BetweenPulsesEvent());
-                  return pulseGenerator(context);
+                  return pulseGenerator(context, angle);
+                } else if (state is RedButtonPressedState) {
+                  print("IsFishCaught=" + state.isFishCaught.toString());
+                  return pulseGenerator(context, angle);
                 } else {
-                  return pulseGenerator(context);
+                  return pulseGenerator(context, angle);
                 }
               },
             ),

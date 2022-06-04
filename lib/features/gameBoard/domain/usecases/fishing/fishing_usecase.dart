@@ -85,6 +85,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       if (secs.length < 2) {
         secs = "0" + secs;
       }
+
       return Right(mins + ":" + secs);
     } catch (e) {
       return Left(GeneralFailure());

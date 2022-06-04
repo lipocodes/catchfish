@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart';
 import 'package:catchfish/injection_container.dart';
@@ -7,14 +5,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Widget pulseGenerator(BuildContext context) {
-  double angle = 0.0;
-// runs every 5 seconds
-  /*Timer.periodic(const Duration(seconds: 5), (timer) {
-    BlocProvider.of<FishingBloc>(context)
-        .add(GetPulseEvent(fishingUsecase: sl.get<FishingUsecase>()));
-  });*/
-
+Widget pulseGenerator(
+  BuildContext context,
+  double angle,
+) {
   return gui(context, angle);
 }
 
