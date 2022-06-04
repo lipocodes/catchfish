@@ -60,6 +60,11 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   Future<Either<Failure, bool>> isFishCaught() async {
     try {
       bool isFishCaught = _isItCatchingTime;
+      if (isFishCaught) {
+        playBackgroundAudio("catchFish.mp3");
+      } else {
+        playBackgroundAudio("missedFish.mp3");
+      }
       return Right(isFishCaught);
     } catch (e) {
       return Left(GeneralFailure());
@@ -87,7 +92,9 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       if (secs.length < 2) {
         secs = "0" + secs;
       }
-
+      if ((mins + ":" + secs) == "00:00") {
+        playBackgroundAudio("gameOver.mp3");
+      }
       return Right(mins + ":" + secs + "^^^" + levelEnergy.toString());
     } catch (e) {
       return Left(GeneralFailure());
