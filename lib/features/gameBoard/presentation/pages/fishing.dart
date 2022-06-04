@@ -20,6 +20,16 @@ class _FishingState extends State<Fishing> {
   int _levelEnergy = 0;
   double angle = 0.0;
   int _seconds = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<FishingBloc>(context).add(EnteringScreenEvent(
+      fishingUsecase: sl.get<FishingUsecase>(),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     var timer = Timer.periodic(const Duration(seconds: 1), (timer) {

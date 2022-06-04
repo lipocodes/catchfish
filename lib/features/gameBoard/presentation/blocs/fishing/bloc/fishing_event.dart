@@ -7,6 +7,11 @@ abstract class FishingEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class EnteringScreenEvent extends FishingEvent {
+  final FishingUsecase fishingUsecase;
+  const EnteringScreenEvent({required this.fishingUsecase});
+}
+
 class GetPulseEvent extends FishingEvent {
   final FishingUsecase fishingUsecase;
   const GetPulseEvent({required this.fishingUsecase});

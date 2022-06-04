@@ -9,6 +9,8 @@ abstract class FishingState extends Equatable {
 
 class FishingInitial extends FishingState {}
 
+class EnteringScreenState extends FishingState {}
+
 class GetPulseState extends FishingState {
   final double pulseStrength;
   final double pulseLength;

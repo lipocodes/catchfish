@@ -1,8 +1,18 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 Widget energy(int levelEnergy) {
   return Row(
     children: [
+      const Text("energy:",
+          style: TextStyle(
+            fontFamily: 'skullsandcrossbones',
+            fontSize: 16.0,
+            color: Colors.red,
+          )).tr(),
+      const SizedBox(
+        width: 10.0,
+      ),
       rectangle(const Color.fromRGBO(44, 87, 89, 1.0), levelEnergy, 0),
       rectangle(const Color.fromRGBO(107, 202, 65, 1.0), levelEnergy, 1),
       rectangle(const Color.fromRGBO(170, 116, 30, 1.0), levelEnergy, 2),

@@ -26,6 +26,10 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         PulseEntity(pulseLength: 1.0, pulseStrength: 1.0, angle: 0.0));
   }
 
+  playEnteringScreenSound() {
+    playBackgroundAudio("goodLuck.mp3");
+  }
+
   Future<Either<Failure, PulseEntity>> getPulse() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
