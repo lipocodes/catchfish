@@ -49,7 +49,7 @@ Widget gui(BuildContext context, double angle) {
         ],
       ),
       GestureDetector(
-        onLongPress: () {
+        onTap: () {
           BlocProvider.of<FishingBloc>(context).add(
               RedButtonPressedEvent(fishingUsecase: sl.get<FishingUsecase>()));
         },

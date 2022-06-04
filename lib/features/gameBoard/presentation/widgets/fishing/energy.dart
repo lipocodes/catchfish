@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-Widget energy() {
-  int currentValue = 4;
+Widget energy(int levelEnergy) {
   return Row(
     children: [
-      rectangle(const Color.fromRGBO(44, 87, 89, 1.0), currentValue, 0),
-      rectangle(const Color.fromRGBO(107, 202, 65, 1.0), currentValue, 1),
-      rectangle(const Color.fromRGBO(170, 116, 30, 1.0), currentValue, 2),
-      rectangle(const Color.fromRGBO(244, 104, 93, 1.0), currentValue, 3),
-      rectangle(const Color.fromRGBO(234, 31, 15, 1.0), currentValue, 4),
+      rectangle(const Color.fromRGBO(44, 87, 89, 1.0), levelEnergy, 0),
+      rectangle(const Color.fromRGBO(107, 202, 65, 1.0), levelEnergy, 1),
+      rectangle(const Color.fromRGBO(170, 116, 30, 1.0), levelEnergy, 2),
+      rectangle(const Color.fromRGBO(244, 104, 93, 1.0), levelEnergy, 3),
+      rectangle(const Color.fromRGBO(234, 31, 15, 1.0), levelEnergy, 4),
     ],
   );
 }

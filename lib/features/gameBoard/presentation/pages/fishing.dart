@@ -17,11 +17,12 @@ class Fishing extends StatefulWidget {
 
 class _FishingState extends State<Fishing> {
   String _currentTime = "05:00";
+  int _levelEnergy = 0;
   double angle = 0.0;
   int _seconds = 0;
   @override
   Widget build(BuildContext context) {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
           fishingUsecase: sl.get<FishingUsecase>(),
           currentCountdownTime: _currentTime));
@@ -46,12 +47,17 @@ class _FishingState extends State<Fishing> {
                   BlocProvider.of<FishingBloc>(context)
                       .add(AfterTimerTickEvent());
 
-                  _currentTime = state.newCountdownTime;
-
+                  _currentTime = state.newCountdownTime
+                      .substring(0, state.newCountdownTime.indexOf("^^^"));
+                  if (_currentTime == "00:00") {
+                    timer.cancel();
+                  }
+                  _levelEnergy = int.parse(state.newCountdownTime
+                      .substring(state.newCountdownTime.indexOf("^^^") + 3));
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      energy(),
+                      energy(_levelEnergy),
                       countdown(context, _currentTime),
                     ],
                   );
@@ -59,7 +65,7 @@ class _FishingState extends State<Fishing> {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      energy(),
+                      energy(_levelEnergy),
                       countdown(context, _currentTime),
                     ],
                   );

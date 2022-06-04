@@ -71,6 +71,8 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     try {
       int minutes = int.parse(currentCountdownTime.substring(0, 2));
       int seconds = int.parse(currentCountdownTime.substring(3));
+      int levelEnergy = minutes;
+
       if (seconds > 0) {
         seconds -= 1;
       } else {
@@ -86,7 +88,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         secs = "0" + secs;
       }
 
-      return Right(mins + ":" + secs);
+      return Right(mins + ":" + secs + "^^^" + levelEnergy.toString());
     } catch (e) {
       return Left(GeneralFailure());
     }
