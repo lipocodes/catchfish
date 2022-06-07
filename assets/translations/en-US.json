@@ -60,7 +60,6 @@
     "navigation_content": "Drive your boat to destination!",
     "catch": "Catch!",
     "energy:": "Energy:",
-
     "cod": "Cod",
     "barracuda": "Barracuda",
     "halibut": "Halibut",
@@ -82,5 +81,7 @@
     "mackerel": "Mackerel",
     "sardin": "Sardin",
     "red_mullet": "Red Mullet",
-    "carp": "Carp"
+    "carp": "Carp",
+    "catch:": "Catch: ",
+    "grams": "grams"
 }

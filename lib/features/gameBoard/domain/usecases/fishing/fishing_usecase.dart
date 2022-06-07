@@ -1,9 +1,11 @@
 // usecase class: an extending class to the abstract class
 import 'dart:math';
 
+import 'package:catchfish/core/consts/fish.dart';
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
@@ -63,8 +65,9 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     }
   }
 
-  Future<Either<Failure, bool>> isFishCaught() async {
+  Future<Either<Failure, CaughtFishEntity>> isFishCaught() async {
     int myLevel = 1;
+    List<String> lotteryPool = [];
     try {
       bool isFishCaught = _isItCatchingTime;
       if (isFishCaught) {
@@ -72,11 +75,33 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         final res = await sl.get<FishingRepositoryImpl>().getLevelPref();
 
         res.fold((left) => Left(GeneralFailure()), (right) => myLevel = right);
-        print("aaaaaaaaaaaaaaaaaaaaaa=" + myLevel.toString());
+        //now we have myLevel pref.  We need to randomize the caught fish type
+
+        //principle: add once fishCategoryA, twice fishCategoryB, myLevel times fishCategoryC
+        print("aaaaaaaaaaaaaaaaaaaaaaa=" + myLevel.toString());
+        for (int a = 0; a < fishCategoryA.length; a++) {}
+        for (int a = 0; a < fishCategoryB.length; a++) {
+          lotteryPool.add(fishCategoryB[a]);
+          lotteryPool.add(fishCategoryB[a]);
+        }
+        int neededIterations = 13 - myLevel;
+        for (int a = 0; a < fishCategoryC.length; a++) {
+          for (int b = 0; b < neededIterations; b++) {
+            lotteryPool.add(fishCategoryC[a]);
+          }
+        }
+        String caughtFishDetails =
+            lotteryPool[Random().nextInt(lotteryPool.length) - 1];
+
+        sl.get<CaughtFishEntity>().caughtFishDetails = caughtFishDetails;
+        sl.get<CaughtFishEntity>().isFishCaught = true;
       } else {
         playBackgroundAudio("missedFish.mp3");
       }
-      return Right(isFishCaught);
+
+      return Right(
+        sl.get<CaughtFishEntity>(),
+      );
     } catch (e) {
       return Left(GeneralFailure());
     }

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:equatable/equatable.dart';
@@ -36,7 +37,9 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         res.fold(
           (failure) => emit(const ErrorRedButtonPressedState(
               message: "Error in dealing wuth red button press!")),
-          (success) => emit(RedButtonPressedState(isFishCaught: success)),
+          (success) => emit(RedButtonPressedState(
+              isFishCaught: sl.get<CaughtFishEntity>().isFishCaught,
+              caughtFishDetails: sl.get<CaughtFishEntity>().caughtFishDetails)),
         );
       } else if (event is TimerTickEvent) {
         String currentCountdownTime = event.currentCountdownTime;

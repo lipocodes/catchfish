@@ -30,7 +30,9 @@ class ErrorGetPulseState extends FishingState {
 
 class RedButtonPressedState extends FishingState {
   final bool isFishCaught;
-  const RedButtonPressedState({required this.isFishCaught});
+  final String caughtFishDetails;
+  const RedButtonPressedState(
+      {required this.isFishCaught, required this.caughtFishDetails});
 }
 
 class ErrorRedButtonPressedState extends FishingState {
