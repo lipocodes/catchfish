@@ -1,4 +1,5 @@
 // usecase class: an extending class to the abstract class
+import 'dart:io';
 import 'dart:math';
 
 import 'package:catchfish/core/consts/fish.dart';
@@ -31,7 +32,9 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   }
 
   playEnteringScreenSound() {
-    playBackgroundAudio("goodLuck.mp3");
+    if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+      playBackgroundAudio("goodLuck.mp3");
+    }
   }
 
   Future<Either<Failure, PulseEntity>> getPulse() async {
@@ -49,12 +52,16 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         Future.delayed(Duration(milliseconds: milli), () {
           _isItCatchingTime = false;
         });
-        playBackgroundAudio("strongSignal.mp3");
+        if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+          playBackgroundAudio("strongSignal.mp3");
+        }
       } else {
         pulseLength = random / 10;
         double possibleAngleRange = (2.7925268 + 2.44346095);
         angle = (pulseLength * possibleAngleRange) - 2.7925268;
-        playBackgroundAudio("weakSignal.mp3");
+        if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+          playBackgroundAudio("weakSignal.mp3");
+        }
       }
       double pulseStrength = 1.0;
       PulseEntity pulseEntity = PulseEntity(
@@ -71,14 +78,16 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     try {
       bool isFishCaught = _isItCatchingTime;
       if (isFishCaught) {
-        playBackgroundAudio("catchFish.mp3");
+        if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+          playBackgroundAudio("catchFish.mp3");
+        }
+
         final res = await sl.get<FishingRepositoryImpl>().getLevelPref();
 
         res.fold((left) => Left(GeneralFailure()), (right) => myLevel = right);
         //now we have myLevel pref.  We need to randomize the caught fish type
 
         //principle: add once fishCategoryA, twice fishCategoryB, myLevel times fishCategoryC
-        print("aaaaaaaaaaaaaaaaaaaaaaa=" + myLevel.toString());
         for (int a = 0; a < fishCategoryA.length; a++) {}
         for (int a = 0; a < fishCategoryB.length; a++) {
           lotteryPool.add(fishCategoryB[a]);
@@ -92,11 +101,11 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         }
         String caughtFishDetails =
             lotteryPool[Random().nextInt(lotteryPool.length) - 1];
-
+        print("aaaaaaaaaaaaaaaaaaaaaaa=" + caughtFishDetails);
         sl.get<CaughtFishEntity>().caughtFishDetails = caughtFishDetails;
         sl.get<CaughtFishEntity>().isFishCaught = true;
       } else {
-        playBackgroundAudio("missedFish.mp3");
+        //playBackgroundAudio("missedFish.mp3");
       }
 
       return Right(

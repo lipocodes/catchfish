@@ -8,6 +8,8 @@ import 'package:audioplayers/audioplayers.dart' as _i3;
 import 'package:bloc/bloc.dart' as _i6;
 import 'package:catchfish/core/errors/failures.dart' as _i8;
 import 'package:catchfish/core/usecases/usecase.dart' as _i10;
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart'
+    as _i11;
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart'
     as _i9;
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart'
@@ -134,11 +136,12 @@ class MockFishingUsecase extends _i1.Mock implements _i7.FishingUsecase {
               _FakeEither_3<_i8.Failure, _i9.PulseEntity>())) as _i5
           .Future<_i4.Either<_i8.Failure, _i9.PulseEntity>>);
   @override
-  _i5.Future<_i4.Either<_i8.Failure, bool>> isFishCaught() =>
+  _i5.Future<_i4.Either<_i8.Failure, _i11.CaughtFishEntity>> isFishCaught() =>
       (super.noSuchMethod(Invocation.method(#isFishCaught, []),
-              returnValue: Future<_i4.Either<_i8.Failure, bool>>.value(
-                  _FakeEither_3<_i8.Failure, bool>()))
-          as _i5.Future<_i4.Either<_i8.Failure, bool>>);
+              returnValue:
+                  Future<_i4.Either<_i8.Failure, _i11.CaughtFishEntity>>.value(
+                      _FakeEither_3<_i8.Failure, _i11.CaughtFishEntity>()))
+          as _i5.Future<_i4.Either<_i8.Failure, _i11.CaughtFishEntity>>);
   @override
   _i5.Future<_i4.Either<_i8.Failure, String>> calculateNewCoundownTime(
           _i7.FishingUsecase? fishingUsecase, String? currentCountdownTime) =>

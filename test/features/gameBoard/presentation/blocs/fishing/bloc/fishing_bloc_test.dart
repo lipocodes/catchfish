@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/core/errors/failures.dart';
@@ -20,16 +21,16 @@ import 'package:catchfish/injection_container.dart' as di;
 void main() {
   late MockFishingUsecase mockFishingUsecase;
   late FishingBloc fishingBloc;
-  setUp(() async {
-    await di.init();
-    fishingBloc = sl.get<FishingBloc>();
-    mockFishingUsecase = MockFishingUsecase();
-    sl.registerLazySingleton<MockFishingUsecase>(() => MockFishingUsecase());
-  });
+  late CaughtFishEntity caughtFishEntity;
 
   tearDown(() {});
 
   group("Testing BLOC FishingBloc", () {
+    di.init();
+    fishingBloc = sl.get<FishingBloc>();
+    caughtFishEntity = sl.get<CaughtFishEntity>();
+    mockFishingUsecase = MockFishingUsecase();
+    sl.registerLazySingleton<MockFishingUsecase>(() => MockFishingUsecase());
     test('testing GetPulseEvent', () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int myLevel = prefs.getInt("myLevel") ?? 1;
@@ -74,11 +75,15 @@ void main() {
 
     test('testing RedButtonPressedEvent', () {
       when(mockFishingUsecase.isFishCaught())
-          .thenAnswer((_) async => const Right(true));
+          .thenAnswer((_) async => Right(caughtFishEntity));
       fishingBloc
           .add(RedButtonPressedEvent(fishingUsecase: mockFishingUsecase));
-      expectLater(fishingBloc.stream,
-          emitsInOrder([const RedButtonPressedState(isFishCaught: true)]));
+      expectLater(
+          fishingBloc.stream,
+          emitsInOrder([
+            const RedButtonPressedState(
+                isFishCaught: true, caughtFishDetails: "blad")
+          ]));
     });
     ////////////////////////////////////////////////////////////////////////
     test('testing CountdownTickEvent', () {
@@ -92,7 +97,6 @@ void main() {
       expectLater(fishingBloc.stream,
           emitsInOrder([const TimerTickState(newCountdownTime: "04:59")]));
     });
-
-    //////////////////////////////////////////////////////////////////////
   });
 }
+///////////////////////////////////////////////////////////////////////////////////
