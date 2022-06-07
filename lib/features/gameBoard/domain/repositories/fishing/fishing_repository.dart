@@ -4,5 +4,5 @@ import 'package:dartz/dartz.dart';
 
 //shouyld be tested by Mockito
 abstract class FishingRepository {
-  Future<Either<Failure, PulseEntity>> getPulse();
+  Future<Either<Failure, int>> getLevelPref();
 }

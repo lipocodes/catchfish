@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
+import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
+import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -62,10 +64,15 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   }
 
   Future<Either<Failure, bool>> isFishCaught() async {
+    int myLevel = 1;
     try {
       bool isFishCaught = _isItCatchingTime;
       if (isFishCaught) {
         playBackgroundAudio("catchFish.mp3");
+        final res = await sl.get<FishingRepositoryImpl>().getLevelPref();
+
+        res.fold((left) => Left(GeneralFailure()), (right) => myLevel = right);
+        print("aaaaaaaaaaaaaaaaaaaaaa=" + myLevel.toString());
       } else {
         playBackgroundAudio("missedFish.mp3");
       }
