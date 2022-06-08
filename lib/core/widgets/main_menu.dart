@@ -1,5 +1,6 @@
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/personal_shop.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/settings/presentation/pages/contact.dart';
 import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
@@ -109,6 +110,36 @@ Widget mainMenu(BuildContext context) {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const FishingShop()),
+              );
+            },
+          ),
+          const Divider(
+            color: Colors.black38,
+            thickness: 5,
+          ),
+          ListTile(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            selected: true,
+            selectedTileColor: Colors.grey[300],
+            tileColor: Colors.blue,
+            leading: const Icon(
+              Icons.person,
+              color: Colors.greenAccent,
+            ),
+            title: Text('personal_shop'.tr(),
+                style: const TextStyle(
+                  fontSize: 24.0,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'skullsandcrossbones',
+                )),
+            onTap: () {
+              Navigator.pop(context);
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PersonalShop()),
               );
             },
           ),

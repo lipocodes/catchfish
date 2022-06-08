@@ -8,6 +8,7 @@ import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/personal_shop.dart';
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
@@ -212,7 +213,7 @@ class _MyAppState extends State<MyApp> {
                 switch (settings.name) {
                   case '/':
                     return PageTransition(
-                      child: const /*Splash()*/ Fishing(),
+                      child: const Splash() /*Fishing()*/,
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 1000),
@@ -241,6 +242,13 @@ class _MyAppState extends State<MyApp> {
                   case '/fishing_shop':
                     return PageTransition(
                       child: const FishingShop(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 1000),
+                    );
+                  case '/personal_shop':
+                    return PageTransition(
+                      child: const PersonalShop(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 1000),
