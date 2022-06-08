@@ -15,4 +15,35 @@ class FishingRepositoryImpl implements FishingRepository {
       return res;
     }
   }
+
+  Future<Either<Failure, List>> getPersonalShopPref() async {
+    final res = await sl.get<LocalDatasourcePrefs>().getPersonalShopPref();
+    if (res.isLeft()) {
+      return Left(GeneralFailure());
+    } else {
+      return res;
+    }
+  }
+
+  Future<Either<Failure, bool>> addFishPersonalShop(String fishDetails) async {
+    final res =
+        await sl.get<LocalDatasourcePrefs>().addFishPersonalShop(fishDetails);
+    if (res.isRight()) {
+      return const Right(true);
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> removeFishPersonalShop(
+      String fishDetails) async {
+    final res = await sl
+        .get<LocalDatasourcePrefs>()
+        .removeFishPersonalShop(fishDetails);
+    if (res.isRight()) {
+      return const Right(true);
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
 }

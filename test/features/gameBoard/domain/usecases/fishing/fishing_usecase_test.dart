@@ -1,4 +1,5 @@
 import 'package:catchfish/core/errors/failures.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
@@ -14,17 +15,23 @@ void main() {
   tearDown(() {});
 
   group("Testing FishingUsecase", () {
-    setUp(() async {
-      await di.init();
-      fishingUsecase = sl.get<FishingUsecase>();
-      currentCountdownTime = "05:00";
-    });
+    di.init();
+    fishingUsecase = sl.get<FishingUsecase>();
+    currentCountdownTime = "05:00";
 
     test("testing calculateNewCoundownTime()", () async {
       final res = await fishingUsecase.calculateNewCoundownTime(
           fishingUsecase, currentCountdownTime);
       expectLater(res, const Right("04:59^^^5"));
     });
+  });
+
+  test('testing GetPulse()', () async {
+    /*final res = await fishingUsecase.getPulse();
+    expectLater(
+        res,
+        const Right(
+            PulseEntity(pulseStrength: 1.0, pulseLength: 0.3, angle: 0)));*/
   });
 
   test('testing isFishCaught(', () async {

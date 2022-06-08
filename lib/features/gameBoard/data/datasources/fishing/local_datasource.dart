@@ -15,4 +15,39 @@ class LocalDatasourcePrefs implements LocalDatasource {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<Failure, List>> getPersonalShopPref() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final res = prefs.getStringList("personalShop") ?? [];
+      return Right(res);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> addFishPersonalShop(String detailsFish) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final res = prefs.getStringList("personalShop") ?? [];
+      res.add(detailsFish);
+      prefs.setStringList("personalShop", res);
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> removeFishPersonalShop(
+      String detailsFish) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final res = prefs.getStringList("personalShop") ?? [];
+      res.remove(detailsFish);
+      prefs.setStringList("personalShop", res);
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }
