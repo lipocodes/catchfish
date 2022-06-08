@@ -101,11 +101,13 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         }
         String caughtFishDetails =
             lotteryPool[Random().nextInt(lotteryPool.length) - 1];
-        print("aaaaaaaaaaaaaaaaaaaaaaa=" + caughtFishDetails);
+        //add the new fish to the pref holding the personal shop inventory
         sl.get<CaughtFishEntity>().caughtFishDetails = caughtFishDetails;
         sl.get<CaughtFishEntity>().isFishCaught = true;
       } else {
-        //playBackgroundAudio("missedFish.mp3");
+        if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+          playBackgroundAudio("missedFish.mp3");
+        }
       }
 
       return Right(
@@ -142,6 +144,24 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       }
       return Right(mins + ":" + secs + "^^^" + levelEnergy.toString());
     } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, List<String>>> populatePersonalShop() async {
+    final res = await sl.get<FishingRepositoryImpl>().getPersonalShopPref();
+    List list1 = [];
+    List<String> list2 = [];
+    res.fold(
+      (failure) => GeneralFailure(),
+      (success) => list1 = success,
+    );
+    if (res.isRight()) {
+      for (int a = 0; a < list1.length; a++) {
+        list2.add(list1[a].toString());
+      }
+      return Right(list2);
+    } else {
       return Left(GeneralFailure());
     }
   }

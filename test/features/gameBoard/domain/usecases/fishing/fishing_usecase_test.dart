@@ -35,6 +35,12 @@ void main() {
   });
 
   test('testing isFishCaught(', () async {
-    await fishingUsecase.isFishCaught();
+    final res = await fishingUsecase.isFishCaught();
+  });
+
+  test('testing populatePersonalShop(', () async {
+    Either<Failure, List<String>> res =
+        await fishingUsecase.populatePersonalShop();
+    //expectLater(res, const Right(["Fat Fish^^^100^^^1000^^^fat_fish"]));
   });
 }
