@@ -55,12 +55,8 @@ Widget gui(BuildContext context, List<String> listItems) {
       children: List.generate(listItems.length, (index) {
         return GestureDetector(
           onTap: () {
-            /*popup(
-                  listItems[index].id,
-                  listItems[index].image,
-                  listItems[index].title,
-                  listItems[index].subtitle,
-                  listItems[index].price);*/
+            popup(context, title[index], image[index], price[index],
+                weight[index]);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -116,5 +112,80 @@ Widget gui(BuildContext context, List<String> listItems) {
         );
       }).toList(),
     ),
+  );
+}
+
+popup(BuildContext context, String title, String image, String price,
+    String weight) async {
+  return await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.blue,
+                  fontFamily: 'skullsandcrossbones',
+                )).tr(),
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        content: SizedBox(
+          height: 250.0,
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: Image.asset(
+                  'assets/images/gameBoard/fish/' + image,
+                  width: 160,
+                  height: 160,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontFamily: 'skullsandcrossbones',
+                  fontSize: 30.0,
+                  color: Colors.redAccent,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "price".tr() + price.toString(),
+                    style: const TextStyle(
+                      //fontFamily: 'skullsandcrossbones',
+                      fontSize: 24.0,
+                      color: Colors.brown,
+                    ),
+                  ),
+                  Text(
+                    "weight".tr() + weight.toString(),
+                    style: const TextStyle(
+                      //fontFamily: 'skullsandcrossbones',
+                      fontSize: 24.0,
+                      color: Colors.brown,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
   );
 }
