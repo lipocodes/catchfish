@@ -1,4 +1,3 @@
-import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/personalShop/shop_items.dart';
@@ -28,7 +27,10 @@ class _PersonalShopState extends State<PersonalShop> {
     return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.transparent,
-            extendBodyBehindAppBar: true,
+            //extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+            ),
             body: shopItems(context)));
   }
 }
