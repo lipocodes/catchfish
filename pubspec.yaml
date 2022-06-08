@@ -119,6 +119,7 @@ flutter:
     - assets/sounds/tokens/
     - assets/images/gameBoard/
     - assets/sounds/gameBoard/
+    - assets/images/gameBoard/fish/
 
     
   #   - images/a_dot_burr.jpeg

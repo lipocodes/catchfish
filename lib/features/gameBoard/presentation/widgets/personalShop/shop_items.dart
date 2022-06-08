@@ -1,0 +1,120 @@
+import 'package:catchfish/features/fishingShop/domain/entities/retreive_shop_items_entity.dart';
+import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Widget shopItems(BuildContext context) {
+  List<String> listItems = [];
+  return BlocBuilder<FishingBloc, FishingState>(
+    builder: (context, state) {
+      if (state is LoadingPersonalShopState) {
+        listItems = state.personalShopInventory;
+        listItems = [
+          "Sargo^^^10^^^100^^^sargo.jpg",
+          "Sardin^^^15^^^150^^^sardin.jpg",
+          "Mullet^^^24^^^500^^^mullet.jpg",
+        ];
+        return gui(context, listItems);
+      } else {
+        return gui(context, listItems);
+      }
+    },
+  );
+}
+
+Widget gui(BuildContext context, List<String> listItems) {
+  List<String> title = [];
+  List<String> price = [];
+  List<String> weight = [];
+  List<String> image = [];
+  for (int a = 0; a < listItems.length; a++) {
+    List<String> temp = listItems[a].split("^^^");
+    title.add(temp[0]);
+    price.add(temp[1]);
+    weight.add(temp[2]);
+    image.add(temp[3]);
+  }
+  return Container(
+    height: MediaQuery.of(context).size.height,
+    decoration: const BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage(
+          //tenor.com
+          'assets/images/fishingShop/bubbles.gif',
+        ),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: GridView.count(
+      padding: EdgeInsets.zero,
+      crossAxisCount: 1,
+      childAspectRatio: 2,
+      children: List.generate(listItems.length, (index) {
+        return GestureDetector(
+          onTap: () {
+            /*popup(
+                  listItems[index].id,
+                  listItems[index].image,
+                  listItems[index].title,
+                  listItems[index].subtitle,
+                  listItems[index].price);*/
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  // Red border with the width is equal to 5
+                  border: Border.all(width: 3, color: Colors.grey)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(400),
+                    child: Image.asset(
+                      'assets/images/gameBoard/fish/' + image[index],
+                      width: 64,
+                      height: 64,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Text(title[index],
+                      style: const TextStyle(
+                        fontSize: 24.0,
+                        color: Colors.yellow,
+                        fontFamily: 'skullsandcrossbones',
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "weight".tr() + weight[index],
+                        style: const TextStyle(
+                          fontSize: 24.0,
+                          color: Colors.orange,
+                          fontFamily: 'skullsandcrossbones',
+                        ),
+                      ),
+                      Text(
+                        "price".tr() + price[index],
+                        style: const TextStyle(
+                          fontSize: 24.0,
+                          color: Colors.orange,
+                          fontFamily: 'skullsandcrossbones',
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    ),
+  );
+}
