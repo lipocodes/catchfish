@@ -150,6 +150,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
   Future<Either<Failure, List<String>>> populatePersonalShop() async {
     final res = await sl.get<FishingRepositoryImpl>().getPersonalShopPref();
+
     List list1 = [];
     List<String> list2 = [];
     res.fold(

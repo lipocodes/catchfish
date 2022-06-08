@@ -12,11 +12,6 @@ Widget shopItems(BuildContext context) {
     builder: (context, state) {
       if (state is LoadingPersonalShopState) {
         listItems = state.personalShopInventory;
-        listItems = [
-          "Sargo^^^10^^^100^^^sargo.jpg",
-          "Sardin^^^15^^^150^^^sardin.jpg",
-          "Mullet^^^24^^^500^^^mullet.jpg",
-        ];
         return gui(context, listItems);
       } else {
         return gui(context, listItems);
@@ -85,7 +80,7 @@ Widget gui(BuildContext context, List<String> listItems) {
                         fontFamily: 'skullsandcrossbones',
                       )),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "weight".tr() + weight[index],
@@ -167,7 +162,7 @@ popup(BuildContext context, String title, String image, String price,
                   Text(
                     "price".tr() + price.toString(),
                     style: const TextStyle(
-                      //fontFamily: 'skullsandcrossbones',
+                      fontFamily: 'skullsandcrossbones',
                       fontSize: 24.0,
                       color: Colors.brown,
                     ),
@@ -175,7 +170,7 @@ popup(BuildContext context, String title, String image, String price,
                   Text(
                     "weight".tr() + weight.toString(),
                     style: const TextStyle(
-                      //fontFamily: 'skullsandcrossbones',
+                      fontFamily: 'skullsandcrossbones',
                       fontSize: 24.0,
                       color: Colors.brown,
                     ),

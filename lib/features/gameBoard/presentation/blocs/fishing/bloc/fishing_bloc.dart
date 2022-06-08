@@ -57,6 +57,7 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
       } else if (event is LoadingPersonalShopEvent) {
         _fishingUsecase = event.fishingUsecase;
         final res = await _fishingUsecase.populatePersonalShop();
+
         res.fold(
           (failure) => emit(const ErrorRedButtonPressedState(
               message: "Error in populating Personal Shop!")),
