@@ -97,6 +97,18 @@ void main() {
       expectLater(fishingBloc.stream,
           emitsInOrder([const TimerTickState(newCountdownTime: "04:59")]));
     });
+    ///////////////////////////////////////////////////////////////////////////
+    test('testing LoadingPersonalShopEvent', () {
+      when(mockFishingUsecase.populatePersonalShop())
+          .thenAnswer((_) async => const Right([]));
+      fishingBloc.add(LoadingPersonalShopEvent(
+        fishingUsecase: mockFishingUsecase,
+      ));
+      expectLater(
+          fishingBloc.stream,
+          emitsInOrder(
+              [const LoadingPersonalShopState(personalShopInventory: [])]));
+    });
   });
 }
 ///////////////////////////////////////////////////////////////////////////////////

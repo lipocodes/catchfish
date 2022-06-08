@@ -33,3 +33,8 @@ class TimerTickEvent extends FishingEvent {
 }
 
 class AfterTimerTickEvent extends FishingEvent {}
+
+class LoadingPersonalShopEvent extends FishingEvent {
+  final FishingUsecase fishingUsecase;
+  const LoadingPersonalShopEvent({required this.fishingUsecase});
+}

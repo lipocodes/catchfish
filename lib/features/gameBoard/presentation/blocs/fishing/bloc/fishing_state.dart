@@ -47,3 +47,8 @@ class TimerTickState extends FishingState {
 }
 
 class AfterTimerTickState extends FishingState {}
+
+class LoadingPersonalShopState extends FishingState {
+  final List<String> personalShopInventory;
+  const LoadingPersonalShopState({required this.personalShopInventory});
+}
