@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:math';
+
+import 'package:catchfish/core/notifications/local_notification_service.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/core/widgets/main_menu.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
@@ -29,6 +31,8 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   bool isAfterRotating = false;
   late SharedPreferences _prefs;
   bool _usedRotationSinceEneteredScreen = false;
+
+  get flutterLocalNotificationsPlugin => null;
 
   @override
   void initState() {
@@ -200,7 +204,16 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             ).tr(),
           ),
           buttonRotate(context, state),
-          arrowBottom(),
+          GestureDetector(
+              onTap: () async {
+                await flutterLocalNotificationsPlugin.show(
+                    12345,
+                    "A Notification From My Application",
+                    "This notification was sent using Flutter Local Notifcations Package",
+                    NotificationService().platformChannelSpecifics,
+                    payload: 'data');
+              },
+              child: arrowBottom()),
           compass(context, _angle),
           if (state is EndRotateCompassState ||
               (state is EnteringLobbyState &&

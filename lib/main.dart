@@ -126,34 +126,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String token = "";
 
-  initLocalNotification() async {
-    AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('steering');
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid, iOS: null, macOS: null);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (v) {
-      print("xxxxxxxxxxxxxxxxxxxxx");
-    });
-    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-        'main_channel', "Main_channel",
-        importance: Importance.max, priority: Priority.max);
-    NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        12345,
-        "A Notification From My Application",
-        "This notification was sent using Flutter Local Notifcations Package",
-        platformChannelSpecifics,
-        payload: 'data');
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    initLocalNotification();
+    NotificationService().initLocalNotification();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
