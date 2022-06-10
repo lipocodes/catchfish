@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:catchfish/core/consts/fish.dart';
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
@@ -102,6 +103,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         String caughtFishDetails =
             lotteryPool[Random().nextInt(lotteryPool.length) - 1];
         //add the new fish to the pref holding the personal shop inventory
+        sl.get<LocalDatasourcePrefs>().addFishPersonalShop(caughtFishDetails);
         sl.get<CaughtFishEntity>().caughtFishDetails = caughtFishDetails;
         sl.get<CaughtFishEntity>().isFishCaught = true;
       } else {

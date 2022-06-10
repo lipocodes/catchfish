@@ -1,3 +1,4 @@
+import 'package:catchfish/core/notifications/local_notification_service.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
@@ -81,8 +82,13 @@ Future<void> main() async {
   await di.init();
 
   WidgetsFlutterBinding.ensureInitialized();
+
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
+
+  //singleton of Local Notification
+  NotificationService();
+
   //deals with messages coming in when this app in in the background
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   //deals with messages coming in when app is in foreground
@@ -120,10 +126,34 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String token = "";
 
+  initLocalNotification() async {
+    AndroidInitializationSettings initializationSettingsAndroid =
+        const AndroidInitializationSettings('steering');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid, iOS: null, macOS: null);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: (v) {
+      print("xxxxxxxxxxxxxxxxxxxxx");
+    });
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+        'main_channel', "Main_channel",
+        importance: Importance.max, priority: Priority.max);
+    NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        12345,
+        "A Notification From My Application",
+        "This notification was sent using Flutter Local Notifcations Package",
+        platformChannelSpecifics,
+        payload: 'data');
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    initLocalNotification();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
