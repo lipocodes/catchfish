@@ -81,7 +81,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 ////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 //Background ServiceWorker: runs every 15 minutes
-Future _showNotificationWithDefaultSound(flip) async {
+Future _showNotificationWithDefaultSound(
+    flutterLocalNotificationsPlugin) async {
   // Show a notification after every 15 minute with the first
   // appearance happening a minute after invoking the method
   var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
@@ -91,12 +92,12 @@ Future _showNotificationWithDefaultSound(flip) async {
   // initialise channel platform for both Android and iOS device.
   var platformChannelSpecifics =
       NotificationDetails(android: androidPlatformChannelSpecifics);
-  await flip.show(
-      0,
-      'GeeksforGeeks',
-      'Your are one step away to connect with GeeksforGeeks',
+  await flutterLocalNotificationsPlugin.show(
+      12345,
+      "A Notification From My Application",
+      "This notification was sent using Flutter Local Notifcations Package",
       platformChannelSpecifics,
-      payload: 'Default_Sound');
+      payload: 'data');
 }
 
 void callbackDispatcher() {
@@ -104,12 +105,10 @@ void callbackDispatcher() {
     // initialise the plugin of flutterlocalnotifications.
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
-    var android = const AndroidInitializationSettings('@mipmap/steering');
+    var android = const AndroidInitializationSettings('steering');
     var settings = InitializationSettings(android: android);
     flutterLocalNotificationsPlugin.initialize(settings,
-        onSelectNotification: (v) {
-      print("xxxxxxxxxxxxxxxxxxxxx");
-    });
+        onSelectNotification: (v) {});
     _showNotificationWithDefaultSound(flutterLocalNotificationsPlugin);
     return Future.value(true);
     //return Future.error("error");
@@ -123,10 +122,12 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   //register WorkerManager for running background code every 15 minutes
-  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  Workmanager().initialize(
+    callbackDispatcher,
+  );
   Workmanager().registerPeriodicTask(
     "task1",
-    "scheduleNotification",
+    "checkNeedShowEvent",
   );
 
   await EasyLocalization.ensureInitialized();
