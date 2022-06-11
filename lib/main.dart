@@ -1,4 +1,3 @@
-import 'package:catchfish/core/notifications/local_notification_service.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
@@ -37,6 +36,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as UI;
 import 'package:catchfish/core/consts/marinas.dart';
+import 'package:workmanager/workmanager.dart';
 import 'injection_container.dart' as di;
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -78,16 +78,59 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
+////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+//Background ServiceWorker: runs every 15 minutes
+Future _showNotificationWithDefaultSound(flip) async {
+  // Show a notification after every 15 minute with the first
+  // appearance happening a minute after invoking the method
+  var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+      'main_channel', "Main_channel",
+      importance: Importance.max, priority: Priority.max);
+
+  // initialise channel platform for both Android and iOS device.
+  var platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
+  await flip.show(
+      0,
+      'GeeksforGeeks',
+      'Your are one step away to connect with GeeksforGeeks',
+      platformChannelSpecifics,
+      payload: 'Default_Sound');
+}
+
+void callbackDispatcher() {
+  Workmanager().executeTask((taskName, inputData) {
+    // initialise the plugin of flutterlocalnotifications.
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    var android = const AndroidInitializationSettings('@mipmap/steering');
+    var settings = InitializationSettings(android: android);
+    flutterLocalNotificationsPlugin.initialize(settings,
+        onSelectNotification: (v) {
+      print("xxxxxxxxxxxxxxxxxxxxx");
+    });
+    _showNotificationWithDefaultSound(flutterLocalNotificationsPlugin);
+    return Future.value(true);
+    //return Future.error("error");
+  });
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 Future<void> main() async {
   await di.init();
 
   WidgetsFlutterBinding.ensureInitialized();
+  //register WorkerManager for running background code every 15 minutes
+  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  Workmanager().registerPeriodicTask(
+    "task1",
+    "scheduleNotification",
+  );
 
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
-
-  //singleton of Local Notification
-  NotificationService();
 
   //deals with messages coming in when this app in in the background
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -130,7 +173,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    NotificationService().initLocalNotification();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;

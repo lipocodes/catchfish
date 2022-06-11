@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
-import 'package:catchfish/core/notifications/local_notification_service.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/core/widgets/main_menu.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
@@ -14,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 
 class Lobby extends StatefulWidget {
   const Lobby({Key? key}) : super(key: key);
@@ -204,16 +203,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             ).tr(),
           ),
           buttonRotate(context, state),
-          GestureDetector(
-              onTap: () async {
-                await flutterLocalNotificationsPlugin.show(
-                    12345,
-                    "A Notification From My Application",
-                    "This notification was sent using Flutter Local Notifcations Package",
-                    NotificationService().platformChannelSpecifics,
-                    payload: 'data');
-              },
-              child: arrowBottom()),
+          arrowBottom(),
           compass(context, _angle),
           if (state is EndRotateCompassState ||
               (state is EnteringLobbyState &&
