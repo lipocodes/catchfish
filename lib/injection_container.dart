@@ -1,3 +1,4 @@
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
@@ -18,6 +19,7 @@ Future<bool> init() async {
   sl.registerLazySingleton<FishingUsecase>(() => FishingUsecase());
   //local datasource
   sl.registerLazySingleton<LocalDatasourcePrefs>(() => LocalDatasourcePrefs());
+  sl.registerLazySingleton<RemoteDatasource>(() => RemoteDatasource());
   //repository Impl
   sl.registerLazySingleton<FishingRepositoryImpl>(
       () => FishingRepositoryImpl());
