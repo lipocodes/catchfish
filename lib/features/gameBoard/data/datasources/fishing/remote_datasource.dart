@@ -1,11 +1,64 @@
 import 'package:catchfish/core/errors/failures.dart';
+import 'package:catchfish/features/gameBoard/data/models/fishing/new_player_model.dart';
+import 'package:catchfish/injection_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class RemoteDatasource {
-  // returns all groups that have < 10 players
+  Future<Either<Failure, bool>> deleteGroup(String groupName) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("groups")
+          .where('groupName', isEqualTo: groupName)
+          .get();
+      await FirebaseFirestore.instance
+          .collection("groups")
+          .doc(querySnapshot.docs[0].id)
+          .delete();
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  //warning: I haven't has a new player yet
+  Future<Either<Failure, bool>> addPlayerToGroup(String groupName) async {
+    try {
+      NewPlayerModel newPlayerModel = sl.get<NewPlayerModel>();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("groups")
+          .where('groupName', isEqualTo: groupName)
+          .get();
+
+      List listPlayers = querySnapshot.docs[0]['players'];
+
+      //listPlayers.add()
+      FirebaseFirestore.instance
+          .collection('groups')
+          .doc(querySnapshot.docs[0].id)
+          .update({"players": FieldValue.arrayUnion(listPlayers)});
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, List>> getPlayersForSelectedGroup(
+      String selectedGroupName) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("groups")
+          .where('groupName', isEqualTo: selectedGroupName)
+          .get();
+      return Right(querySnapshot.docs[0]['players']);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  // returns all group names that have < 10 players
   Future<Either<Failure, List>> getExistingGroups() async {
     try {
       List listGroups = [];
