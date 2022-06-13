@@ -7,6 +7,16 @@ import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 
 class FishingRepositoryImpl implements FishingRepository {
+  Future<Either<Failure, bool>> updateLevel(int newLevel) async {
+    final res1 = await sl.get<LocalDatasourcePrefs>().updateLevelPref(newLevel);
+    final res2 = await sl.get<RemoteDatasource>().updateLevelPlayer(newLevel);
+    if (res1.isRight() && res2.isRight()) {
+      return const Right(true);
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
+
   @override
   Future<Either<Failure, int>> getLevelPref() async {
     final res1 = await sl.get<LocalDatasourcePrefs>().getLevelPref();

@@ -84,9 +84,8 @@ class RemoteDatasource {
       final User? user = auth.currentUser;
       final uid = user?.uid;
       if (uid == null) {
-        return Left(GeneralFailure());
+        return const Right(true);
       }
-      //what is the doc ID of this user
 
       final userDoc = await FirebaseFirestore.instance
           .collection("users")
