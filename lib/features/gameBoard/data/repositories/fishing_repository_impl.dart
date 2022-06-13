@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
@@ -8,19 +6,13 @@ import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 
 class FishingRepositoryImpl implements FishingRepository {
+  @override
   Future<Either<Failure, bool>> updateLevel(
       int newLevel,
-      LocalDatasourcePrefs mockLocalDatasourcePrefs,
-      RemoteDatasource mockRemoteDatasource) async {
-    final res1;
-    final res2;
-    if (Platform.environment.containsKey('FLUTTER_TEST')) {
-      res1 = await mockLocalDatasourcePrefs.updateLevelPref(newLevel);
-      res2 = await mockRemoteDatasource.updateLevelPlayer(newLevel);
-    } else {
-      res1 = await sl.get<LocalDatasourcePrefs>().updateLevelPref(newLevel);
-      res2 = await sl.get<RemoteDatasource>().updateLevelPlayer(newLevel);
-    }
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource) async {
+    final res1 = await localDatasourcePrefs.updateLevelPref(newLevel);
+    final res2 = await remoteDatasource.updateLevelPlayer(newLevel);
     if (res1.isRight() && res2.isRight()) {
       return const Right(true);
     } else {

@@ -1,3 +1,4 @@
+import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
@@ -12,17 +13,19 @@ import 'fishing_repository_impl_test.mocks.dart';
 
 @GenerateMocks([LocalDatasourcePrefs, RemoteDatasource])
 void main() {
+  di.init();
   FishingRepositoryImpl fishingRepositoryImpl;
   MockLocalDatasourcePrefs mockLocalDatasourcePrefs;
   MockRemoteDatasource mockRemoteDatasource;
+
   setUp(() async {});
   tearDown(() {});
   group("Testing FishingRepositoryImpl", () {
-    test("updateLevel()", () async {
-      di.init();
+    test("updateLevel(), function return Right(true)", () async {
       mockLocalDatasourcePrefs = MockLocalDatasourcePrefs();
       mockRemoteDatasource = MockRemoteDatasource();
       fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
+
       when(mockLocalDatasourcePrefs.updateLevelPref(2))
           .thenAnswer((_) async => const Right(true));
       when(mockRemoteDatasource.updateLevelPlayer(2))
