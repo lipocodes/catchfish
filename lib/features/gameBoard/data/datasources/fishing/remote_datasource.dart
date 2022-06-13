@@ -26,6 +26,7 @@ class RemoteDatasource {
   //warning: I haven't has a new player yet
   Future<Either<Failure, bool>> addPlayerToGroup(String groupName) async {
     try {
+      //the caller to this function needs to define newPlayerModel
       NewPlayerModel newPlayerModel = sl.get<NewPlayerModel>();
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection("groups")
@@ -33,8 +34,8 @@ class RemoteDatasource {
           .get();
 
       List listPlayers = querySnapshot.docs[0]['players'];
+      listPlayers.add(newPlayerModel);
 
-      //listPlayers.add()
       FirebaseFirestore.instance
           .collection('groups')
           .doc(querySnapshot.docs[0].id)
@@ -130,7 +131,7 @@ class RemoteDatasource {
       final User? user = auth.currentUser;
       final uid = user?.uid;
       if (uid == null) {
-        return Left(GeneralFailure());
+        return const Right([]);
       }
       //what is the doc ID of this user
       final userDoc = await FirebaseFirestore.instance
@@ -151,7 +152,7 @@ class RemoteDatasource {
       final User? user = auth.currentUser;
       final uid = user?.uid;
       if (uid == null) {
-        return Left(GeneralFailure());
+        return const Right(true);
       }
       //what is the doc ID of this user
       final userDoc = await FirebaseFirestore.instance
@@ -180,7 +181,7 @@ class RemoteDatasource {
       final User? user = auth.currentUser;
       final uid = user?.uid;
       if (uid == null) {
-        return Left(GeneralFailure());
+        return const Right(true);
       }
       //what is the doc ID of this user
       final userDoc = await FirebaseFirestore.instance
