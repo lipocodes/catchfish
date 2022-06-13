@@ -110,7 +110,7 @@ class RemoteDatasource {
       final User? user = auth.currentUser;
       final uid = user?.uid;
       if (uid == null) {
-        return Left(GeneralFailure());
+        return const Right(1);
       }
       //what is the doc ID of this user
 

@@ -9,11 +9,21 @@ import 'package:dartz/dartz.dart';
 class FishingRepositoryImpl implements FishingRepository {
   @override
   Future<Either<Failure, int>> getLevelPref() async {
-    final res = await sl.get<LocalDatasourcePrefs>().getLevelPref();
-    if (res.isLeft()) {
-      return Left(GeneralFailure());
+    final res1 = await sl.get<LocalDatasourcePrefs>().getLevelPref();
+    final res2 = await sl.get<RemoteDatasource>().getLevelPlayer();
+    int val1 = 0;
+    int val2 = 0;
+    if (res1.isRight() && res2.isRight()) {
+      res1.fold((failure) => null, (success) => val1 = success);
+      res2.fold((failure) => null, (success) => val2 = success);
+      //if level on DB is greater than level on pref
+      if (val1 < val2) {
+        return Right(val1);
+      } else {
+        return Right(val2);
+      }
     } else {
-      return res;
+      return Left(GeneralFailure());
     }
   }
 

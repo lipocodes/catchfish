@@ -43,7 +43,6 @@ class LocalDatasourcePrefs implements LocalDatasource {
       final res = prefs.getStringList("personalShop") ?? [];
       res.add(detailsFish);
       prefs.setStringList("personalShop", res);
-      print("aaaaaaaaaaaaaaaaaaaaaaaa");
       return const Right(true);
     } catch (e) {
       return Left(GeneralFailure());
