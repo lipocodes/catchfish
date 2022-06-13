@@ -2,7 +2,6 @@ import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/domain/repositories/fishing/fishing_repository.dart';
-import 'package:catchfish/features/settings/data/datasources/remote_datasource.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 
@@ -73,6 +72,54 @@ class FishingRepositoryImpl implements FishingRepository {
         await sl.get<RemoteDatasource>().removeFishPersonalShop(fishDetails);
     if (res1.isRight() && res2.isRight()) {
       return const Right(true);
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> deleteGroup(String groupName) async {
+    final res = await sl.get<RemoteDatasource>().deleteGroup(groupName);
+    if (res.isRight()) {
+      return const Right(true);
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> addPlayerToGroup(String groupName) async {
+    final res = await sl.get<RemoteDatasource>().addPlayerToGroup(groupName);
+    if (res.isRight()) {
+      return const Right(true);
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, List>> getPlayersForSelectedGroup(
+      String selectedGroupName) async {
+    final res = await sl
+        .get<RemoteDatasource>()
+        .getPlayersForSelectedGroup(selectedGroupName);
+    if (res.isRight()) {
+      return res;
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, List>> getExistingGroups() async {
+    final res = await sl.get<RemoteDatasource>().getExistingGroups();
+    if (res.isRight()) {
+      return res;
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> updateLevelPlayer(int newLevel) async {
+    final res = await sl.get<RemoteDatasource>().updateLevelPlayer(newLevel);
+    if (res.isRight()) {
+      return res;
     } else {
       return Left(GeneralFailure());
     }
