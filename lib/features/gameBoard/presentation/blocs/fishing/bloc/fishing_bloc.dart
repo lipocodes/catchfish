@@ -16,10 +16,12 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
     on<FishingEvent>((event, emit) async {
       if (event is EnteringScreenEvent) {
         _fishingUsecase = event.fishingUsecase;
-        final res = await _fishingUsecase.playEnteringScreenSound();
         emit(EnteringScreenState());
-      }
-      if (event is GetPulseEvent) {
+      } else if (event is StartingGameEvent) {
+        _fishingUsecase = event.fishingUsecase;
+        final res = await _fishingUsecase.playEnteringScreenSound();
+        emit(StartingGameState());
+      } else if (event is GetPulseEvent) {
         //sl.get<FishingUsecase>().getPulse()
         _fishingUsecase = event.fishingUsecase;
         final res = await _fishingUsecase.getPulse();
