@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/injection_container.dart';
@@ -44,8 +46,8 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
       } else if (event is TimerTickEvent) {
         String currentCountdownTime = event.currentCountdownTime;
         _fishingUsecase = event.fishingUsecase;
-        final res = await _fishingUsecase.calculateNewCoundownTime(
-            _fishingUsecase, currentCountdownTime);
+        final res = await _fishingUsecase
+            .calculateNewCoundownTime(currentCountdownTime);
 
         res.fold(
           (failure) => emit(const ErrorRedButtonPressedState(
@@ -55,8 +57,11 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
       } else if (event is AfterTimerTickEvent) {
         emit(AfterTimerTickState());
       } else if (event is LoadingPersonalShopEvent) {
+        RemoteDatasource remoteDatasource = RemoteDatasource();
+        LocalDatasourcePrefs localDatasourcePrefs = LocalDatasourcePrefs();
         _fishingUsecase = event.fishingUsecase;
-        final res = await _fishingUsecase.populatePersonalShop();
+        final res = await _fishingUsecase.populatePersonalShop(
+            remoteDatasource, localDatasourcePrefs);
 
         res.fold(
           (failure) => emit(const ErrorRedButtonPressedState(

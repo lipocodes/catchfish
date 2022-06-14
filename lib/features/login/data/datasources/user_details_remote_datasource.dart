@@ -1,5 +1,6 @@
 import 'package:catchfish/features/login/domain/entities/user_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,7 +10,10 @@ class UserDetailsRemoteDataSource {
   late SharedPreferences _prefs;
 
   saveUserToDB(UserEntity userEntity) async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
     try {
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
       final firestoreInstance = FirebaseFirestore.instance;
       _prefs = await SharedPreferences.getInstance();
       //retreive FCM token
@@ -39,6 +43,11 @@ class UserDetailsRemoteDataSource {
           'photoURL': userEntity.photoURL,
           'phoneNumber': userEntity.phoneNumber,
           'FCMToken': token,
+          "caughtFish": [],
+          "inventory": [],
+          "lastInventoryUpdateDB": 0,
+          "level": 1,
+          "uid": uid,
         });
       }
     } catch (e) {

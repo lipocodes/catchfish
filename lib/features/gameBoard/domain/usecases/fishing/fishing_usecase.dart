@@ -128,7 +128,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   }
 
   Future<Either<Failure, String>> calculateNewCoundownTime(
-      FishingUsecase fishingUsecase, String currentCountdownTime) async {
+      String currentCountdownTime) async {
     try {
       int minutes = int.parse(currentCountdownTime.substring(0, 2));
       int seconds = int.parse(currentCountdownTime.substring(3));
@@ -157,9 +157,9 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     }
   }
 
-  Future<Either<Failure, List<String>>> populatePersonalShop() async {
-    localDatasourcePrefs = LocalDatasourcePrefs();
-    remoteDatasource = RemoteDatasource();
+  Future<Either<Failure, List<String>>> populatePersonalShop(
+      RemoteDatasource remoteDatasource,
+      LocalDatasource localDatasource) async {
     final res = await sl
         .get<FishingRepositoryImpl>()
         .getPersonalShop(localDatasourcePrefs, remoteDatasource);

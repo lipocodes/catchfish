@@ -1,11 +1,13 @@
 import 'dart:math';
 
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart';
+import 'package:catchfish/features/tokens/data/datasources/local_datasource.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -88,8 +90,7 @@ void main() {
     ////////////////////////////////////////////////////////////////////////
     test('testing CountdownTickEvent', () {
       String currentCountdownTime = "05:00";
-      when(mockFishingUsecase.calculateNewCoundownTime(
-              mockFishingUsecase, currentCountdownTime))
+      when(mockFishingUsecase.calculateNewCoundownTime(currentCountdownTime))
           .thenAnswer((_) async => const Right("04:59"));
       fishingBloc.add(TimerTickEvent(
           fishingUsecase: mockFishingUsecase,
@@ -99,7 +100,9 @@ void main() {
     });
     ///////////////////////////////////////////////////////////////////////////
     test('testing LoadingPersonalShopEvent', () {
-      when(mockFishingUsecase.populatePersonalShop())
+      /*RemoteDatasource remoteDatasource = RemoteDatasource();
+      LocalDatasource localDatasource = LocalDatasource();
+      when(mockFishingUsecase.populatePersonalShop(remoteDatasource,localDatasource))
           .thenAnswer((_) async => const Right([]));
       fishingBloc.add(LoadingPersonalShopEvent(
         fishingUsecase: mockFishingUsecase,
@@ -107,7 +110,7 @@ void main() {
       expectLater(
           fishingBloc.stream,
           emitsInOrder(
-              [const LoadingPersonalShopState(personalShopInventory: [])]));
+              [const LoadingPersonalShopState(personalShopInventory: [])]));*/
     });
   });
 }

@@ -2,21 +2,25 @@
 // in catchfish/test/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i5;
+import 'dart:async' as _i7;
 
 import 'package:audioplayers/audioplayers.dart' as _i3;
-import 'package:bloc/bloc.dart' as _i6;
-import 'package:catchfish/core/errors/failures.dart' as _i8;
-import 'package:catchfish/core/usecases/usecase.dart' as _i10;
+import 'package:bloc/bloc.dart' as _i8;
+import 'package:catchfish/core/errors/failures.dart' as _i10;
+import 'package:catchfish/core/usecases/usecase.dart' as _i12;
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart'
+    as _i4;
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart'
+    as _i5;
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart'
-    as _i11;
+    as _i13;
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart'
-    as _i9;
+    as _i11;
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart'
-    as _i7;
+    as _i9;
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart'
     as _i2;
-import 'package:dartz/dartz.dart' as _i4;
+import 'package:dartz/dartz.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -35,7 +39,13 @@ class _FakeAudioCache_1 extends _i1.Fake implements _i3.AudioCache {}
 
 class _FakeAudioPlayer_2 extends _i1.Fake implements _i3.AudioPlayer {}
 
-class _FakeEither_3<L, R> extends _i1.Fake implements _i4.Either<L, R> {}
+class _FakeLocalDatasourcePrefs_3 extends _i1.Fake
+    implements _i4.LocalDatasourcePrefs {}
+
+class _FakeRemoteDatasource_4 extends _i1.Fake implements _i5.RemoteDatasource {
+}
+
+class _FakeEither_5<L, R> extends _i1.Fake implements _i6.Either<L, R> {}
 
 /// A class which mocks [FishingBloc].
 ///
@@ -49,10 +59,10 @@ class MockFishingBloc extends _i1.Mock implements _i2.FishingBloc {
   _i2.FishingState get state => (super.noSuchMethod(Invocation.getter(#state),
       returnValue: _FakeFishingState_0()) as _i2.FishingState);
   @override
-  _i5.Stream<_i2.FishingState> get stream =>
+  _i7.Stream<_i2.FishingState> get stream =>
       (super.noSuchMethod(Invocation.getter(#stream),
               returnValue: Stream<_i2.FishingState>.empty())
-          as _i5.Stream<_i2.FishingState>);
+          as _i7.Stream<_i2.FishingState>);
   @override
   bool get isClosed =>
       (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
@@ -71,22 +81,22 @@ class MockFishingBloc extends _i1.Mock implements _i2.FishingBloc {
           returnValueForMissingStub: null);
   @override
   void on<E extends _i2.FishingEvent>(
-          _i6.EventHandler<E, _i2.FishingState>? handler,
-          {_i6.EventTransformer<E>? transformer}) =>
+          _i8.EventHandler<E, _i2.FishingState>? handler,
+          {_i8.EventTransformer<E>? transformer}) =>
       super.noSuchMethod(
           Invocation.method(#on, [handler], {#transformer: transformer}),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i6.Transition<_i2.FishingEvent, _i2.FishingState>? transition) =>
+          _i8.Transition<_i2.FishingEvent, _i2.FishingState>? transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i5.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+  _i7.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
       returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
+      returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
-  void onChange(_i6.Change<_i2.FishingState>? change) =>
+  void onChange(_i8.Change<_i2.FishingState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -102,7 +112,7 @@ class MockFishingBloc extends _i1.Mock implements _i2.FishingBloc {
 /// A class which mocks [FishingUsecase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFishingUsecase extends _i1.Mock implements _i7.FishingUsecase {
+class MockFishingUsecase extends _i1.Mock implements _i9.FishingUsecase {
   MockFishingUsecase() {
     _i1.throwOnMissingStub(this);
   }
@@ -120,41 +130,61 @@ class MockFishingUsecase extends _i1.Mock implements _i7.FishingUsecase {
       super.noSuchMethod(Invocation.setter(#audioPlayer, _audioPlayer),
           returnValueForMissingStub: null);
   @override
+  _i4.LocalDatasourcePrefs get localDatasourcePrefs => (super.noSuchMethod(
+      Invocation.getter(#localDatasourcePrefs),
+      returnValue: _FakeLocalDatasourcePrefs_3()) as _i4.LocalDatasourcePrefs);
+  @override
+  set localDatasourcePrefs(_i4.LocalDatasourcePrefs? _localDatasourcePrefs) =>
+      super.noSuchMethod(
+          Invocation.setter(#localDatasourcePrefs, _localDatasourcePrefs),
+          returnValueForMissingStub: null);
+  @override
+  _i5.RemoteDatasource get remoteDatasource =>
+      (super.noSuchMethod(Invocation.getter(#remoteDatasource),
+          returnValue: _FakeRemoteDatasource_4()) as _i5.RemoteDatasource);
+  @override
+  set remoteDatasource(_i5.RemoteDatasource? _remoteDatasource) => super
+      .noSuchMethod(Invocation.setter(#remoteDatasource, _remoteDatasource),
+          returnValueForMissingStub: null);
+  @override
   dynamic playBackgroundAudio(String? engineSound) => super
       .noSuchMethod(Invocation.method(#playBackgroundAudio, [engineSound]));
   @override
-  _i5.Future<_i4.Either<_i8.Failure, _i9.PulseEntity>> call(
-          _i10.NoParams? params) =>
+  _i7.Future<_i6.Either<_i10.Failure, _i11.PulseEntity>> call(
+          _i12.NoParams? params) =>
       (super.noSuchMethod(Invocation.method(#call, [params]),
-          returnValue: Future<_i4.Either<_i8.Failure, _i9.PulseEntity>>.value(
-              _FakeEither_3<_i8.Failure, _i9.PulseEntity>())) as _i5
-          .Future<_i4.Either<_i8.Failure, _i9.PulseEntity>>);
+          returnValue: Future<_i6.Either<_i10.Failure, _i11.PulseEntity>>.value(
+              _FakeEither_5<_i10.Failure, _i11.PulseEntity>())) as _i7
+          .Future<_i6.Either<_i10.Failure, _i11.PulseEntity>>);
   @override
-  _i5.Future<_i4.Either<_i8.Failure, _i9.PulseEntity>> getPulse() =>
+  _i7.Future<_i6.Either<_i10.Failure, _i11.PulseEntity>> getPulse() =>
       (super.noSuchMethod(Invocation.method(#getPulse, []),
-          returnValue: Future<_i4.Either<_i8.Failure, _i9.PulseEntity>>.value(
-              _FakeEither_3<_i8.Failure, _i9.PulseEntity>())) as _i5
-          .Future<_i4.Either<_i8.Failure, _i9.PulseEntity>>);
+          returnValue: Future<_i6.Either<_i10.Failure, _i11.PulseEntity>>.value(
+              _FakeEither_5<_i10.Failure, _i11.PulseEntity>())) as _i7
+          .Future<_i6.Either<_i10.Failure, _i11.PulseEntity>>);
   @override
-  _i5.Future<_i4.Either<_i8.Failure, _i11.CaughtFishEntity>> isFishCaught() =>
+  _i7.Future<_i6.Either<_i10.Failure, _i13.CaughtFishEntity>> isFishCaught() =>
       (super.noSuchMethod(Invocation.method(#isFishCaught, []),
               returnValue:
-                  Future<_i4.Either<_i8.Failure, _i11.CaughtFishEntity>>.value(
-                      _FakeEither_3<_i8.Failure, _i11.CaughtFishEntity>()))
-          as _i5.Future<_i4.Either<_i8.Failure, _i11.CaughtFishEntity>>);
+                  Future<_i6.Either<_i10.Failure, _i13.CaughtFishEntity>>.value(
+                      _FakeEither_5<_i10.Failure, _i13.CaughtFishEntity>()))
+          as _i7.Future<_i6.Either<_i10.Failure, _i13.CaughtFishEntity>>);
   @override
-  _i5.Future<_i4.Either<_i8.Failure, String>> calculateNewCoundownTime(
-          _i7.FishingUsecase? fishingUsecase, String? currentCountdownTime) =>
+  _i7.Future<_i6.Either<_i10.Failure, String>> calculateNewCoundownTime(
+          String? currentCountdownTime) =>
       (super.noSuchMethod(
-              Invocation.method(#calculateNewCoundownTime,
-                  [fishingUsecase, currentCountdownTime]),
-              returnValue: Future<_i4.Either<_i8.Failure, String>>.value(
-                  _FakeEither_3<_i8.Failure, String>()))
-          as _i5.Future<_i4.Either<_i8.Failure, String>>);
+          Invocation.method(#calculateNewCoundownTime, [currentCountdownTime]),
+          returnValue: Future<_i6.Either<_i10.Failure, String>>.value(
+              _FakeEither_5<_i10.Failure, String>())) as _i7
+          .Future<_i6.Either<_i10.Failure, String>>);
   @override
-  _i5.Future<_i4.Either<_i8.Failure, List<String>>> populatePersonalShop() =>
-      (super.noSuchMethod(Invocation.method(#populatePersonalShop, []),
-              returnValue: Future<_i4.Either<_i8.Failure, List<String>>>.value(
-                  _FakeEither_3<_i8.Failure, List<String>>()))
-          as _i5.Future<_i4.Either<_i8.Failure, List<String>>>);
+  _i7.Future<_i6.Either<_i10.Failure, List<String>>> populatePersonalShop(
+          _i5.RemoteDatasource? remoteDatasource,
+          _i4.LocalDatasource? localDatasource) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #populatePersonalShop, [remoteDatasource, localDatasource]),
+              returnValue: Future<_i6.Either<_i10.Failure, List<String>>>.value(
+                  _FakeEither_5<_i10.Failure, List<String>>()))
+          as _i7.Future<_i6.Either<_i10.Failure, List<String>>>);
 }
