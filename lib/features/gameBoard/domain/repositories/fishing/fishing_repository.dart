@@ -11,4 +11,26 @@ abstract class FishingRepository {
       int newLevel,
       LocalDatasourcePrefs localDatasourcePrefs,
       RemoteDatasource remoteDatasource);
+  Future<Either<Failure, int>> getLevelPref(
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource);
+  Future<Either<Failure, List>> getPersonalShop(
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource);
+  Future<Either<Failure, bool>> addFishPersonalShop(
+      String fishDetails,
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource);
+  Future<Either<Failure, bool>> removeFishPersonalShop(
+      String fishDetails,
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource);
+  Future<Either<Failure, bool>> deleteGroup(
+      String groupName, RemoteDatasource remoteDatasource);
+  Future<Either<Failure, bool>> addPlayerToGroup(
+      String groupName, RemoteDatasource remoteDatasource);
+  Future<Either<Failure, List>> getPlayersForSelectedGroup(
+      String selectedGroupName, RemoteDatasource remoteDatasource);
+  Future<Either<Failure, List>> getExistingGroups(
+      RemoteDatasource remoteDatasource);
 }

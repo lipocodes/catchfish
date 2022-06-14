@@ -21,9 +21,11 @@ class FishingRepositoryImpl implements FishingRepository {
   }
 
   @override
-  Future<Either<Failure, int>> getLevelPref() async {
-    final res1 = await sl.get<LocalDatasourcePrefs>().getLevelPref();
-    final res2 = await sl.get<RemoteDatasource>().getLevelPlayer();
+  Future<Either<Failure, int>> getLevelPref(
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource) async {
+    final res1 = await localDatasourcePrefs.getLevelPref();
+    final res2 = await remoteDatasource.getLevelPlayer();
     int val1 = 0;
     int val2 = 0;
     if (res1.isRight() && res2.isRight()) {
@@ -40,9 +42,12 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
-  Future<Either<Failure, List>> getPersonalShop() async {
-    final res1 = await sl.get<LocalDatasourcePrefs>().getPersonalShopPref();
-    final res2 = await sl.get<RemoteDatasource>().getPersonalShop();
+  @override
+  Future<Either<Failure, List>> getPersonalShop(
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource) async {
+    final res1 = await localDatasourcePrefs.getPersonalShopPref();
+    final res2 = await remoteDatasource.getPersonalShop();
     //if app installation is not new && user has something in PersonalShop
     if (res1.isRight() && res1.length() > 0) {
       return res1;
@@ -55,11 +60,13 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
-  Future<Either<Failure, bool>> addFishPersonalShop(String fishDetails) async {
-    final res1 =
-        await sl.get<LocalDatasourcePrefs>().addFishPersonalShop(fishDetails);
-    final res2 =
-        await sl.get<RemoteDatasource>().addFishPersonalShop(fishDetails);
+  @override
+  Future<Either<Failure, bool>> addFishPersonalShop(
+      String fishDetails,
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource) async {
+    final res1 = await localDatasourcePrefs.addFishPersonalShop(fishDetails);
+    final res2 = await remoteDatasource.addFishPersonalShop(fishDetails);
     if (res1.isRight() && res2.isRight()) {
       return const Right(true);
     } else {
@@ -67,13 +74,13 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
+  @override
   Future<Either<Failure, bool>> removeFishPersonalShop(
-      String fishDetails) async {
-    final res1 = await sl
-        .get<LocalDatasourcePrefs>()
-        .removeFishPersonalShop(fishDetails);
-    final res2 =
-        await sl.get<RemoteDatasource>().removeFishPersonalShop(fishDetails);
+      String fishDetails,
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource) async {
+    final res1 = await localDatasourcePrefs.removeFishPersonalShop(fishDetails);
+    final res2 = await remoteDatasource.removeFishPersonalShop(fishDetails);
     if (res1.isRight() && res2.isRight()) {
       return const Right(true);
     } else {
@@ -81,8 +88,10 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
-  Future<Either<Failure, bool>> deleteGroup(String groupName) async {
-    final res = await sl.get<RemoteDatasource>().deleteGroup(groupName);
+  @override
+  Future<Either<Failure, bool>> deleteGroup(
+      String groupName, RemoteDatasource remoteDatasource) async {
+    final res = await remoteDatasource.deleteGroup(groupName);
     if (res.isRight()) {
       return const Right(true);
     } else {
@@ -90,8 +99,10 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
-  Future<Either<Failure, bool>> addPlayerToGroup(String groupName) async {
-    final res = await sl.get<RemoteDatasource>().addPlayerToGroup(groupName);
+  @override
+  Future<Either<Failure, bool>> addPlayerToGroup(
+      String groupName, RemoteDatasource remoteDatasource) async {
+    final res = await remoteDatasource.addPlayerToGroup(groupName);
     if (res.isRight()) {
       return const Right(true);
     } else {
@@ -99,11 +110,11 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
+  @override
   Future<Either<Failure, List>> getPlayersForSelectedGroup(
-      String selectedGroupName) async {
-    final res = await sl
-        .get<RemoteDatasource>()
-        .getPlayersForSelectedGroup(selectedGroupName);
+      String selectedGroupName, RemoteDatasource remoteDatasource) async {
+    final res =
+        await remoteDatasource.getPlayersForSelectedGroup(selectedGroupName);
     if (res.isRight()) {
       return res;
     } else {
@@ -111,17 +122,10 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
-  Future<Either<Failure, List>> getExistingGroups() async {
-    final res = await sl.get<RemoteDatasource>().getExistingGroups();
-    if (res.isRight()) {
-      return res;
-    } else {
-      return Left(GeneralFailure());
-    }
-  }
-
-  Future<Either<Failure, bool>> updateLevelPlayer(int newLevel) async {
-    final res = await sl.get<RemoteDatasource>().updateLevelPlayer(newLevel);
+  @override
+  Future<Either<Failure, List>> getExistingGroups(
+      RemoteDatasource remoteDatasource) async {
+    final res = await remoteDatasource.getExistingGroups();
     if (res.isRight()) {
       return res;
     } else {

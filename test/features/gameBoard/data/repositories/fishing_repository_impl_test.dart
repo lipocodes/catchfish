@@ -1,4 +1,3 @@
-import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
@@ -21,7 +20,7 @@ void main() {
   setUp(() async {});
   tearDown(() {});
   group("Testing FishingRepositoryImpl", () {
-    test("updateLevel(), function return Right(true)", () async {
+    test("updateLevel()", () async {
       mockLocalDatasourcePrefs = MockLocalDatasourcePrefs();
       mockRemoteDatasource = MockRemoteDatasource();
       fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
@@ -33,6 +32,102 @@ void main() {
       final res = await fishingRepositoryImpl.updateLevel(
           2, mockLocalDatasourcePrefs, mockRemoteDatasource);
       expectLater(res, const Right(true));
+    });
+    test("getLevelPref()", () async {
+      mockLocalDatasourcePrefs = MockLocalDatasourcePrefs();
+      mockRemoteDatasource = MockRemoteDatasource();
+      fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
+      when(mockLocalDatasourcePrefs.getLevelPref())
+          .thenAnswer((_) async => const Right(1));
+      when(mockRemoteDatasource.getLevelPlayer())
+          .thenAnswer((_) async => const Right(1));
+      final res = await fishingRepositoryImpl.getLevelPref(
+          mockLocalDatasourcePrefs, mockRemoteDatasource);
+      expectLater(res, const Right(1));
+    });
+
+    test("getPersonalShop()", () async {
+      mockLocalDatasourcePrefs = MockLocalDatasourcePrefs();
+      mockRemoteDatasource = MockRemoteDatasource();
+      fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
+      when(mockLocalDatasourcePrefs.getPersonalShopPref())
+          .thenAnswer((_) async => const Right([]));
+      when(mockRemoteDatasource.getPersonalShop())
+          .thenAnswer((_) async => const Right([]));
+      final res = await fishingRepositoryImpl.getPersonalShop(
+          mockLocalDatasourcePrefs, mockRemoteDatasource);
+      expectLater(res, const Right([]));
+    });
+    test("addFishPersonalShop()", () async {
+      mockLocalDatasourcePrefs = MockLocalDatasourcePrefs();
+      mockRemoteDatasource = MockRemoteDatasource();
+      fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
+      when(mockLocalDatasourcePrefs
+              .addFishPersonalShop("Sargo^^^10^^^100^^^sargo.jpg"))
+          .thenAnswer((_) async => const Right(true));
+      when(mockRemoteDatasource
+              .addFishPersonalShop("Sargo^^^10^^^100^^^sargo.jpg"))
+          .thenAnswer((_) async => const Right(true));
+      final res = await fishingRepositoryImpl.addFishPersonalShop(
+          "Sargo^^^10^^^100^^^sargo.jpg",
+          mockLocalDatasourcePrefs,
+          mockRemoteDatasource);
+      expectLater(res, const Right(true));
+    });
+    test("removeFishPersonalShop()", () async {
+      mockLocalDatasourcePrefs = MockLocalDatasourcePrefs();
+      mockRemoteDatasource = MockRemoteDatasource();
+      fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
+      when(mockLocalDatasourcePrefs
+              .removeFishPersonalShop("Sargo^^^10^^^100^^^sargo.jpg"))
+          .thenAnswer((_) async => const Right(true));
+      when(mockRemoteDatasource
+              .removeFishPersonalShop("Sargo^^^10^^^100^^^sargo.jpg"))
+          .thenAnswer((_) async => const Right(true));
+      final res = await fishingRepositoryImpl.removeFishPersonalShop(
+          "Sargo^^^10^^^100^^^sargo.jpg",
+          mockLocalDatasourcePrefs,
+          mockRemoteDatasource);
+      expectLater(res, const Right(true));
+    });
+    test("deletegGroup()", () async {
+      mockLocalDatasourcePrefs = MockLocalDatasourcePrefs();
+      mockRemoteDatasource = MockRemoteDatasource();
+      fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
+      when(mockRemoteDatasource.deleteGroup("Group1"))
+          .thenAnswer((_) async => const Right(true));
+      final res = await fishingRepositoryImpl.deleteGroup(
+          "Group1", mockRemoteDatasource);
+      expectLater(res, const Right(true));
+    });
+    test("addPlayerToGroup()", () async {
+      mockRemoteDatasource = MockRemoteDatasource();
+      fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
+      when(mockRemoteDatasource.addPlayerToGroup("Group1"))
+          .thenAnswer((_) async => const Right(true));
+      final res = await fishingRepositoryImpl.addPlayerToGroup(
+          "Group1", mockRemoteDatasource);
+      expectLater(res, const Right(true));
+    });
+    test("getPlayersForSelectedGroup()", () async {
+      mockRemoteDatasource = MockRemoteDatasource();
+      fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
+      when(mockRemoteDatasource.getPlayersForSelectedGroup("Group1"))
+          .thenAnswer((_) async => const Right([]));
+      final res = await fishingRepositoryImpl.getPlayersForSelectedGroup(
+          "Group1", mockRemoteDatasource);
+
+      expectLater(res, const Right([]));
+    });
+    test("getExistingGroups()", () async {
+      mockRemoteDatasource = MockRemoteDatasource();
+      fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
+      when(mockRemoteDatasource.getExistingGroups())
+          .thenAnswer((_) async => const Right([]));
+      final res =
+          await fishingRepositoryImpl.getExistingGroups(mockRemoteDatasource);
+
+      expectLater(res, const Right([]));
     });
   });
 }

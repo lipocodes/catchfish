@@ -6,6 +6,7 @@ import 'package:catchfish/core/consts/fish.dart';
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
@@ -19,6 +20,9 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
   AudioPlayer audioPlayer = AudioPlayer();
   bool _isItCatchingTime = false;
+  late LocalDatasourcePrefs localDatasourcePrefs;
+  late RemoteDatasource remoteDatasource;
+
   FishingUsecase();
 
   playBackgroundAudio(String engineSound) async {
@@ -82,8 +86,11 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         if (!Platform.environment.containsKey('FLUTTER_TEST')) {
           playBackgroundAudio("catchFish.mp3");
         }
-
-        final res = await sl.get<FishingRepositoryImpl>().getLevelPref();
+        localDatasourcePrefs = LocalDatasourcePrefs();
+        remoteDatasource = RemoteDatasource();
+        final res = await sl
+            .get<FishingRepositoryImpl>()
+            .getLevelPref(localDatasourcePrefs, remoteDatasource);
 
         res.fold((left) => Left(GeneralFailure()), (right) => myLevel = right);
         //now we have myLevel pref.  We need to randomize the caught fish type
@@ -151,7 +158,11 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   }
 
   Future<Either<Failure, List<String>>> populatePersonalShop() async {
-    final res = await sl.get<FishingRepositoryImpl>().getPersonalShop();
+    localDatasourcePrefs = LocalDatasourcePrefs();
+    remoteDatasource = RemoteDatasource();
+    final res = await sl
+        .get<FishingRepositoryImpl>()
+        .getPersonalShop(localDatasourcePrefs, remoteDatasource);
 
     List list1 = [];
     List<String> list2 = [];
