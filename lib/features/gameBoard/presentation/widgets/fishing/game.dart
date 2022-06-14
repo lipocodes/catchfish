@@ -16,7 +16,8 @@ Widget game(BuildContext context) {
   double angle = 0.0;
   int _seconds = 0;
   String _caughtFishDetails = "";
-  var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+
+  var timer = Timer.periodic(const Duration(seconds: 10), (timer) {
     BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
         fishingUsecase: sl.get<FishingUsecase>(),
         currentCountdownTime: _currentTime));
@@ -40,6 +41,7 @@ Widget game(BuildContext context) {
 
             _currentTime = state.newCountdownTime
                 .substring(0, state.newCountdownTime.indexOf("^^^"));
+
             if (_currentTime == "00:00") {
               timer.cancel();
             }
@@ -63,7 +65,8 @@ Widget game(BuildContext context) {
           }
         },
       ),
-      BlocBuilder<FishingBloc, FishingState>(
+
+      /*BlocBuilder<FishingBloc, FishingState>(
         builder: (context, state) {
           if (state is GetPulseState) {
             angle = state.angle;
@@ -80,7 +83,7 @@ Widget game(BuildContext context) {
             return pulseGenerator(context, angle, _caughtFishDetails);
           }
         },
-      ),
+      ),*/
     ],
   );
 }

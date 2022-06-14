@@ -52,5 +52,3 @@ class LoadingPersonalShopState extends FishingState {
   final List<String> personalShopInventory;
   const LoadingPersonalShopState({required this.personalShopInventory});
 }
-
-class StartingGameState extends FishingState {}
