@@ -1,6 +1,5 @@
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,12 +12,19 @@ Widget selectorGroupType(BuildContext context) {
             gui(context, 0),
           ],
         );
-      } else {
+      } else if (state is SelectedGroupTypeState) {
+        BlocProvider.of<SelectgroupBloc>(context).add(NeutralEvent());
         return Column(
           children: [
-            gui(context, 0),
+            gui(context, state.selectedGroupType),
           ],
         );
+      } else if (state is NeutralState) {
+        return Column(children: [
+          gui(context, state.selectedGroupType),
+        ]);
+      } else {
+        return Container();
       }
     },
   );
@@ -61,9 +67,8 @@ Widget gui(
                 fontFamily: 'skullsandcrossbones',
               )),
           onPressed: () {
-            print("aaaaaaaaaaaaaaaaaaaaa");
-            //BlocProvider.of<SelectgroupBloc>(context)
-            //.add(PressStartGameButtonEvent());
+            BlocProvider.of<SelectgroupBloc>(context)
+                .add(const PressButtonGroupTypeEvent(selectedGroupType: 1));
           },
         ),
       ),
@@ -87,9 +92,8 @@ Widget gui(
                 fontFamily: 'skullsandcrossbones',
               )),
           onPressed: () {
-            print("bbbbbbbbbbbbbbbbbbb");
-            //BlocProvider.of<SelectgroupBloc>(context)
-            //.add(PressStartGameButtonEvent());
+            BlocProvider.of<SelectgroupBloc>(context)
+                .add(const PressButtonGroupTypeEvent(selectedGroupType: 2));
           },
         ),
       ),

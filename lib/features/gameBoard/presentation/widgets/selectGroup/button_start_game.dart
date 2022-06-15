@@ -19,6 +19,7 @@ Widget buttonStartGame(BuildContext context) {
 
         return Container();
       } else if (state is NotAllowedStartGame) {
+        BlocProvider.of<SelectgroupBloc>(context).add(NeutralEvent());
         return gui(context, true);
       } else {
         return gui(context, false);
