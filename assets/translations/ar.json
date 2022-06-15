@@ -24,7 +24,7 @@
     "buy": "Buy",
     "not_enough_tokens": "Not enough tokens",
     "OK": "OK",
-    "buy_tokens" : "Buy Tokens",
+    "buy_tokens": "Buy Tokens",
     "contact": "Contact",
     "contact_us": "Contact Us",
     "send": "Send",
@@ -39,12 +39,12 @@
     "max_temp:": "Max Temp: ",
     "min_temp:": "Min Temp: ",
     "humidity:": "Humidity: ",
-    "cloudiness:" :"Cloudiness: ",
+    "cloudiness:": "Cloudiness: ",
     "wind_degree:": "Wind Degree: ",
-    "wind_gust:" : "Wind Gust: ",
+    "wind_gust:": "Wind Gust: ",
     "wind_speed:": "Wind Speed: ",
-    "pressure:" : "Pressure: ",
-    "sunrise:" : "Sunrise: ",
+    "pressure:": "Pressure: ",
+    "sunrise:": "Sunrise: ",
     "sunset": "Sunset: ",
     "go_to_boat": "Go to Boat",
     "cancel": "Cancel",
@@ -85,8 +85,9 @@
     "sardin": "Sardin",
     "red_mullet": "Red Mullet",
     "carp": "Carp",
-
     "catch:": "Catch: ",
     "grams": "grams",
-    "weight": "Weight:"
+    "weight": "Weight:",
+    "start_game": "Start Game",
+    "please_select_group": "Please select a group"
 }

@@ -6,3 +6,11 @@ abstract class SelectgroupEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class PressStartGameButtonEvent implements SelectgroupEvent {
+  @override
+  List<Object> get props => throw UnimplementedError();
+
+  @override
+  bool? get stringify => throw UnimplementedError();
+}

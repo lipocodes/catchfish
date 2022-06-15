@@ -85,5 +85,7 @@
     "carp": "Carp",
     "catch:": "Catch: ",
     "grams": "grams",
-    "weight": "Weight:"
+    "weight": "Weight:",
+    "start_game": "Start Game",
+    "please_select_group": "Please select a group"
 }

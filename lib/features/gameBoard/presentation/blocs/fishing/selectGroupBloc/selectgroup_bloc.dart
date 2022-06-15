@@ -7,7 +7,9 @@ part 'selectgroup_state.dart';
 class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
   SelectgroupBloc() : super(SelectgroupInitial()) {
     on<SelectgroupEvent>((event, emit) {
-      // TODO: implement event handler
+      if (event is PressStartGameButtonEvent) {
+        emit(AllowedStartGame());
+      }
     });
   }
 }
