@@ -2,13 +2,15 @@ import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
-import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/personal_shop.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/select_group.dart';
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
 import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
@@ -172,7 +174,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -236,6 +237,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<FishingBloc>(
           create: (BuildContext context) => FishingBloc(),
         ),
+        BlocProvider<SelectgroupBloc>(
+          create: (BuildContext context) => SelectgroupBloc(),
+        ),
       ],
       child: MultiProvider(
           providers: [
@@ -263,7 +267,7 @@ class _MyAppState extends State<MyApp> {
                 switch (settings.name) {
                   case '/':
                     return PageTransition(
-                      child: const /*Splash()*/ Fishing(),
+                      child: const /*Splash()*/ SelectGroup(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 1000),
@@ -327,6 +331,13 @@ class _MyAppState extends State<MyApp> {
                   case '/fishing':
                     return PageTransition(
                       child: const Fishing(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 2000),
+                    );
+                  case '/select_group':
+                    return PageTransition(
+                      child: const SelectGroup(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 2000),

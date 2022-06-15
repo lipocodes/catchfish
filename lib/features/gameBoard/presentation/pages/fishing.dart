@@ -1,6 +1,6 @@
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
-import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/countdown.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/energy.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/pulse_generator.dart';

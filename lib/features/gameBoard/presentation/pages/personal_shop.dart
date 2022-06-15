@@ -1,5 +1,5 @@
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
-import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/personalShop/shop_items.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:flutter/material.dart';
