@@ -14,7 +14,9 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
       if (event is NeutralEvent) {
         emit(NeutralState(selectedGroupType: _selectedGroupType));
       } else if (event is PressStartGameButtonEvent) {
-        if (_selectedGroupType == 0) {
+        if (_selectedGroupType == 0 ||
+            (_selectedGroupType == 1 &&
+                (_groupName.isEmpty || _yourName.isEmpty))) {
           emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
         } else {
           emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
