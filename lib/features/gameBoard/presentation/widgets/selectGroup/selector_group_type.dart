@@ -3,6 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+TextEditingController groupNameController = TextEditingController();
+TextEditingController yourNameController = TextEditingController();
+
 Widget selectorGroupType(BuildContext context) {
   return BlocBuilder<SelectgroupBloc, SelectgroupState>(
     builder: (context, state) {
@@ -19,6 +22,16 @@ Widget selectorGroupType(BuildContext context) {
             gui(context, state.selectedGroupType),
           ],
         );
+      } else if (state is GroupNameValueState) {
+        groupNameController.text = state.groupName;
+        return Column(children: [
+          gui(context, state.selectedGroupType),
+        ]);
+      } else if (state is YourNameValueState) {
+        yourNameController.text = state.yourName;
+        return Column(children: [
+          gui(context, state.selectedGroupType),
+        ]);
       } else if (state is NeutralState) {
         return Column(children: [
           gui(context, state.selectedGroupType),
@@ -72,6 +85,36 @@ Widget gui(
           },
         ),
       ),
+      if (selectedGroupType == 1) ...[
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: TextField(
+            controller: groupNameController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Group Name',
+            ),
+            onChanged: (text) {
+              BlocProvider.of<SelectgroupBloc>(context).add(
+                  GroupNameChangedEvent(groupName: groupNameController.text));
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: TextField(
+            controller: yourNameController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Your Name',
+            ),
+            onChanged: (text) {
+              BlocProvider.of<SelectgroupBloc>(context)
+                  .add(YourNameChangedEvent(yourName: yourNameController.text));
+            },
+          ),
+        ),
+      ],
       const SizedBox(height: 10.0),
       SizedBox(
         width: 200.0,

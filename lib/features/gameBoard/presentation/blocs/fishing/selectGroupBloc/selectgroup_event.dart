@@ -21,3 +21,13 @@ class PressButtonGroupTypeEvent extends SelectgroupEvent {
   final int selectedGroupType;
   const PressButtonGroupTypeEvent({required this.selectedGroupType});
 }
+
+class GroupNameChangedEvent extends SelectgroupEvent {
+  final String groupName;
+  const GroupNameChangedEvent({required this.groupName});
+}
+
+class YourNameChangedEvent extends SelectgroupEvent {
+  final String yourName;
+  const YourNameChangedEvent({required this.yourName});
+}

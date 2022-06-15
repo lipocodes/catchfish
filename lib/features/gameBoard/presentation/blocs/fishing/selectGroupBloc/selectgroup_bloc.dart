@@ -6,6 +6,8 @@ part 'selectgroup_state.dart';
 
 class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
   int _selectedGroupType = 0;
+  String _groupName = "";
+  String _yourName = "";
 
   SelectgroupBloc() : super(SelectgroupInitial()) {
     on<SelectgroupEvent>((event, emit) {
@@ -21,6 +23,15 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
         _selectedGroupType = event.selectedGroupType;
 
         emit(SelectedGroupTypeState(selectedGroupType: _selectedGroupType));
+      } else if (event is GroupNameChangedEvent) {
+        _groupName = event.groupName;
+
+        emit(GroupNameValueState(
+            groupName: _groupName, selectedGroupType: _selectedGroupType));
+      } else if (event is YourNameChangedEvent) {
+        _yourName = event.yourName;
+        emit(YourNameValueState(
+            yourName: _yourName, selectedGroupType: _selectedGroupType));
       }
     });
   }

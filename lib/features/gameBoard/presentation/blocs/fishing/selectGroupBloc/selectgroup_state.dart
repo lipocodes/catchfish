@@ -28,3 +28,17 @@ class SelectedGroupTypeState extends SelectgroupState {
   final int selectedGroupType;
   const SelectedGroupTypeState({required this.selectedGroupType});
 }
+
+class GroupNameValueState extends SelectgroupState {
+  final String groupName;
+  final int selectedGroupType;
+  const GroupNameValueState(
+      {required this.groupName, required this.selectedGroupType});
+}
+
+class YourNameValueState extends SelectgroupState {
+  final String yourName;
+  final int selectedGroupType;
+  const YourNameValueState(
+      {required this.yourName, required this.selectedGroupType});
+}
