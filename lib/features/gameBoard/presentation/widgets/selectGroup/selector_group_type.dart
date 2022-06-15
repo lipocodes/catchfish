@@ -1,17 +1,32 @@
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget selectorGroupType(BuildContext context) {
-  return Column(
-    children: [
-      gui(context),
-    ],
+  return BlocBuilder<SelectgroupBloc, SelectgroupState>(
+    builder: (context, state) {
+      if (state is SelectgroupInitial) {
+        return Column(
+          children: [
+            gui(context, 0),
+          ],
+        );
+      } else {
+        return Column(
+          children: [
+            gui(context, 0),
+          ],
+        );
+      }
+    },
   );
 }
 
 Widget gui(
   BuildContext context,
+  int selectedGroupType,
 ) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,7 +48,9 @@ Widget gui(
           child: const Text("start_group").tr(),
           style: TextButton.styleFrom(
               primary: Colors.white,
-              backgroundColor: const Color.fromARGB(255, 112, 148, 209),
+              backgroundColor: selectedGroupType == 1
+                  ? const Color.fromARGB(255, 112, 148, 209)
+                  : Colors.grey,
               elevation: 20,
               shadowColor: Colors.red,
               //shape: const CircleBorder(),
@@ -57,7 +74,9 @@ Widget gui(
           child: const Text("join_group").tr(),
           style: TextButton.styleFrom(
               primary: Colors.white,
-              backgroundColor: const Color.fromARGB(255, 112, 148, 209),
+              backgroundColor: selectedGroupType == 2
+                  ? const Color.fromARGB(255, 112, 148, 209)
+                  : Colors.grey,
               elevation: 20,
               shadowColor: Colors.red,
               //shape: const CircleBorder(),
