@@ -5,6 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 TextEditingController groupNameController = TextEditingController();
 TextEditingController yourNameController = TextEditingController();
+List<String> listGroups = [
+  "Group1",
+  "Group2",
+  "Group3",
+  "Group4",
+  "Group5",
+  "Group6",
+  "Group7"
+];
 
 Widget selectorGroupType(BuildContext context) {
   return BlocBuilder<SelectgroupBloc, SelectgroupState>(
@@ -47,99 +56,129 @@ Widget gui(
   BuildContext context,
   int selectedGroupType,
 ) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Center(
-        child: Text(
-          "please_select_option".tr(),
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.red,
-            fontStyle: FontStyle.italic,
-            fontFamily: 'skullsandcrossbones',
-          ),
-        ),
-      ),
-      SizedBox(
-        width: 200.0,
-        child: TextButton(
-          child: const Text("start_group").tr(),
-          style: TextButton.styleFrom(
-              primary: Colors.white,
-              backgroundColor: selectedGroupType == 1
-                  ? const Color.fromARGB(255, 112, 148, 209)
-                  : Colors.grey,
-              elevation: 20,
-              shadowColor: Colors.red,
-              //shape: const CircleBorder(),
-              //padding: const EdgeInsets.all(10),
-              textStyle: const TextStyle(
-                fontSize: 20,
-                fontStyle: FontStyle.italic,
-                fontFamily: 'skullsandcrossbones',
-              )),
-          onPressed: () {
-            BlocProvider.of<SelectgroupBloc>(context)
-                .add(const PressButtonGroupTypeEvent(selectedGroupType: 1));
-          },
-        ),
-      ),
-      if (selectedGroupType == 1) ...[
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: TextField(
-            controller: groupNameController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Group Name',
-            ),
-            onChanged: (text) {
-              BlocProvider.of<SelectgroupBloc>(context).add(
-                  GroupNameChangedEvent(groupName: groupNameController.text));
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: TextField(
-            controller: yourNameController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Your Name',
-            ),
-            onChanged: (text) {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(height: 100.00),
+        SizedBox(
+          width: 250.0,
+          child: TextButton(
+            child: const Text("start_group").tr(),
+            style: TextButton.styleFrom(
+                primary: Colors.white,
+                backgroundColor: selectedGroupType == 1
+                    ? const Color.fromARGB(255, 112, 148, 209)
+                    : Colors.grey,
+                elevation: 20,
+                shadowColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                textStyle: const TextStyle(
+                  fontSize: 24,
+                  fontStyle: FontStyle.italic,
+                  fontFamily: 'skullsandcrossbones',
+                )),
+            onPressed: () {
               BlocProvider.of<SelectgroupBloc>(context)
-                  .add(YourNameChangedEvent(yourName: yourNameController.text));
+                  .add(const PressButtonGroupTypeEvent(selectedGroupType: 1));
             },
           ),
         ),
-      ],
-      const SizedBox(height: 10.0),
-      SizedBox(
-        width: 200.0,
-        child: TextButton(
-          child: const Text("join_group").tr(),
-          style: TextButton.styleFrom(
-              primary: Colors.white,
-              backgroundColor: selectedGroupType == 2
-                  ? const Color.fromARGB(255, 112, 148, 209)
-                  : Colors.grey,
-              elevation: 20,
-              shadowColor: Colors.red,
-              //shape: const CircleBorder(),
-              //padding: const EdgeInsets.all(10),
-              textStyle: const TextStyle(
-                fontSize: 20,
-                fontStyle: FontStyle.italic,
-                fontFamily: 'skullsandcrossbones',
-              )),
-          onPressed: () {
-            BlocProvider.of<SelectgroupBloc>(context)
-                .add(const PressButtonGroupTypeEvent(selectedGroupType: 2));
-          },
+        if (selectedGroupType == 1) ...[
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Container(
+              color: Color.fromARGB(255, 73, 164, 224),
+              child: TextField(
+                controller: groupNameController,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontFamily: 'skullsandcrossbones',
+                ),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Group Name',
+                ),
+                onChanged: (text) {
+                  BlocProvider.of<SelectgroupBloc>(context).add(
+                      GroupNameChangedEvent(
+                          groupName: groupNameController.text));
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Container(
+              color: Color.fromARGB(255, 73, 164, 224),
+              child: TextField(
+                controller: yourNameController,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontFamily: 'skullsandcrossbones',
+                ),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Your Name',
+                ),
+                onChanged: (text) {
+                  BlocProvider.of<SelectgroupBloc>(context).add(
+                      YourNameChangedEvent(yourName: yourNameController.text));
+                },
+              ),
+            ),
+          ),
+        ],
+        const SizedBox(height: 10.0),
+        SizedBox(
+          width: 250.0,
+          child: TextButton(
+            child: const Text("join_group").tr(),
+            style: TextButton.styleFrom(
+                primary: Colors.white,
+                backgroundColor: selectedGroupType == 2
+                    ? const Color.fromARGB(255, 112, 148, 209)
+                    : Colors.grey,
+                elevation: 20,
+                shadowColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                textStyle: const TextStyle(
+                  fontSize: 24,
+                  fontStyle: FontStyle.italic,
+                  fontFamily: 'skullsandcrossbones',
+                )),
+            onPressed: () {
+              BlocProvider.of<SelectgroupBloc>(context)
+                  .add(const PressButtonGroupTypeEvent(selectedGroupType: 2));
+            },
+          ),
         ),
-      ),
-    ],
+        if (selectedGroupType == 2) ...[
+          SizedBox(
+            height: 200.0,
+            child: ListView.builder(
+                itemCount: listGroups.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                      title: Center(
+                    child: Text(
+                      listGroups[index],
+                      style: const TextStyle(
+                        fontSize: 24.0,
+                        fontFamily: 'skullsandcrossbones',
+                      ),
+                    ),
+                  ));
+                }),
+          ),
+        ],
+      ],
+    ),
   );
 }

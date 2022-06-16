@@ -13,15 +13,37 @@ class _MyWidgetState extends State<SelectGroup> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            buttonStartGame(context),
-            const SizedBox(
-              height: 50.0,
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Container(
+            height: 1000,
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  //tenor.com
+                  'assets/images/gameBoard/palm.gif',
+                ),
+                fit: BoxFit.cover,
+              ),
             ),
-            selectorGroupType(context),
-          ],
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    buttonStartGame(context),
+                  ],
+                ),
+                const SizedBox(
+                  height: 50.0,
+                ),
+                selectorGroupType(context),
+              ],
+            ),
+          ),
         ),
       ),
     );
