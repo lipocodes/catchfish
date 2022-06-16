@@ -10,8 +10,10 @@ abstract class SelectgroupState extends Equatable {
 class SelectgroupInitial extends SelectgroupState {}
 
 class NeutralState extends SelectgroupState {
+  final String selectedGroup;
   final int selectedGroupType;
-  const NeutralState({required this.selectedGroupType});
+  const NeutralState(
+      {required this.selectedGroup, required this.selectedGroupType});
 }
 
 class AllowedStartGame extends SelectgroupState {
@@ -46,6 +48,7 @@ class YourNameValueState extends SelectgroupState {
 class SelectedGroupState extends SelectgroupState {
   final String selectedGroup;
   final int selectedGroupType;
+
   const SelectedGroupState(
       {required this.selectedGroup, required this.selectedGroupType});
 }

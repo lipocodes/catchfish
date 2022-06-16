@@ -11,9 +11,12 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
   String _selectedGroup = "";
 
   SelectgroupBloc() : super(SelectgroupInitial()) {
+    print("aaaaaaaaaaaaaaaaaaa=" + state.toString());
     on<SelectgroupEvent>((event, emit) {
       if (event is NeutralEvent) {
-        emit(NeutralState(selectedGroupType: _selectedGroupType));
+        emit(NeutralState(
+            selectedGroup: _selectedGroup,
+            selectedGroupType: _selectedGroupType));
       } else if (event is PressStartGameButtonEvent) {
         if (_selectedGroupType == 0 ||
             (_selectedGroupType == 1 &&
@@ -37,9 +40,12 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
             yourName: _yourName, selectedGroupType: _selectedGroupType));
       } else if (event is SelectedExistingGroupEvent) {
         _selectedGroup = event.selectedGroup;
+        _groupName = "";
+        _yourName = "";
         emit(SelectedGroupState(
-            selectedGroupType: _selectedGroupType,
-            selectedGroup: _selectedGroup));
+          selectedGroupType: _selectedGroupType,
+          selectedGroup: _selectedGroup,
+        ));
       }
     });
   }

@@ -33,6 +33,7 @@ Widget selectorGroupType(BuildContext context) {
         );
       } else if (state is GroupNameValueState) {
         groupNameController.text = state.groupName;
+
         return Column(children: [
           gui(context, state.selectedGroupType),
         ]);
@@ -167,59 +168,44 @@ Widget gui(
           BlocBuilder<SelectgroupBloc, SelectgroupState>(
             builder: (context, state) {
               if (state is SelectedGroupState) {
-                return SizedBox(
-                  height: 200.0,
-                  child: ListView.builder(
-                      itemCount: listGroups.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                            onTap: () {
-                              BlocProvider.of<SelectgroupBloc>(context).add(
-                                  SelectedExistingGroupEvent(
-                                      selectedGroup: listGroups[index]));
-                            },
-                            title: Center(
-                              child: Text(
-                                listGroups[index],
-                                style: TextStyle(
-                                    fontSize: 24.0,
-                                    fontFamily: 'skullsandcrossbones',
-                                    backgroundColor:
-                                        listGroups[index] == state.selectedGroup
-                                            ? Colors.blueAccent
-                                            : Colors.transparent),
-                              ),
-                            ));
-                      }),
-                );
+                BlocProvider.of<SelectgroupBloc>(context).add(NeutralEvent());
+                return listView(context, state.selectedGroup);
+              } else if (state is NeutralState) {
+                return listView(context, state.selectedGroup);
               } else {
-                return SizedBox(
-                  height: 200.0,
-                  child: ListView.builder(
-                      itemCount: listGroups.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                            onTap: () {
-                              BlocProvider.of<SelectgroupBloc>(context).add(
-                                  SelectedExistingGroupEvent(
-                                      selectedGroup: listGroups[index]));
-                            },
-                            title: Center(
-                              child: Text(
-                                listGroups[index],
-                                style: const TextStyle(
-                                    fontSize: 24.0,
-                                    fontFamily: 'skullsandcrossbones',
-                                    backgroundColor: Colors.transparent),
-                              ),
-                            ));
-                      }),
-                );
+                return Container();
               }
             },
           ),
         ],
       ],
     ),
+  );
+}
+
+Widget listView(BuildContext context, String selectedGroup) {
+  return SizedBox(
+    height: 200.0,
+    child: ListView.builder(
+        itemCount: listGroups.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+              onTap: () {
+                BlocProvider.of<SelectgroupBloc>(context).add(
+                    SelectedExistingGroupEvent(
+                        selectedGroup: listGroups[index]));
+              },
+              title: Center(
+                child: Text(
+                  listGroups[index],
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      fontFamily: 'skullsandcrossbones',
+                      backgroundColor: listGroups[index] == selectedGroup
+                          ? Colors.blueAccent
+                          : Colors.transparent),
+                ),
+              ));
+        }),
   );
 }
