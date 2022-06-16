@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 Widget energy(int levelEnergy) {
   return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
       const Text("energy:",
           style: TextStyle(
             fontFamily: 'skullsandcrossbones',
-            fontSize: 16.0,
+            fontSize: 20.0,
             color: Colors.red,
           )).tr(),
       const SizedBox(

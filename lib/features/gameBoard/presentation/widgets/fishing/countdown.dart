@@ -7,7 +7,7 @@ Widget countdown(BuildContext context, String newCountdownTime) {
 Widget gui(String currentTime) {
   return Text(currentTime,
       style: const TextStyle(
-        fontSize: 28.0,
+        fontSize: 32.0,
         fontWeight: FontWeight.bold,
         color: Colors.blue,
         fontFamily: 'skullsandcrossbones',
