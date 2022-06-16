@@ -267,7 +267,7 @@ class _MyAppState extends State<MyApp> {
                 switch (settings.name) {
                   case '/':
                     return PageTransition(
-                      child: const /*Splash()*/ /*SelectGroup()*/ Fishing(),
+                      child: const /*Splash()*/ SelectGroup(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 1000),

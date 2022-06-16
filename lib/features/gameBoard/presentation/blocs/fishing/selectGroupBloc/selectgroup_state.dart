@@ -42,3 +42,10 @@ class YourNameValueState extends SelectgroupState {
   const YourNameValueState(
       {required this.yourName, required this.selectedGroupType});
 }
+
+class SelectedGroupState extends SelectgroupState {
+  final String selectedGroup;
+  final int selectedGroupType;
+  const SelectedGroupState(
+      {required this.selectedGroup, required this.selectedGroupType});
+}

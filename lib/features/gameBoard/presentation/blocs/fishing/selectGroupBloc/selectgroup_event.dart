@@ -31,3 +31,8 @@ class YourNameChangedEvent extends SelectgroupEvent {
   final String yourName;
   const YourNameChangedEvent({required this.yourName});
 }
+
+class SelectedExistingGroupEvent extends SelectgroupEvent {
+  final String selectedGroup;
+  const SelectedExistingGroupEvent({required this.selectedGroup});
+}

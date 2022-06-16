@@ -8,6 +8,7 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
   int _selectedGroupType = 0;
   String _groupName = "";
   String _yourName = "";
+  String _selectedGroup = "";
 
   SelectgroupBloc() : super(SelectgroupInitial()) {
     on<SelectgroupEvent>((event, emit) {
@@ -34,6 +35,11 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
         _yourName = event.yourName;
         emit(YourNameValueState(
             yourName: _yourName, selectedGroupType: _selectedGroupType));
+      } else if (event is SelectedExistingGroupEvent) {
+        _selectedGroup = event.selectedGroup;
+        emit(SelectedGroupState(
+            selectedGroupType: _selectedGroupType,
+            selectedGroup: _selectedGroup));
       }
     });
   }

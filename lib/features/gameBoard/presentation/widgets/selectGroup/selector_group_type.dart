@@ -45,6 +45,10 @@ Widget selectorGroupType(BuildContext context) {
         return Column(children: [
           gui(context, state.selectedGroupType),
         ]);
+      } else if (state is SelectedGroupState) {
+        return Column(children: [
+          gui(context, state.selectedGroupType),
+        ]);
       } else {
         return Container();
       }
@@ -160,22 +164,59 @@ Widget gui(
           ),
         ),
         if (selectedGroupType == 2) ...[
-          SizedBox(
-            height: 200.0,
-            child: ListView.builder(
-                itemCount: listGroups.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                      title: Center(
-                    child: Text(
-                      listGroups[index],
-                      style: const TextStyle(
-                        fontSize: 24.0,
-                        fontFamily: 'skullsandcrossbones',
-                      ),
-                    ),
-                  ));
-                }),
+          BlocBuilder<SelectgroupBloc, SelectgroupState>(
+            builder: (context, state) {
+              if (state is SelectedGroupState) {
+                return SizedBox(
+                  height: 200.0,
+                  child: ListView.builder(
+                      itemCount: listGroups.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                            onTap: () {
+                              BlocProvider.of<SelectgroupBloc>(context).add(
+                                  SelectedExistingGroupEvent(
+                                      selectedGroup: listGroups[index]));
+                            },
+                            title: Center(
+                              child: Text(
+                                listGroups[index],
+                                style: TextStyle(
+                                    fontSize: 24.0,
+                                    fontFamily: 'skullsandcrossbones',
+                                    backgroundColor:
+                                        listGroups[index] == state.selectedGroup
+                                            ? Colors.blueAccent
+                                            : Colors.transparent),
+                              ),
+                            ));
+                      }),
+                );
+              } else {
+                return SizedBox(
+                  height: 200.0,
+                  child: ListView.builder(
+                      itemCount: listGroups.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                            onTap: () {
+                              BlocProvider.of<SelectgroupBloc>(context).add(
+                                  SelectedExistingGroupEvent(
+                                      selectedGroup: listGroups[index]));
+                            },
+                            title: Center(
+                              child: Text(
+                                listGroups[index],
+                                style: const TextStyle(
+                                    fontSize: 24.0,
+                                    fontFamily: 'skullsandcrossbones',
+                                    backgroundColor: Colors.transparent),
+                              ),
+                            ));
+                      }),
+                );
+              }
+            },
           ),
         ],
       ],
