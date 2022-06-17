@@ -1,29 +1,28 @@
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
-import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group.dart';
+import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
 import 'package:dartz/dartz.dart';
+import 'package:catchfish/injection_container.dart';
 
 class SelectGroupUsecase extends UseCase<PulseEntity, NoParams> {
   @override
   Future<Either<Failure, PulseEntity>> call(NoParams params) {
-    // TODO: implement call
     throw UnimplementedError();
   }
 
-  Future<Either<Failure, ListGroup>> retreiveListGroups() async {
+  Future<Either<Failure, ListGroupEntity>> retreiveListGroups(
+      SelectGroupRepositoryImpl selectGroupRepositoryImpl) async {
     try {
-      List<String> listGroups = [
-        "Group1",
-        "Group2",
-        "Group3",
-        "Group4",
-        "Group5",
-        "Group6",
-        "Group7"
-      ];
-      ListGroup list = ListGroup(list: listGroups);
-      return Right(list);
+      late ListGroupEntity listGroupEntity = ListGroupEntity(list: []);
+      final res = await selectGroupRepositoryImpl.retreiveListGroups();
+
+      res.fold(
+        (failure) => GeneralFailure(),
+        (success) => listGroupEntity.list = success.list,
+      );
+      return Right(listGroupEntity);
     } catch (e) {
       return Left(GeneralFailure());
     }

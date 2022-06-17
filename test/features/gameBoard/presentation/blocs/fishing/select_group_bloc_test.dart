@@ -1,4 +1,5 @@
-import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group.dart';
+import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart';
 
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
@@ -32,8 +33,10 @@ void main() {
         "Group6",
         "Group7"
       ];
-      when(mockSelectGroupUsecase.retreiveListGroups())
-          .thenAnswer((_) async => Right(ListGroup(list: listGroups)));
+      SelectGroupRepositoryImpl selectGroupRepositoryImpl =
+          SelectGroupRepositoryImpl();
+      when(mockSelectGroupUsecase.retreiveListGroups(selectGroupRepositoryImpl))
+          .thenAnswer((_) async => Right(ListGroupEntity(list: listGroups)));
       selectGroupBloc
           .add(EnteringScreenEvent(selectGroupUsecase: mockSelectGroupUsecase));
       expectLater(

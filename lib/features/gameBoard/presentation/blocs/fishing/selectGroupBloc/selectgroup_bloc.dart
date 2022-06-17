@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group.dart';
+import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart';
+
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
 import 'package:equatable/equatable.dart';
 
@@ -19,8 +21,11 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
             selectedGroup: _selectedGroup,
             selectedGroupType: _selectedGroupType));
       } else if (event is EnteringScreenEvent) {
-        var res = await event.selectGroupUsecase.retreiveListGroups();
-        ListGroup l = ListGroup(list: []);
+        SelectGroupRepositoryImpl selectGroupRepositoryImpl =
+            SelectGroupRepositoryImpl();
+        var res = await event.selectGroupUsecase
+            .retreiveListGroups(selectGroupRepositoryImpl);
+        ListGroupEntity l = ListGroupEntity(list: []);
         res.fold(
           (failure) => null,
           (success) => l.list = success.list,

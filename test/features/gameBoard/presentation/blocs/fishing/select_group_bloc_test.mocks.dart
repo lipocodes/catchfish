@@ -6,7 +6,9 @@ import 'dart:async' as _i4;
 
 import 'package:catchfish/core/errors/failures.dart' as _i5;
 import 'package:catchfish/core/usecases/usecase.dart' as _i7;
-import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group.dart'
+import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart'
+    as _i9;
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart'
     as _i8;
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart'
     as _i6;
@@ -44,9 +46,12 @@ class MockSelectGroupUsecase extends _i1.Mock
               _FakeEither_0<_i5.Failure, _i6.PulseEntity>())) as _i4
           .Future<_i2.Either<_i5.Failure, _i6.PulseEntity>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, _i8.ListGroup>> retreiveListGroups() =>
-      (super.noSuchMethod(Invocation.method(#retreiveListGroups, []),
-              returnValue: Future<_i2.Either<_i5.Failure, _i8.ListGroup>>.value(
-                  _FakeEither_0<_i5.Failure, _i8.ListGroup>()))
-          as _i4.Future<_i2.Either<_i5.Failure, _i8.ListGroup>>);
+  _i4.Future<_i2.Either<_i5.Failure, _i8.ListGroupEntity>> retreiveListGroups(
+          _i9.SelectGroupRepositoryImpl? selectGroupRepositoryImpl) =>
+      (super.noSuchMethod(
+          Invocation.method(#retreiveListGroups, [selectGroupRepositoryImpl]),
+          returnValue:
+              Future<_i2.Either<_i5.Failure, _i8.ListGroupEntity>>.value(
+                  _FakeEither_0<_i5.Failure, _i8.ListGroupEntity>())) as _i4
+          .Future<_i2.Either<_i5.Failure, _i8.ListGroupEntity>>);
 }
