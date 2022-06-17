@@ -36,3 +36,8 @@ class SelectedExistingGroupEvent extends SelectgroupEvent {
   final String selectedGroup;
   const SelectedExistingGroupEvent({required this.selectedGroup});
 }
+
+class EnteringScreenEvent extends SelectgroupEvent {
+  final SelectGroupUsecase selectGroupUsecase;
+  const EnteringScreenEvent({required this.selectGroupUsecase});
+}

@@ -3,7 +3,9 @@ import 'package:catchfish/features/gameBoard/data/models/fishing/new_player_mode
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
+import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,8 +18,12 @@ Future<bool> init() async {
   sl.registerFactory<FishingBloc>(
     () => FishingBloc(),
   );
+  sl.registerFactory<SelectgroupBloc>(
+    () => SelectgroupBloc(),
+  );
   // Use cases
   sl.registerLazySingleton<FishingUsecase>(() => FishingUsecase());
+  sl.registerLazySingleton<SelectGroupUsecase>(() => SelectGroupUsecase());
   //local datasource
   sl.registerLazySingleton<LocalDatasourcePrefs>(() => LocalDatasourcePrefs());
   sl.registerLazySingleton<RemoteDatasource>(() => RemoteDatasource());

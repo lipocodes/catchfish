@@ -1,24 +1,27 @@
+import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
+import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 TextEditingController groupNameController = TextEditingController();
 TextEditingController yourNameController = TextEditingController();
-List<String> listGroups = [
-  "Group1",
-  "Group2",
-  "Group3",
-  "Group4",
-  "Group5",
-  "Group6",
-  "Group7"
-];
+List<String> listGroups = [];
 
 Widget selectorGroupType(BuildContext context) {
   return BlocBuilder<SelectgroupBloc, SelectgroupState>(
     builder: (context, state) {
       if (state is SelectgroupInitial) {
+        BlocProvider.of<SelectgroupBloc>(context).add(EnteringScreenEvent(
+            selectGroupUsecase: sl.get<SelectGroupUsecase>()));
+        return Column(
+          children: [
+            gui(context, 0),
+          ],
+        );
+      } else if (state is EnteringScreenState) {
+        listGroups = state.listGroups;
         return Column(
           children: [
             gui(context, 0),
@@ -167,7 +170,11 @@ Widget gui(
         if (selectedGroupType == 2) ...[
           BlocBuilder<SelectgroupBloc, SelectgroupState>(
             builder: (context, state) {
-              if (state is SelectedGroupState) {
+              if (state is EnteringScreenState) {
+                listGroups = state.listGroups;
+
+                return listView(context, state.selectedGroup);
+              } else if (state is SelectedGroupState) {
                 BlocProvider.of<SelectgroupBloc>(context).add(NeutralEvent());
                 return listView(context, state.selectedGroup);
               } else if (state is NeutralState) {

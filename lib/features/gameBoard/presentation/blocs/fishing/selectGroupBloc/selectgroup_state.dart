@@ -52,3 +52,10 @@ class SelectedGroupState extends SelectgroupState {
   const SelectedGroupState(
       {required this.selectedGroup, required this.selectedGroupType});
 }
+
+class EnteringScreenState extends SelectgroupState {
+  final List<String> listGroups;
+  final String selectedGroup;
+  const EnteringScreenState(
+      {required this.listGroups, required this.selectedGroup});
+}

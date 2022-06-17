@@ -6,7 +6,8 @@ import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entit
 import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
-import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/bloc/fishing_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
+
 import 'package:catchfish/features/tokens/data/datasources/local_datasource.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
@@ -14,8 +15,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'fishing_bloc_test.mocks.dart';
 import 'package:catchfish/injection_container.dart' as di;
+import 'fishing_bloc_test.mocks.dart';
 
 // in console: dart run build_runner build, in order to create mock file for the classes mentioned in @GenerateMocks
 @GenerateMocks(
