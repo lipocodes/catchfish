@@ -1,3 +1,4 @@
+import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
@@ -10,17 +11,18 @@ import 'package:mockito/annotations.dart';
 import 'package:catchfish/injection_container.dart' as di;
 import 'package:mockito/mockito.dart';
 
-import 'selectGroup_usecase_test.mocks.dart';
+import 'fishing_repository_impl_test.mocks.dart';
 
-@GenerateMocks([SelectGroupRepositoryImpl])
+@GenerateMocks([RemoteDatasource])
 void main() {
-  MockSelectGroupRepositoryImpl mockSelectGroupRepositoryImpl =
-      MockSelectGroupRepositoryImpl();
-  SelectGroupUsecase selectGroupUsecase = SelectGroupUsecase();
+  MockRemoteDatasource mockRemoteDatasource = MockRemoteDatasource();
+  SelectGroupRepositoryImpl selectGroupRepositoryImpl =
+      SelectGroupRepositoryImpl();
+
   setUp(() async {});
   tearDown(() {});
 
-  group("Testing SelectGroupUsecase", () {
+  group("Testing SelectGroupRepositoryImpl", () {
     di.init();
 
     test('testing retreiveListGroups()', () async {
@@ -33,11 +35,12 @@ void main() {
         "Group6",
         "Group7"
       ];
-      RemoteDatasource remoteDatasource = RemoteDatasource();
-      when(mockSelectGroupRepositoryImpl.retreiveListGroups(remoteDatasource))
+      when(mockRemoteDatasource.retreiveListGroups())
           .thenAnswer((_) async => Right(ListGroupModel(list: listGroups)));
-      final res = await selectGroupUsecase
-          .retreiveListGroups(mockSelectGroupRepositoryImpl);
+      final res = await selectGroupRepositoryImpl
+          .retreiveListGroups(mockRemoteDatasource);
+      res.fold((failure) => GeneralFailure(),
+          (success) => listGroups = success.list);
 
       //expectLater(res, Right(ListGroupModel(list: listGroups)));
     });

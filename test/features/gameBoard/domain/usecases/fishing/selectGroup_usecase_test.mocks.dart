@@ -5,6 +5,8 @@
 import 'dart:async' as _i4;
 
 import 'package:catchfish/core/errors/failures.dart' as _i5;
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart'
+    as _i7;
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart'
     as _i6;
 import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart'
@@ -34,11 +36,12 @@ class MockSelectGroupRepositoryImpl extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, _i6.ListGroupModel>>
-      retreiveListGroups() =>
-          (super.noSuchMethod(Invocation.method(#retreiveListGroups, []),
-                  returnValue:
-                      Future<_i2.Either<_i5.Failure, _i6.ListGroupModel>>.value(
-                          _FakeEither_0<_i5.Failure, _i6.ListGroupModel>()))
-              as _i4.Future<_i2.Either<_i5.Failure, _i6.ListGroupModel>>);
+  _i4.Future<_i2.Either<_i5.Failure, _i6.ListGroupModel>> retreiveListGroups(
+          _i7.RemoteDatasource? remoteDatasource) =>
+      (super.noSuchMethod(
+              Invocation.method(#retreiveListGroups, [remoteDatasource]),
+              returnValue:
+                  Future<_i2.Either<_i5.Failure, _i6.ListGroupModel>>.value(
+                      _FakeEither_0<_i5.Failure, _i6.ListGroupModel>()))
+          as _i4.Future<_i2.Either<_i5.Failure, _i6.ListGroupModel>>);
 }

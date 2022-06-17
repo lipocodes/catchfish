@@ -9,7 +9,6 @@ import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/gameBoard/data/datasources/fishing/local_datasource.dart';
 
@@ -26,7 +25,7 @@ Future<bool> init() async {
   // Use cases
   sl.registerLazySingleton<FishingUsecase>(() => FishingUsecase());
   sl.registerLazySingleton<SelectGroupUsecase>(() => SelectGroupUsecase());
-  //local datasource
+  //local & remote datasource
   sl.registerLazySingleton<LocalDatasourcePrefs>(() => LocalDatasourcePrefs());
   sl.registerLazySingleton<RemoteDatasource>(() => RemoteDatasource());
   //repository Impl

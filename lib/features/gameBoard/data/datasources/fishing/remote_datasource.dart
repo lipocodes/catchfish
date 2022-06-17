@@ -1,10 +1,10 @@
 import 'package:catchfish/core/errors/failures.dart';
+import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/new_player_model.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class RemoteDatasource {
   Future<Either<Failure, bool>> deleteGroup(String groupName) async {
@@ -196,6 +196,23 @@ class RemoteDatasource {
         "caughtFish": caughtFish,
       }, SetOptions(merge: true));
       return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, ListGroupModel>> retreiveListGroups() async {
+    List<String> listGroups = [];
+    try {
+      final groupsDB =
+          await FirebaseFirestore.instance.collection("groups").get();
+      List<QueryDocumentSnapshot> docs = groupsDB.docs;
+
+      for (int a = 0; a < docs.length; a++) {
+        listGroups.add(docs[a]['groupName']);
+      }
+      ListGroupModel listGroupModel = ListGroupModel(list: listGroups);
+      return Right(listGroupModel);
     } catch (e) {
       return Left(GeneralFailure());
     }
