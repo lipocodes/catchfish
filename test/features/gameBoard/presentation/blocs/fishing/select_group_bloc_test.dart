@@ -24,7 +24,7 @@ void main() {
 
     mockSelectGroupUsecase = MockSelectGroupUsecase();
     test('testing retreiveListGroups()', () {
-      List<String> listGroups = [
+      /* List<String> listGroups = [
         "Group1",
         "Group2",
         "Group3",
@@ -35,7 +35,7 @@ void main() {
       ];
       SelectGroupRepositoryImpl selectGroupRepositoryImpl =
           SelectGroupRepositoryImpl();
-      when(mockSelectGroupUsecase.retreiveListGroups(selectGroupRepositoryImpl))
+      when(mockSelectGroupUsecase.retreiveListGroups())
           .thenAnswer((_) async => Right(ListGroupEntity(list: listGroups)));
       selectGroupBloc
           .add(EnteringScreenEvent(selectGroupUsecase: mockSelectGroupUsecase));
@@ -43,6 +43,26 @@ void main() {
           selectGroupBloc.stream,
           emitsInAnyOrder([
             EnteringScreenState(listGroups: listGroups, selectedGroup: "")
+          ]));*/
+    });
+    test('testing retreiveListGroups()', () {
+      when(mockSelectGroupUsecase.addUserToGroup("Group1", "Lior"))
+          .thenAnswer((_) async => const Right(true));
+
+      selectGroupBloc.add(const YourNameChangedEvent(
+          yourName: "Lior", selectedGroup: "Group1"));
+      selectGroupBloc.add(const GroupNameChangedEvent(groupName: "Group1"));
+      selectGroupBloc
+          .add(const PressButtonGroupTypeEvent(selectedGroupType: 2));
+      selectGroupBloc.add(PressStartGameButtonEvent());
+      expectLater(
+          selectGroupBloc.stream,
+          emitsAnyOf([
+            const YourNameValueState(yourName: "Lior", selectedGroupType: 2),
+            const GroupNameValueState(
+                groupName: "Group1", selectedGroupType: 2),
+            const SelectedGroupTypeState(selectedGroupType: 2),
+            const NotAllowedStartGame(selectedGroupType: 2),
           ]));
     });
   });

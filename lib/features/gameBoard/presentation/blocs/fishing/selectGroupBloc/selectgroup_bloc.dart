@@ -3,6 +3,7 @@ import 'package:catchfish/features/gameBoard/data/repositories/select_group_repo
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart';
 
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
+import 'package:catchfish/injection_container.dart';
 import 'package:equatable/equatable.dart';
 
 part 'selectgroup_event.dart';
@@ -40,8 +41,14 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
           emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
         } else {
           //if user selects to join a group
-
-          emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
+          final res = await sl
+              .get<SelectGroupUsecase>()
+              .addUserToGroup(_selectedGroup, _yourName);
+          if (res.isRight()) {
+            emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
+          } else {
+            emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
+          }
         }
       } else if (event is PressButtonGroupTypeEvent) {
         _selectedGroupType = event.selectedGroupType;

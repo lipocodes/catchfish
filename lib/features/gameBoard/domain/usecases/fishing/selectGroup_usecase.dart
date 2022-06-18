@@ -30,4 +30,13 @@ class SelectGroupUsecase extends UseCase<PulseEntity, NoParams> {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<Failure, bool>> addUserToGroup(
+      String groupName, String yourName) async {
+    try {
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }
