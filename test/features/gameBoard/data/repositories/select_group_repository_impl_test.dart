@@ -28,12 +28,6 @@ void main() {
     test('testing retreiveListGroups()', () async {
       List<String> listGroups = [
         "Group1",
-        "Group2",
-        "Group3",
-        "Group4",
-        "Group5",
-        "Group6",
-        "Group7"
       ];
       when(mockRemoteDatasource.retreiveListGroups())
           .thenAnswer((_) async => Right(ListGroupModel(list: listGroups)));
@@ -42,7 +36,7 @@ void main() {
       res.fold((failure) => GeneralFailure(),
           (success) => listGroups = success.list);
 
-      //expectLater(res, Right(ListGroupModel(list: listGroups)));
+      expectLater(res, Right(ListGroupModel(list: listGroups)));
     });
   });
 }

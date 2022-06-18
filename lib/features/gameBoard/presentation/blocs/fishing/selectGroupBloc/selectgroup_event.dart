@@ -29,7 +29,9 @@ class GroupNameChangedEvent extends SelectgroupEvent {
 
 class YourNameChangedEvent extends SelectgroupEvent {
   final String yourName;
-  const YourNameChangedEvent({required this.yourName});
+  final String selectedGroup;
+  const YourNameChangedEvent(
+      {required this.yourName, required this.selectedGroup});
 }
 
 class SelectedExistingGroupEvent extends SelectgroupEvent {

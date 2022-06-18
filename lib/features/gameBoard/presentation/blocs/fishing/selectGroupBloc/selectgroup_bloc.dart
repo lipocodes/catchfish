@@ -39,6 +39,8 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
             (_selectedGroupType == 2 && _selectedGroup.isEmpty)) {
           emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
         } else {
+          //if user selects to join a group
+
           emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
         }
       } else if (event is PressButtonGroupTypeEvent) {
@@ -52,13 +54,13 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
             groupName: _groupName, selectedGroupType: _selectedGroupType));
       } else if (event is YourNameChangedEvent) {
         _yourName = event.yourName;
+        //_selectedGroup = event.selectedGroup;
+
         emit(YourNameValueState(
             yourName: _yourName, selectedGroupType: _selectedGroupType));
       } else if (event is SelectedExistingGroupEvent) {
         _selectedGroup = event.selectedGroup;
 
-        _groupName = "";
-        _yourName = "";
         emit(SelectedGroupState(
           selectedGroupType: _selectedGroupType,
           selectedGroup: _selectedGroup,
