@@ -101,4 +101,12 @@ class MockRemoteDatasource extends _i1.Mock implements _i3.RemoteDatasource {
                       Future<_i2.Either<_i5.Failure, _i6.ListGroupModel>>.value(
                           _FakeEither_0<_i5.Failure, _i6.ListGroupModel>()))
               as _i4.Future<_i2.Either<_i5.Failure, _i6.ListGroupModel>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, bool>> addUserToGroup(
+          String? groupName, String? yourName) =>
+      (super.noSuchMethod(
+              Invocation.method(#addUserToGroup, [groupName, yourName]),
+              returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
+                  _FakeEither_0<_i5.Failure, bool>()))
+          as _i4.Future<_i2.Either<_i5.Failure, bool>>);
 }

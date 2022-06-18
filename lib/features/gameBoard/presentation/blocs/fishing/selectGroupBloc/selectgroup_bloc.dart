@@ -41,9 +41,10 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
           emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
         } else {
           //if user selects to join a group
-          final res = await sl
-              .get<SelectGroupUsecase>()
-              .addUserToGroup(_selectedGroup, _yourName);
+          SelectGroupRepositoryImpl selectGroupRepositoryImpl =
+              SelectGroupRepositoryImpl();
+          final res = await sl.get<SelectGroupUsecase>().addUserToGroup(
+              _selectedGroup, _yourName, selectGroupRepositoryImpl);
           if (res.isRight()) {
             emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
           } else {

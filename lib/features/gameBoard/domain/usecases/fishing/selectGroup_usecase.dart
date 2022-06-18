@@ -32,9 +32,16 @@ class SelectGroupUsecase extends UseCase<PulseEntity, NoParams> {
   }
 
   Future<Either<Failure, bool>> addUserToGroup(
-      String groupName, String yourName) async {
+      String groupName,
+      String yourName,
+      SelectGroupRepositoryImpl selectGroupRepositoryImpl) async {
     try {
-      return const Right(true);
+      bool yesNo = false;
+      RemoteDatasource remoteDatasource = RemoteDatasource();
+      final res = await selectGroupRepositoryImpl.addUserToGroup(
+          groupName, yourName, remoteDatasource);
+      res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
+      return Right(yesNo);
     } catch (e) {
       return Left(GeneralFailure());
     }

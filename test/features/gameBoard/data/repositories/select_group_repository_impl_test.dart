@@ -38,5 +38,16 @@ void main() {
 
       expectLater(res, Right(ListGroupModel(list: listGroups)));
     });
+    test("testing addUserToGroup()", () async {
+      when(mockRemoteDatasource.addPlayerToGroup("Lior"))
+          .thenAnswer((_) async => const Right(true));
+      final res = await selectGroupRepositoryImpl.addUserToGroup(
+          "Group1", "Lior", mockRemoteDatasource);
+      if (res.isRight()) {
+        expectLater(res, const Right(true));
+      } else {
+        expectLater(res, Left(GeneralFailure()));
+      }
+    });
   });
 }

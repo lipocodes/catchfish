@@ -12,10 +12,13 @@ import 'package:mockito/mockito.dart';
 
 import 'select_group_bloc_test.mocks.dart';
 
-@GenerateMocks([SelectGroupUsecase])
+@GenerateMocks([SelectGroupUsecase, SelectGroupRepositoryImpl])
 void main() {
   late MockSelectGroupUsecase mockSelectGroupUsecase;
   late SelectgroupBloc selectGroupBloc;
+  MockSelectGroupRepositoryImpl mockSelectGroupRepositoryImpl =
+      MockSelectGroupRepositoryImpl();
+
   tearDown(() {});
   group("Testing BLOC SelectGroupBloc", () {
     di.init();
@@ -46,7 +49,8 @@ void main() {
           ]));*/
     });
     test('testing retreiveListGroups()', () {
-      when(mockSelectGroupUsecase.addUserToGroup("Group1", "Lior"))
+      when(mockSelectGroupUsecase.addUserToGroup(
+              "Group1", "Lior", mockSelectGroupRepositoryImpl))
           .thenAnswer((_) async => const Right(true));
 
       selectGroupBloc.add(const YourNameChangedEvent(

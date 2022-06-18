@@ -6,6 +6,10 @@ import 'dart:async' as _i4;
 
 import 'package:catchfish/core/errors/failures.dart' as _i5;
 import 'package:catchfish/core/usecases/usecase.dart' as _i7;
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart'
+    as _i11;
+import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart'
+    as _i10;
 import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart'
     as _i9;
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart'
@@ -56,9 +60,41 @@ class MockSelectGroupUsecase extends _i1.Mock
           .Future<_i2.Either<_i5.Failure, _i8.ListGroupEntity>>);
   @override
   _i4.Future<_i2.Either<_i5.Failure, bool>> addUserToGroup(
-          String? groupName, String? yourName) =>
+          String? groupName,
+          String? yourName,
+          _i9.SelectGroupRepositoryImpl? selectGroupRepositoryImpl) =>
       (super.noSuchMethod(
-              Invocation.method(#addUserToGroup, [groupName, yourName]),
+              Invocation.method(#addUserToGroup,
+                  [groupName, yourName, selectGroupRepositoryImpl]),
+              returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
+                  _FakeEither_0<_i5.Failure, bool>()))
+          as _i4.Future<_i2.Either<_i5.Failure, bool>>);
+}
+
+/// A class which mocks [SelectGroupRepositoryImpl].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSelectGroupRepositoryImpl extends _i1.Mock
+    implements _i9.SelectGroupRepositoryImpl {
+  MockSelectGroupRepositoryImpl() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, _i10.ListGroupModel>> retreiveListGroups(
+          _i11.RemoteDatasource? remoteDatasource) =>
+      (super.noSuchMethod(
+              Invocation.method(#retreiveListGroups, [remoteDatasource]),
+              returnValue:
+                  Future<_i2.Either<_i5.Failure, _i10.ListGroupModel>>.value(
+                      _FakeEither_0<_i5.Failure, _i10.ListGroupModel>()))
+          as _i4.Future<_i2.Either<_i5.Failure, _i10.ListGroupModel>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, bool>> addUserToGroup(String? groupName,
+          String? yourName, _i11.RemoteDatasource? remoteDatasource) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #addUserToGroup, [groupName, yourName, remoteDatasource]),
               returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
                   _FakeEither_0<_i5.Failure, bool>()))
           as _i4.Future<_i2.Either<_i5.Failure, bool>>);

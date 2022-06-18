@@ -217,4 +217,35 @@ class RemoteDatasource {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<Failure, bool>> addUserToGroup(
+      String groupName, String yourName) async {
+    try {
+      final groupsDB =
+          await FirebaseFirestore.instance.collection("groups").get();
+      List<QueryDocumentSnapshot> docs = groupsDB.docs;
+      for (int a = 0; a < docs.length; a++) {
+        String gName = docs[a]['groupName'];
+        if (gName == groupName) {
+          List listPlayers = docs[a]['players'];
+          NewPlayerModel newPlayerModel =
+              NewPlayerModel(playerName: yourName, image: "", caughtFish: []);
+          Map map = newPlayerModel.toJson();
+          listPlayers.add(map);
+          await FirebaseFirestore.instance
+              .collection("groups")
+              .doc(docs[a].id)
+              .set({
+            "players": listPlayers,
+          }, SetOptions(merge: true));
+          //we run it because we have found the right group & added user to it.
+          return const Right(true);
+        }
+      }
+      //we get here if no existing group was the right one
+      return Left(GeneralFailure());
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

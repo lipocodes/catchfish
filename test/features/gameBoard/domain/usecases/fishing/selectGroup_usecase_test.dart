@@ -41,5 +41,14 @@ void main() {
 
       //expectLater(res, Right(ListGroupModel(list: listGroups)));
     });
+    test('testing addUserToGroup()', () async {
+      RemoteDatasource remoteDatasource = RemoteDatasource();
+      when(mockSelectGroupRepositoryImpl.addUserToGroup(
+              "Group1", "Lior", remoteDatasource))
+          .thenAnswer((realInvocation) async => const Right(true));
+      final res = await selectGroupUsecase.addUserToGroup(
+          "Group1", "Lior", mockSelectGroupRepositoryImpl);
+      expectLater(res, const Right(true));
+    });
   });
 }
