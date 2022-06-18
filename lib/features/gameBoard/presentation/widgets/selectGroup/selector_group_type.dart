@@ -4,6 +4,7 @@ import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:ui' as UI;
 
 TextEditingController groupNameController = TextEditingController();
 TextEditingController yourNameController = TextEditingController();
@@ -64,6 +65,7 @@ Widget gui(
   BuildContext context,
   int selectedGroupType,
 ) {
+  UI.TextDirection direction = UI.TextDirection.ltr;
   return Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -77,25 +79,28 @@ Widget gui(
             decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 73, 164, 224),
                 borderRadius: BorderRadius.all(Radius.circular(20))),
-            child: TextField(
-              controller: yourNameController,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontFamily: 'skullsandcrossbones',
+            child: Directionality(
+              textDirection: direction,
+              child: TextField(
+                controller: yourNameController,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                  fontFamily: 'skullsandcrossbones',
+                ),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  enabledBorder: InputBorder.none,
+                  labelText: ' Your Name ',
+                ),
+                onChanged: (text) {
+                  print("sss=" + groupNameController.text);
+                  BlocProvider.of<SelectgroupBloc>(context).add(
+                      YourNameChangedEvent(
+                          yourName: yourNameController.text,
+                          selectedGroup: groupNameController.text));
+                },
               ),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                enabledBorder: InputBorder.none,
-                labelText: ' Your Name ',
-              ),
-              onChanged: (text) {
-                print("sss=" + groupNameController.text);
-                BlocProvider.of<SelectgroupBloc>(context).add(
-                    YourNameChangedEvent(
-                        yourName: yourNameController.text,
-                        selectedGroup: groupNameController.text));
-              },
             ),
           ),
         ),
