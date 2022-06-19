@@ -53,4 +53,13 @@ class MockSelectGroupRepositoryImpl extends _i1.Mock
               returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
                   _FakeEither_0<_i5.Failure, bool>()))
           as _i4.Future<_i2.Either<_i5.Failure, bool>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, bool>> createNewGroup(String? groupName,
+          String? yourName, _i7.RemoteDatasource? remoteDatasource) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #createNewGroup, [groupName, yourName, remoteDatasource]),
+              returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
+                  _FakeEither_0<_i5.Failure, bool>()))
+          as _i4.Future<_i2.Either<_i5.Failure, bool>>);
 }

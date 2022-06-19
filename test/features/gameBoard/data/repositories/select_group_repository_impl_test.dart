@@ -49,5 +49,16 @@ void main() {
         expectLater(res, Left(GeneralFailure()));
       }
     });
+    test("testing createNewGroup()", () async {
+      when(mockRemoteDatasource.createNewGroup("Group1", "Lior"))
+          .thenAnswer((_) async => const Right(true));
+      final res = await selectGroupRepositoryImpl.createNewGroup(
+          "Group1", "Lior", mockRemoteDatasource);
+      if (res.isRight()) {
+        expectLater(res, const Right(true));
+      } else {
+        expectLater(res, Left(GeneralFailure()));
+      }
+    });
   });
 }

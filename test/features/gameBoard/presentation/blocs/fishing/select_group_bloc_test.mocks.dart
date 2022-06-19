@@ -69,6 +69,17 @@ class MockSelectGroupUsecase extends _i1.Mock
               returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
                   _FakeEither_0<_i5.Failure, bool>()))
           as _i4.Future<_i2.Either<_i5.Failure, bool>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, bool>> createNewGroup(
+          String? groupName,
+          String? yourName,
+          _i9.SelectGroupRepositoryImpl? selectGroupRepositoryImpl) =>
+      (super.noSuchMethod(
+              Invocation.method(#createNewGroup,
+                  [groupName, yourName, selectGroupRepositoryImpl]),
+              returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
+                  _FakeEither_0<_i5.Failure, bool>()))
+          as _i4.Future<_i2.Either<_i5.Failure, bool>>);
 }
 
 /// A class which mocks [SelectGroupRepositoryImpl].
@@ -95,6 +106,15 @@ class MockSelectGroupRepositoryImpl extends _i1.Mock
       (super.noSuchMethod(
               Invocation.method(
                   #addUserToGroup, [groupName, yourName, remoteDatasource]),
+              returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
+                  _FakeEither_0<_i5.Failure, bool>()))
+          as _i4.Future<_i2.Either<_i5.Failure, bool>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, bool>> createNewGroup(String? groupName,
+          String? yourName, _i11.RemoteDatasource? remoteDatasource) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #createNewGroup, [groupName, yourName, remoteDatasource]),
               returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
                   _FakeEither_0<_i5.Failure, bool>()))
           as _i4.Future<_i2.Either<_i5.Failure, bool>>);

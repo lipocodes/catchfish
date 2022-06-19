@@ -1,7 +1,5 @@
-import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingshop_bloc.dart';
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
-import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
@@ -12,7 +10,6 @@ import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/personal_shop.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/select_group.dart';
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
-import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
 import 'package:catchfish/features/login/presentation/blocs/provider/apple_sign_in.dart';
@@ -25,7 +22,6 @@ import 'package:catchfish/features/settings/presentation/pages/equipment_invento
 import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
 import 'package:catchfish/features/tokens/presentation/blocs/provider/tokens_provider.dart';
 import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
-import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +33,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as UI;
-import 'package:catchfish/core/consts/marinas.dart';
 import 'package:workmanager/workmanager.dart';
 import 'injection_container.dart' as di;
 

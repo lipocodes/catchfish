@@ -94,7 +94,6 @@ Widget gui(
                   labelText: ' Your Name ',
                 ),
                 onChanged: (text) {
-                  print("sss=" + groupNameController.text);
                   BlocProvider.of<SelectgroupBloc>(context).add(
                       YourNameChangedEvent(
                           yourName: yourNameController.text,

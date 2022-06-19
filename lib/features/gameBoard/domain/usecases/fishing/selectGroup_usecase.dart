@@ -46,4 +46,19 @@ class SelectGroupUsecase extends UseCase<PulseEntity, NoParams> {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<Failure, bool>> createNewGroup(
+      String groupName,
+      String yourName,
+      SelectGroupRepositoryImpl selectGroupRepositoryImpl) async {
+    try {
+      bool yesNo = false;
+      final res = await selectGroupRepositoryImpl.createNewGroup(
+          "Group1", "Lior", sl.get<RemoteDatasource>());
+      res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
+      return Right(yesNo);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

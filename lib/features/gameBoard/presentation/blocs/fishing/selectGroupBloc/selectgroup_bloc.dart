@@ -43,12 +43,25 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
           //if user selects to join a group
           SelectGroupRepositoryImpl selectGroupRepositoryImpl =
               SelectGroupRepositoryImpl();
-          final res = await sl.get<SelectGroupUsecase>().addUserToGroup(
-              _selectedGroup, _yourName, selectGroupRepositoryImpl);
-          if (res.isRight()) {
-            emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
-          } else {
-            emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
+
+          if (_selectedGroupType == 1) {
+            final res = await sl.get<SelectGroupUsecase>().createNewGroup(
+                _selectedGroup, _yourName, selectGroupRepositoryImpl);
+
+            if (res.isRight()) {
+              emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
+            } else {
+              emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
+            }
+          } else if (_selectedGroupType == 2) {
+            final res = await sl.get<SelectGroupUsecase>().addUserToGroup(
+                _selectedGroup, _yourName, selectGroupRepositoryImpl);
+
+            if (res.isRight()) {
+              emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
+            } else {
+              emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
+            }
           }
         }
       } else if (event is PressButtonGroupTypeEvent) {

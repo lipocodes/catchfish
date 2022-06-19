@@ -48,7 +48,7 @@ void main() {
             EnteringScreenState(listGroups: listGroups, selectedGroup: "")
           ]));*/
     });
-    test('testing retreiveListGroups()', () {
+    test('testing addUserToGroup()', () {
       when(mockSelectGroupUsecase.addUserToGroup(
               "Group1", "Lior", mockSelectGroupRepositoryImpl))
           .thenAnswer((_) async => const Right(true));
@@ -65,9 +65,28 @@ void main() {
             const YourNameValueState(yourName: "Lior", selectedGroupType: 2),
             const GroupNameValueState(
                 groupName: "Group1", selectedGroupType: 2),
-            const SelectedGroupTypeState(selectedGroupType: 2),
-            const NotAllowedStartGame(selectedGroupType: 2),
+            const SelectedGroupTypeState(selectedGroupType: 1),
+            const NotAllowedStartGame(selectedGroupType: 1),
           ]));
+    });
+    test('testing PressStartGameButtonEvent()', () {
+      when(mockSelectGroupUsecase.createNewGroup(
+              "Group1", "Lior", mockSelectGroupRepositoryImpl))
+          .thenAnswer((_) async => const Right(true));
+      selectGroupBloc.add(const YourNameChangedEvent(
+          yourName: "Lior", selectedGroup: "Group1"));
+      selectGroupBloc.add(const GroupNameChangedEvent(groupName: "Group1"));
+      selectGroupBloc
+          .add(const PressButtonGroupTypeEvent(selectedGroupType: 1));
+      expectLater(
+        selectGroupBloc.stream,
+        emitsAnyOf([
+          const YourNameValueState(yourName: "Lior", selectedGroupType: 1),
+          const GroupNameValueState(groupName: "Group1", selectedGroupType: 1),
+          const SelectedGroupTypeState(selectedGroupType: 1),
+          const AllowedStartGame(selectedGroupType: 1),
+        ]),
+      );
     });
   });
 }

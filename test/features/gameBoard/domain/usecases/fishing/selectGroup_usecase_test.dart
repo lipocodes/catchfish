@@ -17,6 +17,7 @@ void main() {
   MockSelectGroupRepositoryImpl mockSelectGroupRepositoryImpl =
       MockSelectGroupRepositoryImpl();
   SelectGroupUsecase selectGroupUsecase = SelectGroupUsecase();
+  RemoteDatasource remoteDatasource = RemoteDatasource();
   setUp(() async {});
   tearDown(() {});
 
@@ -47,6 +48,14 @@ void main() {
               "Group1", "Lior", remoteDatasource))
           .thenAnswer((realInvocation) async => const Right(true));
       final res = await selectGroupUsecase.addUserToGroup(
+          "Group1", "Lior", mockSelectGroupRepositoryImpl);
+      expectLater(res, const Right(true));
+    });
+    test('testing createNewGroup()', () async {
+      when(mockSelectGroupRepositoryImpl.createNewGroup(
+              "Group1", "Lior", remoteDatasource))
+          .thenAnswer((realInvocation) async => const Right(true));
+      final res = await selectGroupUsecase.createNewGroup(
           "Group1", "Lior", mockSelectGroupRepositoryImpl);
       expectLater(res, const Right(true));
     });

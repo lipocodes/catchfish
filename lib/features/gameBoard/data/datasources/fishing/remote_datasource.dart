@@ -248,4 +248,13 @@ class RemoteDatasource {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<Failure, bool>> createNewGroup(
+      String groupName, String yourName) async {
+    try {
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }
