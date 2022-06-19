@@ -252,6 +252,9 @@ class RemoteDatasource {
   Future<Either<Failure, bool>> createNewGroup(
       String groupName, String yourName) async {
     try {
+      var newGroup = {'groupName': groupName, 'players': []};
+      await FirebaseFirestore.instance.collection("groups").add(newGroup);
+      addUserToGroup(groupName, yourName);
       return const Right(true);
     } catch (e) {
       return Left(GeneralFailure());

@@ -46,7 +46,7 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
 
           if (_selectedGroupType == 1) {
             final res = await sl.get<SelectGroupUsecase>().createNewGroup(
-                _selectedGroup, _yourName, selectGroupRepositoryImpl);
+                _groupName, _yourName, selectGroupRepositoryImpl);
 
             if (res.isRight()) {
               emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
