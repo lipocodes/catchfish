@@ -182,13 +182,27 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     }
   }
 
-  Future<Either<Failure, bool>> updateCaughtFishDatasources(
+  Future<Either<Failure, bool>> updateCaughtInGroups(
       String caughtFishDetails) async {
     try {
       bool yesNo = false;
       final res = await sl
           .get<FishingRepositoryImpl>()
-          .updateCaughtFishDatasources(caughtFishDetails);
+          .updateCaughtFishInGroups(caughtFishDetails);
+      res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
+      return Right(yesNo);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> addFishPersonalShop(
+      String caughtFishDetails) async {
+    try {
+      bool yesNo = false;
+      final res = await sl
+          .get<FishingRepositoryImpl>()
+          .addFishPersonalShop(caughtFishDetails);
       res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
       return Right(yesNo);
     } catch (e) {

@@ -147,34 +147,6 @@ class RemoteDatasource {
     }
   }
 
-  Future<Either<Failure, bool>> addFishPersonalShop(String detailsFish) async {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    try {
-      List caughtFish = [];
-      final User? user = auth.currentUser;
-      final uid = user?.uid;
-      if (uid == null) {
-        return const Right(true);
-      }
-      //what is the doc ID of this user
-      final userDoc = await FirebaseFirestore.instance
-          .collection("users")
-          .where("uid", isEqualTo: uid)
-          .get();
-      caughtFish = userDoc.docs[0].data()['caughtFish'];
-      caughtFish.add(detailsFish);
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(userDoc.docs[0].id)
-          .set({
-        "caughtFish": caughtFish,
-      }, SetOptions(merge: true));
-      return const Right(true);
-    } catch (e) {
-      return Left(GeneralFailure());
-    }
-  }
-
   Future<Either<Failure, bool>> removeFishPersonalShop(
       String detailsFish) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -268,7 +240,7 @@ class RemoteDatasource {
     }
   }
 
-  Future<Either<Failure, bool>> updateCaughtFishDatasources(
+  Future<Either<Failure, bool>> updateCaughtFishInGroups(
       String caughtFishDetails) async {
     try {
       final SharedPreferences prefs = await _prefs;
@@ -308,6 +280,34 @@ class RemoteDatasource {
         }
       }
       return Left(GeneralFailure());
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> addFishPersonalShop(String detailsFish) async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    try {
+      List caughtFish = [];
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+      if (uid == null) {
+        return const Right(true);
+      }
+      //what is the doc ID of this user
+      final userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .where("uid", isEqualTo: uid)
+          .get();
+      caughtFish = userDoc.docs[0].data()['caughtFish'];
+      caughtFish.add(detailsFish);
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userDoc.docs[0].id)
+          .set({
+        "caughtFish": caughtFish,
+      }, SetOptions(merge: true));
+      return const Right(true);
     } catch (e) {
       return Left(GeneralFailure());
     }

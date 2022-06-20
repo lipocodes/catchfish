@@ -36,7 +36,9 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         final res = await event.fishingUsecase.isFishCaught();
         //if fish is caught: update the datasources about it
         if (res.isRight()) {
-          sl.get<FishingUsecase>().updateCaughtFishDatasources(
+          sl.get<FishingUsecase>().updateCaughtInGroups(
+              sl.get<CaughtFishEntity>().caughtFishDetails);
+          sl.get<FishingUsecase>().addFishPersonalShop(
               sl.get<CaughtFishEntity>().caughtFishDetails);
         }
         res.fold(

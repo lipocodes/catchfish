@@ -1,6 +1,6 @@
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
-import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../data/datasources/fishing/remote_datasource.dart';
@@ -17,10 +17,7 @@ abstract class FishingRepository {
   Future<Either<Failure, List>> getPersonalShop(
       LocalDatasourcePrefs localDatasourcePrefs,
       RemoteDatasource remoteDatasource);
-  Future<Either<Failure, bool>> addFishPersonalShop(
-      String fishDetails,
-      LocalDatasourcePrefs localDatasourcePrefs,
-      RemoteDatasource remoteDatasource);
+  Future<Either<Failure, bool>> addFishPersonalShop(String caughtFishDetails);
   Future<Either<Failure, bool>> removeFishPersonalShop(
       String fishDetails,
       LocalDatasourcePrefs localDatasourcePrefs,

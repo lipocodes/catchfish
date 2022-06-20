@@ -62,20 +62,6 @@ class FishingRepositoryImpl implements FishingRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> addFishPersonalShop(
-      String fishDetails,
-      LocalDatasourcePrefs localDatasourcePrefs,
-      RemoteDatasource remoteDatasource) async {
-    final res1 = await localDatasourcePrefs.addFishPersonalShop(fishDetails);
-    final res2 = await remoteDatasource.addFishPersonalShop(fishDetails);
-    if (res1.isRight() && res2.isRight()) {
-      return const Right(true);
-    } else {
-      return Left(GeneralFailure());
-    }
-  }
-
-  @override
   Future<Either<Failure, bool>> removeFishPersonalShop(
       String fishDetails,
       LocalDatasourcePrefs localDatasourcePrefs,
@@ -134,10 +120,22 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
-  Future<Either<Failure, bool>> updateCaughtFishDatasources(
+  @override
+  Future<Either<Failure, bool>> updateCaughtFishInGroups(
       String caughtFishDetails) async {
     try {
-      sl.get<RemoteDatasource>().updateCaughtFishDatasources(caughtFishDetails);
+      sl.get<RemoteDatasource>().updateCaughtFishInGroups(caughtFishDetails);
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> addFishPersonalShop(
+      String caughtFishDetails) async {
+    try {
+      sl.get<RemoteDatasource>().addFishPersonalShop(caughtFishDetails);
       return const Right(true);
     } catch (e) {
       return Left(GeneralFailure());
