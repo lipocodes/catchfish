@@ -34,10 +34,14 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         emit(BetweenPulsesState());
       } else if (event is RedButtonPressedEvent) {
         final res = await event.fishingUsecase.isFishCaught();
-
+        //if fish is caught: update the datasources about it
+        if (res.isRight()) {
+          sl.get<FishingUsecase>().updateCaughtFishDatasources(
+              sl.get<CaughtFishEntity>().caughtFishDetails);
+        }
         res.fold(
           (failure) => emit(const ErrorRedButtonPressedState(
-              message: "Error in dealing wuth red button press!")),
+              message: "Error in dealing with red button press!")),
           (success) => emit(RedButtonPressedState(
               isFishCaught: sl.get<CaughtFishEntity>().isFishCaught,
               caughtFishDetails: sl.get<CaughtFishEntity>().caughtFishDetails)),

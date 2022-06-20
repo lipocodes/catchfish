@@ -5,8 +5,11 @@ import 'package:catchfish/injection_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RemoteDatasource {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   Future<Either<Failure, bool>> deleteGroup(String groupName) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -238,6 +241,10 @@ class RemoteDatasource {
               .set({
             "players": listPlayers,
           }, SetOptions(merge: true));
+          final SharedPreferences prefs = await _prefs;
+          prefs.setString("groupName", groupName);
+          prefs.setString("yourName", yourName);
+
           //we run it because we have found the right group & added user to it.
           return const Right(true);
         }
@@ -256,6 +263,25 @@ class RemoteDatasource {
       await FirebaseFirestore.instance.collection("groups").add(newGroup);
       addUserToGroup(groupName, yourName);
       return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> updateCaughtFishDatasources(
+      String caughtFishDetails) async {
+    try {
+      final SharedPreferences prefs = await _prefs;
+      String groupName = prefs.getString(
+            "groupName",
+          ) ??
+          "";
+      String yourName = prefs.getString(
+            "yourName",
+          ) ??
+          "";
+      print("vvv=" + groupName + " " + yourName + " " + caughtFishDetails);
+      return Right(true);
     } catch (e) {
       return Left(GeneralFailure());
     }

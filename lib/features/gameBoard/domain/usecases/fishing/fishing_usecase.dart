@@ -180,4 +180,18 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<Failure, bool>> updateCaughtFishDatasources(
+      String caughtFishDetails) async {
+    try {
+      bool yesNo = false;
+      final res = await sl
+          .get<FishingRepositoryImpl>()
+          .updateCaughtFishDatasources(caughtFishDetails);
+      res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
+      return Right(yesNo);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }
