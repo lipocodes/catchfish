@@ -74,6 +74,9 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
           (success) =>
               emit(LoadingPersonalShopState(personalShopInventory: success)),
         );
+      } else if (event is GameOverEvent) {
+        List<String> listAcheivements = ["Lior^^^100", "Eli^^^80", "Abed^^^60"];
+        emit(GameOverState(listAcheivements: listAcheivements));
       }
     });
   }

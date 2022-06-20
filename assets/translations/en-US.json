@@ -91,5 +91,6 @@
     "please_select_option": "Please select option",
     "start_group": "Start New Group",
     "join_group": "Join Existing Group",
-    "or": "OR"
+    "or": "OR",
+    "game_over": "Game Over"
 }

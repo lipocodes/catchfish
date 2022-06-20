@@ -114,5 +114,11 @@ void main() {
               [const LoadingPersonalShopState(personalShopInventory: [])]));*/
     });
   });
+  test('testing GameOverEvent()', () {
+    List<String> listAcheivements = ["Lior^^^100", "Eli^^^80", "Abed^^^60"];
+    fishingBloc.add(GameOverEvent());
+    expectLater(fishingBloc.stream,
+        emitsInOrder([GameOverState(listAcheivements: listAcheivements)]));
+  });
 }
 ///////////////////////////////////////////////////////////////////////////////////

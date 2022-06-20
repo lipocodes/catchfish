@@ -52,3 +52,9 @@ class LoadingPersonalShopState extends FishingState {
   final List<String> personalShopInventory;
   const LoadingPersonalShopState({required this.personalShopInventory});
 }
+
+class GameOverState extends FishingState {
+  //each member: player with his acheivements
+  final List<String> listAcheivements;
+  const GameOverState({required this.listAcheivements});
+}

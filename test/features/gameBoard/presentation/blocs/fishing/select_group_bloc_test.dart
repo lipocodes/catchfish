@@ -2,6 +2,7 @@ import 'package:catchfish/features/gameBoard/data/repositories/select_group_repo
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart';
 
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';

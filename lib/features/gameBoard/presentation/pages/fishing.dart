@@ -7,6 +7,7 @@ import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/energy
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/pulse_generator.dart';
 import 'package:catchfish/features/introduction/presentation/widgets/boat_steering.dart';
 import 'package:catchfish/injection_container.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
@@ -19,7 +20,7 @@ class Fishing extends StatefulWidget {
 }
 
 class _FishingState extends State<Fishing> {
-  String _currentTime = "05:00";
+  String _currentTime = "01:00";
   int _levelEnergy = 0;
   double angle = 0.0;
   int _seconds = 0;
@@ -38,6 +39,54 @@ class _FishingState extends State<Fishing> {
     BlocProvider.of<FishingBloc>(context).add(EnteringScreenEvent(
       fishingUsecase: sl.get<FishingUsecase>(),
     ));
+  }
+
+  popDialogGameOver(List<String> listAcheivments) async {
+    String str = "";
+    for (int a = 0; a < listAcheivments.length; a++) {
+      String temp = listAcheivments[a];
+      List t = temp.split("^^^");
+      str += (a + 1).toString() + ". " + t[0] + " - " + t[1] + "\n\n";
+    }
+    Future.delayed(const Duration(milliseconds: 500), () {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.redAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text(
+              "game_over".tr(),
+              style: const TextStyle(
+                fontFamily: 'skullsandcrossbones',
+              ),
+            ).tr(),
+            content: Text(
+              str,
+              style: const TextStyle(
+                fontFamily: 'skullsandcrossbones',
+              ),
+            ).tr(),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).popUntil(ModalRoute.withName("/lobby"));
+                },
+                child: const Text('next',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.blue,
+                      fontFamily: 'skullsandcrossbones',
+                    )).tr(),
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
 
   @override
@@ -84,9 +133,20 @@ class _FishingState extends State<Fishing> {
                         .substring(0, state.newCountdownTime.indexOf("^^^"));
                     if (_currentTime == "00:00") {
                       timer.cancel();
+                      BlocProvider.of<FishingBloc>(context)
+                          .add(GameOverEvent());
                     }
                     _levelEnergy = int.parse(state.newCountdownTime
                         .substring(state.newCountdownTime.indexOf("^^^") + 3));
+                    return Column(
+                      //mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        energy(_levelEnergy),
+                        countdown(context, _currentTime),
+                      ],
+                    );
+                  } else if (state is GameOverState) {
+                    popDialogGameOver(state.listAcheivements);
                     return Column(
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
