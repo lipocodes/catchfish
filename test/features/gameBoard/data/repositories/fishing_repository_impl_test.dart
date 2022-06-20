@@ -69,9 +69,8 @@ void main() {
               .addFishPersonalShop("Sargo^^^10^^^100^^^sargo.jpg"))
           .thenAnswer((_) async => const Right(true));
       final res = await fishingRepositoryImpl.addFishPersonalShop(
-          "Sargo^^^10^^^100^^^sargo.jpg",
-          mockLocalDatasourcePrefs,
-          mockRemoteDatasource);
+        "Sargo^^^10^^^100^^^sargo.jpg",
+      );
       expectLater(res, const Right(true));
     });
     test("removeFishPersonalShop()", () async {

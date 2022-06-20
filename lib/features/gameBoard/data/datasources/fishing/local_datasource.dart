@@ -42,6 +42,7 @@ class LocalDatasourcePrefs implements LocalDatasource {
       final prefs = await SharedPreferences.getInstance();
       final res = prefs.getStringList("personalShop") ?? [];
       res.add(detailsFish);
+
       prefs.setStringList("personalShop", res);
       return const Right(true);
     } catch (e) {

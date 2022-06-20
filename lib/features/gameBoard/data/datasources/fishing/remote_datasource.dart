@@ -1,4 +1,5 @@
 import 'package:catchfish/core/errors/failures.dart';
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/new_player_model.dart';
 import 'package:catchfish/injection_container.dart';
@@ -286,11 +287,14 @@ class RemoteDatasource {
   }
 
   Future<Either<Failure, bool>> addFishPersonalShop(String detailsFish) async {
+    //save new fish in the relevant pref
+    sl.get<LocalDatasourcePrefs>().addFishPersonalShop(detailsFish);
     final FirebaseAuth auth = FirebaseAuth.instance;
     try {
       List caughtFish = [];
       final User? user = auth.currentUser;
       final uid = user?.uid;
+
       if (uid == null) {
         return const Right(true);
       }
