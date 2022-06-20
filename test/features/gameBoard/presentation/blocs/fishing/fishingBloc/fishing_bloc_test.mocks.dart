@@ -187,4 +187,20 @@ class MockFishingUsecase extends _i1.Mock implements _i9.FishingUsecase {
               returnValue: Future<_i6.Either<_i10.Failure, List<String>>>.value(
                   _FakeEither_5<_i10.Failure, List<String>>()))
           as _i7.Future<_i6.Either<_i10.Failure, List<String>>>);
+  @override
+  _i7.Future<_i6.Either<_i10.Failure, bool>> updateCaughtInGroups(
+          String? caughtFishDetails) =>
+      (super.noSuchMethod(
+              Invocation.method(#updateCaughtInGroups, [caughtFishDetails]),
+              returnValue: Future<_i6.Either<_i10.Failure, bool>>.value(
+                  _FakeEither_5<_i10.Failure, bool>()))
+          as _i7.Future<_i6.Either<_i10.Failure, bool>>);
+  @override
+  _i7.Future<_i6.Either<_i10.Failure, bool>> addFishPersonalShop(
+          String? caughtFishDetails) =>
+      (super.noSuchMethod(
+              Invocation.method(#addFishPersonalShop, [caughtFishDetails]),
+              returnValue: Future<_i6.Either<_i10.Failure, bool>>.value(
+                  _FakeEither_5<_i10.Failure, bool>()))
+          as _i7.Future<_i6.Either<_i10.Failure, bool>>);
 }

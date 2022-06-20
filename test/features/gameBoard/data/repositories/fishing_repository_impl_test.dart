@@ -3,6 +3,8 @@ import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_dat
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:catchfish/injection_container.dart' as di;
@@ -128,5 +130,18 @@ void main() {
 
       expectLater(res, const Right([]));
     });
+  });
+
+  test("addFishPersonalShop()", () async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+    mockRemoteDatasource = MockRemoteDatasource();
+    fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
+    when(mockRemoteDatasource
+            .addFishPersonalShop("Mullet^^^24^^^500^^^mullet.jpg"))
+        .thenAnswer((realInvocation) async => const Right(true));
+    final res = await fishingRepositoryImpl
+        .addFishPersonalShop("Mullet^^^24^^^500^^^mullet.jpg");
+    expectLater(res, const Right(true));
   });
 }
