@@ -114,15 +114,16 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         sl.get<LocalDatasourcePrefs>().addFishPersonalShop(caughtFishDetails);
         sl.get<CaughtFishEntity>().caughtFishDetails = caughtFishDetails;
         sl.get<CaughtFishEntity>().isFishCaught = true;
+        return Right(
+          sl.get<CaughtFishEntity>(),
+        );
       } else {
         if (!Platform.environment.containsKey('FLUTTER_TEST')) {
           playBackgroundAudio("missedFish.mp3");
         }
       }
 
-      return Right(
-        sl.get<CaughtFishEntity>(),
-      );
+      return Left(GeneralFailure());
     } catch (e) {
       return Left(GeneralFailure());
     }

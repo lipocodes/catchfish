@@ -280,8 +280,34 @@ class RemoteDatasource {
             "yourName",
           ) ??
           "";
-      print("vvv=" + groupName + " " + yourName + " " + caughtFishDetails);
-      return Right(true);
+
+      final groupsDB =
+          await FirebaseFirestore.instance.collection("groups").get();
+      List<QueryDocumentSnapshot> docs = groupsDB.docs;
+      for (int a = 0; a < docs.length; a++) {
+        String gName = docs[a]['groupName'];
+        if (gName == groupName) {
+          List listPlayers = docs[a]['players'];
+          for (int b = 0; b < listPlayers.length; b++) {
+            if (listPlayers[b]['playerName'] == yourName) {
+              List listCaughtFish = listPlayers[b]['caughtFish'];
+              listCaughtFish.add(caughtFishDetails);
+              NewPlayerModel newPlayerModel = NewPlayerModel(
+                  playerName: yourName, image: "", caughtFish: listCaughtFish);
+              Map map = newPlayerModel.toJson();
+              listPlayers[b] = map;
+              await FirebaseFirestore.instance
+                  .collection("groups")
+                  .doc(docs[a].id)
+                  .set({
+                "players": listPlayers,
+              }, SetOptions(merge: true));
+              return const Right(true);
+            }
+          }
+        }
+      }
+      return Left(GeneralFailure());
     } catch (e) {
       return Left(GeneralFailure());
     }
