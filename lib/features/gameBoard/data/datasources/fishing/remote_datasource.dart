@@ -318,8 +318,38 @@ class RemoteDatasource {
   }
 
   Future<Either<Failure, List<String>>> getGameResults() async {
-    List<String> listAcheivements = ["Lior^^^50", "Eli^^^40", "Abed^^^30"];
+    List<String> listAcheivements = [];
     try {
+      final SharedPreferences prefs = await _prefs;
+      String groupName = prefs.getString(
+            "groupName",
+          ) ??
+          "";
+      String yourName = prefs.getString(
+            "yourName",
+          ) ??
+          "";
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("groups")
+          .where('groupName', isEqualTo: groupName)
+          .get();
+      List listPlayers = querySnapshot.docs[0]['players'];
+      for (int a = 0; a < listPlayers.length; a++) {
+        List caughtFish = listPlayers[a]['caughtFish'];
+        int caughtFishValue = 0;
+        for (int b = 0; b < caughtFish.length; b++) {
+          String str = caughtFish[b];
+          List list = str.split("^^^");
+          caughtFishValue += int.parse(list[1]);
+        }
+        listAcheivements.add(yourName + "^^^" + caughtFishValue.toString());
+      }
+      //no need to this group anymore because the game is over & we retreived each players acheivements
+      if (listPlayers[0]['playerName'] == yourName) {
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          deleteGroup(groupName);
+        });
+      }
       return Right(listAcheivements);
     } catch (e) {
       return Left(GeneralFailure());
