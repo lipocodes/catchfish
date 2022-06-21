@@ -1,5 +1,6 @@
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
+import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
 
 import 'package:dartz/dartz.dart';
 
@@ -30,4 +31,5 @@ abstract class FishingRepository {
       String selectedGroupName, RemoteDatasource remoteDatasource);
   Future<Either<Failure, List>> getExistingGroups(
       RemoteDatasource remoteDatasource);
+  Future<Either<Failure, List<String>>> getGameResults();
 }

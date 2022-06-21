@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
+import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
@@ -116,6 +117,9 @@ void main() {
   });
   test('testing GameOverEvent()', () {
     List<String> listAcheivements = ["Lior^^^100", "Eli^^^80", "Abed^^^60"];
+    FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();
+    when(mockFishingUsecase.getGameResults(fishingRepositoryImpl))
+        .thenAnswer((_) async => Right(listAcheivements));
     fishingBloc.add(GameOverEvent());
     expectLater(fishingBloc.stream,
         emitsInOrder([GameOverState(listAcheivements: listAcheivements)]));

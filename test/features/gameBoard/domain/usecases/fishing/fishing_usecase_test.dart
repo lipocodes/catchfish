@@ -9,15 +9,28 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:catchfish/injection_container.dart' as di;
+import 'package:mockito/mockito.dart';
 
-@GenerateMocks([])
+import 'fishing_usecase_test.mocks.dart';
+
+@GenerateMocks([FishingRepositoryImpl])
 void main() {
+  MockFishingRepositoryImpl mockFishingRepositoryImpl;
+  FishingUsecase fishingUsecase = FishingUsecase();
   setUp(() async {});
   tearDown(() {});
 
   group("Testing FishingUsecase", () {
     di.init();
 
-    test('testing GetPulseEvent', () async {});
+    test('testing getGameResults', () async {
+      mockFishingRepositoryImpl = MockFishingRepositoryImpl();
+      List<String> listAcheivements = ["Lior^^^100", "Eli^^^80", "Abed^^^60"];
+      when(mockFishingRepositoryImpl.getGameResults())
+          .thenAnswer((_) async => Right(listAcheivements));
+      final res =
+          await fishingUsecase.getGameResults(mockFishingRepositoryImpl);
+      expectLater(res, Right(listAcheivements));
+    });
   });
 }

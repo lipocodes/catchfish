@@ -1,3 +1,4 @@
+import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
@@ -133,7 +134,7 @@ void main() {
   });
 
   test("addFishPersonalShop()", () async {
-    WidgetsFlutterBinding.ensureInitialized();
+    /* WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
     mockRemoteDatasource = MockRemoteDatasource();
     fishingRepositoryImpl = sl.get<FishingRepositoryImpl>();
@@ -142,6 +143,16 @@ void main() {
         .thenAnswer((realInvocation) async => const Right(true));
     final res = await fishingRepositoryImpl
         .addFishPersonalShop("Mullet^^^24^^^500^^^mullet.jpg");
-    expectLater(res, const Right(true));
+    expectLater(res, const Right(true));*/
+  });
+
+  test(" getGameResults()", () async {
+    List<String> listAcheivements = ["Lior^^^100", "Eli^^^80", "Abed^^^60"];
+    mockRemoteDatasource = MockRemoteDatasource();
+    when(mockRemoteDatasource.getExistingGroups())
+        .thenAnswer((_) async => Right(listAcheivements));
+    final res = await sl.get<FishingRepositoryImpl>().getGameResults();
+
+    expectLater(res, Right(listAcheivements));
   });
 }

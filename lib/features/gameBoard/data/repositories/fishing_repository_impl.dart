@@ -141,4 +141,16 @@ class FishingRepositoryImpl implements FishingRepository {
       return Left(GeneralFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<String>>> getGameResults() async {
+    try {
+      List<String> listAcheivements = [];
+      final res = await sl.get<RemoteDatasource>().getGameResults();
+      res.fold((l) => Left(GeneralFailure()), (r) => listAcheivements = r);
+      return Right(listAcheivements);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

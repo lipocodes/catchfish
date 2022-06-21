@@ -209,4 +209,16 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<Failure, List<String>>> getGameResults(
+      FishingRepositoryImpl fishingRepositoryImpl) async {
+    List<String> listAcheivements = [];
+    try {
+      final res = await fishingRepositoryImpl.getGameResults();
+      res.fold((l) => Left(GeneralFailure()), (r) => listAcheivements = r);
+      return Right(listAcheivements);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

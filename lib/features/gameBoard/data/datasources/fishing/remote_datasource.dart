@@ -316,4 +316,13 @@ class RemoteDatasource {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<Failure, List<String>>> getGameResults() async {
+    List<String> listAcheivements = ["Lior^^^50", "Eli^^^40", "Abed^^^30"];
+    try {
+      return Right(listAcheivements);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

@@ -1,11 +1,15 @@
 import 'package:bloc/bloc.dart';
+import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
+import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/injection_container.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'fishing_event.dart';
 part 'fishing_state.dart';
@@ -75,7 +79,16 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
               emit(LoadingPersonalShopState(personalShopInventory: success)),
         );
       } else if (event is GameOverEvent) {
-        List<String> listAcheivements = ["Lior^^^100", "Eli^^^80", "Abed^^^60"];
+        List<String> listAcheivements = [];
+        FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();
+        final res = await sl
+            .get<FishingUsecase>()
+            .getGameResults(fishingRepositoryImpl);
+
+        res.fold(
+          (failure) => GeneralFailure(),
+          (success) => listAcheivements = success,
+        );
         emit(GameOverState(listAcheivements: listAcheivements));
       }
     });

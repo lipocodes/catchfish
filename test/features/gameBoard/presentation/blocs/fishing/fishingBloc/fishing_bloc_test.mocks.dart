@@ -12,6 +12,8 @@ import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_data
     as _i4;
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart'
     as _i5;
+import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart'
+    as _i14;
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart'
     as _i13;
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart'
@@ -203,4 +205,12 @@ class MockFishingUsecase extends _i1.Mock implements _i9.FishingUsecase {
               returnValue: Future<_i6.Either<_i10.Failure, bool>>.value(
                   _FakeEither_5<_i10.Failure, bool>()))
           as _i7.Future<_i6.Either<_i10.Failure, bool>>);
+  @override
+  _i7.Future<_i6.Either<_i10.Failure, List<String>>> getGameResults(
+          _i14.FishingRepositoryImpl? fishingRepositoryImpl) =>
+      (super.noSuchMethod(
+              Invocation.method(#getGameResults, [fishingRepositoryImpl]),
+              returnValue: Future<_i6.Either<_i10.Failure, List<String>>>.value(
+                  _FakeEither_5<_i10.Failure, List<String>>()))
+          as _i7.Future<_i6.Either<_i10.Failure, List<String>>>);
 }
