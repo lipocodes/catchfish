@@ -334,9 +334,11 @@ class RemoteDatasource {
           .where('groupName', isEqualTo: groupName)
           .get();
       List listPlayers = querySnapshot.docs[0]['players'];
+      //going over list of players
       for (int a = 0; a < listPlayers.length; a++) {
         List caughtFish = listPlayers[a]['caughtFish'];
         int caughtFishValue = 0;
+        //going over the list of caught fish of this player
         for (int b = 0; b < caughtFish.length; b++) {
           String str = caughtFish[b];
           List list = str.split("^^^");
@@ -344,6 +346,23 @@ class RemoteDatasource {
         }
         listAcheivements.add(yourName + "^^^" + caughtFishValue.toString());
       }
+      //we need to sort players by their caughtFishValue
+      for (int a = 0; a < listAcheivements.length; a++) {
+        for (int b = a + 1; b < listAcheivements.length; b++) {
+          String str1 = listAcheivements[a];
+          List list1 = str1.split("^^^");
+          int caughtFishValue1 = int.parse(list1[1]);
+          String str2 = listAcheivements[b];
+          List list2 = str2.split("^^^");
+          int caughtFishValue2 = int.parse(list2[1]);
+          if (caughtFishValue1 > caughtFishValue2) {
+            String temp = listAcheivements[a];
+            listAcheivements[a] = listAcheivements[b];
+            listAcheivements[b] = temp;
+          }
+        }
+      }
+
       //no need to this group anymore because the game is over & we retreived each players acheivements
       if (listPlayers[0]['playerName'] == yourName) {
         Future.delayed(const Duration(milliseconds: 1000), () {
