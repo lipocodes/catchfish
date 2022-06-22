@@ -48,6 +48,7 @@ class _FishingState extends State<Fishing> {
       List t = temp.split("^^^");
       str += (a + 1).toString() + ". " + t[0] + " - " + t[1] + "\n\n";
     }
+    str += "refer_to_private_collection".tr();
     Future.delayed(const Duration(milliseconds: 500), () {
       showDialog(
         context: context,
