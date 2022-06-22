@@ -67,6 +67,10 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
           }
         }
       } else if (event is PressButtonGroupTypeEvent) {
+        if (_yourName.isEmpty) {
+          emit(const SelectedGroupTypeState(selectedGroupType: 0));
+          return;
+        }
         _selectedGroupType = event.selectedGroupType;
         final prefs = await SharedPreferences.getInstance();
         prefs.setInt("selectedGroupType", _selectedGroupType);
@@ -78,8 +82,10 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
             groupName: _groupName, selectedGroupType: _selectedGroupType));
       } else if (event is YourNameChangedEvent) {
         _yourName = event.yourName;
-        //_selectedGroup = event.selectedGroup;
-
+        if (_yourName.isEmpty) {
+          emit(const SelectedGroupTypeState(selectedGroupType: 0));
+          return;
+        }
         emit(YourNameValueState(
             yourName: _yourName, selectedGroupType: _selectedGroupType));
       } else if (event is SelectedExistingGroupEvent) {
