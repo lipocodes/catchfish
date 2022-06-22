@@ -92,5 +92,6 @@
     "start_group": "Start New Group",
     "join_group": "Join Existing Group",
     "or": "OR",
-    "game_over": "Game Over"
+    "game_over": "Game Over",
+    "start_solo_game": "Start Solo Game"
 }

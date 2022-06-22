@@ -71,38 +71,35 @@ Widget gui(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(height: 100.00),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Container(
-            width: 250.0,
-            height: 50.0,
-            decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 73, 164, 224),
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            child: Directionality(
-              textDirection: direction,
-              child: TextField(
-                controller: yourNameController,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
+        SizedBox(
+          width: 250.0,
+          child: TextButton(
+            child: const Text("start_solo_game").tr(),
+            style: TextButton.styleFrom(
+                primary: Colors.white,
+                backgroundColor: selectedGroupType == 1
+                    ? const Color.fromARGB(255, 112, 148, 209)
+                    : Colors.grey,
+                elevation: 20,
+                shadowColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                textStyle: const TextStyle(
+                  fontSize: 24,
+                  fontStyle: FontStyle.italic,
                   fontFamily: 'skullsandcrossbones',
-                ),
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: InputBorder.none,
-                  labelText: ' Your Name ',
-                ),
-                onChanged: (text) {
-                  BlocProvider.of<SelectgroupBloc>(context).add(
-                      YourNameChangedEvent(
-                          yourName: yourNameController.text,
-                          selectedGroup: groupNameController.text));
-                },
-              ),
-            ),
+                )),
+            onPressed: () {
+              BlocProvider.of<SelectgroupBloc>(context)
+                  .add(const PressButtonGroupTypeEvent(selectedGroupType: 0));
+            },
           ),
         ),
+        const SizedBox(height: 10.0),
+        if (selectedGroupType == 0) ...[
+          textFieldYourName(context),
+        ],
         SizedBox(
           width: 250.0,
           child: TextButton(
@@ -129,36 +126,9 @@ Widget gui(
           ),
         ),
         if (selectedGroupType == 1) ...[
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Container(
-              width: 250.0,
-              height: 50.0,
-              decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 73, 164, 224),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: TextField(
-                controller: groupNameController,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                  fontFamily: 'skullsandcrossbones',
-                ),
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: ' Group Name ',
-                  enabledBorder: InputBorder.none,
-                ),
-                onChanged: (text) {
-                  BlocProvider.of<SelectgroupBloc>(context).add(
-                      GroupNameChangedEvent(
-                          groupName: groupNameController.text));
-                },
-              ),
-            ),
-          ),
+          textFieldYourName(context),
+          textFieldGroupName(context),
         ],
-        const SizedBox(height: 10.0),
         SizedBox(
           width: 250.0,
           child: TextButton(
@@ -231,5 +201,70 @@ Widget listView(BuildContext context, String selectedGroup) {
                 ),
               ));
         }),
+  );
+}
+
+Widget textFieldYourName(BuildContext context) {
+  UI.TextDirection direction = UI.TextDirection.ltr;
+  return Padding(
+    padding: const EdgeInsets.all(15.0),
+    child: Container(
+      width: 250.0,
+      height: 50.0,
+      decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 73, 164, 224),
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      child: Directionality(
+        textDirection: direction,
+        child: TextField(
+          controller: yourNameController,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+            fontFamily: 'skullsandcrossbones',
+          ),
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            enabledBorder: InputBorder.none,
+            labelText: ' Your Name ',
+          ),
+          onChanged: (text) {
+            BlocProvider.of<SelectgroupBloc>(context).add(YourNameChangedEvent(
+                yourName: yourNameController.text,
+                selectedGroup: groupNameController.text));
+          },
+        ),
+      ),
+    ),
+  );
+}
+
+Widget textFieldGroupName(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.all(15.0),
+    child: Container(
+      width: 250.0,
+      height: 50.0,
+      decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 73, 164, 224),
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      child: TextField(
+        controller: groupNameController,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 20.0,
+          fontFamily: 'skullsandcrossbones',
+        ),
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: ' Group Name ',
+          enabledBorder: InputBorder.none,
+        ),
+        onChanged: (text) {
+          BlocProvider.of<SelectgroupBloc>(context)
+              .add(GroupNameChangedEvent(groupName: groupNameController.text));
+        },
+      ),
+    ),
   );
 }

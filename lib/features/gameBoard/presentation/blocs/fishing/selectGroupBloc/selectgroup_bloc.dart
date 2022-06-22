@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:equatable/equatable.dart';
@@ -34,7 +34,7 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
         emit(EnteringScreenState(
             listGroups: l.list, selectedGroup: _selectedGroup));
       } else if (event is PressStartGameButtonEvent) {
-        if (_selectedGroupType == 0 ||
+        if ((_selectedGroupType == 0 && _yourName.isEmpty) ||
             (_selectedGroupType == 1 &&
                 (_groupName.isEmpty || _yourName.isEmpty)) ||
             (_selectedGroupType == 2 && _selectedGroup.isEmpty)) {
@@ -43,8 +43,10 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
           //if user selects to join a group
           SelectGroupRepositoryImpl selectGroupRepositoryImpl =
               SelectGroupRepositoryImpl();
-
-          if (_selectedGroupType == 1) {
+          if (_selectedGroupType == 0) {
+            _groupName = "solo_" + _yourName;
+          }
+          if (_selectedGroupType == 0 || _selectedGroupType == 1) {
             final res = await sl.get<SelectGroupUsecase>().createNewGroup(
                 _groupName, _yourName, selectGroupRepositoryImpl);
 
@@ -66,7 +68,8 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
         }
       } else if (event is PressButtonGroupTypeEvent) {
         _selectedGroupType = event.selectedGroupType;
-
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setInt("selectedGroupType", _selectedGroupType);
         emit(SelectedGroupTypeState(selectedGroupType: _selectedGroupType));
       } else if (event is GroupNameChangedEvent) {
         _groupName = event.groupName;

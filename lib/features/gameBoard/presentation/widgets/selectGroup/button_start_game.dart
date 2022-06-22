@@ -1,20 +1,35 @@
 import 'dart:async';
 
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Widget buttonStartGame(BuildContext context) {
   return BlocBuilder<SelectgroupBloc, SelectgroupState>(
     builder: (context, state) {
       if (state is AllowedStartGame) {
-        Timer(const Duration(microseconds: 250), () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Navigation()),
-          );
+        Timer(const Duration(microseconds: 250), () async {
+          final prefs = await SharedPreferences.getInstance();
+          int selectedGroupType = prefs.getInt(
+                "selectedGroupType",
+              ) ??
+              0;
+          if (selectedGroupType == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Navigation()),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Fishing()),
+            );
+          }
         });
 
         return Container();
