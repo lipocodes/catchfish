@@ -97,5 +97,7 @@
     "game_over": "Game Over",
     "start_solo_game": "Start Solo Game",
     "refer_to_private_collection": "You can sell your fish on Private Collection!",
-    "players": "Players"
+    "players": "Players",
+    "click_start_game": "Click to start game!",
+    "wait_game_start": "Waiting for the game to start..."
 }

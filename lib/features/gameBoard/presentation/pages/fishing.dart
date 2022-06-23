@@ -120,7 +120,70 @@ class _FishingState extends State<Fishing> {
           _seconds++;
         }
       } else if (_amIGroupLeader) {
-      } else if (!_amIGroupLeader) {}
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Colors.redAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              content: const Text(
+                "click_start_game",
+                style: TextStyle(
+                  fontFamily: 'skullsandcrossbones',
+                ),
+              ).tr(),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    print("aaaaaaaaaaaaaaaaaaaaaaaaaa");
+                  },
+                  child: const Text('next',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.blue,
+                        fontFamily: 'skullsandcrossbones',
+                      )).tr(),
+                ),
+              ],
+            );
+          },
+        );
+      } else if (!_amIGroupLeader) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Colors.redAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              content: const Text(
+                "wait_game_start",
+                style: TextStyle(
+                  fontFamily: 'skullsandcrossbones',
+                ),
+              ).tr(),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    print("bbbbbbbbbbbbbbbbbbbbbb");
+                  },
+                  child: const Text('next',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.blue,
+                        fontFamily: 'skullsandcrossbones',
+                      )).tr(),
+                ),
+              ],
+            );
+          },
+        );
+      }
     });
     return SafeArea(
       child: MaterialApp(

@@ -396,4 +396,21 @@ class RemoteDatasource {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<GeneralFailure, bool>> hasGameStarted() async {
+    try {
+      final SharedPreferences prefs = await _prefs;
+      String groupName = prefs.getString(
+            "groupName",
+          ) ??
+          "";
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("groups")
+          .where('groupName', isEqualTo: groupName)
+          .get();
+      return Right(querySnapshot.docs[0]['gameStarted']);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

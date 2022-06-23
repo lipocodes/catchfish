@@ -66,7 +66,10 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
           (failure) => emit(const ErrorRedButtonPressedState(
               message: "Error in dealing with countdown tick!")),
           (success) => emit(TimerTickState(
-              newCountdownTime: success, numPlayers: numPlayers)),
+              newCountdownTime: success,
+              numPlayers: numPlayers,
+              gameStarted: false,
+              groupLeader: "Lior")),
         );
       } else if (event is AfterTimerTickEvent) {
         emit(AfterTimerTickState());

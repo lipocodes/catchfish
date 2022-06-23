@@ -148,13 +148,17 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   Future<Either<Failure, String>> calculateNewCoundownTime(
       String currentCountdownTime) async {
     try {
+      bool gameStarted = false;
+      final res = await sl.get<FishingRepositoryImpl>().hasGameStarted();
+      res.fold((l) => Left(GeneralFailure()), (r) => gameStarted = r);
+
       int minutes = int.parse(currentCountdownTime.substring(0, 2));
       int seconds = int.parse(currentCountdownTime.substring(3));
       int levelEnergy = minutes;
 
-      if (seconds > 0) {
+      if (seconds > 0 && gameStarted) {
         seconds -= 1;
-      } else {
+      } else if (gameStarted) {
         seconds = 59;
         minutes -= 1;
       }
@@ -169,6 +173,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       if ((mins + ":" + secs) == "00:00") {
         playBackgroundAudio("gameOver.mp3");
       }
+
       return Right(mins + ":" + secs + "^^^" + levelEnergy.toString());
     } catch (e) {
       return Left(GeneralFailure());
