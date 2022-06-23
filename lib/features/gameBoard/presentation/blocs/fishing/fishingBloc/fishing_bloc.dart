@@ -52,6 +52,9 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
               isFishCaught: sl.get<CaughtFishEntity>().isFishCaught,
               caughtFishDetails: sl.get<CaughtFishEntity>().caughtFishDetails)),
         );
+      } else if (event is StartGameEvent) {
+        await sl.get<FishingUsecase>().startGame();
+        //emit(StartGameState());
       } else if (event is TimerTickEvent) {
         int numPlayers = 0;
         bool gameStarted = false;
@@ -65,7 +68,7 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         _fishingUsecase = event.fishingUsecase;
         final res2 = await _fishingUsecase.getGroupLeader();
         res2.fold((l) => null, (r) => groupName = r);
-        print("wwwwwwwwwwwww=" + groupName);
+
         final res3 = await _fishingUsecase
             .calculateNewCoundownTime(currentCountdownTime);
 

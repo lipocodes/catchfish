@@ -74,6 +74,7 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
         _selectedGroupType = event.selectedGroupType;
         final prefs = await SharedPreferences.getInstance();
         prefs.setInt("selectedGroupType", _selectedGroupType);
+
         emit(SelectedGroupTypeState(selectedGroupType: _selectedGroupType));
       } else if (event is GroupNameChangedEvent) {
         _groupName = event.groupName;

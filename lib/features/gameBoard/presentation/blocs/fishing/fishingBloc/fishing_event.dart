@@ -40,3 +40,5 @@ class LoadingPersonalShopEvent extends FishingEvent {
 }
 
 class GameOverEvent extends FishingEvent {}
+
+class StartGameEvent extends FishingEvent {}

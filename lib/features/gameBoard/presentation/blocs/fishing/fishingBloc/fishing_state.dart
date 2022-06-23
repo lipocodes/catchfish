@@ -65,3 +65,5 @@ class GameOverState extends FishingState {
   final List<String> listAcheivements;
   const GameOverState({required this.listAcheivements});
 }
+
+class StartGameState extends FishingState {}

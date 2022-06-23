@@ -1,11 +1,10 @@
-import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
+
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/countdown.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/energy.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/pulse_generator.dart';
-import 'package:catchfish/features/introduction/presentation/widgets/boat_steering.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +35,7 @@ class _FishingState extends State<Fishing> {
   double _steeringAngle = 0.0;
   int _selectedGroupType = 0;
   String _groupLeader = "";
+  bool _isDialogOpen = false;
 
   @override
   void initState() {
@@ -106,11 +106,15 @@ class _FishingState extends State<Fishing> {
   @override
   Widget build(BuildContext context) {
     var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      //if game has not started yet, we should present an alert about it
+      BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
+          fishingUsecase: sl.get<FishingUsecase>(),
+          currentCountdownTime: _currentTime));
       if (_gameStarted || _selectedGroupType == 0) {
-        BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
-            fishingUsecase: sl.get<FishingUsecase>(),
-            currentCountdownTime: _currentTime));
+        /*if (_isDialogOpen == true) {
+          Navigator.of(context).pop(false);
+          _isDialogOpen = false;
+        }*/
+
         if (_seconds == /*5*/ 1) {
           Timer(const Duration(milliseconds: 100), () {
             _seconds = 0;
@@ -121,7 +125,9 @@ class _FishingState extends State<Fishing> {
           _seconds++;
         }
       } else if (_amIGroupLeader) {
-        showDialog(
+        _isDialogOpen = true;
+        BlocProvider.of<FishingBloc>(context).add(StartGameEvent());
+        /*showDialog(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
@@ -139,7 +145,7 @@ class _FishingState extends State<Fishing> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    print("aaaaaaaaaaaaaaaaaaaaaaaaaa");
+                    BlocProvider.of<FishingBloc>(context).add(StartGameEvent());
                   },
                   child: const Text('next',
                       style: TextStyle(
@@ -151,8 +157,9 @@ class _FishingState extends State<Fishing> {
               ],
             );
           },
-        );
+        );*/
       } else if (!_amIGroupLeader) {
+        _isDialogOpen = true;
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -168,19 +175,6 @@ class _FishingState extends State<Fishing> {
                   fontFamily: 'skullsandcrossbones',
                 ),
               ).tr(),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    print("bbbbbbbbbbbbbbbbbbbbbb");
-                  },
-                  child: const Text('next',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.blue,
-                        fontFamily: 'skullsandcrossbones',
-                      )).tr(),
-                ),
-              ],
             );
           },
         );
@@ -210,6 +204,7 @@ class _FishingState extends State<Fishing> {
                     BlocProvider.of<FishingBloc>(context)
                         .add(AfterTimerTickEvent());
                     _gameStarted = state.gameStarted;
+
                     _groupLeader = state.groupLeader;
                     _numPlayers = state.numPlayers;
                     _currentTime = state.newCountdownTime
