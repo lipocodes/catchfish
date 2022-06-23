@@ -42,8 +42,10 @@ class ErrorRedButtonPressedState extends FishingState {
 
 class TimerTickState extends FishingState {
   final String newCountdownTime;
+  final int numPlayers;
 
-  const TimerTickState({required this.newCountdownTime});
+  const TimerTickState(
+      {required this.newCountdownTime, required this.numPlayers});
 }
 
 class AfterTimerTickState extends FishingState {}

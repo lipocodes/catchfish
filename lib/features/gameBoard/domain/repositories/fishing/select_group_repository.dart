@@ -1,4 +1,5 @@
 import 'package:catchfish/core/errors/failures.dart';
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
 import 'package:dartz/dartz.dart';
@@ -10,6 +11,7 @@ abstract class SelectGroupRepository {
     String groupName,
     String yourName,
     RemoteDatasource remoteDatasource,
+    LocalDatasourcePrefs localDatasourcePrefs,
   );
   Future<Either<Failure, bool>> addUserToGroup(
       String groupName, String yourName, RemoteDatasource remoteDatasource);

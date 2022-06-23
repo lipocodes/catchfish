@@ -53,15 +53,20 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
               caughtFishDetails: sl.get<CaughtFishEntity>().caughtFishDetails)),
         );
       } else if (event is TimerTickEvent) {
+        int numPlayers = 0;
+
+        final res1 = await _fishingUsecase.retreiveNumPlayers();
+        res1.fold((l) => null, (r) => numPlayers = r);
         String currentCountdownTime = event.currentCountdownTime;
         _fishingUsecase = event.fishingUsecase;
-        final res = await _fishingUsecase
+        final res2 = await _fishingUsecase
             .calculateNewCoundownTime(currentCountdownTime);
 
-        res.fold(
+        res2.fold(
           (failure) => emit(const ErrorRedButtonPressedState(
               message: "Error in dealing with countdown tick!")),
-          (success) => emit(TimerTickState(newCountdownTime: success)),
+          (success) => emit(TimerTickState(
+              newCountdownTime: success, numPlayers: numPlayers)),
         );
       } else if (event is AfterTimerTickEvent) {
         emit(AfterTimerTickState());

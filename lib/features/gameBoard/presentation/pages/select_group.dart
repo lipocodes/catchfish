@@ -3,6 +3,7 @@ import 'package:catchfish/features/gameBoard/presentation/widgets/selectGroup/bu
 import 'package:catchfish/features/gameBoard/presentation/widgets/selectGroup/selector_group_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectGroup extends StatefulWidget {
   const SelectGroup({Key? key}) : super(key: key);
@@ -15,6 +16,13 @@ class _MyWidgetState extends State<SelectGroup> {
   @override
   void initState() {
     super.initState();
+    setPrefs();
+  }
+
+  setPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt("selectedGroupType", 0);
+    await prefs.setBool('amIGroupLeader', false);
   }
 
   @override

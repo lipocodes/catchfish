@@ -30,6 +30,22 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     audioPlayer = await audioCache.play(engineSound);
   }
 
+  Future<Either<GeneralFailure, int>> retreiveNumPlayers() async {
+    try {
+      int numPlayers = 0;
+      int timeNow = DateTime.now().millisecond;
+      if (timeNow % 1 == 0) {
+        final res = await sl.get<FishingRepositoryImpl>().retreiveNumPlayers();
+        res.fold((l) => GeneralFailure(), (r) => numPlayers = r);
+        return Right(numPlayers);
+      } else {
+        return Right(numPlayers);
+      }
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
   @override
   Future<Either<Failure, PulseEntity>> call(NoParams params) async {
     //return await repository.getPulse();

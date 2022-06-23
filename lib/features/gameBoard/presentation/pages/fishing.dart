@@ -11,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Fishing extends StatefulWidget {
   const Fishing({Key? key}) : super(key: key);
@@ -27,18 +28,29 @@ class _FishingState extends State<Fishing> {
   String _caughtFishDetails = "";
   double rightPositionBird = 60.0;
   double topPositionBird = 100.0;
-
+  int _numPlayers = 0;
+  var _prefs;
+  bool _amIGroupLeader = false;
+  bool _gameStarted = false;
   late AnimationController animationController;
   double _steeringAngle = 0.0;
+  int _selectedGroupType = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    retreivePrefs();
     BlocProvider.of<FishingBloc>(context).add(EnteringScreenEvent(
       fishingUsecase: sl.get<FishingUsecase>(),
     ));
+  }
+
+  retreivePrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+    _selectedGroupType = await _prefs.getInt("selectedGroupType") ?? 0;
+    _amIGroupLeader = await _prefs.getBool('amIGroupLeader') ?? false;
+    _gameStarted = await _prefs.getBool('gameStarted') ?? false;
   }
 
   popDialogGameOver(List<String> listAcheivments) async {
@@ -93,18 +105,22 @@ class _FishingState extends State<Fishing> {
   @override
   Widget build(BuildContext context) {
     var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
-          fishingUsecase: sl.get<FishingUsecase>(),
-          currentCountdownTime: _currentTime));
-      if (_seconds == /*5*/ 1) {
-        Timer(const Duration(milliseconds: 100), () {
-          _seconds = 0;
-          BlocProvider.of<FishingBloc>(context)
-              .add(GetPulseEvent(fishingUsecase: sl.get<FishingUsecase>()));
-        });
-      } else {
-        _seconds++;
-      }
+      //if game has not started yet, we should present an alert about it
+      if (_gameStarted || _selectedGroupType == 0) {
+        BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
+            fishingUsecase: sl.get<FishingUsecase>(),
+            currentCountdownTime: _currentTime));
+        if (_seconds == /*5*/ 1) {
+          Timer(const Duration(milliseconds: 100), () {
+            _seconds = 0;
+            BlocProvider.of<FishingBloc>(context)
+                .add(GetPulseEvent(fishingUsecase: sl.get<FishingUsecase>()));
+          });
+        } else {
+          _seconds++;
+        }
+      } else if (_amIGroupLeader) {
+      } else if (!_amIGroupLeader) {}
     });
     return SafeArea(
       child: MaterialApp(
@@ -129,7 +145,7 @@ class _FishingState extends State<Fishing> {
                   if (state is TimerTickState) {
                     BlocProvider.of<FishingBloc>(context)
                         .add(AfterTimerTickEvent());
-
+                    _numPlayers = state.numPlayers;
                     _currentTime = state.newCountdownTime
                         .substring(0, state.newCountdownTime.indexOf("^^^"));
                     if (_currentTime == "00:00") {
@@ -143,7 +159,7 @@ class _FishingState extends State<Fishing> {
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         energy(_levelEnergy),
-                        countdown(context, _currentTime),
+                        countdown(context, _currentTime, _numPlayers),
                       ],
                     );
                   } else if (state is GameOverState) {
@@ -152,7 +168,7 @@ class _FishingState extends State<Fishing> {
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         energy(_levelEnergy),
-                        countdown(context, _currentTime),
+                        countdown(context, _currentTime, _numPlayers),
                       ],
                     );
                   } else {
@@ -160,7 +176,7 @@ class _FishingState extends State<Fishing> {
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         energy(_levelEnergy),
-                        countdown(context, _currentTime),
+                        countdown(context, _currentTime, _numPlayers),
                       ],
                     );
                   }

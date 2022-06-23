@@ -1,4 +1,5 @@
 import 'package:catchfish/core/errors/failures.dart';
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
 import 'package:catchfish/features/gameBoard/domain/repositories/fishing/select_group_repository.dart';
@@ -39,12 +40,20 @@ class SelectGroupRepositoryImpl implements SelectGroupRepository {
     String groupName,
     String yourName,
     RemoteDatasource remoteDatasource,
+    LocalDatasourcePrefs localDatasourcePrefs,
   ) async {
     try {
-      bool yesNo = false;
-      final res = await remoteDatasource.createNewGroup(groupName, yourName);
-      res.fold((l) => GeneralFailure(), (r) => yesNo = r);
-      return Right(yesNo);
+      bool yesNo1 = false;
+      bool yesNo2 = false;
+      final res1 = await remoteDatasource.createNewGroup(groupName, yourName);
+      res1.fold((l) => GeneralFailure(), (r) => yesNo1 = r);
+      final res2 = await localDatasourcePrefs.createNewGroup();
+      res2.fold((l) => GeneralFailure(), (r) => yesNo2 = r);
+      if (yesNo1 && yesNo2) {
+        return const Right(true);
+      } else {
+        return const Right(false);
+      }
     } catch (e) {
       return Left(GeneralFailure());
     }

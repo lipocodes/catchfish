@@ -153,4 +153,15 @@ class FishingRepositoryImpl implements FishingRepository {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<GeneralFailure, int>> retreiveNumPlayers() async {
+    try {
+      int numPlayers = 0;
+      final res = await sl.get<RemoteDatasource>().retreiveNumPlayers();
+      res.fold((l) => GeneralFailure(), (r) => numPlayers = r);
+      return Right(numPlayers);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

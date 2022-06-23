@@ -1,5 +1,5 @@
 import 'package:catchfish/core/errors/failures.dart';
-import 'package:catchfish/injection_container.dart';
+
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -57,6 +57,16 @@ class LocalDatasourcePrefs implements LocalDatasource {
       final res = prefs.getStringList("personalShop") ?? [];
       res.remove(detailsFish);
       prefs.setStringList("personalShop", res);
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> createNewGroup() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setBool("amIGroupLeader", true);
       return const Right(true);
     } catch (e) {
       return Left(GeneralFailure());

@@ -1,5 +1,6 @@
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/core/usecases/usecase.dart';
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart';
@@ -53,8 +54,8 @@ class SelectGroupUsecase extends UseCase<PulseEntity, NoParams> {
       SelectGroupRepositoryImpl selectGroupRepositoryImpl) async {
     try {
       bool yesNo = false;
-      final res = await selectGroupRepositoryImpl.createNewGroup(
-          groupName, yourName, sl.get<RemoteDatasource>());
+      final res = await selectGroupRepositoryImpl.createNewGroup(groupName,
+          yourName, sl.get<RemoteDatasource>(), sl.get<LocalDatasourcePrefs>());
       res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
       return Right(yesNo);
     } catch (e) {

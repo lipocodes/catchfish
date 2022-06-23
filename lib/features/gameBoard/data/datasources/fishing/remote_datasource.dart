@@ -232,7 +232,11 @@ class RemoteDatasource {
   Future<Either<Failure, bool>> createNewGroup(
       String groupName, String yourName) async {
     try {
-      var newGroup = {'groupName': groupName, 'players': []};
+      var newGroup = {
+        'groupName': groupName,
+        "gameStarted": false,
+        'players': []
+      };
       await FirebaseFirestore.instance.collection("groups").add(newGroup);
       addUserToGroup(groupName, yourName);
       return const Right(true);
@@ -370,6 +374,24 @@ class RemoteDatasource {
         });
       }
       return Right(listAcheivements);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<GeneralFailure, int>> retreiveNumPlayers() async {
+    try {
+      final SharedPreferences prefs = await _prefs;
+      String groupName = prefs.getString(
+            "groupName",
+          ) ??
+          "";
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("groups")
+          .where('groupName', isEqualTo: groupName)
+          .get();
+      List listPlayers = querySnapshot.docs[0]['players'];
+      return Right(listPlayers.length);
     } catch (e) {
       return Left(GeneralFailure());
     }
