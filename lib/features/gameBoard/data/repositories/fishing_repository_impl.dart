@@ -175,4 +175,17 @@ class FishingRepositoryImpl implements FishingRepository {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<GeneralFailure, String>> getGroupLeader() async {
+    try {
+      String groupLeader = "";
+      final res = await sl.get<RemoteDatasource>().getGroupLeader();
+
+      res.fold((l) => GeneralFailure(), (r) => groupLeader = r);
+
+      return Right(groupLeader);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

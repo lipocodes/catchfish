@@ -242,4 +242,27 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<Failure, bool>> hasGameStarted() async {
+    try {
+      bool yesNo = false;
+      final res = await sl.get<FishingRepositoryImpl>().hasGameStarted();
+      res.fold((l) => GeneralFailure(), (r) => yesNo = r);
+      return Right(yesNo);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<GeneralFailure, String>> getGroupLeader() async {
+    try {
+      String groupLeader = "";
+      final res = await sl.get<FishingRepositoryImpl>().getGroupLeader();
+      res.fold((l) => GeneralFailure(), (r) => groupLeader = r);
+
+      return Right(groupLeader);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

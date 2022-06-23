@@ -35,6 +35,7 @@ class _FishingState extends State<Fishing> {
   late AnimationController animationController;
   double _steeringAngle = 0.0;
   int _selectedGroupType = 0;
+  String _groupLeader = "";
 
   @override
   void initState() {
@@ -208,6 +209,8 @@ class _FishingState extends State<Fishing> {
                   if (state is TimerTickState) {
                     BlocProvider.of<FishingBloc>(context)
                         .add(AfterTimerTickEvent());
+                    _gameStarted = state.gameStarted;
+                    _groupLeader = state.groupLeader;
                     _numPlayers = state.numPlayers;
                     _currentTime = state.newCountdownTime
                         .substring(0, state.newCountdownTime.indexOf("^^^"));
