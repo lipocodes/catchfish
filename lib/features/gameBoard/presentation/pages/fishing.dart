@@ -110,11 +110,6 @@ class _FishingState extends State<Fishing> {
           fishingUsecase: sl.get<FishingUsecase>(),
           currentCountdownTime: _currentTime));
       if (_gameStarted || _selectedGroupType == 0) {
-        /*if (_isDialogOpen == true) {
-          Navigator.of(context).pop(false);
-          _isDialogOpen = false;
-        }*/
-
         if (_seconds == /*5*/ 1) {
           Timer(const Duration(milliseconds: 100), () {
             _seconds = 0;
@@ -125,59 +120,67 @@ class _FishingState extends State<Fishing> {
           _seconds++;
         }
       } else if (_amIGroupLeader) {
-        _isDialogOpen = true;
-        BlocProvider.of<FishingBloc>(context).add(StartGameEvent());
-        /*showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Colors.redAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              content: const Text(
-                "click_start_game",
-                style: TextStyle(
-                  fontFamily: 'skullsandcrossbones',
+        if (!_isDialogOpen) {
+          _isDialogOpen = true;
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: Colors.redAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-              ).tr(),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    BlocProvider.of<FishingBloc>(context).add(StartGameEvent());
-                  },
-                  child: const Text('next',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.blue,
-                        fontFamily: 'skullsandcrossbones',
-                      )).tr(),
-                ),
-              ],
-            );
-          },
-        );*/
+                content: const Text(
+                  "click_start_game",
+                  style: TextStyle(
+                    fontFamily: 'skullsandcrossbones',
+                  ),
+                ).tr(),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      BlocProvider.of<FishingBloc>(context)
+                          .add(StartGameEvent());
+                    },
+                    child: const Text('next',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.blue,
+                          fontFamily: 'skullsandcrossbones',
+                        )).tr(),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       } else if (!_amIGroupLeader) {
-        _isDialogOpen = true;
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Colors.redAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              content: const Text(
-                "wait_game_start",
-                style: TextStyle(
-                  fontFamily: 'skullsandcrossbones',
+        if (!_isDialogOpen) {
+          _isDialogOpen = true;
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: Colors.redAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-              ).tr(),
-            );
-          },
-        );
+                content: const Text(
+                  "wait_game_start",
+                  style: TextStyle(
+                    fontFamily: 'skullsandcrossbones',
+                  ),
+                ).tr(),
+              );
+            },
+          );
+        } else {
+          _isDialogOpen = false;
+          Navigator.pop(context);
+        }
       }
     });
     return SafeArea(
