@@ -204,6 +204,12 @@ class RemoteDatasource {
         String gName = docs[a]['groupName'];
         if (gName == groupName) {
           List listPlayers = docs[a]['players'];
+          for (int b = 0; b < listPlayers.length; b++) {
+            String name = listPlayers[b]['playerName'];
+            if (yourName == name) {
+              return const Right(false);
+            }
+          }
           NewPlayerModel newPlayerModel =
               NewPlayerModel(playerName: yourName, image: "", caughtFish: []);
           Map map = newPlayerModel.toJson();

@@ -6,7 +6,6 @@ import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart'
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Widget buttonStartGame(BuildContext context) {
@@ -35,7 +34,7 @@ Widget buttonStartGame(BuildContext context) {
         return Container();
       } else if (state is NotAllowedStartGame) {
         BlocProvider.of<SelectgroupBloc>(context).add(NeutralEvent());
-        return gui(context, true);
+        return gui(context, false);
       } else {
         return gui(context, false);
       }
@@ -47,17 +46,6 @@ Widget gui(BuildContext context, bool showWarning) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      if (showWarning) ...[
-        Text(
-          "please_select_group".tr(),
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.red,
-            fontStyle: FontStyle.italic,
-            fontFamily: 'skullsandcrossbones',
-          ),
-        ),
-      ],
       SizedBox(
         child: TextButton(
           child: const Text("start_game").tr(),
@@ -79,6 +67,17 @@ Widget gui(BuildContext context, bool showWarning) {
           },
         ),
       ),
+      if (showWarning) ...[
+        Text(
+          "select_another_name".tr(),
+          style: const TextStyle(
+            fontSize: 18,
+            color: Colors.red,
+            fontStyle: FontStyle.italic,
+            fontFamily: 'skullsandcrossbones',
+          ),
+        ),
+      ],
     ],
   );
 }

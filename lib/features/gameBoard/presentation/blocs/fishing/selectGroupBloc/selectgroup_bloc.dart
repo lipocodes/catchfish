@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart';
+import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
 import 'package:catchfish/injection_container.dart';
@@ -60,7 +61,14 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
                 _selectedGroup, _yourName, selectGroupRepositoryImpl);
 
             if (res.isRight()) {
-              emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
+              bool yesNo = false;
+              res.fold((l) => null, (r) => yesNo = r);
+              if (yesNo) {
+                emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
+              } else {
+                emit(
+                    NotAllowedStartGame(selectedGroupType: _selectedGroupType));
+              }
             } else {
               emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
             }
