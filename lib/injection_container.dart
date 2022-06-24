@@ -37,8 +37,8 @@ Future<bool> init() async {
   sl.registerLazySingleton<CaughtFishEntity>(
       () => CaughtFishEntity(isFishCaught: true, caughtFishDetails: ""));
   //models
-  sl.registerLazySingleton<NewPlayerModel>(
-      () => NewPlayerModel(playerName: "", image: "", caughtFish: []));
+  sl.registerLazySingleton<NewPlayerModel>(() => NewPlayerModel(
+      playerName: "", image: "", caughtFish: [], timeLastCaughtFish: 0));
   sl.registerLazySingleton<ListGroupModel>(() => ListGroupModel(list: []));
 
   return true;

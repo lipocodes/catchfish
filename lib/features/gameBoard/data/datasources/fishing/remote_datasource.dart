@@ -210,8 +210,11 @@ class RemoteDatasource {
               return const Right(false);
             }
           }
-          NewPlayerModel newPlayerModel =
-              NewPlayerModel(playerName: yourName, image: "", caughtFish: []);
+          NewPlayerModel newPlayerModel = NewPlayerModel(
+              playerName: yourName,
+              image: "",
+              caughtFish: [],
+              timeLastCaughtFish: 0);
           Map map = newPlayerModel.toJson();
           listPlayers.add(map);
           await FirebaseFirestore.instance
@@ -275,8 +278,12 @@ class RemoteDatasource {
             if (listPlayers[b]['playerName'] == yourName) {
               List listCaughtFish = listPlayers[b]['caughtFish'];
               listCaughtFish.add(caughtFishDetails);
+              int timeLastCaughtFish = DateTime.now().millisecondsSinceEpoch;
               NewPlayerModel newPlayerModel = NewPlayerModel(
-                  playerName: yourName, image: "", caughtFish: listCaughtFish);
+                  playerName: yourName,
+                  image: "",
+                  caughtFish: listCaughtFish,
+                  timeLastCaughtFish: timeLastCaughtFish);
               Map map = newPlayerModel.toJson();
               listPlayers[b] = map;
               await FirebaseFirestore.instance
