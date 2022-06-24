@@ -132,6 +132,20 @@ Widget gui(
         const SizedBox(
           height: 5.0,
         ),
+        Container(
+          color: Color.fromARGB(255, 230, 224, 224),
+          child: Center(
+            child: const Text("need_your_name",
+                    style: TextStyle(
+                        fontFamily: 'skullsandcrossbones',
+                        fontSize: 18.0,
+                        color: Colors.black))
+                .tr(),
+          ),
+        ),
+        const SizedBox(
+          height: 5.0,
+        ),
         SizedBox(
           width: 250.0,
           child: TextButton(

@@ -99,5 +99,6 @@
     "refer_to_private_collection": "You can sell your fish on Private Collection!",
     "players": "Players",
     "click_start_game": "Click to start game!",
-    "wait_game_start": "Waiting for the game to start..."
+    "wait_game_start": "Waiting for the game to start...",
+    "need_your_name": "Please enter your name first!"
 }

@@ -2,7 +2,6 @@ import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/domain/repositories/fishing/fishing_repository.dart';
-import 'package:catchfish/features/settings/data/datasources/remote_datasource.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 
@@ -190,7 +189,6 @@ class FishingRepositoryImpl implements FishingRepository {
   }
 
   Future<Either<GeneralFailure, bool>> startGame() async {
-    print("ppppppppp");
     try {
       bool yes_no = false;
       final res = await sl.get<RemoteDatasource>().startGame();
