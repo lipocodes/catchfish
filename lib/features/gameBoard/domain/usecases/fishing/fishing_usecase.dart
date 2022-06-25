@@ -21,7 +21,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
   AudioPlayer audioPlayer = AudioPlayer();
   bool _isItCatchingTime = false;
-  late LocalDatasourcePrefs localDatasourcePrefs;
+  late LocalDatasourcePrefs localDatasourcePrefs = LocalDatasourcePrefs();
   late RemoteDatasource remoteDatasource;
 
   FishingUsecase();

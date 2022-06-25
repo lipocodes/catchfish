@@ -30,7 +30,6 @@ class LocalDatasourcePrefs implements LocalDatasource {
     try {
       final prefs = await SharedPreferences.getInstance();
       var res = prefs.getStringList("personalShop") ?? [];
-
       return Right(res);
     } catch (e) {
       return Left(GeneralFailure());

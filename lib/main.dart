@@ -10,6 +10,7 @@ import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/personal_shop.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/select_group.dart';
 import 'package:catchfish/features/introduction/presentation/blocs/bloc/introduction_bloc.dart';
+import 'package:catchfish/features/introduction/presentation/pages/splash.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
 import 'package:catchfish/features/login/presentation/blocs/provider/apple_sign_in.dart';
@@ -262,7 +263,7 @@ class _MyAppState extends State<MyApp> {
                 switch (settings.name) {
                   case '/':
                     return PageTransition(
-                      child: /*const Splash()*/ const SelectGroup(),
+                      child: const Splash() /*const SelectGroup()*/,
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 1000),

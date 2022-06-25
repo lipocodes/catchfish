@@ -142,6 +142,7 @@ class RemoteDatasource {
           .where("uid", isEqualTo: uid)
           .get();
       List caughtFish = userDoc.docs[0].data()['caughtFish'];
+
       return Right(caughtFish);
     } catch (e) {
       return Left(GeneralFailure());
