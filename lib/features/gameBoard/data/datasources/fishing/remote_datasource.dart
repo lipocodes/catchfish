@@ -354,6 +354,7 @@ class RemoteDatasource {
       //going over list of players
       for (int a = 0; a < listPlayers.length; a++) {
         List caughtFish = listPlayers[a]['caughtFish'];
+        String playerName = listPlayers[a]['playerName'];
         int caughtFishValue = 0;
         //going over the list of caught fish of this player
         for (int b = 0; b < caughtFish.length; b++) {
@@ -361,7 +362,7 @@ class RemoteDatasource {
           List list = str.split("^^^");
           caughtFishValue += int.parse(list[1]);
         }
-        listAcheivements.add(yourName + "^^^" + caughtFishValue.toString());
+        listAcheivements.add(playerName + "^^^" + caughtFishValue.toString());
       }
       //we need to sort players by their caughtFishValue
       for (int a = 0; a < listAcheivements.length; a++) {
@@ -372,7 +373,7 @@ class RemoteDatasource {
           String str2 = listAcheivements[b];
           List list2 = str2.split("^^^");
           int caughtFishValue2 = int.parse(list2[1]);
-          if (caughtFishValue1 > caughtFishValue2) {
+          if (caughtFishValue1 < caughtFishValue2) {
             String temp = listAcheivements[a];
             listAcheivements[a] = listAcheivements[b];
             listAcheivements[b] = temp;
