@@ -109,7 +109,7 @@ class _FishingState extends State<Fishing> {
       BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
           fishingUsecase: sl.get<FishingUsecase>(),
           currentCountdownTime: _currentTime));
-      if (_gameStarted || _selectedGroupType == 0) {
+      if (_gameStarted) {
         if (_seconds == /*5*/ 1) {
           Timer(const Duration(milliseconds: 100), () {
             _seconds = 0;
