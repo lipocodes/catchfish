@@ -204,10 +204,28 @@ class _FishingState extends State<Fishing> {
               BlocBuilder<FishingBloc, FishingState>(
                 builder: (context, state) {
                   if (state is TimerTickState) {
+                    if (state.namePlayerCaughtFish.isNotEmpty) {
+                      final snackdemo = SnackBar(
+                        content: Text(
+                          state.namePlayerCaughtFish + "caught_fish".tr(),
+                          style: const TextStyle(
+                            fontFamily: 'skullsandcrossbones',
+                            fontSize: 18.0,
+                          ),
+                        ),
+                        backgroundColor: Colors.green,
+                        elevation: 10,
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.all(5),
+                      );
+                      Future.delayed(const Duration(milliseconds: 100), () {
+                        ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+                      });
+                    }
+
                     BlocProvider.of<FishingBloc>(context)
                         .add(AfterTimerTickEvent());
                     _gameStarted = state.gameStarted;
-
                     _groupLeader = state.groupLeader;
                     _numPlayers = state.numPlayers;
                     _currentTime = state.newCountdownTime

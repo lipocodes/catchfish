@@ -45,12 +45,15 @@ class TimerTickState extends FishingState {
   final int numPlayers;
   final String groupLeader;
   final bool gameStarted;
+  final String namePlayerCaughtFish;
 
-  const TimerTickState(
-      {required this.newCountdownTime,
-      required this.numPlayers,
-      required this.groupLeader,
-      required this.gameStarted});
+  const TimerTickState({
+    required this.newCountdownTime,
+    required this.numPlayers,
+    required this.groupLeader,
+    required this.gameStarted,
+    required this.namePlayerCaughtFish,
+  });
 }
 
 class AfterTimerTickState extends FishingState {}

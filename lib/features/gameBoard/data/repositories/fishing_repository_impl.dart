@@ -198,4 +198,15 @@ class FishingRepositoryImpl implements FishingRepository {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<GeneralFailure, String>> getNamePlayerCaughtFish() async {
+    try {
+      String namePlayerCaughtFish = "";
+      final res = await sl.get<RemoteDatasource>().getNamePlayerCaughtFish();
+      res.fold((l) => GeneralFailure(), (r) => namePlayerCaughtFish = r);
+      return Right(namePlayerCaughtFish);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

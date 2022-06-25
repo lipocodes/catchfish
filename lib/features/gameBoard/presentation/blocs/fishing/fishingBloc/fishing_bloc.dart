@@ -68,18 +68,22 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         _fishingUsecase = event.fishingUsecase;
         final res2 = await _fishingUsecase.getGroupLeader();
         res2.fold((l) => null, (r) => groupName = r);
+        String namePlayerCaughtFish = "";
+        final res3 = await _fishingUsecase.getNamePlayerCaughtFish();
 
-        final res3 = await _fishingUsecase
+        res3.fold((l) => GeneralFailure(), (r) => namePlayerCaughtFish = r);
+
+        final res4 = await _fishingUsecase
             .calculateNewCoundownTime(currentCountdownTime);
-
-        res3.fold(
+        res4.fold(
           (failure) => emit(const ErrorRedButtonPressedState(
               message: "Error in dealing with countdown tick!")),
           (success) => emit(TimerTickState(
               newCountdownTime: success,
               numPlayers: numPlayers,
               gameStarted: gameStarted,
-              groupLeader: groupName)),
+              groupLeader: groupName,
+              namePlayerCaughtFish: namePlayerCaughtFish)),
         );
       } else if (event is AfterTimerTickEvent) {
         emit(AfterTimerTickState());

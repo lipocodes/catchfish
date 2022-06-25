@@ -468,4 +468,30 @@ class RemoteDatasource {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<GeneralFailure, String>> getNamePlayerCaughtFish() async {
+    try {
+      int timeNow = DateTime.now().millisecondsSinceEpoch;
+      final SharedPreferences prefs = await _prefs;
+      String groupName = prefs.getString(
+            "groupName",
+          ) ??
+          "";
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("groups")
+          .where('groupName', isEqualTo: groupName)
+          .get();
+      List listPlayers = querySnapshot.docs[0]['players'];
+      for (int b = 0; b < listPlayers.length; b++) {
+        String name = listPlayers[b]['playerName'];
+        int timeLastCaughtFish = listPlayers[b]['timeLastCaughtFish'];
+        if (timeNow - timeLastCaughtFish < 1000) {
+          return Right(name);
+        }
+      }
+      return const Right("");
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }
