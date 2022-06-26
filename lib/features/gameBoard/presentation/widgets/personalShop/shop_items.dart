@@ -87,6 +87,20 @@ Widget gui(BuildContext context, List<String> listItems) {
                           fontFamily: 'skullsandcrossbones',
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          popupSell(context, title[index], image[index],
+                              price[index]);
+                        },
+                        child: Text(
+                          "sell".tr(),
+                          style: const TextStyle(
+                            fontSize: 24.0,
+                            color: Colors.red,
+                            fontFamily: 'skullsandcrossbones',
+                          ),
+                        ),
+                      ),
                       Text(
                         "price".tr() + price[index],
                         style: const TextStyle(
@@ -104,6 +118,90 @@ Widget gui(BuildContext context, List<String> listItems) {
         );
       }).toList(),
     ),
+  );
+}
+
+popupSell(
+    BuildContext context, String title, String image, String price) async {
+  return await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('no_thanks',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.blue,
+                      fontFamily: 'skullsandcrossbones',
+                    )).tr(),
+              ),
+              TextButton(
+                onPressed: () {
+                  print("xxxxxxxxxxxxxxxxxxx");
+                  Navigator.of(context).pop();
+                },
+                child: const Text('accept_offer',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.blue,
+                      fontFamily: 'skullsandcrossbones',
+                    )).tr(),
+              ),
+            ],
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        content: SizedBox(
+          height: 250.0,
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: Image.asset(
+                  'assets/images/gameBoard/fish/' + image,
+                  width: 160,
+                  height: 160,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontFamily: 'skullsandcrossbones',
+                  fontSize: 30.0,
+                  color: Colors.redAccent,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "we_offer".tr() + price.toString(),
+                    style: const TextStyle(
+                      fontFamily: 'skullsandcrossbones',
+                      fontSize: 24.0,
+                      color: Colors.brown,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
   );
 }
 

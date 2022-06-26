@@ -104,5 +104,9 @@
     "need_another_name": "Please select another name!",
     "name_exists": "Name Exists..",
     "caught_a": " caught a ",
-    "caught_fish": " caught a fish! "
+    "caught_fish": " caught a fish! ",
+    "sell": "Sell",
+    "no_thanks": "No Thanks",
+    "Accept Offer": "Accept Offer",
+    "we_offer": "We Offer: "
 }

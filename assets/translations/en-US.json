@@ -101,6 +101,10 @@
     "need_your_name": "Please enter your name first!",
     "need_another_name": "Please select another name!",
     "name_exists": "Name Exists..",
-    "caught_fish": " caught a fish! "
+    "caught_fish": " caught a fish! ",
+    "sell": "Sell",
+    "no_thanks": "No Thanks",
+    "accept_offer": "Accept Offer",
+    "we_offer": "We Offer: "
   
 }
