@@ -69,6 +69,12 @@ class MockLocalDatasourcePrefs extends _i1.Mock
               returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
                   _FakeEither_0<_i5.Failure, bool>()))
           as _i4.Future<_i2.Either<_i5.Failure, bool>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, bool>> createNewGroup() =>
+      (super.noSuchMethod(Invocation.method(#createNewGroup, []),
+              returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
+                  _FakeEither_0<_i5.Failure, bool>()))
+          as _i4.Future<_i2.Either<_i5.Failure, bool>>);
 }
 
 /// A class which mocks [RemoteDatasource].
@@ -172,4 +178,41 @@ class MockRemoteDatasource extends _i1.Mock implements _i6.RemoteDatasource {
               returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
                   _FakeEither_0<_i5.Failure, bool>()))
           as _i4.Future<_i2.Either<_i5.Failure, bool>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, List<String>>> getGameResults() =>
+      (super.noSuchMethod(Invocation.method(#getGameResults, []),
+              returnValue: Future<_i2.Either<_i5.Failure, List<String>>>.value(
+                  _FakeEither_0<_i5.Failure, List<String>>()))
+          as _i4.Future<_i2.Either<_i5.Failure, List<String>>>);
+  @override
+  _i4.Future<_i2.Either<_i5.GeneralFailure, int>> retreiveNumPlayers() =>
+      (super.noSuchMethod(Invocation.method(#retreiveNumPlayers, []),
+              returnValue: Future<_i2.Either<_i5.GeneralFailure, int>>.value(
+                  _FakeEither_0<_i5.GeneralFailure, int>()))
+          as _i4.Future<_i2.Either<_i5.GeneralFailure, int>>);
+  @override
+  _i4.Future<_i2.Either<_i5.GeneralFailure, bool>> hasGameStarted() =>
+      (super.noSuchMethod(Invocation.method(#hasGameStarted, []),
+              returnValue: Future<_i2.Either<_i5.GeneralFailure, bool>>.value(
+                  _FakeEither_0<_i5.GeneralFailure, bool>()))
+          as _i4.Future<_i2.Either<_i5.GeneralFailure, bool>>);
+  @override
+  _i4.Future<_i2.Either<_i5.GeneralFailure, String>> getGroupLeader() =>
+      (super.noSuchMethod(Invocation.method(#getGroupLeader, []),
+              returnValue: Future<_i2.Either<_i5.GeneralFailure, String>>.value(
+                  _FakeEither_0<_i5.GeneralFailure, String>()))
+          as _i4.Future<_i2.Either<_i5.GeneralFailure, String>>);
+  @override
+  _i4.Future<_i2.Either<_i5.GeneralFailure, bool>> startGame() =>
+      (super.noSuchMethod(Invocation.method(#startGame, []),
+              returnValue: Future<_i2.Either<_i5.GeneralFailure, bool>>.value(
+                  _FakeEither_0<_i5.GeneralFailure, bool>()))
+          as _i4.Future<_i2.Either<_i5.GeneralFailure, bool>>);
+  @override
+  _i4.Future<_i2.Either<_i5.GeneralFailure, String>>
+      getNamePlayerCaughtFish() => (super.noSuchMethod(
+              Invocation.method(#getNamePlayerCaughtFish, []),
+              returnValue: Future<_i2.Either<_i5.GeneralFailure, String>>.value(
+                  _FakeEither_0<_i5.GeneralFailure, String>()))
+          as _i4.Future<_i2.Either<_i5.GeneralFailure, String>>);
 }

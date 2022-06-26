@@ -152,6 +152,12 @@ class MockFishingUsecase extends _i1.Mock implements _i9.FishingUsecase {
   dynamic playBackgroundAudio(String? engineSound) => super
       .noSuchMethod(Invocation.method(#playBackgroundAudio, [engineSound]));
   @override
+  _i7.Future<_i6.Either<_i10.GeneralFailure, int>> retreiveNumPlayers() =>
+      (super.noSuchMethod(Invocation.method(#retreiveNumPlayers, []),
+              returnValue: Future<_i6.Either<_i10.GeneralFailure, int>>.value(
+                  _FakeEither_5<_i10.GeneralFailure, int>()))
+          as _i7.Future<_i6.Either<_i10.GeneralFailure, int>>);
+  @override
   _i7.Future<_i6.Either<_i10.Failure, _i11.PulseEntity>> call(
           _i12.NoParams? params) =>
       (super.noSuchMethod(Invocation.method(#call, [params]),
@@ -213,4 +219,46 @@ class MockFishingUsecase extends _i1.Mock implements _i9.FishingUsecase {
               returnValue: Future<_i6.Either<_i10.Failure, List<String>>>.value(
                   _FakeEither_5<_i10.Failure, List<String>>()))
           as _i7.Future<_i6.Either<_i10.Failure, List<String>>>);
+  @override
+  _i7.Future<_i6.Either<_i10.Failure, bool>> hasGameStarted() =>
+      (super.noSuchMethod(Invocation.method(#hasGameStarted, []),
+              returnValue: Future<_i6.Either<_i10.Failure, bool>>.value(
+                  _FakeEither_5<_i10.Failure, bool>()))
+          as _i7.Future<_i6.Either<_i10.Failure, bool>>);
+  @override
+  _i7.Future<_i6.Either<_i10.GeneralFailure, String>> getGroupLeader() =>
+      (super.noSuchMethod(Invocation.method(#getGroupLeader, []),
+          returnValue: Future<_i6.Either<_i10.GeneralFailure, String>>.value(
+              _FakeEither_5<_i10.GeneralFailure, String>())) as _i7
+          .Future<_i6.Either<_i10.GeneralFailure, String>>);
+  @override
+  _i7.Future<_i6.Either<_i10.GeneralFailure, bool>> startGame() =>
+      (super.noSuchMethod(Invocation.method(#startGame, []),
+              returnValue: Future<_i6.Either<_i10.GeneralFailure, bool>>.value(
+                  _FakeEither_5<_i10.GeneralFailure, bool>()))
+          as _i7.Future<_i6.Either<_i10.GeneralFailure, bool>>);
+  @override
+  _i7.Future<_i6.Either<_i10.GeneralFailure, String>>
+      getNamePlayerCaughtFish() =>
+          (super.noSuchMethod(Invocation.method(#getNamePlayerCaughtFish, []),
+                  returnValue:
+                      Future<_i6.Either<_i10.GeneralFailure, String>>.value(
+                          _FakeEither_5<_i10.GeneralFailure, String>()))
+              as _i7.Future<_i6.Either<_i10.GeneralFailure, String>>);
+  @override
+  _i7.Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>> rejectPriceOffer(
+          int? index) =>
+      (super.noSuchMethod(Invocation.method(#rejectPriceOffer, [index]),
+              returnValue:
+                  Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>.value(
+                      _FakeEither_5<_i10.GeneralFailure, List<dynamic>>()))
+          as _i7.Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>);
+  @override
+  _i7.Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>> acceptPriceOffer(
+          int? index) =>
+      (super.noSuchMethod(Invocation.method(#acceptPriceOffer, [index]),
+              returnValue:
+                  Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>.value(
+                      _FakeEither_5<_i10.GeneralFailure, List<dynamic>>()))
+          as _i7.Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>);
 }

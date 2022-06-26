@@ -1,4 +1,6 @@
+import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
+import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,12 @@ Widget shopItems(BuildContext context) {
       if (state is LoadingPersonalShopState) {
         listItems = state.personalShopInventory;
         return gui(context, listItems);
+      } else if (state is RejectPriceOfferState) {
+        List listItems = state.listItems;
+        return gui(context, listItems);
+      } else if (state is AcceptPriceOfferState) {
+        List listItems = state.listItems;
+        return gui(context, listItems);
       } else {
         return gui(context, listItems);
       }
@@ -17,7 +25,7 @@ Widget shopItems(BuildContext context) {
   );
 }
 
-Widget gui(BuildContext context, List<String> listItems) {
+Widget gui(BuildContext context, List listItems) {
   List<String> title = [];
   List<String> price = [];
   List<String> weight = [];
@@ -90,7 +98,7 @@ Widget gui(BuildContext context, List<String> listItems) {
                       GestureDetector(
                         onTap: () {
                           popupSell(context, title[index], image[index],
-                              price[index]);
+                              price[index], index);
                         },
                         child: Text(
                           "sell".tr(),
@@ -121,8 +129,8 @@ Widget gui(BuildContext context, List<String> listItems) {
   );
 }
 
-popupSell(
-    BuildContext context, String title, String image, String price) async {
+popupSell(BuildContext context, String title, String image, String price,
+    int index) async {
   return await showDialog(
     context: context,
     barrierDismissible: false,
@@ -134,7 +142,13 @@ popupSell(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  BlocProvider.of<FishingBloc>(context).add(
+                      RejectPriceOfferEvent(
+                          index: index,
+                          fishingUsecase: sl.get<FishingUsecase>()));
+                  Navigator.of(context).pop();
+                },
                 child: const Text('no_thanks',
                     style: TextStyle(
                       fontSize: 18.0,
@@ -144,7 +158,10 @@ popupSell(
               ),
               TextButton(
                 onPressed: () {
-                  print("xxxxxxxxxxxxxxxxxxx");
+                  BlocProvider.of<FishingBloc>(context).add(
+                      AcceptPriceOfferEvent(
+                          index: index,
+                          fishingUsecase: sl.get<FishingUsecase>()));
                   Navigator.of(context).pop();
                 },
                 child: const Text('accept_offer',

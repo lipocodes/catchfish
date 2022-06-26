@@ -42,3 +42,17 @@ class LoadingPersonalShopEvent extends FishingEvent {
 class GameOverEvent extends FishingEvent {}
 
 class StartGameEvent extends FishingEvent {}
+
+// ignore: must_be_immutable
+class RejectPriceOfferEvent extends FishingEvent {
+  late int index;
+  final FishingUsecase fishingUsecase;
+  RejectPriceOfferEvent({required this.index, required this.fishingUsecase});
+}
+
+// ignore: must_be_immutable
+class AcceptPriceOfferEvent extends FishingEvent {
+  late int index;
+  final FishingUsecase fishingUsecase;
+  AcceptPriceOfferEvent({required this.index, required this.fishingUsecase});
+}

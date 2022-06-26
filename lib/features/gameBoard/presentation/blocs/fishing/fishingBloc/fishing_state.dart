@@ -70,3 +70,13 @@ class GameOverState extends FishingState {
 }
 
 class StartGameState extends FishingState {}
+
+class RejectPriceOfferState extends FishingState {
+  List listItems = [];
+  RejectPriceOfferState({required this.listItems});
+}
+
+class AcceptPriceOfferState extends FishingState {
+  List listItems = [];
+  AcceptPriceOfferState({required this.listItems});
+}

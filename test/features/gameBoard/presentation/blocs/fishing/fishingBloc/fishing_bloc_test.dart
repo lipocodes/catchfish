@@ -1,15 +1,9 @@
 import 'dart:math';
-
-import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
-import 'package:catchfish/core/usecases/usecase.dart';
-import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
-
-import 'package:catchfish/features/tokens/data/datasources/local_datasource.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -97,8 +91,16 @@ void main() {
       fishingBloc.add(TimerTickEvent(
           fishingUsecase: mockFishingUsecase,
           currentCountdownTime: currentCountdownTime));
-      expectLater(fishingBloc.stream,
-          emitsInOrder([const TimerTickState(newCountdownTime: "04:59")]));
+      expectLater(
+          fishingBloc.stream,
+          emitsInOrder([
+            const TimerTickState(
+                newCountdownTime: "04:59",
+                gameStarted: false,
+                namePlayerCaughtFish: "Lior",
+                numPlayers: 1,
+                groupLeader: "Lior")
+          ]));
     });
     ///////////////////////////////////////////////////////////////////////////
     test('testing LoadingPersonalShopEvent', () {
@@ -123,6 +125,33 @@ void main() {
     fishingBloc.add(GameOverEvent());
     expectLater(fishingBloc.stream,
         emitsInOrder([GameOverState(listAcheivements: listAcheivements)]));
+  });
+  /////////////////////////////////////////////////////////////////////////
+  test('testing rejectPriceOffer()', () {
+    List listItems = [
+      "Red Mullet^^^80^^^500^^^red_mullet.jpg",
+      "Levrek^^^35^^^250^^^levrek.jpg"
+    ];
+    when(mockFishingUsecase.rejectPriceOffer(0))
+        .thenAnswer((_) async => Right(listItems));
+    fishingBloc.add(
+        RejectPriceOfferEvent(index: 0, fishingUsecase: mockFishingUsecase));
+    expectLater(fishingBloc.stream,
+        emitsInOrder([RejectPriceOfferState(listItems: listItems)]));
+  });
+  ///////////////////////////////////////////////////////////////////////
+  test('testing acceptPriceOffer()', () {
+    List listItems = [
+      "Red Mullet^^^80^^^500^^^red_mullet.jpg",
+      "Levrek^^^35^^^250^^^levrek.jpg"
+    ];
+
+    when(mockFishingUsecase.acceptPriceOffer(0))
+        .thenAnswer((_) async => Right(listItems));
+    fishingBloc.add(
+        AcceptPriceOfferEvent(index: 0, fishingUsecase: mockFishingUsecase));
+    expectLater(fishingBloc.stream,
+        emitsInOrder([AcceptPriceOfferState(listItems: listItems)]));
   });
 }
 ///////////////////////////////////////////////////////////////////////////////////

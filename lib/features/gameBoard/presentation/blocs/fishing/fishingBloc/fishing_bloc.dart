@@ -9,6 +9,7 @@ import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_use
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'fishing_event.dart';
@@ -112,6 +113,20 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
           (success) => listAcheivements = success,
         );
         emit(GameOverState(listAcheivements: listAcheivements));
+      } else if (event is RejectPriceOfferEvent) {
+        List listItems = [];
+        int index = event.index;
+        _fishingUsecase = event.fishingUsecase;
+        final res = await _fishingUsecase.rejectPriceOffer(index);
+        res.fold((l) => GeneralFailure(), (r) => listItems = r);
+        emit(RejectPriceOfferState(listItems: listItems));
+      } else if (event is AcceptPriceOfferEvent) {
+        List listItems = [];
+        int index = event.index;
+        _fishingUsecase = event.fishingUsecase;
+        final res = await _fishingUsecase.acceptPriceOffer(index);
+        res.fold((l) => GeneralFailure(), (r) => listItems = r);
+        emit(AcceptPriceOfferState(listItems: listItems));
       }
     });
   }

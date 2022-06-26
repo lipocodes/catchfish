@@ -6,6 +6,8 @@ import 'dart:async' as _i4;
 
 import 'package:catchfish/core/errors/failures.dart' as _i5;
 import 'package:catchfish/core/usecases/usecase.dart' as _i7;
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart'
+    as _i12;
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart'
     as _i11;
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart'
@@ -110,11 +112,18 @@ class MockSelectGroupRepositoryImpl extends _i1.Mock
                   _FakeEither_0<_i5.Failure, bool>()))
           as _i4.Future<_i2.Either<_i5.Failure, bool>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, bool>> createNewGroup(String? groupName,
-          String? yourName, _i11.RemoteDatasource? remoteDatasource) =>
+  _i4.Future<_i2.Either<_i5.Failure, bool>> createNewGroup(
+          String? groupName,
+          String? yourName,
+          _i11.RemoteDatasource? remoteDatasource,
+          _i12.LocalDatasourcePrefs? localDatasourcePrefs) =>
       (super.noSuchMethod(
-              Invocation.method(
-                  #createNewGroup, [groupName, yourName, remoteDatasource]),
+              Invocation.method(#createNewGroup, [
+                groupName,
+                yourName,
+                remoteDatasource,
+                localDatasourcePrefs
+              ]),
               returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
                   _FakeEither_0<_i5.Failure, bool>()))
           as _i4.Future<_i2.Either<_i5.Failure, bool>>);
