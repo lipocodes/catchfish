@@ -1,10 +1,8 @@
 import 'package:catchfish/core/errors/failures.dart';
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
-import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart';
-import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
-import 'package:catchfish/features/gameBoard/presentation/widgets/selectGroup/selector_group_type.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -50,10 +48,11 @@ void main() {
       }
     });
     test("testing createNewGroup()", () async {
+      LocalDatasourcePrefs localDatasourcePrefs = LocalDatasourcePrefs();
       when(mockRemoteDatasource.createNewGroup("Group1", "Lior"))
           .thenAnswer((_) async => const Right(true));
       final res = await selectGroupRepositoryImpl.createNewGroup(
-          "Group1", "Lior", mockRemoteDatasource);
+          "Group1", "Lior", mockRemoteDatasource, localDatasourcePrefs);
       if (res.isRight()) {
         expectLater(res, const Right(true));
       } else {

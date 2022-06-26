@@ -14,6 +14,11 @@ import 'features/gameBoard/data/datasources/fishing/local_datasource.dart';
 
 final sl = GetIt.instance;
 
+
+sendSMS()async{
+  
+}
+
 Future<bool> init() async {
   //Bloc: not singleton
   sl.registerFactory<FishingBloc>(

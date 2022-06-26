@@ -1,3 +1,4 @@
+import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
@@ -52,11 +53,15 @@ void main() {
       expectLater(res, const Right(true));
     });
     test('testing createNewGroup()', () async {
+      LocalDatasourcePrefs localDatasourcePrefs = LocalDatasourcePrefs();
       when(mockSelectGroupRepositoryImpl.createNewGroup(
-              "Group1", "Lior", remoteDatasource))
+              "Group1", "Lior", remoteDatasource, localDatasourcePrefs))
           .thenAnswer((realInvocation) async => const Right(true));
       final res = await selectGroupUsecase.createNewGroup(
-          "Group1", "Lior", mockSelectGroupRepositoryImpl);
+        "Group1",
+        "Lior",
+        mockSelectGroupRepositoryImpl,
+      );
       expectLater(res, const Right(true));
     });
   });
