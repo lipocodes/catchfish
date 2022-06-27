@@ -39,7 +39,8 @@ void main() {
         "Levrek^^^35^^^250^^^levrek.jpg"
       ];
       mockFishingRepositoryImpl = MockFishingRepositoryImpl();
-      when(mockFishingRepositoryImpl.rejectPriceOffer(0))
+      RemoteDatasource remoteDatasource = RemoteDatasource();
+      when(mockFishingRepositoryImpl.rejectPriceOffer(0, remoteDatasource))
           .thenAnswer((_) async => Right(listItems));
       final res =
           await fishingUsecase.rejectPriceOffer(0, mockFishingRepositoryImpl);
@@ -53,7 +54,8 @@ void main() {
         "Levrek^^^35^^^250^^^levrek.jpg"
       ];
       mockFishingRepositoryImpl = MockFishingRepositoryImpl();
-      when(mockFishingRepositoryImpl.acceptPriceOffer(0))
+      RemoteDatasource remoteDatasource = RemoteDatasource();
+      when(mockFishingRepositoryImpl.acceptPriceOffer(0, remoteDatasource))
           .thenAnswer((_) async => Right(listItems));
       final res =
           await fishingUsecase.acceptPriceOffer(0, mockFishingRepositoryImpl);

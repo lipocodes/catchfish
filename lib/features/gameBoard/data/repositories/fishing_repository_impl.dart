@@ -210,24 +210,24 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
-  Future<Either<GeneralFailure, List>> rejectPriceOffer(int index) async {
-    List listItems = [
-      "Red Mullet^^^80^^^500^^^red_mullet.jpg",
-      "Levrek^^^35^^^250^^^levrek.jpg"
-    ];
+  Future<Either<GeneralFailure, List>> rejectPriceOffer(
+      int index, RemoteDatasource remoteDatasource) async {
+    List listItems = [];
     try {
+      final res = await remoteDatasource.rejectPriceOffer(index);
+      res.fold((l) => GeneralFailure(), (r) => listItems = r);
       return Right(listItems);
     } catch (e) {
       return Left(GeneralFailure());
     }
   }
 
-  Future<Either<GeneralFailure, List>> acceptPriceOffer(int index) async {
-    List listItems = [
-      "Red Mullet^^^80^^^500^^^red_mullet.jpg",
-      "Levrek^^^35^^^250^^^levrek.jpg"
-    ];
+  Future<Either<GeneralFailure, List>> acceptPriceOffer(
+      int index, RemoteDatasource remoteDatasource) async {
+    List listItems = [];
     try {
+      final res = await remoteDatasource.acceptPriceOffer(index);
+      res.fold((l) => GeneralFailure(), (r) => listItems = r);
       return Right(listItems);
     } catch (e) {
       return Left(GeneralFailure());

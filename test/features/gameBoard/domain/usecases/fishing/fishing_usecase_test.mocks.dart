@@ -165,16 +165,18 @@ class MockFishingRepositoryImpl extends _i1.Mock
           as _i4.Future<_i2.Either<_i5.GeneralFailure, String>>);
   @override
   _i4.Future<_i2.Either<_i5.GeneralFailure, List<dynamic>>> rejectPriceOffer(
-          int? index) =>
-      (super.noSuchMethod(Invocation.method(#rejectPriceOffer, [index]),
+          int? index, _i7.RemoteDatasource? remoteDatasource) =>
+      (super.noSuchMethod(
+              Invocation.method(#rejectPriceOffer, [index, remoteDatasource]),
               returnValue:
                   Future<_i2.Either<_i5.GeneralFailure, List<dynamic>>>.value(
                       _FakeEither_0<_i5.GeneralFailure, List<dynamic>>()))
           as _i4.Future<_i2.Either<_i5.GeneralFailure, List<dynamic>>>);
   @override
   _i4.Future<_i2.Either<_i5.GeneralFailure, List<dynamic>>> acceptPriceOffer(
-          int? index) =>
-      (super.noSuchMethod(Invocation.method(#acceptPriceOffer, [index]),
+          int? index, _i7.RemoteDatasource? remoteDatasource) =>
+      (super.noSuchMethod(
+              Invocation.method(#acceptPriceOffer, [index, remoteDatasource]),
               returnValue:
                   Future<_i2.Either<_i5.GeneralFailure, List<dynamic>>>.value(
                       _FakeEither_0<_i5.GeneralFailure, List<dynamic>>()))

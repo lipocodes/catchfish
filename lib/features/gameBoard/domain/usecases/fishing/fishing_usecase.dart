@@ -293,7 +293,9 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       int index, FishingRepositoryImpl fishingRepositoryImpl) async {
     List listItems = [];
     try {
-      final res = await fishingRepositoryImpl.rejectPriceOffer(index);
+      RemoteDatasource remoteDatasource = RemoteDatasource();
+      final res =
+          await fishingRepositoryImpl.rejectPriceOffer(index, remoteDatasource);
       res.fold((l) => GeneralFailure(), (r) => listItems = r);
       return Right(listItems);
     } catch (e) {
@@ -305,7 +307,9 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       int index, FishingRepositoryImpl fishingRepositoryImpl) async {
     List listItems = [];
     try {
-      final res = await fishingRepositoryImpl.acceptPriceOffer(index);
+      RemoteDatasource remoteDatasource = RemoteDatasource();
+      final res =
+          await fishingRepositoryImpl.acceptPriceOffer(index, remoteDatasource);
       res.fold((l) => GeneralFailure(), (r) => listItems = r);
       return Right(listItems);
     } catch (e) {

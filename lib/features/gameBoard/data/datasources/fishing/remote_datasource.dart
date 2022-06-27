@@ -496,4 +496,28 @@ class RemoteDatasource {
       return Left(GeneralFailure());
     }
   }
+
+  Future<Either<GeneralFailure, List>> rejectPriceOffer(int index) async {
+    List listItems = [
+      "Red Mullet^^^80^^^500^^^red_mullet.jpg",
+      "Levrek^^^35^^^250^^^levrek.jpg"
+    ];
+    try {
+      return Right(listItems);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<GeneralFailure, List>> acceptPriceOffer(int index) async {
+    List listItems = [
+      "Red Mullet^^^80^^^500^^^red_mullet.jpg",
+      "Levrek^^^35^^^250^^^levrek.jpg"
+    ];
+    try {
+      return Right(listItems);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
 }

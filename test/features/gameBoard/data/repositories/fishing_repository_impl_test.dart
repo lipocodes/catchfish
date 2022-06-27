@@ -155,4 +155,32 @@ void main() {
 
     expectLater(res, Right(listAcheivements));
   });
+
+  test('testing rejectPriceOffer()', () async {
+    List listItems = [
+      "Red Mullet^^^80^^^500^^^red_mullet.jpg",
+      "Levrek^^^35^^^250^^^levrek.jpg"
+    ];
+    mockRemoteDatasource = MockRemoteDatasource();
+    when(mockRemoteDatasource.rejectPriceOffer(0))
+        .thenAnswer((_) async => Right(listItems));
+    final res = await sl
+        .get<FishingRepositoryImpl>()
+        .rejectPriceOffer(0, mockRemoteDatasource);
+    expectLater(res, Right(listItems));
+  });
+
+  test('testing acceptPriceOffer()', () async {
+    List listItems = [
+      "Red Mullet^^^80^^^500^^^red_mullet.jpg",
+      "Levrek^^^35^^^250^^^levrek.jpg"
+    ];
+    mockRemoteDatasource = MockRemoteDatasource();
+    when(mockRemoteDatasource.acceptPriceOffer(0))
+        .thenAnswer((_) async => Right(listItems));
+    final res = await sl
+        .get<FishingRepositoryImpl>()
+        .acceptPriceOffer(0, mockRemoteDatasource);
+    expectLater(res, Right(listItems));
+  });
 }
