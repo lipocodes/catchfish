@@ -117,14 +117,18 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         List listItems = [];
         int index = event.index;
         _fishingUsecase = event.fishingUsecase;
-        final res = await _fishingUsecase.rejectPriceOffer(index);
+        FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();
+        final res = await _fishingUsecase.rejectPriceOffer(
+            index, fishingRepositoryImpl);
         res.fold((l) => GeneralFailure(), (r) => listItems = r);
         emit(RejectPriceOfferState(listItems: listItems));
       } else if (event is AcceptPriceOfferEvent) {
         List listItems = [];
         int index = event.index;
         _fishingUsecase = event.fishingUsecase;
-        final res = await _fishingUsecase.acceptPriceOffer(index);
+        FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();
+        final res = await _fishingUsecase.acceptPriceOffer(
+            index, fishingRepositoryImpl);
         res.fold((l) => GeneralFailure(), (r) => listItems = r);
         emit(AcceptPriceOfferState(listItems: listItems));
       }

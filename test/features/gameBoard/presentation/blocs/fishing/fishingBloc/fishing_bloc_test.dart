@@ -132,7 +132,8 @@ void main() {
       "Red Mullet^^^80^^^500^^^red_mullet.jpg",
       "Levrek^^^35^^^250^^^levrek.jpg"
     ];
-    when(mockFishingUsecase.rejectPriceOffer(0))
+    FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();
+    when(mockFishingUsecase.rejectPriceOffer(0, fishingRepositoryImpl))
         .thenAnswer((_) async => Right(listItems));
     fishingBloc.add(
         RejectPriceOfferEvent(index: 0, fishingUsecase: mockFishingUsecase));
@@ -145,8 +146,8 @@ void main() {
       "Red Mullet^^^80^^^500^^^red_mullet.jpg",
       "Levrek^^^35^^^250^^^levrek.jpg"
     ];
-
-    when(mockFishingUsecase.acceptPriceOffer(0))
+    FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();
+    when(mockFishingUsecase.acceptPriceOffer(0, fishingRepositoryImpl))
         .thenAnswer((_) async => Right(listItems));
     fishingBloc.add(
         AcceptPriceOfferEvent(index: 0, fishingUsecase: mockFishingUsecase));

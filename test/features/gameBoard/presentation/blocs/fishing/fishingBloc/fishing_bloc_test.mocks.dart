@@ -247,18 +247,20 @@ class MockFishingUsecase extends _i1.Mock implements _i9.FishingUsecase {
               as _i7.Future<_i6.Either<_i10.GeneralFailure, String>>);
   @override
   _i7.Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>> rejectPriceOffer(
-          int? index) =>
-      (super.noSuchMethod(Invocation.method(#rejectPriceOffer, [index]),
-              returnValue:
-                  Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>.value(
-                      _FakeEither_5<_i10.GeneralFailure, List<dynamic>>()))
-          as _i7.Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>);
+          int? index, _i14.FishingRepositoryImpl? fishingRepositoryImpl) =>
+      (super.noSuchMethod(
+          Invocation.method(#rejectPriceOffer, [index, fishingRepositoryImpl]),
+          returnValue:
+              Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>.value(
+                  _FakeEither_5<_i10.GeneralFailure, List<dynamic>>())) as _i7
+          .Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>);
   @override
   _i7.Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>> acceptPriceOffer(
-          int? index) =>
-      (super.noSuchMethod(Invocation.method(#acceptPriceOffer, [index]),
-              returnValue:
-                  Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>.value(
-                      _FakeEither_5<_i10.GeneralFailure, List<dynamic>>()))
-          as _i7.Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>);
+          int? index, _i14.FishingRepositoryImpl? fishingRepositoryImpl) =>
+      (super.noSuchMethod(
+          Invocation.method(#acceptPriceOffer, [index, fishingRepositoryImpl]),
+          returnValue:
+              Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>.value(
+                  _FakeEither_5<_i10.GeneralFailure, List<dynamic>>())) as _i7
+          .Future<_i6.Either<_i10.GeneralFailure, List<dynamic>>>);
 }

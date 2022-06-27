@@ -32,5 +32,33 @@ void main() {
           await fishingUsecase.getGameResults(mockFishingRepositoryImpl);
       expectLater(res, Right(listAcheivements));
     });
+    ///////////////////////////////////////////////////////////////
+    test('testing rejectPriceOffer()', () async {
+      List listItems = [
+        "Red Mullet^^^80^^^500^^^red_mullet.jpg",
+        "Levrek^^^35^^^250^^^levrek.jpg"
+      ];
+      mockFishingRepositoryImpl = MockFishingRepositoryImpl();
+      when(mockFishingRepositoryImpl.rejectPriceOffer(0))
+          .thenAnswer((_) async => Right(listItems));
+      final res =
+          await fishingUsecase.rejectPriceOffer(0, mockFishingRepositoryImpl);
+      expectLater(res, Right(listItems));
+    });
+    //////////////////////////////////////////////////////////////
+
+    test('testing acceptPriceOffer()', () async {
+      List listItems = [
+        "Red Mullet^^^80^^^500^^^red_mullet.jpg",
+        "Levrek^^^35^^^250^^^levrek.jpg"
+      ];
+      mockFishingRepositoryImpl = MockFishingRepositoryImpl();
+      when(mockFishingRepositoryImpl.acceptPriceOffer(0))
+          .thenAnswer((_) async => Right(listItems));
+      final res =
+          await fishingUsecase.acceptPriceOffer(0, mockFishingRepositoryImpl);
+      expectLater(res, Right(listItems));
+    });
+    //////////////////////////////////////////////////////////////
   });
 }
