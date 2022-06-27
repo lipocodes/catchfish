@@ -500,7 +500,6 @@ class RemoteDatasource {
   }
 
   Future<Either<GeneralFailure, List>> rejectPriceOffer(int index) async {
-    print("aaaaaaaaaaaaaaaaaaa");
     final FirebaseAuth auth = FirebaseAuth.instance;
     List listItems = [];
     List caughtFish = [];
@@ -519,8 +518,8 @@ class RemoteDatasource {
       List<String> list = temp.split("^^^");
       int numRejections = int.parse(list[4]);
 
-      //if user hasn't rejected 3 proce offers yet
-      if (numRejections < 3) {
+      //if user hasn't rejected 5 price offers yet
+      if (numRejections < 5) {
         //update number of past offer rejection
         numRejections += 1;
         list[4] = numRejections.toString();
@@ -534,10 +533,29 @@ class RemoteDatasource {
         //recreate the String to be saved to DB for this fish
         String newFishDetails = "";
         for (int a = 0; a < list.length; a++) {
-          newFishDetails += list[a] + "^^^";
+          if (a == list.length - 1) {
+            newFishDetails += list[a];
+          } else {
+            newFishDetails += list[a] + "^^^";
+          }
         }
-        print("aaa=" + newFishDetails);
-      } else {}
+        caughtFish[index] = newFishDetails;
+        //save new data to DB
+
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userDoc.docs[0].id)
+            .update({"caughtFish": caughtFish});
+        listItems = caughtFish;
+      } else {
+        caughtFish.removeAt(index);
+        print("xxx=" + caughtFish.toString());
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userDoc.docs[0].id)
+            .update({"caughtFish": caughtFish});
+        listItems = caughtFish;
+      }
 
       return Right(listItems);
     } catch (e) {
