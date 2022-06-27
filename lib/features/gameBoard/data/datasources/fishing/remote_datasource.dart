@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
@@ -498,11 +500,45 @@ class RemoteDatasource {
   }
 
   Future<Either<GeneralFailure, List>> rejectPriceOffer(int index) async {
-    List listItems = [
-      "Red Mullet^^^80^^^500^^^red_mullet.jpg",
-      "Levrek^^^35^^^250^^^levrek.jpg"
-    ];
+    print("aaaaaaaaaaaaaaaaaaa");
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    List listItems = [];
+    List caughtFish = [];
     try {
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+      if (uid == null) {
+        return Left(GeneralFailure());
+      }
+      final userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .where("uid", isEqualTo: uid)
+          .get();
+      caughtFish = userDoc.docs[0].data()['caughtFish'];
+      String temp = caughtFish[index];
+      List<String> list = temp.split("^^^");
+      int numRejections = int.parse(list[4]);
+
+      //if user hasn't rejected 3 proce offers yet
+      if (numRejections < 3) {
+        //update number of past offer rejection
+        numRejections += 1;
+        list[4] = numRejections.toString();
+        //randomize a new price offer
+        var random = Random();
+        int randomInt = random.nextInt(20);
+
+        int oldPriceOffer = int.parse(list[1]);
+        int newPriceOffer = (oldPriceOffer * (randomInt * 0.1)).toInt();
+        list[1] = newPriceOffer.toString();
+        //recreate the String to be saved to DB for this fish
+        String newFishDetails = "";
+        for (int a = 0; a < list.length; a++) {
+          newFishDetails += list[a] + "^^^";
+        }
+        print("aaa=" + newFishDetails);
+      } else {}
+
       return Right(listItems);
     } catch (e) {
       return Left(GeneralFailure());
@@ -510,10 +546,7 @@ class RemoteDatasource {
   }
 
   Future<Either<GeneralFailure, List>> acceptPriceOffer(int index) async {
-    List listItems = [
-      "Red Mullet^^^80^^^500^^^red_mullet.jpg",
-      "Levrek^^^35^^^250^^^levrek.jpg"
-    ];
+    List listItems = [];
     try {
       return Right(listItems);
     } catch (e) {
