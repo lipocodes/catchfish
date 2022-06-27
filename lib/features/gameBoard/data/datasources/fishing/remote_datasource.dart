@@ -4,6 +4,8 @@ import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/new_player_model.dart';
+import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
+import 'package:catchfish/features/settings/data/models/inventory_model.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
@@ -549,7 +551,7 @@ class RemoteDatasource {
         listItems = caughtFish;
       } else {
         caughtFish.removeAt(index);
-        print("xxx=" + caughtFish.toString());
+
         FirebaseFirestore.instance
             .collection('users')
             .doc(userDoc.docs[0].id)
@@ -565,7 +567,47 @@ class RemoteDatasource {
 
   Future<Either<GeneralFailure, List>> acceptPriceOffer(int index) async {
     List listItems = [];
+    List caughtFish = [];
+    int inventoryMoney = 0;
+    final FirebaseAuth auth = FirebaseAuth.instance;
     try {
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+      if (uid == null) {
+        return Left(GeneralFailure());
+      }
+      //get content of Private Collection
+      final userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .where("uid", isEqualTo: uid)
+          .get();
+      //retreive current money value
+      caughtFish = userDoc.docs[0].data()['caughtFish'];
+      String temp = caughtFish[index];
+      List<String> list = temp.split("^^^");
+      int priceFish = int.parse(list[1]);
+      inventoryMoney = userDoc.docs[0].data()['prizeValues']['inventoryMoney'];
+      inventoryMoney += priceFish;
+      //update inventoryMoney after selling the fish
+      PrizeValuesEntity prizeValuesEntity = PrizeValuesEntity(
+          inventoryMoney: inventoryMoney,
+          inventoryBaits: userDoc.docs[0].data()['prizeValues']
+              ['inventoryBaits'],
+          inventoryXP: userDoc.docs[0].data()['prizeValues']['inventoryXP'],
+          lastPrizeValuesUpdateDB: userDoc.docs[0].data()['prizeValues']
+              ['lastPrizeValuesUpdateDB']);
+
+      //remove the fish that has been sold eight now
+      caughtFish.removeAt(index);
+      //update the DB about the sold fish
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userDoc.docs[0].id)
+          .update({
+        "caughtFish": caughtFish,
+        "prizeValues": prizeValuesEntity.toJson()
+      });
+      listItems = caughtFish;
       return Right(listItems);
     } catch (e) {
       return Left(GeneralFailure());
