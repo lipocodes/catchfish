@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:catchfish/core/widgets/main_menu.dart';
 import 'package:catchfish/features/settings/presentation/blocs/bloc/inventory_bloc.dart';
 import 'package:catchfish/features/settings/presentation/widgets/app_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -57,6 +56,7 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
                         icon: const Icon(Icons.close),
                         onPressed: () {
                           Navigator.pop(context);
+                          Navigator.pop(context);
                         })
                   ],
                 ));
@@ -84,10 +84,10 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
     showLoginWarning(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
-      onDrawerChanged: (isOpened) {},
+      //onDrawerChanged: (isOpened) {},
       appBar: appBar(context),
       //in core/widgets/main_menu.dart
-      drawer: mainMenu(context),
+      //drawer: mainMenu(context),
       body: inventoryGrid(),
     );
   }

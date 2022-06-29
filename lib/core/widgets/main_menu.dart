@@ -67,7 +67,7 @@ Widget mainMenu(BuildContext context) {
               Icons.inventory,
               color: Colors.greenAccent,
             ),
-            title: Text('equipment_storage'.tr(),
+            title: Text('my_equipment'.tr(),
                 style: const TextStyle(
                   fontSize: 24.0,
                   color: Colors.red,
@@ -87,32 +87,6 @@ Widget mainMenu(BuildContext context) {
           const Divider(
             color: Colors.black38,
             thickness: 5,
-          ),
-          ListTile(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            selected: true,
-            selectedTileColor: Colors.grey[300],
-            tileColor: Colors.blue,
-            leading: const Icon(
-              Icons.add_shopping_cart,
-              color: Colors.greenAccent,
-            ),
-            title: Text('fishing_shop'.tr(),
-                style: const TextStyle(
-                  fontSize: 24.0,
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'skullsandcrossbones',
-                )),
-            onTap: () {
-              Navigator.pop(context);
-              //Navigator.pushNamed(context, '/equipment_inventory');
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const FishingShop()),
-              );
-            },
           ),
           const Divider(
             color: Colors.black38,

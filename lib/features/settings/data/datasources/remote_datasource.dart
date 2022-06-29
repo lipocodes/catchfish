@@ -12,6 +12,7 @@ class RemoteDataSources {
           .where('email', isEqualTo: email)
           .get();
       List temp = r.docs[0]['inventory'];
+
       lastInventoryUpdateDB = r.docs[0]['lastInventoryUpdateDB'];
       List<String> listInventory = [];
       for (int a = 0; a < temp.length; a++) {

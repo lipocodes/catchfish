@@ -58,7 +58,7 @@ Widget form(BuildContext context) {
       const SizedBox(
         height: 10.0,
       ),
-      ElevatedButton.icon(
+      /*ElevatedButton.icon(
         label: const Text("Sign Up with Facebook"),
         onPressed: () {
           final provider =
@@ -73,8 +73,8 @@ Widget form(BuildContext context) {
             onPrimary: Colors.black,
             minimumSize: const Size(double.infinity, 50)),
         icon: const FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
-      ),
-      if (Platform.isIOS) ...[
+      ),*/
+      /*if (Platform.isIOS) ...[
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton.icon(
@@ -94,7 +94,7 @@ Widget form(BuildContext context) {
             icon: const FaIcon(FontAwesomeIcons.apple, color: Colors.blue),
           ),
         ),
-      ],
+      ],*/
     ],
   );
 }

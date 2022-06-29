@@ -40,14 +40,14 @@ class _LoginState extends State<Login> {
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                leading: Builder(
+                /* leading: Builder(
                   builder: (context) => IconButton(
                     icon: const Icon(Icons.menu),
                     onPressed: () => Scaffold.of(context).openDrawer(),
                   ),
-                ),
+                ),*/
                 actions: [
-                  IconButton(
+                  /*IconButton(
                     icon: const Icon(
                       Icons.arrow_back,
                       size: 24,
@@ -56,11 +56,11 @@ class _LoginState extends State<Login> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                  )
+                  )*/
                 ],
               ),
               //in core/widgets/main_menu.dart
-              drawer: mainMenu(context),
+              //drawer: mainMenu(context),
               body: Container(
                 height: 1000,
                 width: MediaQuery.of(context).size.width,
