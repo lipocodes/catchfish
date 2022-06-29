@@ -80,7 +80,6 @@ class RemoteDatasource {
       if (prodID.contains("product4")) {
         updatedPrizeName = "inventoryMoney";
         inventoryMoney = inventoryMoney + 10;
-        print("xxxxxxxxxxxxxxxxxxxxxxx=" + inventoryMoney.toString());
         updatedPrizeValue = inventoryMoney;
       } else if (prodID.contains("product5")) {
         updatedPrizeName = "inventoryBaits";
