@@ -520,8 +520,8 @@ class RemoteDatasource {
       List<String> list = temp.split("^^^");
       int numRejections = int.parse(list[4]);
 
-      //if user hasn't rejected 5 price offers yet
-      if (numRejections < 5) {
+      //if user hasn't rejected 3 price offers yet
+      if (numRejections < 2) {
         //update number of past offer rejection
         numRejections += 1;
         list[4] = numRejections.toString();
@@ -558,7 +558,6 @@ class RemoteDatasource {
             .update({"caughtFish": caughtFish});
         listItems = caughtFish;
       }
-
       return Right(listItems);
     } catch (e) {
       return Left(GeneralFailure());

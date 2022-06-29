@@ -88,10 +88,6 @@ Widget mainMenu(BuildContext context) {
             color: Colors.black38,
             thickness: 5,
           ),
-          const Divider(
-            color: Colors.black38,
-            thickness: 5,
-          ),
           ListTile(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),

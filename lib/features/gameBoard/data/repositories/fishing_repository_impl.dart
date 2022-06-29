@@ -46,17 +46,12 @@ class FishingRepositoryImpl implements FishingRepository {
   Future<Either<Failure, List>> getPersonalShop(
       LocalDatasourcePrefs localDatasourcePrefs,
       RemoteDatasource remoteDatasource) async {
-    final res1 = await localDatasourcePrefs.getPersonalShopPref();
-    final res2 = await remoteDatasource.getPersonalShop();
+    final res = await remoteDatasource.getPersonalShop();
     //if app installation is not new && user has something in PersonalShop
-    if (res1.isRight() && res1.length() > 0) {
-      return res1;
+    if (res.isRight()) {
+      return res;
     } else {
-      if (res2.isRight()) {
-        return res2;
-      } else {
-        return Left(GeneralFailure());
-      }
+      return Left(GeneralFailure());
     }
   }
 
