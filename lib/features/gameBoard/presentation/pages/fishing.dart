@@ -77,12 +77,14 @@ class _FishingState extends State<Fishing> {
               "game_over".tr(),
               style: const TextStyle(
                 fontFamily: 'skullsandcrossbones',
+                fontSize: 24.0,
               ),
             ).tr(),
             content: Text(
               str,
               style: const TextStyle(
                 fontFamily: 'skullsandcrossbones',
+                fontSize: 24.0,
               ),
             ).tr(),
             actions: <Widget>[
@@ -95,7 +97,7 @@ class _FishingState extends State<Fishing> {
                 },
                 child: const Text('next',
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 20.0,
                       color: Colors.blue,
                       fontFamily: 'skullsandcrossbones',
                     )).tr(),
@@ -139,6 +141,7 @@ class _FishingState extends State<Fishing> {
                   "click_start_game",
                   style: TextStyle(
                     fontFamily: 'skullsandcrossbones',
+                    fontSize: 24.0,
                   ),
                 ).tr(),
                 actions: <Widget>[

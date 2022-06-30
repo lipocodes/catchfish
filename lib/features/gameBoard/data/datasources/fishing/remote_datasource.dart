@@ -41,6 +41,9 @@ class RemoteDatasource {
           .get();
 
       List listPlayers = querySnapshot.docs[0]['players'];
+      if (listPlayers.length == 10) {
+        return Left(GeneralFailure());
+      }
       listPlayers.add(newPlayerModel);
 
       FirebaseFirestore.instance
