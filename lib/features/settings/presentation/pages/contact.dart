@@ -13,15 +13,20 @@ class _ContactState extends State<Contact> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              leading: buttonBack(context),
-              actions: [],
-            ),
-            resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(child: contactForm(context))));
+        child: GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: buttonBack(context),
+            actions: [],
+          ),
+          resizeToAvoidBottomInset: false,
+          body: SingleChildScrollView(child: contactForm(context))),
+    ));
   }
 }

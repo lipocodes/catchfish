@@ -86,18 +86,14 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
         emit(SelectedGroupTypeState(selectedGroupType: _selectedGroupType));
       } else if (event is GroupNameChangedEvent) {
         _groupName = event.groupName;
-
-        emit(GroupNameValueState(
-            groupName: _groupName, selectedGroupType: _selectedGroupType));
       } else if (event is YourNameChangedEvent) {
         _yourName = event.yourName;
+
         if (_yourName.isEmpty) {
           emit(const SelectedGroupTypeState(selectedGroupType: 0));
           emit(const NeutralState(selectedGroup: "", selectedGroupType: 0));
           return;
         }
-        emit(YourNameValueState(
-            yourName: _yourName, selectedGroupType: _selectedGroupType));
       } else if (event is SelectedExistingGroupEvent) {
         _selectedGroup = event.selectedGroup;
 
