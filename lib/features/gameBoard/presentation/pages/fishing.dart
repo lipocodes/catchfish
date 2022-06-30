@@ -5,6 +5,7 @@ import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingB
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/countdown.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/energy.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/pulse_generator.dart';
+import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,10 @@ class _FishingState extends State<Fishing> {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).popUntil(ModalRoute.withName("/lobby"));
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Lobby()),
+                      ModalRoute.withName("/lobby"));
                 },
                 child: const Text('next',
                     style: TextStyle(

@@ -5,7 +5,6 @@ import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_data
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/new_player_model.dart';
 import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
-import 'package:catchfish/features/settings/data/models/inventory_model.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
