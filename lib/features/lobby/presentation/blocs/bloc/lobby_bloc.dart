@@ -93,7 +93,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         playSound = PlaySound();
 
         playSound.play(path: "assets/sounds/lobby/", fileName: "waves.mp3");
-        int dayLastRotation = prefs.getInt("dayLastRotation") ?? 0;
+        int dayLastRotation = prefs.getInt("dayLastCompassRotation") ?? 0;
 
         if (DateTime.now().day == dayLastRotation) {
           emit(EnteringLobbyState(
@@ -122,10 +122,9 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         int randomSum = Random().nextInt(10);
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        //save the time when we save date locally
-        var lastPrizeValuesUpdatePrefs = DateTime.now().millisecondsSinceEpoch;
-        await prefs.setInt(
-            "lastPrizeValuesUpdatePrefs", lastPrizeValuesUpdatePrefs);
+        //save the day when last rotated the compass
+        int dayLastCompassRotation = DateTime.now().day;
+        await prefs.setInt("dayLastCompassRotation", dayLastCompassRotation);
 
         int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
         if (randomIndex == 0) {

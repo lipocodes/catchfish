@@ -186,24 +186,27 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
-          const SizedBox(
-            height: 60.0,
-          ),
-          GestureDetector(
-            onTap: () {
-              showExplantionRotation();
-            },
-            child: const Text(
-              "explanation_compass",
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.red,
-                decoration: TextDecoration.underline,
-                fontFamily: 'skullsandcrossbones',
-              ),
-            ).tr(),
-          ),
-          buttonRotate(context, state),
+          if ((state is EnteringLobbyState &&
+              state.hasRotatedTodayYet == false)) ...[
+            const SizedBox(
+              height: 60.0,
+            ),
+            GestureDetector(
+              onTap: () {
+                showExplantionRotation();
+              },
+              child: const Text(
+                "explanation_compass",
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.red,
+                  decoration: TextDecoration.underline,
+                  fontFamily: 'skullsandcrossbones',
+                ),
+              ).tr(),
+            ),
+            buttonRotate(context, state),
+          ],
           GestureDetector(
               onTap: () async {
                 await flutterLocalNotificationsPlugin.show(
@@ -215,11 +218,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
               },
               child: arrowBottom()),
           compass(context, _angle),
-          if (state is EndRotateCompassState ||
-              (state is EnteringLobbyState &&
-                  state.hasRotatedTodayYet == true)) ...[
-            nextFreeRotation(),
-          ],
+          nextFreeRotation(),
           const SizedBox(
             height: 20.0,
           ),
@@ -236,23 +235,12 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (state is EndRotateCompassState ||
-                  (state is EnteringLobbyState &&
-                      state.hasRotatedTodayYet == true)) ...[
-                const Text("click_to_enable_compass",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'skullsandcrossbones',
-                    )).tr(),
-              ] else ...[
-                const Text("click_to_roll",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'skullsandcrossbones',
-                    )).tr(),
-              ],
+              const Text("click_to_roll",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'skullsandcrossbones',
+                  )).tr(),
               const SizedBox(
                 width: 10.0,
               ),
