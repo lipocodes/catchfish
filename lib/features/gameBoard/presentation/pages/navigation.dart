@@ -126,49 +126,6 @@ class _NavigationState extends State<Navigation> {
     });
   }
 
-  popDialogGoNextPhase() async {
-    await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.redAccent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: const Text(
-            "cheers",
-            style: TextStyle(
-              fontFamily: 'skullsandcrossbones',
-            ),
-          ).tr(),
-          content: const Text(
-            "arrived_at_destination",
-            style: TextStyle(
-              fontFamily: 'skullsandcrossbones',
-            ),
-          ).tr(),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Fishing()),
-                );
-              },
-              child: const Text('next',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.blue,
-                    fontFamily: 'skullsandcrossbones',
-                  )).tr(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   _updateOriginMarkerUponNewCoordinate() async {
     //check if we have arrived at the destination
     var distance = pow(
@@ -177,7 +134,10 @@ class _NavigationState extends State<Navigation> {
         0.5);
     if (distance <= 0.0005) {
       await audioCache.play("cheers.mp3");
-      popDialogGoNextPhase();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const Fishing()),
+      );
     } else {
       _origin = Marker(
         markerId: const MarkerId("Origin"),
@@ -273,7 +233,11 @@ class _NavigationState extends State<Navigation> {
     );
     BlocProvider.of<NavigationBloc>(context)
         .add(GearEvent(selectedNewPosition: 'N'));
-    popDialogGoNextPhase();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Fishing()),
+    );
   }
 
   popDialog(String title, String content) {
@@ -416,9 +380,6 @@ class _NavigationState extends State<Navigation> {
                             },
                           ),
                         };
-
-                        //BlocProvider.of<NavigationBloc>(context)
-                        //  .add(ShowMapEvent());
 
                         return Column(
                           children: [
@@ -613,7 +574,9 @@ class _NavigationState extends State<Navigation> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            buttonSpinRight(context, _steeringAngle),
+            if (_isBoatRunning) ...[
+              buttonSpinRight(context, _steeringAngle),
+            ],
             const SizedBox(
               width: 10.0,
             ),
@@ -629,7 +592,9 @@ class _NavigationState extends State<Navigation> {
             const SizedBox(
               width: 10.0,
             ),
-            buttonSpinLeft(context, _steeringAngle),
+            if (_isBoatRunning) ...[
+              buttonSpinLeft(context, _steeringAngle),
+            ],
           ],
         ),
         Row(

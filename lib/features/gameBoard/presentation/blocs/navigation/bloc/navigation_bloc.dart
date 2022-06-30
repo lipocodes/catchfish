@@ -54,6 +54,8 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         statusGear = "N";
         _steeringAngle = 0.0;
         isBoatRunning = false;
+        //give player the prize for ginishing the navigation
+
         emit(LeavingNavigationState());
       } else if (event is SpinSteeringWheelEvent) {
         _steeringAngle = event.steeringAngle;
