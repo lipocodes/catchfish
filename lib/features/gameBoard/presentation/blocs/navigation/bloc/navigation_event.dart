@@ -79,3 +79,16 @@ class GearEvent implements NavigationEvent {
   // TODO: implement stringify
   bool? get stringify => throw UnimplementedError();
 }
+
+// ignore: must_be_immutable
+class SuccessfulNavigationEvent implements NavigationEvent {
+  late NavigationUsecases navigationUsecases;
+  SuccessfulNavigationEvent({required this.navigationUsecases});
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+
+  @override
+  // TODO: implement stringify
+  bool? get stringify => throw UnimplementedError();
+}

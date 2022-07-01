@@ -1,5 +1,6 @@
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/navigation/navigation_local_datasource.dart';
+import 'package:catchfish/features/gameBoard/data/datasources/navigation/navigation_remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/new_player_model.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
@@ -36,6 +37,8 @@ Future<bool> init() async {
   sl.registerLazySingleton<RemoteDatasource>(() => RemoteDatasource());
   sl.registerLazySingleton<NavigationLocalDatasource>(
       () => NavigationLocalDatasource());
+  sl.registerLazySingleton<NavigationRemoteDatasource>(
+      () => NavigationRemoteDatasource());
   //repository Impl
   sl.registerLazySingleton<FishingRepositoryImpl>(
       () => FishingRepositoryImpl());

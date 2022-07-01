@@ -13,7 +13,7 @@ class NavigationRepositoryImpl extends NavigationRepository {
     try {
       bool yesNo = true;
       final res1 = await navigationLocalDatasource.givePrizeNavigation();
-
+      final res2 = await navigationRemoteDatasource.givePrizeNavigation();
       res1.fold((l) => GeneralFailure(), (r) => yesNo = r);
 
       return Right(yesNo);

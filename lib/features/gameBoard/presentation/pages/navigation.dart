@@ -30,6 +30,7 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  bool _isNavigationSuccessful = false;
   bool _showedWelcomeDialog = false;
   final AudioCache audioCache = AudioCache(prefix: "assets/sounds/gameBoard/");
   AudioPlayer audioPlayer = AudioPlayer();
@@ -135,6 +136,9 @@ class _NavigationState extends State<Navigation> {
             pow((_xDestination - _marinaLongitude), 2),
         0.5);
     if (distance <= 0.0005) {
+      _isNavigationSuccessful = true;
+      BlocProvider.of<NavigationBloc>(context).add(SuccessfulNavigationEvent(
+          navigationUsecases: sl.get<NavigationUsecases>()));
       await audioCache.play("cheers.mp3");
       Navigator.push(
         context,
@@ -323,16 +327,18 @@ class _NavigationState extends State<Navigation> {
                     _updateOriginMarkerUponNewCoordinate();
                     BlocProvider.of<MotionBloc>(context).add(IdleEvent());
                   } else if (state is IdleState) {
-                    Timer timer = Timer(const Duration(seconds: 1), () {
-                      BlocProvider.of<MotionBloc>(context).add(
-                          NewCoordinatesEvent(
-                              xCoordinate: _marinaLatitude,
-                              yCoordinate: _marinaLongitude,
-                              isBoatRunning: _isBoatRunning,
-                              statusGear: _statusGear,
-                              indexMarina: _indexMarina,
-                              steeringAngle: _steeringAngle));
-                    });
+                    if (!_isNavigationSuccessful) {
+                      Timer timer = Timer(const Duration(seconds: 1), () {
+                        BlocProvider.of<MotionBloc>(context).add(
+                            NewCoordinatesEvent(
+                                xCoordinate: _marinaLatitude,
+                                yCoordinate: _marinaLongitude,
+                                isBoatRunning: _isBoatRunning,
+                                statusGear: _statusGear,
+                                indexMarina: _indexMarina,
+                                steeringAngle: _steeringAngle));
+                      });
+                    }
                   }
                   return BlocBuilder<NavigationBloc, NavigationState>(
                     builder: (context, state) {

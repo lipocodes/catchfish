@@ -56,9 +56,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         statusGear = "N";
         _steeringAngle = 0.0;
         isBoatRunning = false;
-        //give player the prize for finishing the navigation
-        var res = await event.navigationUsecases
-            .givePrizeNavigation(sl.get<NavigationRepositoryImpl>());
+
         emit(LeavingNavigationState());
       } else if (event is SpinSteeringWheelEvent) {
         _steeringAngle = event.steeringAngle;
@@ -129,6 +127,10 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
             isBoatRunning: isBoatRunning,
             statusGear: statusGear,
             steeringAngle: _steeringAngle));
+      } else if (event is SuccessfulNavigationEvent) {
+        //give player the prize for finishing the navigation
+        var res = await event.navigationUsecases
+            .givePrizeNavigation(sl.get<NavigationRepositoryImpl>());
       }
     });
   }

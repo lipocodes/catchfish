@@ -18,6 +18,7 @@ class NavigationUsecases {
       res.fold((l) => GeneralFailure(), (r) => yesNo = r);
       return Right(yesNo);
     } catch (e) {
+      print("eeeeeeeeeeeeeeeeeeee=" + e.toString());
       return Left(GeneralFailure());
     }
   }
