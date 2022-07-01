@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:catchfish/core/consts/marinas.dart';
-import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
+import 'package:catchfish/features/gameBoard/data/repositories/navigation_repository_impl.dart';
+import 'package:catchfish/features/gameBoard/domain/usecases/navigation/navigation_usecases.dart';
+import 'package:catchfish/injection_container.dart';
 import 'package:equatable/equatable.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +41,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   }
 
   NavigationBloc() : super(NavigationInitial()) {
-    on<NavigationEvent>((event, emit) {
+    on<NavigationEvent>((event, emit) async {
       if (event is EnteringNavigationEvent) {
         _retreivePrefs();
 
@@ -54,8 +56,9 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         statusGear = "N";
         _steeringAngle = 0.0;
         isBoatRunning = false;
-        //give player the prize for ginishing the navigation
-
+        //give player the prize for finishing the navigation
+        var res = await event.navigationUsecases
+            .givePrizeNavigation(sl.get<NavigationRepositoryImpl>());
         emit(LeavingNavigationState());
       } else if (event is SpinSteeringWheelEvent) {
         _steeringAngle = event.steeringAngle;

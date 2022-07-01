@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:catchfish/core/consts/marinas.dart';
+import 'package:catchfish/features/gameBoard/domain/usecases/navigation/navigation_usecases.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/but
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_spin_left.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/button_spin_right.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/navigation/gear.dart';
+import 'package:catchfish/injection_container.dart';
 import 'dart:ui' as UI;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -195,8 +197,9 @@ class _NavigationState extends State<Navigation> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                BlocProvider.of<NavigationBloc>(context)
-                    .add(LeavingNavigationEvent());
+                BlocProvider.of<NavigationBloc>(context).add(
+                    LeavingNavigationEvent(
+                        navigationUsecases: sl.get<NavigationUsecases>()));
                 Navigator.pop(context);
                 Navigator.pop(context);
               },

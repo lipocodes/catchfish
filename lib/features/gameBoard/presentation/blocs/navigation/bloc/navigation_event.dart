@@ -35,6 +35,9 @@ class LeavingNavigationEvent implements NavigationEvent {
   @override
   // TODO: implement stringify
   bool? get stringify => throw UnimplementedError();
+
+  late NavigationUsecases navigationUsecases;
+  LeavingNavigationEvent({required this.navigationUsecases});
 }
 
 class SpinSteeringWheelEvent implements NavigationEvent {
