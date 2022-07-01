@@ -14,8 +14,6 @@ Widget selectorGroupType(BuildContext context) {
   return BlocBuilder<SelectgroupBloc, SelectgroupState>(
     builder: (context, state) {
       if (state is SelectgroupInitial) {
-        BlocProvider.of<SelectgroupBloc>(context).add(EnteringScreenEvent(
-            selectGroupUsecase: sl.get<SelectGroupUsecase>()));
         return Column(
           children: [
             gui(context, 0),

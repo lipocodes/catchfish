@@ -116,6 +116,7 @@ class _FishingState extends State<Fishing> {
           fishingUsecase: sl.get<FishingUsecase>(),
           currentCountdownTime: _currentTime));
       if (_gameStarted) {
+        _isDialogOpen = false;
         if (_seconds == /*5*/ 1) {
           Timer(const Duration(milliseconds: 100), () {
             _seconds = 0;
