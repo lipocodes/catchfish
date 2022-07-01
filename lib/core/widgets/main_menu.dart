@@ -138,12 +138,12 @@ Widget mainMenu(BuildContext context) {
             onTap: () async {
               Navigator.pop(context);
               BlocProvider.of<LobbyBloc>(context).add(LeavingLobbyEvent());
-              await Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const BuyToken()),
               );
-              Navigator.pop(context, true);
-              Navigator.pushNamed(context, '/');
+              //Navigator.pop(context, true);
+              //Navigator.pushNamed(context, '/');
             },
           ),
           const Divider(
