@@ -24,6 +24,13 @@ class _MyWidgetState extends State<SelectGroup> {
         EnteringScreenEvent(selectGroupUsecase: sl.get<SelectGroupUsecase>()));
   }
 
+  //custom BACK operation
+  performBack() async {
+    Navigator.pop(context, true);
+    Navigator.pop(context, true);
+    Navigator.pushNamed(context, '/');
+  }
+
   setPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt("selectedGroupType", 0);
@@ -79,6 +86,13 @@ class _MyWidgetState extends State<SelectGroup> {
   }
 
   Widget gui(BuildContext context) {
+    //custom BACK operation
+    performBack() async {
+      Navigator.pop(context, true);
+      Navigator.pop(context, true);
+      Navigator.pushNamed(context, '/');
+    }
+
     return Container(
       height: 1000,
       width: MediaQuery.of(context).size.width,
@@ -94,9 +108,18 @@ class _MyWidgetState extends State<SelectGroup> {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buttonStartGame(context),
+              IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  size: 28.0,
+                ),
+                onPressed: () {
+                  performBack();
+                },
+              ),
             ],
           ),
           const SizedBox(

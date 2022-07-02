@@ -43,6 +43,19 @@ Widget buttonStartGame(BuildContext context) {
 }
 
 Widget gui(BuildContext context, bool showWarning) {
+  //custom BACK operation
+  performBack() async {
+    Navigator.pop(context, true);
+    Navigator.pop(context, true);
+    Navigator.pushNamed(context, '/');
+  }
+
+  setPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt("selectedGroupType", 0);
+    await prefs.setBool('amIGroupLeader', false);
+  }
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
