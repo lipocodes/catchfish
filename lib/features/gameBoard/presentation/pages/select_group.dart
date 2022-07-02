@@ -24,13 +24,6 @@ class _MyWidgetState extends State<SelectGroup> {
         EnteringScreenEvent(selectGroupUsecase: sl.get<SelectGroupUsecase>()));
   }
 
-  //custom BACK operation
-  performBack() async {
-    Navigator.pop(context, true);
-    Navigator.pop(context, true);
-    Navigator.pushNamed(context, '/');
-  }
-
   setPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt("selectedGroupType", 0);
@@ -89,8 +82,6 @@ class _MyWidgetState extends State<SelectGroup> {
     //custom BACK operation
     performBack() async {
       Navigator.pop(context, true);
-      Navigator.pop(context, true);
-      Navigator.pushNamed(context, '/');
     }
 
     return Container(
