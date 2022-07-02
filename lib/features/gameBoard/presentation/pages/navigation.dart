@@ -204,8 +204,6 @@ class _NavigationState extends State<Navigation> {
                 BlocProvider.of<NavigationBloc>(context).add(
                     LeavingNavigationEvent(
                         navigationUsecases: sl.get<NavigationUsecases>()));
-                Navigator.pop(context);
-                Navigator.pop(context);
               },
               child: const Text('OK',
                   style: TextStyle(
@@ -449,6 +447,8 @@ class _NavigationState extends State<Navigation> {
                           state.isBoatRunning,
                           state.statusGear,
                         );
+                      } else if (state is LeavingNavigationState) {
+                        return Container();
                       } else {
                         return Container();
                       }
@@ -659,7 +659,6 @@ class _NavigationState extends State<Navigation> {
                     });
 
                     Navigator.pop(context);
-
                     updateOriginMarker();
                   },
                   child: const Text('OK',

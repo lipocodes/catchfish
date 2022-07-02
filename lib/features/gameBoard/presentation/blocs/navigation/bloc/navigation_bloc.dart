@@ -128,6 +128,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
             statusGear: statusGear,
             steeringAngle: _steeringAngle));
       } else if (event is SuccessfulNavigationEvent) {
+        stopBackgroundAudio();
         //give player the prize for finishing the navigation
         var res = await event.navigationUsecases
             .givePrizeNavigation(sl.get<NavigationRepositoryImpl>());
