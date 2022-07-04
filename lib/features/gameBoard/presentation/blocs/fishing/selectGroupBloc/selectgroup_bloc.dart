@@ -101,6 +101,8 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
           selectedGroupType: _selectedGroupType,
           selectedGroup: _selectedGroup,
         ));
+      } else if (event is LeavingScreenEvent) {
+        emit(const NotAllowedStartGame(selectedGroupType: 0));
       }
     });
   }

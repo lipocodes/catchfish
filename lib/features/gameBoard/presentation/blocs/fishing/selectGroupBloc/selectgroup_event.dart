@@ -43,3 +43,5 @@ class EnteringScreenEvent extends SelectgroupEvent {
   final SelectGroupUsecase selectGroupUsecase;
   const EnteringScreenEvent({required this.selectGroupUsecase});
 }
+
+class LeavingScreenEvent extends SelectgroupEvent {}
