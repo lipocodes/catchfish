@@ -65,6 +65,7 @@ Widget prod(state, int prodNum, BuildContext context) {
                                   icon: const Icon(Icons.close),
                                   onPressed: () {
                                     Navigator.pop(context);
+                                    Navigator.pushNamed(context, '/lobby');
                                   })
                             ],
                           ));

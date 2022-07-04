@@ -62,7 +62,6 @@ class _BuyTokenState extends State<BuyToken> {
                         icon: const Icon(Icons.close),
                         onPressed: () {
                           Navigator.pop(context);
-                          Navigator.pop(context);
                         })
                   ],
                 ));

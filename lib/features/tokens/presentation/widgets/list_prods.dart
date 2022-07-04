@@ -15,7 +15,9 @@ Widget listProds(state, BuildContext context) {
     textDirection: TextDirection.ltr,
     child: SafeArea(
       child: WillPopScope(
-        onWillPop: () => performBack(),
+        onWillPop: () {
+          return performBack();
+        },
         child: Scaffold(
           body: Container(
               height: 1000,
