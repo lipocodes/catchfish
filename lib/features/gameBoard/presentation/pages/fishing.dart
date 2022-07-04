@@ -253,6 +253,8 @@ class _FishingState extends State<Fishing> {
                       ],
                     );
                   } else if (state is GameOverState) {
+                    BlocProvider.of<FishingBloc>(context)
+                        .add(BetweenPulsesEvent());
                     popDialogGameOver(state.listAcheivements);
                     return Column(
                       //mainAxisAlignment: MainAxisAlignment.center,

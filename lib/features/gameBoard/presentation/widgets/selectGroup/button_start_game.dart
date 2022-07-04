@@ -13,6 +13,7 @@ Widget buttonStartGame(BuildContext context) {
   return BlocBuilder<SelectgroupBloc, SelectgroupState>(
     builder: (context, state) {
       if (state is AllowedStartGame) {
+        BlocProvider.of<SelectgroupBloc>(context).add(NeutralEvent());
         Timer(const Duration(microseconds: 250), () async {
           final prefs = await SharedPreferences.getInstance();
           int selectedGroupType = prefs.getInt(
