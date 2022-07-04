@@ -35,7 +35,7 @@ class GoogleSignInProvider extends ChangeNotifier {
         saveUserDetails.call(userEntity);
       }
     } catch (e) {
-      print("eeeeeeeeeeeeeeeeeeeeee=" + e.toString());
+      print("eeeeeeeeeeeeeeeeee googleLogin()=" + e.toString());
     }
     notifyListeners();
   }

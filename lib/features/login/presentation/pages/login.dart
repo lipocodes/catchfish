@@ -1,4 +1,3 @@
-import 'package:catchfish/core/widgets/main_menu.dart';
 import 'package:catchfish/features/login/presentation/widgets/form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ class _LoginState extends State<Login> {
   //custom BACK operation
   performBack() async {
     Navigator.pop(context);
-    //Navigator.of(context).popUntil(ModalRoute.withName("/"));
   }
 
   @override
@@ -40,24 +38,6 @@ class _LoginState extends State<Login> {
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                /* leading: Builder(
-                  builder: (context) => IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                  ),
-                ),*/
-                actions: [
-                  /*IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back,
-                      size: 24,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  )*/
-                ],
               ),
               //in core/widgets/main_menu.dart
               //drawer: mainMenu(context),

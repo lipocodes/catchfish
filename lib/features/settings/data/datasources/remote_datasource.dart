@@ -48,7 +48,9 @@ class RemoteDataSources {
           InventoryModel(listInventory: listInventory);
       return inventoryModel;
     } catch (e) {
-      print("eeeeeeeeeeeeeeeeeee=" + e.toString());
+      print("eeeeeeeeeeeeeeeeeee getInventoryDB()" + e.toString());
+      InventoryModel inventoryEntity = InventoryModel(listInventory: []);
+      return inventoryEntity;
     }
   }
 }

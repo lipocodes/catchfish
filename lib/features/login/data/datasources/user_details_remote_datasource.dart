@@ -11,47 +11,45 @@ class UserDetailsRemoteDataSource {
 
   saveUserToDB(UserEntity userEntity) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
+    String? token;
+    String id = "";
+    String uid = "";
     try {
       final User? user = auth.currentUser;
-      final uid = user?.uid;
+      uid = user!.uid;
       final firestoreInstance = FirebaseFirestore.instance;
       _prefs = await SharedPreferences.getInstance();
       //retreive FCM token
-      String? token = await _fcm.getToken() ?? "";
+      token = await _fcm.getToken() ?? "";
       print("Token=" + token.toString());
       QuerySnapshot res = await firestoreInstance
           .collection("users")
           .where('email', isEqualTo: userEntity.email)
           .get();
 
-      String id = res.docs[0].id;
+      id = res.docs[0].id;
 
-      //user already has a document on DB so we need to update the doc
-      if (res.docs.isNotEmpty) {
-        await FirebaseFirestore.instance.collection('users').doc(id).update({
-          'displayName': userEntity.displayName,
-          'email': userEntity.email,
-          'photoURL': userEntity.photoURL,
-          'phoneNumber': userEntity.phoneNumber,
-          'FCMToken': token,
-        });
-      } else {
-        //need to add a new doc to DB
-        await FirebaseFirestore.instance.collection('users').add({
-          'displayName': userEntity.displayName,
-          'email': userEntity.email,
-          'photoURL': userEntity.photoURL,
-          'phoneNumber': userEntity.phoneNumber,
-          'FCMToken': token,
-          "caughtFish": [],
-          "inventory": [],
-          "lastInventoryUpdateDB": 0,
-          "level": 1,
-          "uid": uid,
-        });
-      }
+      await FirebaseFirestore.instance.collection('users').doc(id).update({
+        'displayName': userEntity.displayName,
+        'email': userEntity.email,
+        'photoURL': userEntity.photoURL,
+        'phoneNumber': userEntity.phoneNumber,
+        'FCMToken': token,
+      });
     } catch (e) {
-      print("eeeeeeeeeeeeeeeeeeeee=" + e.toString());
+      await FirebaseFirestore.instance.collection('users').add({
+        'displayName': userEntity.displayName,
+        'email': userEntity.email,
+        'photoURL': userEntity.photoURL,
+        'phoneNumber': userEntity.phoneNumber,
+        'FCMToken': token,
+        "caughtFish": [],
+        "inventory": [],
+        "lastInventoryUpdateDB": 0,
+        "level": 1,
+        "uid": uid,
+      });
+      print("eeeeeeeeeeeeeee saveUserToDB()" + e.toString());
     }
   }
 }

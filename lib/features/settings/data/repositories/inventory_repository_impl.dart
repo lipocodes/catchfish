@@ -6,11 +6,16 @@ import 'package:catchfish/features/settings/domain/repositories/inventory_reposi
 class InventoryRepositoryImpl implements InventoryRepository {
   @override
   Future<InventoryEntity> getInventoryDB(String email) async {
-    RemoteDataSources remoteDataSources = RemoteDataSources();
-    InventoryModel inventoryModel =
-        await remoteDataSources.getInventoryDB(email);
+    try {
+      RemoteDataSources remoteDataSources = RemoteDataSources();
+      InventoryModel inventoryModel =
+          await remoteDataSources.getInventoryDB(email);
 
-    InventoryEntity inventoryEntity = inventoryModel;
-    return inventoryEntity;
+      InventoryEntity inventoryEntity = inventoryModel;
+      return inventoryEntity;
+    } catch (e) {
+      InventoryEntity inventoryEntity = InventoryEntity(listInventory: []);
+      return inventoryEntity;
+    }
   }
 }

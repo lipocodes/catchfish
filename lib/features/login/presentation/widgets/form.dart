@@ -1,5 +1,3 @@
-import 'package:catchfish/features/login/presentation/blocs/provider/apple_sign_in.dart';
-import 'package:catchfish/features/login/presentation/blocs/provider/facebook_sign_in.dart';
 import 'package:catchfish/features/login/presentation/blocs/provider/google_sign_in.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
