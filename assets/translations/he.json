@@ -18,7 +18,7 @@
     "not_logged_in": "Not Logged In",
     "text_not_logged_in": "Please log in first!",
     "fishing_shop": "Fishing Shop",
-    "personal_shop": "Personal Shop",
+    "personal_collection": "Personal Collection",
     "price": "Price:",
     "buy": "Buy",
     "not_enough_tokens": "Not enough tokens",
@@ -106,6 +106,7 @@
     "sell": "Sell",
     "no_thanks": "No Thanks",
     "Accept Offer": "Accept Offer",
-    "we_offer": "We Offer: "
-
+    "we_offer": "We Offer: ",
+    "your_inventory": "Your Inventory",
+    "buy_now": "Buy Now:"
 }

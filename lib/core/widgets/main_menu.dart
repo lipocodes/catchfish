@@ -98,7 +98,7 @@ Widget mainMenu(BuildContext context) {
               Icons.person,
               color: Colors.greenAccent,
             ),
-            title: Text('personal_shop'.tr(),
+            title: Text('personal_collection'.tr(),
                 style: const TextStyle(
                   fontSize: 24.0,
                   color: Colors.red,
