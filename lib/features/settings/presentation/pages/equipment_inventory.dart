@@ -174,15 +174,34 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
                             color: Colors.yellow,
                             fontFamily: 'skullsandcrossbones',
                           )),
-                      Text(
-                        "price".tr() +
-                            state.inventoryScreenEntity.priceItemsToSell[index]
-                                .toString(),
-                        style: const TextStyle(
-                          fontSize: 24.0,
-                          color: Colors.white,
-                          fontFamily: 'skullsandcrossbones',
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "price".tr() +
+                                state.inventoryScreenEntity
+                                    .priceItemsToSell[index]
+                                    .toString(),
+                            style: const TextStyle(
+                              fontSize: 24.0,
+                              color: Colors.blue,
+                              fontFamily: 'skullsandcrossbones',
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              print("xxxxxxxxxxxxxxxxxxx=" + index.toString());
+                            },
+                            child: Text(
+                              "buy".tr(),
+                              style: const TextStyle(
+                                fontSize: 24.0,
+                                color: Colors.red,
+                                fontFamily: 'skullsandcrossbones',
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
