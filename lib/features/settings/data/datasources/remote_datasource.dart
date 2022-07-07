@@ -76,8 +76,9 @@ class RemoteDataSources {
     }
   }
 
-  Future<Either<Failure, bool>> buyItem(int indexItem) async {
+  Future<Either<Failure, bool>> buyItem(String email, int indexItem) async {
     try {
+      print("xxxxxxxxxxxxxxxx=" + email + " " + indexItem.toString());
       return const Right(false);
     } catch (e) {
       return Left(GeneralFailure());

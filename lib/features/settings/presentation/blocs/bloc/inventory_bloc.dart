@@ -38,11 +38,18 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
               inventoryScreenEntity: inventoryScreenEntity));
         }
       } else if (event is BuyingItemEvent) {
-        InventoryUsecases inventoryUsecases = InventoryUsecases();
-        final res = await inventoryUsecases.buyItem(event.indexItem);
-        bool yesNo = false;
-        res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
-        emit(BuyingItemState(enoughMoney: yesNo));
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        String email = "";
+        if (auth.currentUser != null) {
+          email = auth.currentUser!.email!;
+          InventoryUsecases inventoryUsecases = InventoryUsecases();
+          final res = await inventoryUsecases.buyItem(email, event.indexItem);
+          bool yesNo = false;
+          res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
+          emit(BuyingItemState(enoughMoney: yesNo));
+        } else {
+          emit(const BuyingItemState(enoughMoney: false));
+        }
       }
     });
   }
