@@ -5,6 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InventoryUsecases {
+  List<String> idItemsToSell = [];
+  List<String> imageItemsToSell = [];
+  List<int> priceItemsToSell = [];
+  List<String> titleItemsToSell = [];
+  List<String> subtitleItemsToSell = [];
   List<String> ids = [];
   List<String> images = [];
   List<String> items = [];
@@ -39,6 +44,17 @@ class InventoryUsecases {
     else {
       InventoryEntity inventoryEntity =
           await inventoryRepositoryImpl.getInventoryDB(email);
+
+      //going over listItemsToSell, parsing each string into relevant Lists
+      for (int a = 0; a < inventoryEntity.listItemsToSell.length; a++) {
+        String str = inventoryEntity.listItemsToSell[a];
+        List<String> list = str.split("^^^");
+        idItemsToSell.add(list[0]);
+        imageItemsToSell.add(list[1]);
+        priceItemsToSell.add(int.parse(list[2]));
+        titleItemsToSell.add(list[3]);
+        subtitleItemsToSell.add(list[4]);
+      }
 
       //going over inventory items saved on DB
       for (int a = 0; a < inventoryEntity.listInventory.length; a++) {
@@ -88,6 +104,14 @@ class InventoryUsecases {
 
 ///////////////////////////////////////////////////////////////////////////////
     return InventoryScreenEntity(
-        ids: ids, images: images, items: items, quantities: quantities);
+        idItemsToSell: idItemsToSell,
+        imageItemsToSell: imageItemsToSell,
+        priceItemsToSell: priceItemsToSell,
+        titleItemsToSell: titleItemsToSell,
+        subtitleItemsToSell: subtitleItemsToSell,
+        ids: ids,
+        images: images,
+        items: items,
+        quantities: quantities);
   }
 }

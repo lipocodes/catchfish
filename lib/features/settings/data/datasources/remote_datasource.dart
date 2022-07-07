@@ -7,6 +7,26 @@ class RemoteDataSources {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int lastInventoryUpdateDB = 0;
     try {
+      //retreiving  fishingShopcollection  (items for selling) && adding each item to listItemsToSell
+      List<String> listItemsToSell = [];
+      var q = await FirebaseFirestore.instance.collection("fishingShop").get();
+      for (int a = 0; a < q.size; a++) {
+        String id = q.docs[a]['id'];
+        String image = q.docs[a]['image'];
+        int price = q.docs[a]['price'];
+        String title = q.docs[a]['title'];
+        String subtitle = q.docs[a]['subtitle'];
+        String str = id +
+            "^^^" +
+            image +
+            "^^^" +
+            price.toString() +
+            "^^^" +
+            title +
+            "^^^" +
+            subtitle;
+        listItemsToSell.add(str);
+      }
       var r = await FirebaseFirestore.instance
           .collection("users")
           .where('email', isEqualTo: email)
@@ -43,12 +63,13 @@ class RemoteDataSources {
         });
       }
 
-      InventoryModel inventoryModel =
-          InventoryModel(listInventory: listInventory);
+      InventoryModel inventoryModel = InventoryModel(
+          listItemsToSell: listItemsToSell, listInventory: listInventory);
       return inventoryModel;
     } catch (e) {
       print("eeeeeeeeeeeeeeeeeee getInventoryDB()" + e.toString());
-      InventoryModel inventoryEntity = InventoryModel(listInventory: []);
+      InventoryModel inventoryEntity =
+          InventoryModel(listItemsToSell: [], listInventory: []);
       return inventoryEntity;
     }
   }

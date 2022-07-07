@@ -105,15 +105,20 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
                 children: [
                   const Text("buy_now",
                       style: TextStyle(
-                        fontSize: 24.0,
-                        color: Colors.yellow,
+                        fontSize: 28.0,
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue,
                         fontFamily: 'skullsandcrossbones',
                       )).tr(),
-                  SizedBox(height: 200.0, child: inventoryGrid()),
+                  SizedBox(height: 400.0, child: productsToBuyGrid()),
+                  const SizedBox(
+                    height: 100.0,
+                  ),
                   const Text("your_inventory",
                       style: TextStyle(
-                        fontSize: 24.0,
-                        color: Colors.yellow,
+                        fontSize: 28.0,
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue,
                         fontFamily: 'skullsandcrossbones',
                       )).tr(),
                   SizedBox(height: 500.0, child: inventoryGrid()),
@@ -123,6 +128,72 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
           ),
         ),
       ),
+    );
+  }
+
+  productsToBuyGrid() {
+    return BlocBuilder<InventoryBloc, InventoryState>(
+      builder: (context, state) {
+        if (state is EnteringInventoryState) {
+          return GridView.count(
+            crossAxisCount: 1,
+            childAspectRatio: (2),
+            children: List.generate(
+                state.inventoryScreenEntity.idItemsToSell.length, (index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      // Red border with the width is equal to 5
+                      border: Border.all(width: 3, color: Colors.grey)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(800),
+                        child: Image.network(
+                          state.inventoryScreenEntity.imageItemsToSell[index],
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Text(
+                          state.inventoryScreenEntity.titleItemsToSell[index]
+                                      .length >
+                                  24
+                              ? state
+                                  .inventoryScreenEntity.titleItemsToSell[index]
+                                  .substring(0, 24)
+                              : state.inventoryScreenEntity
+                                  .titleItemsToSell[index],
+                          style: const TextStyle(
+                            fontSize: 28.0,
+                            color: Colors.yellow,
+                            fontFamily: 'skullsandcrossbones',
+                          )),
+                      Text(
+                        "price".tr() +
+                            state.inventoryScreenEntity.priceItemsToSell[index]
+                                .toString(),
+                        style: const TextStyle(
+                          fontSize: 24.0,
+                          color: Colors.white,
+                          fontFamily: 'skullsandcrossbones',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 

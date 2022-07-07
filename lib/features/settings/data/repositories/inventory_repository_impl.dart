@@ -14,7 +14,8 @@ class InventoryRepositoryImpl implements InventoryRepository {
       InventoryEntity inventoryEntity = inventoryModel;
       return inventoryEntity;
     } catch (e) {
-      InventoryEntity inventoryEntity = InventoryEntity(listInventory: []);
+      InventoryEntity inventoryEntity =
+          InventoryEntity(listItemsToSell: [], listInventory: []);
       return inventoryEntity;
     }
   }
