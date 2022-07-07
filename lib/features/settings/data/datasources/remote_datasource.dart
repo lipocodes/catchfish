@@ -78,9 +78,35 @@ class RemoteDataSources {
 
   Future<Either<Failure, bool>> buyItem(String email, int indexItem) async {
     try {
-      print("xxxxxxxxxxxxxxxx=" + email + " " + indexItem.toString());
-      return const Right(false);
+      var r = await FirebaseFirestore.instance.collection("fishingShop").get();
+      String id = r.docs[indexItem]['id'];
+      String image = r.docs[indexItem]['image'];
+      String title = r.docs[indexItem]['title'];
+      int priceItem = r.docs[indexItem]['price'];
+      String purchasedItemDetails =
+          id + "^^^" + image + "^^^" + title + "^^^" + priceItem.toString();
+
+      var t = await FirebaseFirestore.instance
+          .collection("users")
+          .where('email', isEqualTo: email)
+          .get();
+
+      int inventoryMoney = t.docs[0]['prizeValues']['inventoryMoney'];
+      List inventory = t.docs[0]['inventory'];
+      inventory.add(purchasedItemDetails);
+      //if player is short of money
+      if (priceItem > inventoryMoney) {
+        return const Right(false);
+      } else {
+        String id = t.docs[0].id;
+        await FirebaseFirestore.instance.collection('users').doc(id).update({
+          'prizeValues.inventoryMoney': (inventoryMoney - priceItem),
+          'inventory': inventory,
+        });
+        return const Right(true);
+      }
     } catch (e) {
+      print("eeeeeeeeeeeeeeeee buyItem()" + e.toString());
       return Left(GeneralFailure());
     }
   }
