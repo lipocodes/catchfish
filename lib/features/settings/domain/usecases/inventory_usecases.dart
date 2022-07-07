@@ -117,7 +117,12 @@ class InventoryUsecases {
 
   Future<Either<Failure, bool>> buyItem(int indexItem) async {
     try {
-      return const Right(true);
+      InventoryRepositoryImpl inventoryRepositoryImpl =
+          InventoryRepositoryImpl();
+      final res = await inventoryRepositoryImpl.buyItem(indexItem);
+      bool yesNo = false;
+      res.fold((l) => GeneralFailure(), ((r) => yesNo = r));
+      return Right(yesNo);
     } catch (e) {
       return Left(GeneralFailure());
     }

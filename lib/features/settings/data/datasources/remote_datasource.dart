@@ -1,9 +1,11 @@
+import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/settings/data/models/inventory_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RemoteDataSources {
-  getInventoryDB(String email) async {
+  Future<InventoryModel> getInventoryDB(String email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int lastInventoryUpdateDB = 0;
     try {
@@ -71,6 +73,14 @@ class RemoteDataSources {
       InventoryModel inventoryEntity =
           InventoryModel(listItemsToSell: [], listInventory: []);
       return inventoryEntity;
+    }
+  }
+
+  Future<Either<Failure, bool>> buyItem(int indexItem) async {
+    try {
+      return const Right(false);
+    } catch (e) {
+      return Left(GeneralFailure());
     }
   }
 }
