@@ -131,6 +131,43 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
     );
   }
 
+  showDialogPurchaseResult(bool purchaseSuccessful) {
+    Timer(const Duration(seconds: 1), () {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.redAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: purchaseSuccessful
+                ? const Text("thank_you",
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      color: Colors.yellow,
+                      fontFamily: 'skullsandcrossbones',
+                    )).tr()
+                : const Text("not_enough_money",
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      color: Colors.yellow,
+                      fontFamily: 'skullsandcrossbones',
+                    )).tr(),
+            actions: <Widget>[
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    });
+  }
+
   productsToBuyGrid() {
     return BlocBuilder<InventoryBloc, InventoryState>(
       builder: (context, state) {
@@ -190,7 +227,8 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              print("xxxxxxxxxxxxxxxxxxx=" + index.toString());
+                              BlocProvider.of<InventoryBloc>(context)
+                                  .add(BuyingItemEvent(indexItem: index));
                             },
                             child: Text(
                               "buy".tr(),
@@ -209,6 +247,17 @@ class _EquipmentInventoryState extends State<EquipmentInventory> {
               );
             }).toList(),
           );
+        } else if (state is BuyingItemState) {
+          if (state.enoughMoney) {
+            showDialogPurchaseResult(true);
+            BlocProvider.of<InventoryBloc>(context)
+                .add(EnteringInventoryEvent());
+          } else {
+            showDialogPurchaseResult(false);
+            BlocProvider.of<InventoryBloc>(context)
+                .add(EnteringInventoryEvent());
+          }
+          return Container();
         } else {
           return Container();
         }

@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/settings/domain/entities/inventory_entity.dart';
 import 'package:catchfish/features/settings/domain/entities/inventory_screen_entity.dart';
 import 'package:catchfish/features/settings/domain/usecases/inventory_usecases.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -35,6 +37,12 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
           emit(EnteringInventoryState(
               inventoryScreenEntity: inventoryScreenEntity));
         }
+      } else if (event is BuyingItemEvent) {
+        InventoryUsecases inventoryUsecases = InventoryUsecases();
+        final res = await inventoryUsecases.buyItem(event.indexItem);
+        bool yesNo = false;
+        res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
+        emit(BuyingItemState(enoughMoney: yesNo));
       }
     });
   }

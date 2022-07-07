@@ -1,6 +1,8 @@
+import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/settings/data/repositories/inventory_repository_impl.dart';
 import 'package:catchfish/features/settings/domain/entities/inventory_entity.dart';
 import 'package:catchfish/features/settings/domain/entities/inventory_screen_entity.dart';
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +25,6 @@ class InventoryUsecases {
     items = [];
     quantities = [];
     InventoryRepositoryImpl inventoryRepositoryImpl = InventoryRepositoryImpl();
-    ///////////////////////////////////////////////////////////////////////////
     //if user not logged in
     prefs = await SharedPreferences.getInstance();
     localListInventory = prefs.getStringList("inventory") ?? [];
@@ -102,7 +103,6 @@ class InventoryUsecases {
       }
     }
 
-///////////////////////////////////////////////////////////////////////////////
     return InventoryScreenEntity(
         idItemsToSell: idItemsToSell,
         imageItemsToSell: imageItemsToSell,
@@ -113,5 +113,13 @@ class InventoryUsecases {
         images: images,
         items: items,
         quantities: quantities);
+  }
+
+  Future<Either<Failure, bool>> buyItem(int indexItem) async {
+    try {
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
   }
 }

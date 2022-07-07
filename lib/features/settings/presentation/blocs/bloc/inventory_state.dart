@@ -15,3 +15,8 @@ class EnteringInventoryState extends InventoryState {
   @override
   List<Object> get props => [inventoryScreenEntity];
 }
+
+class BuyingItemState extends InventoryState {
+  final bool enoughMoney;
+  const BuyingItemState({required this.enoughMoney});
+}
