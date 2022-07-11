@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+int timeLastButtonPressed = 0;
 Widget pulseGenerator(
     BuildContext context, double angle, String caughtFishDetails) {
   return gui(context, angle, caughtFishDetails);
@@ -12,6 +13,7 @@ Widget pulseGenerator(
 
 Widget gui(BuildContext context, double angle, String caughtFishDetails) {
   List<String> details = caughtFishDetails.split("^^^");
+
   return Column(
     children: [
       const SizedBox(
@@ -51,8 +53,12 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails) {
       ),
       GestureDetector(
         onTap: () {
-          BlocProvider.of<FishingBloc>(context).add(
-              RedButtonPressedEvent(fishingUsecase: sl.get<FishingUsecase>()));
+          if (DateTime.now().millisecondsSinceEpoch - timeLastButtonPressed >
+              1000) {
+            timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
+            BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent(
+                fishingUsecase: sl.get<FishingUsecase>()));
+          }
         },
         child: SizedBox(
           height: 120.0,
