@@ -117,6 +117,9 @@ class _MyWidgetState extends State<SelectGroup> {
 
     showLoginWarning(context);
     String playerName = _auth.currentUser?.displayName ?? "";
+    BlocProvider.of<SelectgroupBloc>(context).add(YourNameChangedEvent(
+        yourName: yourNameController.text,
+        selectedGroup: groupNameController.text));
 
     return Container(
       height: 1000,

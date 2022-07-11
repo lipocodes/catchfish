@@ -126,69 +126,6 @@ class _FishingState extends State<Fishing> {
         } else {
           _seconds++;
         }
-      } else if (_amIGroupLeader) {
-        if (!_isDialogOpen) {
-          _isDialogOpen = true;
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: Colors.redAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                content: const Text(
-                  "click_start_game",
-                  style: TextStyle(
-                    fontFamily: 'skullsandcrossbones',
-                    fontSize: 24.0,
-                  ),
-                ).tr(),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      BlocProvider.of<FishingBloc>(context)
-                          .add(StartGameEvent());
-                    },
-                    child: const Text('next',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.blue,
-                          fontFamily: 'skullsandcrossbones',
-                        )).tr(),
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      } else if (!_amIGroupLeader) {
-        if (!_isDialogOpen) {
-          _isDialogOpen = true;
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: Colors.redAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                content: const Text(
-                  "wait_game_start",
-                  style: TextStyle(
-                    fontFamily: 'skullsandcrossbones',
-                  ),
-                ).tr(),
-              );
-            },
-          );
-        } else {
-          _isDialogOpen = false;
-          Navigator.pop(context);
-        }
       }
     });
     return SafeArea(
