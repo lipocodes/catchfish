@@ -306,6 +306,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   }
 
   Widget lobbyScreen(state) {
+    String photoURL = FirebaseAuth.instance.currentUser?.photoURL ?? "";
     return WillPopScope(
       onWillPop: () async {
         performBack();
@@ -327,6 +328,10 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             actions: [
               Row(
                 children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(photoURL),
+                    radius: 20,
+                  ),
                   GestureDetector(
                     onTap: () async {
                       if (state.isLoggedIn) {
