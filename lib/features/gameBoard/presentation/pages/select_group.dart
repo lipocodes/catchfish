@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/selectGroup/button_start_game.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/selectGroup/selector_group_type.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +19,8 @@ class SelectGroup extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<SelectGroup> {
+  bool _showedWarningYet = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
     super.initState();
@@ -78,11 +83,39 @@ class _MyWidgetState extends State<SelectGroup> {
     );
   }
 
+  showLoginWarning(BuildContext context) async {
+    if (_auth.currentUser == null && _showedWarningYet == false) {
+      _showedWarningYet = true;
+      Timer(const Duration(seconds: 1), () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+                  backgroundColor: Colors.redAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  title: const Text('not_logged_in').tr(),
+                  content: const Text('text_not_logged_in').tr(),
+                  actions: <Widget>[
+                    IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        })
+                  ],
+                ));
+      });
+    }
+  }
+
   Widget gui(BuildContext context) {
     //custom BACK operation
     performBack() async {
       Navigator.pop(context, true);
     }
+
+    showLoginWarning(context);
 
     return Container(
       height: 1000,

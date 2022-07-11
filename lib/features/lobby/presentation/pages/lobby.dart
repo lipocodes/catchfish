@@ -27,11 +27,11 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   double millisecondsElasped = 0.0;
   late PlaySound playSound;
   double degreesNet = 0.0;
-
+  bool _showedWarningYet = false;
   bool isAfterRotating = false;
   late SharedPreferences _prefs;
   bool _usedRotationSinceEneteredScreen = false;
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   get flutterLocalNotificationsPlugin => null;
 
   @override
@@ -230,6 +230,31 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
     );
   }
 
+  showLoginWarning(BuildContext context) async {
+    if (_auth.currentUser == null && _showedWarningYet == false) {
+      _showedWarningYet = true;
+      Timer(const Duration(seconds: 1), () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+                  backgroundColor: Colors.redAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  title: const Text('not_logged_in').tr(),
+                  content: const Text('text_not_logged_in').tr(),
+                  actions: <Widget>[
+                    IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        })
+                  ],
+                ));
+      });
+    }
+  }
+
   //button for activating the rotation of compass
   Widget buttonRotate(BuildContext context, state) {
     return SizedBox(
@@ -251,13 +276,11 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
             ],
           ),
           onPressed: () {
-            if (_usedRotationSinceEneteredScreen == false) {
+            showLoginWarning(context);
+            if (_usedRotationSinceEneteredScreen == false &&
+                _auth.currentUser != null) {
               _usedRotationSinceEneteredScreen = true;
               rotateCompass();
-            } else {
-              Navigator.pop(context, true);
-              Navigator.pop(context, true);
-              Navigator.pushNamed(context, '/');
             }
           },
           style: ButtonStyle(
