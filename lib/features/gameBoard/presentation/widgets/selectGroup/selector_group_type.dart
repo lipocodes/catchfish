@@ -9,7 +9,8 @@ TextEditingController groupNameController = TextEditingController();
 TextEditingController yourNameController = TextEditingController();
 List<String> listGroups = [];
 
-Widget selectorGroupType(BuildContext context) {
+Widget selectorGroupType(BuildContext context, String playerName) {
+  yourNameController.text = playerName;
   return BlocBuilder<SelectgroupBloc, SelectgroupState>(
     builder: (context, state) {
       if (state is SelectgroupInitial) {
@@ -101,7 +102,7 @@ Widget gui(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 enabledBorder: InputBorder.none,
-                labelText: ' Your Name ',
+                //labelText: playerName,
               ),
               onChanged: (text) {
                 BlocProvider.of<SelectgroupBloc>(context).add(

@@ -116,6 +116,7 @@ class _MyWidgetState extends State<SelectGroup> {
     }
 
     showLoginWarning(context);
+    String playerName = _auth.currentUser?.displayName ?? "";
 
     return Container(
       height: 1000,
@@ -149,7 +150,7 @@ class _MyWidgetState extends State<SelectGroup> {
           const SizedBox(
             height: 50.0,
           ),
-          selectorGroupType(context),
+          selectorGroupType(context, playerName),
         ],
       ),
     );
