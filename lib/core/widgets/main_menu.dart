@@ -3,6 +3,7 @@ import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart'
 import 'package:catchfish/features/gameBoard/presentation/pages/personal_shop.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/select_group.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
+import 'package:catchfish/features/settings/presentation/pages/buy_equipment_.dart';
 import 'package:catchfish/features/settings/presentation/pages/contact.dart';
 import 'package:catchfish/features/settings/presentation/pages/equipment_inventory.dart';
 import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
@@ -50,6 +51,36 @@ Widget mainMenu(BuildContext context) {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const SelectGroup()),
+              );
+            },
+          ),
+          const Divider(
+            color: Colors.black38,
+            thickness: 5,
+          ),
+          ListTile(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            selected: true,
+            selectedTileColor: Colors.grey[300],
+            tileColor: Colors.blue,
+            leading: const Icon(
+              Icons.business,
+              color: Colors.greenAccent,
+            ),
+            title: Text('buy_equipment'.tr(),
+                style: const TextStyle(
+                  fontSize: 24.0,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'skullsandcrossbones',
+                )),
+            onTap: () {
+              Navigator.pop(context);
+              //Navigator.pushNamed(context, '/equipment_inventory');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const BuyEquipment()),
               );
             },
           ),
