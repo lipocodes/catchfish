@@ -115,6 +115,11 @@ class _FishingState extends State<Fishing> {
       BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
           fishingUsecase: sl.get<FishingUsecase>(),
           currentCountdownTime: _currentTime));
+      //we assume that the game may start immediately
+      if (_gameStarted == false) {
+        _gameStarted = true;
+        BlocProvider.of<FishingBloc>(context).add(StartGameEvent());
+      }
       if (_gameStarted) {
         _isDialogOpen = false;
         if (_seconds == /*5*/ 1) {
