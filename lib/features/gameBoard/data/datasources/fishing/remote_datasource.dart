@@ -340,7 +340,7 @@ class RemoteDatasource {
       List list = detailsFish.split("^^^");
       int fishPrice = int.parse(list[1]);
       inventoryXP += fishPrice;
-      if (levelPlayer == 1 && inventoryXP >= 100) {
+      if (levelPlayer == 1 && inventoryXP >= 1000) {
         levelPlayer = 2;
         inventoryXP -= 1000;
       } else if (levelPlayer == 2 && inventoryXP >= 2000) {

@@ -21,7 +21,7 @@ class UserDetailsRemoteDataSource {
       _prefs = await SharedPreferences.getInstance();
       //retreive FCM token
       token = await _fcm.getToken() ?? "";
-      print("Token=" + token.toString());
+
       QuerySnapshot res = await firestoreInstance
           .collection("users")
           .where('email', isEqualTo: userEntity.email)
@@ -47,6 +47,11 @@ class UserDetailsRemoteDataSource {
         "inventory": [],
         "lastInventoryUpdateDB": 0,
         "level": 1,
+        "prizeValues": {
+          'inventoryBaits': 0,
+          'inventoryMoney': 0,
+          'inventoryXP': 0
+        },
         "uid": uid,
       });
       print("eeeeeeeeeeeeeee saveUserToDB()" + e.toString());
