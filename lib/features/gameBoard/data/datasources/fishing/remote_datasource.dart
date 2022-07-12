@@ -327,16 +327,53 @@ class RemoteDatasource {
           .collection("users")
           .where("uid", isEqualTo: uid)
           .get();
+      //updating user's level value
+
+      int levelPlayer = userDoc.docs[0].data()['level'];
+      //updating user's XP value/ Each level promotion deduces a part of XP
+      int inventoryBaits =
+          userDoc.docs[0].data()['prizeValues']['inventoryBaits'];
+      int inventoryMoney =
+          userDoc.docs[0].data()['prizeValues']['inventoryMoney'];
+      int inventoryXP = userDoc.docs[0].data()['prizeValues']['inventoryXP'];
+      int timeStampNow = DateTime.now().millisecondsSinceEpoch;
+      List list = detailsFish.split("^^^");
+      int fishPrice = int.parse(list[1]);
+      inventoryXP += fishPrice;
+      if (levelPlayer == 1 && inventoryXP >= 100) {
+        levelPlayer = 2;
+        inventoryXP -= 1000;
+      } else if (levelPlayer == 2 && inventoryXP >= 2000) {
+        levelPlayer = 3;
+        inventoryXP -= 2000;
+      } else if (levelPlayer == 3 && inventoryXP >= 3000) {
+        levelPlayer = 4;
+        inventoryXP -= 3000;
+      } else if (levelPlayer == 4 && inventoryXP >= 4000) {
+        levelPlayer = 5;
+        inventoryXP -= 4000;
+      }
+      PrizeValuesEntity prizeValuesEntity = PrizeValuesEntity(
+        inventoryMoney: inventoryMoney,
+        inventoryBaits: inventoryBaits,
+        inventoryXP: inventoryXP,
+        lastPrizeValuesUpdateDB: timeStampNow,
+      );
+
       caughtFish = userDoc.docs[0].data()['caughtFish'];
+
       caughtFish.add(detailsFish);
       await FirebaseFirestore.instance
           .collection("users")
           .doc(userDoc.docs[0].id)
           .set({
         "caughtFish": caughtFish,
+        "prizeValues": prizeValuesEntity.toJson(),
+        "level": levelPlayer,
       }, SetOptions(merge: true));
       return const Right(true);
     } catch (e) {
+      print("eeeeeeeeeeeeeeeeee=" + e.toString());
       return Left(GeneralFailure());
     }
   }
