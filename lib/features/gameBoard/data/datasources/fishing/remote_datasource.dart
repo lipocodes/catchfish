@@ -340,16 +340,21 @@ class RemoteDatasource {
       List list = detailsFish.split("^^^");
       int fishPrice = int.parse(list[1]);
       inventoryXP += fishPrice;
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
       if (levelPlayer == 1 && inventoryXP >= 1000) {
+        prefs.setInt("playerLevel", 2);
         levelPlayer = 2;
         inventoryXP -= 1000;
       } else if (levelPlayer == 2 && inventoryXP >= 2000) {
+        prefs.setInt("playerLevel", 3);
         levelPlayer = 3;
         inventoryXP -= 2000;
       } else if (levelPlayer == 3 && inventoryXP >= 3000) {
+        prefs.setInt("playerLevel", 4);
         levelPlayer = 4;
         inventoryXP -= 3000;
       } else if (levelPlayer == 4 && inventoryXP >= 4000) {
+        prefs.setInt("playerLevel", 5);
         levelPlayer = 5;
         inventoryXP -= 4000;
       }

@@ -94,7 +94,8 @@ Widget shopItems(
                                       title: title,
                                       price: price));
                             }
-                            Navigator.pop(context);
+                            Navigator.of(context)
+                                .popUntil(ModalRoute.withName("/"));
                           },
                           style: ButtonStyle(
                             foregroundColor:

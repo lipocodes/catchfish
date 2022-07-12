@@ -111,5 +111,6 @@
     "your_inventory": "Your Inventory",
     "buy_now": "Buy Now",
     "thank_you": "Thank You!",
-    "not enough_money": "Not enough Money!"
+    "not enough_money": "Not enough Money!",
+    "level:": "Level:"
 }

@@ -37,6 +37,8 @@ class UserDetailsRemoteDataSource {
         'FCMToken': token,
       });
     } catch (e) {
+      _prefs = await SharedPreferences.getInstance();
+      _prefs.setInt("playerLevel", 1);
       await FirebaseFirestore.instance.collection('users').add({
         'displayName': userEntity.displayName,
         'email': userEntity.email,

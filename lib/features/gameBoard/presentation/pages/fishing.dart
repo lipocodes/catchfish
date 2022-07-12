@@ -181,7 +181,7 @@ class _FishingState extends State<Fishing> {
                     _numPlayers = state.numPlayers;
                     _currentTime = state.newCountdownTime
                         .substring(0, state.newCountdownTime.indexOf("^^^"));
-                    print("wwwwwwwwwwwwwwww=" + _currentTime.toString());
+
                     if (_currentTime == "00:00") {
                       timer.cancel();
                       BlocProvider.of<FishingBloc>(context)

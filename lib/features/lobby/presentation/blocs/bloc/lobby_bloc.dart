@@ -83,6 +83,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
         int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
         int inventoryXP = prefs.getInt("inventoryXP") ?? 0;
+        int playerLevel = prefs.getInt("playerLevel") ?? 0;
 
         if (auth.currentUser == null) {
           isLoggedIn = false;

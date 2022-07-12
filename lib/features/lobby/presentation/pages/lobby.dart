@@ -306,6 +306,8 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   }
 
   Widget lobbyScreen(state) {
+    int playerLevel = _prefs.getInt("playerLevel") ?? 1;
+    String textLevel = playerLevel.toString();
     String photoURL = FirebaseAuth.instance.currentUser?.photoURL ?? "";
     return WillPopScope(
       onWillPop: () async {
@@ -353,7 +355,16 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                         )),
                   ),
                   const SizedBox(
-                    width: 100,
+                    width: 20,
+                  ),
+                  Text("level:" + textLevel,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 24.0,
+                        fontFamily: 'skullsandcrossbones',
+                      )).tr(),
+                  const SizedBox(
+                    width: 20,
                   ),
                   buttonBack(performBack),
                 ],
