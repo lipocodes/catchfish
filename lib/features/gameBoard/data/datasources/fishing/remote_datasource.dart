@@ -367,7 +367,7 @@ class RemoteDatasource {
 
       caughtFish = userDoc.docs[0].data()['caughtFish'];
 
-      caughtFish.add(detailsFish);
+      caughtFish.add(detailsFish + "^^^" + timeStampNow.toString());
       await FirebaseFirestore.instance
           .collection("users")
           .doc(userDoc.docs[0].id)

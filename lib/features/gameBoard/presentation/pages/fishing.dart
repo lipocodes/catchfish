@@ -90,10 +90,13 @@ class _FishingState extends State<Fishing> {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
+                  /*Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => const Lobby()),
-                      ModalRoute.withName("/lobby"));
+                      ModalRoute.withName("/lobby"));*/
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 child: const Text('next',
                     style: TextStyle(

@@ -51,7 +51,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       //At the 1st seconds, we don't need animation
       if (remainingMilliseconds <= 0) {
         t.cancel();
-        //Navigator.pushNamed(context, '/lobby');
+
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Lobby()),

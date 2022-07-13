@@ -359,7 +359,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
                   ),
                   Text("level:" + textLevel,
                       style: const TextStyle(
-                        color: Colors.red,
+                        color: Colors.blue,
                         fontSize: 24.0,
                         fontFamily: 'skullsandcrossbones',
                       )).tr(),

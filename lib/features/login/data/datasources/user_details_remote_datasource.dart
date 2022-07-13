@@ -26,6 +26,10 @@ class UserDetailsRemoteDataSource {
           .collection("users")
           .where('email', isEqualTo: userEntity.email)
           .get();
+      int playerLevel = res.docs[0]['level'];
+      //when Login with a user having already an acoount in Users collection: need to update pref
+      _prefs = await SharedPreferences.getInstance();
+      _prefs.setInt("playerLevel", playerLevel);
 
       id = res.docs[0].id;
 
