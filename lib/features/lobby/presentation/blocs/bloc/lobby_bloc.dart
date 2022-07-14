@@ -105,14 +105,36 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
             isLoggedIn: isLoggedIn));
       } else if (event is ReturningLobbyEvent) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        String email = "";
+        //When  entering the lobby, if user is logged in - compare prize list && inventory between DB & prefs.
+        //if data on DB is newer, update it
+        //id data on prefs is newer, update the DB
+        await comparePrefsToDBPrizeList();
+        await comparePrefsToDBEquipmentList();
+        int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
+        int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
+        int inventoryXP = prefs.getInt("inventoryXP") ?? 0;
+        int playerLevel = prefs.getInt("playerLevel") ?? 0;
+
+        if (auth.currentUser == null) {
+          isLoggedIn = false;
+        } else {
+          isLoggedIn = true;
+        }
+
+        playSound = PlaySound();
+
+        playSound.play(path: "assets/sounds/lobby/", fileName: "waves.mp3");
         int dayLastRotation = prefs.getInt("dayLastCompassRotation") ?? 0;
-        emit(ReturningLobbyState(
+
+        emit(EnteringLobbyState(
             hasRotatedTodayYet:
                 DateTime.now().day == dayLastRotation ? true : false,
-            inventoryBaits: 10,
-            inventoryMoney: 20,
-            inventoryXP: 30,
-            playerLevel: 3));
+            inventoryMoney: inventoryMoney,
+            inventoryBaits: inventoryBaits,
+            inventoryXP: inventoryXP,
+            isLoggedIn: isLoggedIn));
       } else if (event is LeavingLobbyEvent) {
         playSound.stop();
         emit(LeavingLobbyState());
