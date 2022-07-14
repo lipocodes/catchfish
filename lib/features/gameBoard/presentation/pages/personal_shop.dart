@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/personalShop/app_bar.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/personalShop/shop_items.dart';
+import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,17 +29,23 @@ class _PersonalShopState extends State<PersonalShop> {
         .add(LoadingPersonalShopEvent(fishingUsecase: fishingUsecase));
   }
 
+  performBack() {
+    BlocProvider.of<LobbyBloc>(context).add(const ReturningLobbyEvent());
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     showLoginWarning(context);
     return SafeArea(
-        child: Scaffold(
-            backgroundColor: Colors.transparent,
-            //extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-            ),
-            body: shopItems(context)));
+        child: WillPopScope(
+      onWillPop: () => performBack(),
+      child: Scaffold(
+          backgroundColor: Colors.transparent,
+          //extendBodyBehindAppBar: true,
+          appBar: appBar(context),
+          body: shopItems(context)),
+    ));
   }
 
   showLoginWarning(BuildContext context) async {

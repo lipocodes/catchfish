@@ -149,7 +149,7 @@ class _BuyEquipmentState extends State<BuyEquipment> {
               TextButton(
                 child: const Text("OK"),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  performBack();
                 },
               ),
             ],
