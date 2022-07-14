@@ -5,6 +5,7 @@ import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingB
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/countdown.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/energy.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/fishing/pulse_generator.dart';
+import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/lobby/presentation/pages/lobby.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -29,7 +30,7 @@ class _FishingState extends State<Fishing> {
   double rightPositionBird = 60.0;
   double topPositionBird = 100.0;
   int _numPlayers = 0;
-  var _prefs;
+  late SharedPreferences _prefs;
   bool _amIGroupLeader = false;
   bool _gameStarted = false;
   late AnimationController animationController;
@@ -90,13 +91,12 @@ class _FishingState extends State<Fishing> {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
-                  /*Navigator.pushAndRemoveUntil(
+                  BlocProvider.of<LobbyBloc>(context)
+                      .add(const ReturningLobbyEvent());
+                  Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => const Lobby()),
-                      ModalRoute.withName("/lobby"));*/
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                      ModalRoute.withName("/lobby"));
                 },
                 child: const Text('next',
                     style: TextStyle(

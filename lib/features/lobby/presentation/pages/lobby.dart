@@ -172,7 +172,9 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           showDailyPrize(state.dailyPrize);
           return lobbyScreen(state);
         } else if (state is ReturningLobbyState) {
-          return lobbyScreen(state);
+          print("xxxxxxxxxxxxxxxxxxxxxxx");
+          return Container();
+          //return lobbyScreen(state);
         } else {
           return Container();
         }
@@ -306,7 +308,15 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
   }
 
   Widget lobbyScreen(state) {
-    int playerLevel = _prefs.getInt("playerLevel") ?? 1;
+    int playerLevel = 1;
+    try {
+      Timer(const Duration(seconds: 1), () {
+        playerLevel = _prefs.getInt("playerLevel") ?? 1;
+      });
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeee=" + e.toString());
+    }
+
     String textLevel = playerLevel.toString();
     String photoURL = FirebaseAuth.instance.currentUser?.photoURL ?? "";
     return WillPopScope(
