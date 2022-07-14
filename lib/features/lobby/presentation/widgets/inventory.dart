@@ -1,6 +1,4 @@
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 Widget inventory(BuildContext context, state) {
@@ -66,7 +64,6 @@ Widget inventory(BuildContext context, state) {
                 fontFamily: 'skullsandcrossbones',
               )),
         ),
-        //const SizedBox(width: 20.0),
       ],
     );
   } else {

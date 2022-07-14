@@ -34,10 +34,12 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
           0;
 
       //if prize values on DN are fresher than prize values in Prefs
-      if (prizeValuesEntity.lastPrizeValuesUpdateDB >
+
+      if (prizeValuesEntity.lastPrizeValuesUpdateDB >=
           lastPrizeValuesUpdatePrefs) {
         //if user is logged in && DB data is newer, update prefs
         await prefs.setInt("inventoryMoney", prizeValuesEntity.inventoryMoney);
+
         await prefs.setInt("inventoryBaits", prizeValuesEntity.inventoryBaits);
         await prefs.setInt("inventoryXP", prizeValuesEntity.inventoryXP);
         await prefs.setInt("lastPrizeValuesUpdatePrefs",
@@ -79,6 +81,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         //if data on DB is newer, update it
         //id data on prefs is newer, update the DB
         await comparePrefsToDBPrizeList();
+
         await comparePrefsToDBEquipmentList();
         int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
         int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
@@ -112,7 +115,9 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         //id data on prefs is newer, update the DB
         await comparePrefsToDBPrizeList();
         await comparePrefsToDBEquipmentList();
+
         int inventoryMoney = prefs.getInt("inventoryMoney") ?? 0;
+
         int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
         int inventoryXP = prefs.getInt("inventoryXP") ?? 0;
         int playerLevel = prefs.getInt("playerLevel") ?? 0;
@@ -127,14 +132,13 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
 
         playSound.play(path: "assets/sounds/lobby/", fileName: "waves.mp3");
         int dayLastRotation = prefs.getInt("dayLastCompassRotation") ?? 0;
-
-        emit(EnteringLobbyState(
+        emit(ReturningLobbyState(
             hasRotatedTodayYet:
                 DateTime.now().day == dayLastRotation ? true : false,
             inventoryMoney: inventoryMoney,
             inventoryBaits: inventoryBaits,
             inventoryXP: inventoryXP,
-            isLoggedIn: isLoggedIn));
+            playerLevel: 3));
       } else if (event is LeavingLobbyEvent) {
         playSound.stop();
         emit(LeavingLobbyState());
