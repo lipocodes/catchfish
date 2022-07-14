@@ -1,13 +1,14 @@
+import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/tokens/presentation/widgets/button_back.dart';
 import 'package:catchfish/features/tokens/presentation/widgets/prod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget listProds(state, BuildContext context) {
   //custom BACK operation
   Future<bool> performBack() async {
-    Navigator.pop(context, true);
-    Navigator.pop(context, true);
-    Navigator.pushNamed(context, '/lobby');
+    BlocProvider.of<LobbyBloc>(context).add(const ReturningLobbyEvent());
+    Navigator.pop(context);
     return true;
   }
 
@@ -15,9 +16,7 @@ Widget listProds(state, BuildContext context) {
     textDirection: TextDirection.ltr,
     child: SafeArea(
       child: WillPopScope(
-        onWillPop: () {
-          return performBack();
-        },
+        onWillPop: performBack,
         child: Scaffold(
           body: Container(
               height: 1000,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/tokens/presentation/blocs/bloc/tokens_bloc.dart';
 import 'package:catchfish/features/tokens/presentation/widgets/list_prods.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -25,6 +26,11 @@ class _BuyTokenState extends State<BuyToken> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  performBack() {
+    BlocProvider.of<LobbyBloc>(context).add(const ReturningLobbyEvent());
+    Navigator.pop(context);
   }
 
   @override
