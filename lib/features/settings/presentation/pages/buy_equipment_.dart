@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/settings/presentation/blocs/bloc/inventory_bloc.dart';
 import 'package:catchfish/features/settings/presentation/widgets/app_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -64,19 +65,17 @@ class _BuyEquipmentState extends State<BuyEquipment> {
     }
   }
 
-  //custom BACK operation
-  performBack() async {
-    Navigator.pop(context, true);
-    Navigator.pop(context, true);
-    Navigator.pushNamed(context, '/');
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     BlocProvider.of<InventoryBloc>(context).add(EnteringInventoryEvent());
+  }
+
+  performBack() {
+    BlocProvider.of<LobbyBloc>(context).add(const ReturningLobbyEvent());
+    Navigator.pop(context);
   }
 
   @override
@@ -88,30 +87,33 @@ class _BuyEquipmentState extends State<BuyEquipment> {
       appBar: appBar(context),
       //in core/widgets/main_menu.dart
       //drawer: mainMenu(context),
-      body: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                //tenor.com
-                'assets/images/settings/bubbles.gif',
+      body: WillPopScope(
+        onWillPop: () => performBack(),
+        child: Scaffold(
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  //tenor.com
+                  'assets/images/settings/bubbles.gif',
+                ),
+                fit: BoxFit.cover,
               ),
-              fit: BoxFit.cover,
             ),
-          ),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const Text("buy_now",
-                      style: TextStyle(
-                        fontSize: 28.0,
-                        decoration: TextDecoration.underline,
-                        color: Colors.blue,
-                        fontFamily: 'skullsandcrossbones',
-                      )).tr(),
-                  SizedBox(height: 600.0, child: productsToBuyGrid()),
-                ],
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Text("buy_now",
+                        style: TextStyle(
+                          fontSize: 28.0,
+                          decoration: TextDecoration.underline,
+                          color: Colors.blue,
+                          fontFamily: 'skullsandcrossbones',
+                        )).tr(),
+                    SizedBox(height: 600.0, child: productsToBuyGrid()),
+                  ],
+                ),
               ),
             ),
           ),
