@@ -96,21 +96,23 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
         playSound.play(path: "assets/sounds/lobby/", fileName: "waves.mp3");
         int dayLastRotation = prefs.getInt("dayLastCompassRotation") ?? 0;
 
-        if (DateTime.now().day == dayLastRotation) {
-          emit(EnteringLobbyState(
-              hasRotatedTodayYet: true,
-              inventoryMoney: inventoryMoney,
-              inventoryBaits: inventoryBaits,
-              inventoryXP: inventoryXP,
-              isLoggedIn: isLoggedIn));
-        } else {
-          emit(EnteringLobbyState(
-              hasRotatedTodayYet: false,
-              inventoryMoney: inventoryMoney,
-              inventoryBaits: inventoryBaits,
-              inventoryXP: inventoryXP,
-              isLoggedIn: isLoggedIn));
-        }
+        emit(EnteringLobbyState(
+            hasRotatedTodayYet:
+                DateTime.now().day == dayLastRotation ? true : false,
+            inventoryMoney: inventoryMoney,
+            inventoryBaits: inventoryBaits,
+            inventoryXP: inventoryXP,
+            isLoggedIn: isLoggedIn));
+      } else if (event is ReturningLobbyEvent) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        int dayLastRotation = prefs.getInt("dayLastCompassRotation") ?? 0;
+        emit(ReturningLobbyState(
+            hasRotatedTodayYet:
+                DateTime.now().day == dayLastRotation ? true : false,
+            inventoryBaits: 10,
+            inventoryMoney: 20,
+            inventoryXP: 30,
+            playerLevel: 3));
       } else if (event is LeavingLobbyEvent) {
         playSound.stop();
         emit(LeavingLobbyState());

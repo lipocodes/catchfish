@@ -11,6 +11,10 @@ class EnteringLobbyEvent extends LobbyEvent {
   const EnteringLobbyEvent() : super();
 }
 
+class ReturningLobbyEvent extends LobbyEvent {
+  const ReturningLobbyEvent() : super();
+}
+
 class LeavingLobbyEvent extends LobbyEvent {}
 
 class EnteringDailyPrizeEvent extends LobbyEvent {}

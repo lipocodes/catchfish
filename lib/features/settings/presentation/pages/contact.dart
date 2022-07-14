@@ -1,6 +1,8 @@
+import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/features/settings/presentation/widgets/button_back.dart';
 import 'package:catchfish/features/settings/presentation/widgets/contact_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Contact extends StatefulWidget {
   const Contact({Key? key}) : super(key: key);
@@ -10,6 +12,11 @@ class Contact extends StatefulWidget {
 }
 
 class _ContactState extends State<Contact> {
+  performBack() {
+    BlocProvider.of<LobbyBloc>(context).add(const ReturningLobbyEvent());
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -17,16 +24,19 @@ class _ContactState extends State<Contact> {
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: buttonBack(context),
-            actions: [],
-          ),
-          resizeToAvoidBottomInset: false,
-          body: SingleChildScrollView(child: contactForm(context))),
+      child: WillPopScope(
+        onWillPop: () => performBack(),
+        child: Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              leading: buttonBack(context),
+              actions: [],
+            ),
+            resizeToAvoidBottomInset: false,
+            body: SingleChildScrollView(child: contactForm(context))),
+      ),
     ));
   }
 }

@@ -1,4 +1,6 @@
+import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget buttonBack(BuildContext context) {
   return IconButton(
@@ -8,7 +10,8 @@ Widget buttonBack(BuildContext context) {
       color: Colors.blue,
     ),
     onPressed: () {
-      Navigator.pop(context, true);
+      BlocProvider.of<LobbyBloc>(context).add(const ReturningLobbyEvent());
+      Navigator.pop(context);
     },
   );
 }

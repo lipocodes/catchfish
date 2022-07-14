@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 Widget inventory(BuildContext context, state) {
   //if user is not logged in, warn him
 
-  if (state is EndRotateCompassState || state is EnteringLobbyState) {
+  if (state is EndRotateCompassState ||
+      state is EnteringLobbyState ||
+      state is ReturningLobbyState) {
     return Row(
       children: [
         const SizedBox(width: 5.0),
