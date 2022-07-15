@@ -199,10 +199,10 @@ class RemoteDatasource {
       FirebaseFirestore.instance
           .collection('users')
           .doc(userDoc.docs[0].id)
-          .update({
+          .set({
         "caughtFish": caughtFish,
         "personalCollection": personalCollection
-      });
+      }, SetOptions(merge: true));
 
       return const Right(true);
     } catch (e) {

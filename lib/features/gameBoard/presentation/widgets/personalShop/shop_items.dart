@@ -75,10 +75,8 @@ Widget gui(BuildContext context, List listItems) {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      BlocProvider.of<FishingBloc>(context).add(
-                          MoveItemToPersonalEvent(
-                              index: index,
-                              fishingUsecase: sl.get<FishingUsecase>()));
+                      popupMoveToCollection(context, title[index], image[index],
+                          price[index], index);
                     },
                     child: Text(
                       "move_to_personal_collection".tr(),
@@ -146,6 +144,82 @@ Widget gui(BuildContext context, List listItems) {
         );
       }).toList(),
     ),
+  );
+}
+
+popupMoveToCollection(BuildContext context, String title, String image,
+    String price, int index) async {
+  return await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('no',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.blue,
+                      fontFamily: 'skullsandcrossbones',
+                    )).tr(),
+              ),
+              TextButton(
+                onPressed: () {
+                  BlocProvider.of<FishingBloc>(context).add(
+                      MoveItemToPersonalEvent(
+                          index: index,
+                          fishingUsecase: sl.get<FishingUsecase>()));
+                  Navigator.of(context).pop();
+                },
+                child: const Text('yes',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.blue,
+                      fontFamily: 'skullsandcrossbones',
+                    )).tr(),
+              ),
+            ],
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        content: SizedBox(
+          height: 250.0,
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: Image.asset(
+                  'assets/images/gameBoard/fish/' + image,
+                  width: 160,
+                  height: 160,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              const Text(
+                "move_to_personal_collection?",
+                style: TextStyle(
+                  fontFamily: 'skullsandcrossbones',
+                  fontSize: 22.0,
+                  color: Colors.redAccent,
+                ),
+              ).tr(),
+            ],
+          ),
+        ),
+      );
+    },
   );
 }
 
