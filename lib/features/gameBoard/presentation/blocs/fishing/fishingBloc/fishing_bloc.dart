@@ -97,6 +97,19 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
           (success) =>
               emit(LoadingPersonalShopState(personalShopInventory: success)),
         );
+      } else if (event is LoadingPersonalCollectionEvent) {
+        RemoteDatasource remoteDatasource = RemoteDatasource();
+        LocalDatasourcePrefs localDatasourcePrefs = LocalDatasourcePrefs();
+        _fishingUsecase = event.fishingUsecase;
+        final res = await _fishingUsecase.populatePersonalCollection(
+            remoteDatasource, localDatasourcePrefs);
+
+        res.fold(
+          (failure) => emit(const ErrorRedButtonPressedState(
+              message: "Error in populating Personal Shop!")),
+          (success) => emit(LoadingPersonalCollectionState(
+              personalCollectionInventory: success)),
+        );
       } else if (event is GameOverEvent) {
         List<String> listAcheivements = [];
         FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();

@@ -50,6 +50,7 @@ class UserDetailsRemoteDataSource {
         'phoneNumber': userEntity.phoneNumber,
         'FCMToken': token,
         "caughtFish": [],
+        "personalCollection": [],
         "inventory": [],
         "lastInventoryUpdateDB": 0,
         "level": 1,

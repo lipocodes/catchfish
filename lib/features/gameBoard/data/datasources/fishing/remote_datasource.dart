@@ -155,6 +155,27 @@ class RemoteDatasource {
     }
   }
 
+  Future<Either<Failure, List>> getPersonalCollection() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    try {
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+      if (uid == null) {
+        return const Right([]);
+      }
+      //what is the doc ID of this user
+      final userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .where("uid", isEqualTo: uid)
+          .get();
+      List personalCollection = userDoc.docs[0].data()['personalCollection'];
+
+      return Right(personalCollection);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
   Future<Either<Failure, bool>> removeFishPersonalShop(
       String detailsFish) async {
     final FirebaseAuth auth = FirebaseAuth.instance;

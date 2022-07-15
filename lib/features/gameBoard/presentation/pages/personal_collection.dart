@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/personalShop/app_bar.dart';
+import 'package:catchfish/features/gameBoard/presentation/widgets/personalShop/personal_collection_items.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/personalShop/shop_items.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/injection_container.dart';
@@ -26,7 +27,7 @@ class _PersonalCollectionState extends State<PersonalCollection> {
     super.initState();
     final fishingUsecase = sl.get<FishingUsecase>();
     BlocProvider.of<FishingBloc>(context)
-        .add(LoadingPersonalShopEvent(fishingUsecase: fishingUsecase));
+        .add(LoadingPersonalCollectionEvent(fishingUsecase: fishingUsecase));
   }
 
   performBack() {
@@ -44,7 +45,7 @@ class _PersonalCollectionState extends State<PersonalCollection> {
           backgroundColor: Colors.transparent,
           //extendBodyBehindAppBar: true,
           appBar: appBar(context),
-          body: shopItems(context)),
+          body: personalCollectionItems(context)),
     ));
   }
 

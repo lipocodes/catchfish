@@ -56,6 +56,19 @@ class FishingRepositoryImpl implements FishingRepository {
   }
 
   @override
+  Future<Either<Failure, List>> getPersonalCollection(
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource) async {
+    final res = await remoteDatasource.getPersonalCollection();
+    //if app installation is not new && user has something in PersonalShop
+    if (res.isRight()) {
+      return res;
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, bool>> removeFishPersonalShop(
       String fishDetails,
       LocalDatasourcePrefs localDatasourcePrefs,

@@ -39,6 +39,11 @@ class LoadingPersonalShopEvent extends FishingEvent {
   const LoadingPersonalShopEvent({required this.fishingUsecase});
 }
 
+class LoadingPersonalCollectionEvent extends FishingEvent {
+  final FishingUsecase fishingUsecase;
+  const LoadingPersonalCollectionEvent({required this.fishingUsecase});
+}
+
 class GameOverEvent extends FishingEvent {}
 
 class StartGameEvent extends FishingEvent {}
