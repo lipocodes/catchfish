@@ -61,6 +61,7 @@ class _PersonalCollectionState extends State<PersonalCollection> {
                     height: 10.0,
                   ),
                   searchOtherPlayers(),
+                  listRelevantPlayers(),
                   const SizedBox(
                     height: 20.0,
                   ),
@@ -124,11 +125,43 @@ class _PersonalCollectionState extends State<PersonalCollection> {
           enabledBorder: InputBorder.none,
         ),
         onChanged: (text) {
-          print(text);
-          // BlocProvider.of<SelectgroupBloc>(context)
-          // .add(GroupNameChangedEvent(groupName: searchPlayerController.text));
+          BlocProvider.of<FishingBloc>(context)
+              .add(SearchOtherPlayersEvent(name: text));
         },
       ),
+    );
+  }
+
+  Widget listRelevantPlayers() {
+    return BlocBuilder<FishingBloc, FishingState>(
+      builder: (context, state) {
+        if (state is SearchOtherPlayersState) {
+          List<String> relevantPlayers = state.relevantPlayers;
+          return SizedBox(
+            height: 200.0,
+            child: ListView.builder(
+                itemCount: state.relevantPlayers.length,
+                itemBuilder: (BuildContext context, int index) {
+                  String temp = relevantPlayers[index];
+                  List<String> list = temp.split("^^^");
+                  String name = list[1];
+                  return ListTile(
+                      onTap: () {},
+                      title: Center(
+                        child: Text(
+                          name,
+                          style: const TextStyle(
+                              fontSize: 24.0,
+                              fontFamily: 'skullsandcrossbones',
+                              backgroundColor: Colors.blueAccent),
+                        ),
+                      ));
+                }),
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }

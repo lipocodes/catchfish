@@ -120,6 +120,15 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
           (success) =>
               emit(const MoveItemToPersonalCollectionState(success: true)),
         );
+      } else if (event is SearchOtherPlayersEvent) {
+        String name = event.name;
+        List<String> relevantPlayers = [
+          "eliseason@gmail.com^^^Eli Shemesh^^^https://lh3.googleusercontent.com/a/AATXAJzfFL_wwUJM_ichdH6G7mravNJDE0rWo_d-wB8u=s96-c",
+          "eliseason@gmail.com^^^Yossi Cohen^^^https://lh3.googleusercontent.com/a/AATXAJzfFL_wwUJM_ichdH6G7mravNJDE0rWo_d-wB8u=s96-c"
+        ];
+        emit(SearchOtherPlayersState(relevantPlayers: relevantPlayers));
+      } else if (event is SelectedPlayerEvent) {
+        String email = event.email;
       } else if (event is GameOverEvent) {
         List<String> listAcheivements = [];
         FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();
