@@ -20,6 +20,7 @@ class PersonalCollection extends StatefulWidget {
 }
 
 class _PersonalCollectionState extends State<PersonalCollection> {
+  TextEditingController searchPlayerController = TextEditingController();
   bool _showedWarningYet = false;
   @override
   void initState() {
@@ -41,11 +42,33 @@ class _PersonalCollectionState extends State<PersonalCollection> {
     return SafeArea(
         child: WillPopScope(
       onWillPop: () => performBack(),
-      child: Scaffold(
-          backgroundColor: Colors.transparent,
-          //extendBodyBehindAppBar: true,
-          appBar: appBar(context),
-          body: personalCollectionItems(context)),
+      child: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus &&
+              currentFocus.focusedChild != null) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          }
+        },
+        child: Scaffold(
+            backgroundColor: Colors.transparent,
+            //extendBodyBehindAppBar: true,
+            appBar: appBar(context),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  searchOtherPlayers(),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  personalCollectionItems(context),
+                ],
+              ),
+            )),
+      ),
     ));
   }
 
@@ -74,5 +97,38 @@ class _PersonalCollectionState extends State<PersonalCollection> {
                 ));
       });
     }
+  }
+
+  Widget searchOtherPlayers() {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.green,
+          width: 3,
+        ),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: TextField(
+        controller: searchPlayerController,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 20.0,
+          fontFamily: 'skullsandcrossbones',
+        ),
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          // labelText: ' Find Other Player ',
+          hintText: ' Find Other Players ',
+          hintStyle: TextStyle(
+              fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.w100),
+          enabledBorder: InputBorder.none,
+        ),
+        onChanged: (text) {
+          print(text);
+          // BlocProvider.of<SelectgroupBloc>(context)
+          // .add(GroupNameChangedEvent(groupName: searchPlayerController.text));
+        },
+      ),
+    );
   }
 }
