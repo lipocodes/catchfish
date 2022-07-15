@@ -20,8 +20,7 @@ Widget shopItems(BuildContext context) {
         return gui(context, listItems);
       } else if (state is MoveItemToPersonalCollectionState) {
         BlocProvider.of<FishingBloc>(context).add(
-            LoadingPersonalCollectionEvent(
-                fishingUsecase: sl.get<FishingUsecase>()));
+            LoadingPersonalShopEvent(fishingUsecase: sl.get<FishingUsecase>()));
         return gui(context, listItems);
       } else {
         return gui(context, listItems);

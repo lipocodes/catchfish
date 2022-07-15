@@ -184,6 +184,26 @@ class RemoteDatasource {
       if (uid == null) {
         return const Right(false);
       }
+      //what is the doc ID of this user
+      final userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .where("uid", isEqualTo: uid)
+          .get();
+
+      //remove the moved fish from array caughtFish
+      List caughtFish = userDoc.docs[0].data()['caughtFish'];
+      String fishToBeMoved = caughtFish[index];
+      caughtFish.removeAt(index);
+      List personalCollection = userDoc.docs[0].data()['personalCollection'];
+      personalCollection.add(fishToBeMoved);
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userDoc.docs[0].id)
+          .update({
+        "caughtFish": caughtFish,
+        "personalCollection": personalCollection
+      });
+
       return const Right(true);
     } catch (e) {
       print("eeeeeeeeeeeeeeeeee=" + e.toString());
