@@ -32,4 +32,9 @@ abstract class FishingRepository {
   Future<Either<Failure, List>> getExistingGroups(
       RemoteDatasource remoteDatasource);
   Future<Either<Failure, List<String>>> getGameResults();
+  Future<Either<Failure, List>> getPersonalCollection(
+      LocalDatasourcePrefs localDatasourcePrefs,
+      RemoteDatasource remoteDatasource);
+  Future<Either<Failure, bool>> moveToPersonalCollection(
+      int index, RemoteDatasource remoteDatasource);
 }

@@ -176,6 +176,21 @@ class RemoteDatasource {
     }
   }
 
+  Future<Either<Failure, bool>> moveToPersonalCollection(int index) async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    try {
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+      if (uid == null) {
+        return const Right(false);
+      }
+      return const Right(true);
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeee=" + e.toString());
+      return Left(GeneralFailure());
+    }
+  }
+
   Future<Either<Failure, bool>> removeFishPersonalShop(
       String detailsFish) async {
     final FirebaseAuth auth = FirebaseAuth.instance;

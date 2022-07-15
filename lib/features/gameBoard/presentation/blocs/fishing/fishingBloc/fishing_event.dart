@@ -61,3 +61,10 @@ class AcceptPriceOfferEvent extends FishingEvent {
   final FishingUsecase fishingUsecase;
   AcceptPriceOfferEvent({required this.index, required this.fishingUsecase});
 }
+
+// ignore: must_be_immutable
+class MoveItemToPersonalEvent extends FishingEvent {
+  late int index;
+  final FishingUsecase fishingUsecase;
+  MoveItemToPersonalEvent({required this.index, required this.fishingUsecase});
+}

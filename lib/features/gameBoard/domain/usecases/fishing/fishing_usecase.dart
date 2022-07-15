@@ -226,6 +226,28 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     }
   }
 
+  Future<Either<Failure, bool>> moveToPersonalCollection(
+      int index, FishingUsecase fishingUsecase) async {
+    try {
+      bool yesNo = false;
+      final res = await sl
+          .get<FishingRepositoryImpl>()
+          .moveToPersonalCollection(index, sl.get<RemoteDatasource>());
+      print("ggggggggggggggggg=" + res.toString());
+      res.fold(
+        (failure) => GeneralFailure(),
+        (success) => yesNo = success,
+      );
+      if (res.isRight()) {
+        return Right(yesNo);
+      } else {
+        return Left(GeneralFailure());
+      }
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
   Future<Either<Failure, bool>> updateCaughtInGroups(
       String caughtFishDetails) async {
     try {

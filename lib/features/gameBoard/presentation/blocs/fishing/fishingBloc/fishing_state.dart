@@ -69,6 +69,11 @@ class LoadingPersonalCollectionState extends FishingState {
       {required this.personalCollectionInventory});
 }
 
+class MoveItemToPersonalCollectionState extends FishingState {
+  final bool success;
+  const MoveItemToPersonalCollectionState({required this.success});
+}
+
 class GameOverState extends FishingState {
   //each member: player with his acheivements
   final List<String> listAcheivements;

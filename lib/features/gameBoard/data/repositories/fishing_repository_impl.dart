@@ -2,6 +2,7 @@ import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/domain/repositories/fishing/fishing_repository.dart';
+import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 
@@ -61,6 +62,17 @@ class FishingRepositoryImpl implements FishingRepository {
       RemoteDatasource remoteDatasource) async {
     final res = await remoteDatasource.getPersonalCollection();
     //if app installation is not new && user has something in PersonalShop
+    if (res.isRight()) {
+      return res;
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> moveToPersonalCollection(
+      int index, RemoteDatasource remoteDatasource) async {
+    final res = await remoteDatasource.moveToPersonalCollection(index);
     if (res.isRight()) {
       return res;
     } else {

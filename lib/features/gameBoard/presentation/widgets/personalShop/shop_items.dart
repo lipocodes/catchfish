@@ -18,6 +18,11 @@ Widget shopItems(BuildContext context) {
       } else if (state is AcceptPriceOfferState) {
         List listItems = state.listItems;
         return gui(context, listItems);
+      } else if (state is MoveItemToPersonalCollectionState) {
+        BlocProvider.of<FishingBloc>(context).add(
+            LoadingPersonalCollectionEvent(
+                fishingUsecase: sl.get<FishingUsecase>()));
+        return gui(context, listItems);
       } else {
         return gui(context, listItems);
       }
@@ -51,7 +56,7 @@ Widget gui(BuildContext context, List listItems) {
     child: GridView.count(
       padding: EdgeInsets.zero,
       crossAxisCount: 1,
-      childAspectRatio: 2,
+      childAspectRatio: 1.8,
       children: List.generate(listItems.length, (index) {
         return GestureDetector(
           onTap: () {
@@ -69,6 +74,22 @@ Widget gui(BuildContext context, List listItems) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  GestureDetector(
+                    onTap: () {
+                      BlocProvider.of<FishingBloc>(context).add(
+                          MoveItemToPersonalEvent(
+                              index: index,
+                              fishingUsecase: sl.get<FishingUsecase>()));
+                    },
+                    child: Text(
+                      "move_to_personal_collection".tr(),
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.red,
+                        fontFamily: 'skullsandcrossbones',
+                      ),
+                    ),
+                  ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(400),
                     child: Image.asset(

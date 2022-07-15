@@ -110,6 +110,16 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
           (success) => emit(LoadingPersonalCollectionState(
               personalCollectionInventory: success)),
         );
+      } else if (event is MoveItemToPersonalEvent) {
+        _fishingUsecase = event.fishingUsecase;
+        final res = await _fishingUsecase.moveToPersonalCollection(
+            event.index, _fishingUsecase);
+        res.fold(
+          (failure) => emit(const ErrorRedButtonPressedState(
+              message: "Error in moving item to personal collection!")),
+          (success) =>
+              emit(const MoveItemToPersonalCollectionState(success: true)),
+        );
       } else if (event is GameOverEvent) {
         List<String> listAcheivements = [];
         FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();
