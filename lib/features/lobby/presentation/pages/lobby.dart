@@ -172,6 +172,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
           showDailyPrize(state.dailyPrize);
           return lobbyScreen(state);
         } else if (state is ReturningLobbyState) {
+          BlocProvider.of<LobbyBloc>(context).add(const EnteringLobbyEvent());
           return lobbyScreen(state);
         } else {
           return Container();

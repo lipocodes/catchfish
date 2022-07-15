@@ -22,7 +22,6 @@ class _FishingShopState extends State<FishingShop> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     BlocProvider.of<FishingshopBloc>(context).add(EnteringShopEvent());
     BlocProvider.of<FishingshopBloc>(context).add(RetreiveShopItemsEvent());
