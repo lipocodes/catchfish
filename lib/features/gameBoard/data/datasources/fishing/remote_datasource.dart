@@ -155,19 +155,30 @@ class RemoteDatasource {
     }
   }
 
-  Future<Either<Failure, List>> getPersonalCollection() async {
+  Future<Either<Failure, List>> getPersonalCollection(String email) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     try {
-      final User? user = auth.currentUser;
-      final uid = user?.uid;
-      if (uid == null) {
-        return const Right([]);
+      String? uid = "";
+      late QuerySnapshot<Map<String, dynamic>> userDoc;
+      if (email.isEmpty) {
+        final User? user = auth.currentUser;
+        uid = user?.uid;
+        if (uid == null) {
+          return const Right([]);
+        }
+        //what is the doc ID of this user
+        userDoc = await FirebaseFirestore.instance
+            .collection("users")
+            .where("uid", isEqualTo: uid)
+            .get();
+      } else {
+        //what is the doc ID of this user
+        userDoc = await FirebaseFirestore.instance
+            .collection("users")
+            .where("email", isEqualTo: email)
+            .get();
       }
-      //what is the doc ID of this user
-      final userDoc = await FirebaseFirestore.instance
-          .collection("users")
-          .where("uid", isEqualTo: uid)
-          .get();
+
       List personalCollection = userDoc.docs[0].data()['personalCollection'];
 
       return Right(personalCollection);

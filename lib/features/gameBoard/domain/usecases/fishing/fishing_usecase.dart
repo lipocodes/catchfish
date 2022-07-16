@@ -205,10 +205,11 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
   Future<Either<Failure, List<String>>> populatePersonalCollection(
       RemoteDatasource remoteDatasource,
-      LocalDatasource localDatasource) async {
+      LocalDatasource localDatasource,
+      String email) async {
     final res = await sl
         .get<FishingRepositoryImpl>()
-        .getPersonalCollection(localDatasourcePrefs, remoteDatasource);
+        .getPersonalCollection(localDatasourcePrefs, remoteDatasource, email);
 
     List list1 = [];
     List<String> list2 = [];
@@ -233,7 +234,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       final res = await sl
           .get<FishingRepositoryImpl>()
           .moveToPersonalCollection(index, sl.get<RemoteDatasource>());
-      print("ggggggggggggggggg=" + res.toString());
+
       res.fold(
         (failure) => GeneralFailure(),
         (success) => yesNo = success,

@@ -4,7 +4,6 @@ import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_use
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/personalShop/app_bar.dart';
 import 'package:catchfish/features/gameBoard/presentation/widgets/personalShop/personal_collection_items.dart';
-import 'package:catchfish/features/gameBoard/presentation/widgets/personalShop/shop_items.dart';
 import 'package:catchfish/features/lobby/presentation/blocs/bloc/lobby_bloc.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -27,8 +26,8 @@ class _PersonalCollectionState extends State<PersonalCollection> {
     // TODO: implement initState
     super.initState();
     final fishingUsecase = sl.get<FishingUsecase>();
-    BlocProvider.of<FishingBloc>(context)
-        .add(LoadingPersonalCollectionEvent(fishingUsecase: fishingUsecase));
+    BlocProvider.of<FishingBloc>(context).add(LoadingPersonalCollectionEvent(
+        fishingUsecase: fishingUsecase, email: ""));
   }
 
   performBack() {
@@ -125,8 +124,15 @@ class _PersonalCollectionState extends State<PersonalCollection> {
           enabledBorder: InputBorder.none,
         ),
         onChanged: (text) {
-          BlocProvider.of<FishingBloc>(context)
-              .add(SearchOtherPlayersEvent(name: text));
+          if (text.isEmpty) {
+            final fishingUsecase = sl.get<FishingUsecase>();
+            BlocProvider.of<FishingBloc>(context).add(
+                LoadingPersonalCollectionEvent(
+                    fishingUsecase: fishingUsecase, email: ""));
+          } else {
+            BlocProvider.of<FishingBloc>(context)
+                .add(SearchOtherPlayersEvent(name: text));
+          }
         },
       ),
     );
@@ -145,8 +151,14 @@ class _PersonalCollectionState extends State<PersonalCollection> {
                   String temp = relevantPlayers[index];
                   List<String> list = temp.split("^^^");
                   String name = list[1];
+                  String email = list[0];
                   return ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        final fishingUsecase = sl.get<FishingUsecase>();
+                        BlocProvider.of<FishingBloc>(context).add(
+                            LoadingPersonalCollectionEvent(
+                                fishingUsecase: fishingUsecase, email: email));
+                      },
                       title: Center(
                         child: Text(
                           name,

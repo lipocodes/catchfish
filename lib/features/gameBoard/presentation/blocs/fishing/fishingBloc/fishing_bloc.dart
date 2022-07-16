@@ -102,7 +102,7 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         LocalDatasourcePrefs localDatasourcePrefs = LocalDatasourcePrefs();
         _fishingUsecase = event.fishingUsecase;
         final res = await _fishingUsecase.populatePersonalCollection(
-            remoteDatasource, localDatasourcePrefs);
+            remoteDatasource, localDatasourcePrefs, event.email);
 
         res.fold(
           (failure) => emit(const ErrorRedButtonPressedState(
@@ -127,8 +127,6 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
           "eliseason@gmail.com^^^Yossi Cohen^^^https://lh3.googleusercontent.com/a/AATXAJzfFL_wwUJM_ichdH6G7mravNJDE0rWo_d-wB8u=s96-c"
         ];
         emit(SearchOtherPlayersState(relevantPlayers: relevantPlayers));
-      } else if (event is SelectedPlayerEvent) {
-        String email = event.email;
       } else if (event is GameOverEvent) {
         List<String> listAcheivements = [];
         FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();

@@ -34,7 +34,8 @@ abstract class FishingRepository {
   Future<Either<Failure, List<String>>> getGameResults();
   Future<Either<Failure, List>> getPersonalCollection(
       LocalDatasourcePrefs localDatasourcePrefs,
-      RemoteDatasource remoteDatasource);
+      RemoteDatasource remoteDatasource,
+      String email);
   Future<Either<Failure, bool>> moveToPersonalCollection(
       int index, RemoteDatasource remoteDatasource);
 }

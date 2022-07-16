@@ -41,7 +41,9 @@ class LoadingPersonalShopEvent extends FishingEvent {
 
 class LoadingPersonalCollectionEvent extends FishingEvent {
   final FishingUsecase fishingUsecase;
-  const LoadingPersonalCollectionEvent({required this.fishingUsecase});
+  final String email;
+  const LoadingPersonalCollectionEvent(
+      {required this.fishingUsecase, required this.email});
 }
 
 class SearchOtherPlayersEvent extends FishingEvent {
@@ -72,9 +74,4 @@ class MoveItemToPersonalEvent extends FishingEvent {
   late int index;
   final FishingUsecase fishingUsecase;
   MoveItemToPersonalEvent({required this.index, required this.fishingUsecase});
-}
-
-class SelectedPlayerEvent extends FishingEvent {
-  final String email;
-  const SelectedPlayerEvent({required this.email});
 }
