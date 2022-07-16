@@ -103,12 +103,11 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         _fishingUsecase = event.fishingUsecase;
         final res = await _fishingUsecase.populatePersonalCollection(
             remoteDatasource, localDatasourcePrefs, event.email);
-
         res.fold(
           (failure) => emit(const ErrorRedButtonPressedState(
               message: "Error in populating Personal Shop!")),
           (success) => emit(LoadingPersonalCollectionState(
-              personalCollectionInventory: success)),
+              personalCollectionInventory: success, email: event.email)),
         );
       } else if (event is MoveItemToPersonalEvent) {
         _fishingUsecase = event.fishingUsecase;

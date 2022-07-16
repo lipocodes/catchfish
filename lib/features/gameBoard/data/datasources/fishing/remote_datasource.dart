@@ -205,6 +205,19 @@ class RemoteDatasource {
       //remove the moved fish from array caughtFish
       List caughtFish = userDoc.docs[0].data()['caughtFish'];
       String fishToBeMoved = caughtFish[index];
+      List temp = fishToBeMoved.split("^^^");
+      temp[1] = "0";
+      fishToBeMoved = temp[0] +
+          "^^^" +
+          temp[1] +
+          "^^^" +
+          temp[2] +
+          "^^^" +
+          temp[3] +
+          "^^^" +
+          temp[4] +
+          "^^^" +
+          temp[5];
       caughtFish.removeAt(index);
       List personalCollection = userDoc.docs[0].data()['personalCollection'];
       personalCollection.add(fishToBeMoved);
@@ -218,7 +231,7 @@ class RemoteDatasource {
 
       return const Right(true);
     } catch (e) {
-      print("eeeeeeeeeeeeeeeeee=" + e.toString());
+      print("eeeeeeeeeeeeeeeeee  moveToPersonalCollection=" + e.toString());
       return Left(GeneralFailure());
     }
   }

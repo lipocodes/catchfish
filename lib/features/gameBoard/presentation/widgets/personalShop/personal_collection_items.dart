@@ -5,27 +5,29 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Widget personalCollectionItems(BuildContext context) {
+Widget personalCollectionItems(
+  BuildContext context,
+) {
   List<String> listItems = [];
   return BlocBuilder<FishingBloc, FishingState>(
     builder: (context, state) {
       if (state is LoadingPersonalCollectionState) {
         listItems = state.personalCollectionInventory;
-        return gui(context, listItems);
+        return gui(context, listItems, state.email);
       } else if (state is RejectPriceOfferState) {
         List listItems = state.listItems;
-        return gui(context, listItems);
+        return gui(context, listItems, "");
       } else if (state is AcceptPriceOfferState) {
         List listItems = state.listItems;
-        return gui(context, listItems);
+        return gui(context, listItems, "");
       } else {
-        return gui(context, listItems);
+        return gui(context, listItems, "");
       }
     },
   );
 }
 
-Widget gui(BuildContext context, List listItems) {
+Widget gui(BuildContext context, List listItems, String email) {
   List<String> title = [];
   List<String> price = [];
   List<String> weight = [];
@@ -95,20 +97,38 @@ Widget gui(BuildContext context, List listItems) {
                           fontFamily: 'skullsandcrossbones',
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          popupSell(context, title[index], image[index],
-                              price[index], index);
-                        },
-                        child: Text(
-                          "sell".tr(),
-                          style: const TextStyle(
-                            fontSize: 24.0,
-                            color: Colors.red,
-                            fontFamily: 'skullsandcrossbones',
+                      if (email.isEmpty) ...[
+                        GestureDetector(
+                          onTap: () {
+                            popupSell(context, title[index], image[index],
+                                price[index], index);
+                          },
+                          child: Text(
+                            "bids".tr(),
+                            style: const TextStyle(
+                              fontSize: 24.0,
+                              color: Colors.red,
+                              fontFamily: 'skullsandcrossbones',
+                            ),
                           ),
-                        ),
-                      ),
+                        )
+                      ],
+                      if (email.isNotEmpty) ...[
+                        GestureDetector(
+                          onTap: () {
+                            popupSell(context, title[index], image[index],
+                                price[index], index);
+                          },
+                          child: Text(
+                            "buy".tr(),
+                            style: const TextStyle(
+                              fontSize: 24.0,
+                              color: Colors.red,
+                              fontFamily: 'skullsandcrossbones',
+                            ),
+                          ),
+                        )
+                      ],
                       Text(
                         "price".tr() + price[index],
                         style: const TextStyle(

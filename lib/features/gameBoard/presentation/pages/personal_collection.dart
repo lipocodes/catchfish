@@ -23,7 +23,6 @@ class _PersonalCollectionState extends State<PersonalCollection> {
   bool _showedWarningYet = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     final fishingUsecase = sl.get<FishingUsecase>();
     BlocProvider.of<FishingBloc>(context).add(LoadingPersonalCollectionEvent(

@@ -65,8 +65,9 @@ class LoadingPersonalShopState extends FishingState {
 
 class LoadingPersonalCollectionState extends FishingState {
   final List<String> personalCollectionInventory;
+  final String email;
   const LoadingPersonalCollectionState(
-      {required this.personalCollectionInventory});
+      {required this.personalCollectionInventory, required this.email});
 }
 
 class MoveItemToPersonalCollectionState extends FishingState {
