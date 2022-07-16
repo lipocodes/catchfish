@@ -128,6 +128,20 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
               message: "Error in searching other players!")),
           (success) => emit(SearchOtherPlayersState(relevantPlayers: success)),
         );
+      } else if (event is SendPriceOfferCollectionFishEvent) {
+        String emailBuyer = event.emailBuyer;
+        String price = event.price;
+        String emailSeller = event.emailSeller;
+        int indexFish = event.indexFish;
+        _fishingUsecase = event.fishingUsecase;
+        final res = await _fishingUsecase.sendPriceOfferCollectionFishEvent(
+            emailBuyer, price, emailSeller, indexFish, _fishingUsecase);
+        res.fold(
+          (failure) => emit(const ErrorRedButtonPressedState(
+              message: "Error in offer for personal collection fish")),
+          (success) =>
+              emit(SendPriceOfferCollectionFishState(success: success)),
+        );
       } else if (event is GameOverEvent) {
         List<String> listAcheivements = [];
         FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();

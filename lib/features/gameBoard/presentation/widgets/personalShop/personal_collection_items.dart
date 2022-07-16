@@ -21,6 +21,8 @@ Widget personalCollectionItems(
       } else if (state is AcceptPriceOfferState) {
         List listItems = state.listItems;
         return gui(context, listItems, "");
+      } else if (state is SendPriceOfferCollectionFishState) {
+        return gui(context, listItems, "");
       } else {
         return gui(context, listItems, "");
       }
@@ -262,14 +264,19 @@ popupSell(BuildContext context, bool isItMyCollection, String title,
                 TextButton(
                   onPressed: () {
                     final FirebaseAuth auth = FirebaseAuth.instance;
-                    print("aaaaaaaaaaaaaaaaaaa=" +
-                        offerController!.text.toString() +
-                        " " +
-                        email +
-                        " " +
-                        index.toString() +
-                        " " +
-                        auth.currentUser!.email.toString());
+
+                    String emailBuyer = auth.currentUser!.email ?? "";
+                    String price = offerController!.text;
+                    if (price.isEmpty) return;
+                    String emailSeller = email;
+                    int indexFish = index;
+                    BlocProvider.of<FishingBloc>(context).add(
+                        SendPriceOfferCollectionFishEvent(
+                            emailBuyer: emailBuyer,
+                            price: price,
+                            emailSeller: emailSeller,
+                            indexFish: indexFish,
+                            fishingUsecase: sl.get<FishingUsecase>()));
                     Navigator.of(context).pop();
                   },
                   child: const Text('OK',

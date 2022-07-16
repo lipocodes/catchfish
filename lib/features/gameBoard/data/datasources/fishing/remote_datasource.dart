@@ -236,6 +236,19 @@ class RemoteDatasource {
     }
   }
 
+  Future<Either<Failure, bool>> sendPriceOfferCollectionFishEvent(
+      String emailBuyer,
+      String price,
+      String emailSeller,
+      int fishIndex,
+      RemoteDatasource remoteDatasource) async {
+    try {
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
   Future<Either<Failure, List<String>>> searchOtherPlayers(String text) async {
     try {
       List<String> relevantPlayers = [];

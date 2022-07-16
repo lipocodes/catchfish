@@ -97,3 +97,8 @@ class AcceptPriceOfferState extends FishingState {
   List listItems = [];
   AcceptPriceOfferState({required this.listItems});
 }
+
+class SendPriceOfferCollectionFishState extends FishingState {
+  final bool success;
+  const SendPriceOfferCollectionFishState({required this.success});
+}

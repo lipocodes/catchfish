@@ -76,4 +76,17 @@ class MoveItemToPersonalEvent extends FishingEvent {
   MoveItemToPersonalEvent({required this.index, required this.fishingUsecase});
 }
 
-class SendProceOfferCollectionFish extends FishingEvent {}
+// ignore: must_be_immutable
+class SendPriceOfferCollectionFishEvent extends FishingEvent {
+  late String emailBuyer;
+  late String price;
+  late String emailSeller;
+  late int indexFish;
+  final FishingUsecase fishingUsecase;
+  SendPriceOfferCollectionFishEvent(
+      {required this.emailBuyer,
+      required this.price,
+      required this.emailSeller,
+      required this.indexFish,
+      required this.fishingUsecase});
+}

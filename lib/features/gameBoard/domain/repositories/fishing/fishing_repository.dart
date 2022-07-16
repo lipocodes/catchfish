@@ -40,4 +40,10 @@ abstract class FishingRepository {
       int index, RemoteDatasource remoteDatasource);
   Future<Either<Failure, List<String>>> searchOtherPlayers(
       String text, RemoteDatasource remoteDatasource);
+  Future<Either<Failure, bool>> sendPriceOfferCollectionFishEvent(
+      String emailBuyer,
+      String price,
+      String emailSeller,
+      int fishIndex,
+      RemoteDatasource remoteDatasource);
 }

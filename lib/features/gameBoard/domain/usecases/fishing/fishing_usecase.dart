@@ -265,9 +265,36 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       } else {
         return Left(GeneralFailure());
       }
-      return Right(relevantPlayers);
     } catch (e) {
       print("eeeeeeeeeeeeeeeeeee usecase searchOtherPlayers()" + e.toString());
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> sendPriceOfferCollectionFishEvent(
+      String emailBuyer,
+      String price,
+      String emailSeller,
+      int fishIndex,
+      FishingUsecase fishingUsecase) async {
+    try {
+      bool yesNo = false;
+      final res = await sl
+          .get<FishingRepositoryImpl>()
+          .sendPriceOfferCollectionFishEvent(emailBuyer, price, emailSeller,
+              fishIndex, sl.get<RemoteDatasource>());
+      res.fold(
+        (failure) => GeneralFailure(),
+        (success) => yesNo = success,
+      );
+      if (res.isRight()) {
+        return Right(yesNo);
+      } else {
+        return Left(GeneralFailure());
+      }
+    } catch (e) {
+      print("eeeeeeeeeeeee usecase sendPriceOfferCollectionFishEvent=" +
+          e.toString());
       return Left(GeneralFailure());
     }
   }
