@@ -122,11 +122,13 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
         );
       } else if (event is SearchOtherPlayersEvent) {
         String name = event.name;
-        List<String> relevantPlayers = [
-          "eliseason@gmail.com^^^Eli Shemesh^^^https://lh3.googleusercontent.com/a/AATXAJzfFL_wwUJM_ichdH6G7mravNJDE0rWo_d-wB8u=s96-c",
-          "eliseason@gmail.com^^^Yossi Cohen^^^https://lh3.googleusercontent.com/a/AATXAJzfFL_wwUJM_ichdH6G7mravNJDE0rWo_d-wB8u=s96-c"
-        ];
-        emit(SearchOtherPlayersState(relevantPlayers: relevantPlayers));
+
+        final res = await _fishingUsecase.searchOtherPlayers(name);
+        res.fold(
+          (failure) => emit(const ErrorRedButtonPressedState(
+              message: "Error in searching other players!")),
+          (success) => emit(SearchOtherPlayersState(relevantPlayers: success)),
+        );
       } else if (event is GameOverEvent) {
         List<String> listAcheivements = [];
         FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();

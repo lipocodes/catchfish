@@ -38,4 +38,6 @@ abstract class FishingRepository {
       String email);
   Future<Either<Failure, bool>> moveToPersonalCollection(
       int index, RemoteDatasource remoteDatasource);
+  Future<Either<Failure, List<String>>> searchOtherPlayers(
+      String text, RemoteDatasource remoteDatasource);
 }

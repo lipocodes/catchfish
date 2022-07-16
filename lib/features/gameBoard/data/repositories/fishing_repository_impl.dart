@@ -81,6 +81,16 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
+  Future<Either<Failure, List<String>>> searchOtherPlayers(
+      String text, RemoteDatasource remoteDatasource) async {
+    final res = await remoteDatasource.searchOtherPlayers(text);
+    if (res.isRight()) {
+      return res;
+    } else {
+      return Left(GeneralFailure());
+    }
+  }
+
   @override
   Future<Either<Failure, bool>> removeFishPersonalShop(
       String fishDetails,

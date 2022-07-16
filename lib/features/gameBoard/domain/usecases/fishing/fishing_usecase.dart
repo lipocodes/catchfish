@@ -249,6 +249,29 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     }
   }
 
+  Future<Either<Failure, List<String>>> searchOtherPlayers(String text) async {
+    try {
+      List<String> relevantPlayers = [];
+      final res = await sl
+          .get<FishingRepositoryImpl>()
+          .searchOtherPlayers(text, sl.get<RemoteDatasource>());
+
+      res.fold(
+        (failure) => GeneralFailure(),
+        (success) => relevantPlayers = success,
+      );
+      if (res.isRight()) {
+        return Right(relevantPlayers);
+      } else {
+        return Left(GeneralFailure());
+      }
+      return Right(relevantPlayers);
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeeee usecase searchOtherPlayers()" + e.toString());
+      return Left(GeneralFailure());
+    }
+  }
+
   Future<Either<Failure, bool>> updateCaughtInGroups(
       String caughtFishDetails) async {
     try {

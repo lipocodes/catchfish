@@ -130,6 +130,7 @@ class _PersonalCollectionState extends State<PersonalCollection> {
                 LoadingPersonalCollectionEvent(
                     fishingUsecase: fishingUsecase, email: ""));
           } else {
+            final fishingUsecase = sl.get<FishingUsecase>();
             BlocProvider.of<FishingBloc>(context)
                 .add(SearchOtherPlayersEvent(name: text));
           }

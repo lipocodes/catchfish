@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RemoteDatasource {
+  List _allPlayers = [];
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<Either<Failure, bool>> deleteGroup(String groupName) async {
@@ -218,6 +219,29 @@ class RemoteDatasource {
       return const Right(true);
     } catch (e) {
       print("eeeeeeeeeeeeeeeeee=" + e.toString());
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, List<String>>> searchOtherPlayers(String text) async {
+    try {
+      List<String> relevantPlayers = [];
+      //we retreive it from DB only once
+      final userDoc =
+          await FirebaseFirestore.instance.collection("users").get();
+      for (int a = 0; a < userDoc.docs.length; a++) {
+        String displayName = userDoc.docs[a].data()['displayName'];
+
+        if (displayName.contains(text)) {
+          relevantPlayers.add(userDoc.docs[a].data()['email'] +
+              "^^^" +
+              userDoc.docs[a].data()['displayName'] +
+              "^^^" +
+              userDoc.docs[a].data()['photoURL']);
+        }
+      }
+      return Right(relevantPlayers);
+    } catch (e) {
       return Left(GeneralFailure());
     }
   }
