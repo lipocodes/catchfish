@@ -100,7 +100,7 @@ Widget gui(BuildContext context, List listItems, String email) {
                       if (email.isEmpty) ...[
                         GestureDetector(
                           onTap: () {
-                            popupSell(context, title[index], image[index],
+                            popupSell(context, true, title[index], image[index],
                                 price[index], index);
                           },
                           child: Text(
@@ -116,8 +116,8 @@ Widget gui(BuildContext context, List listItems, String email) {
                       if (email.isNotEmpty) ...[
                         GestureDetector(
                           onTap: () {
-                            popupSell(context, title[index], image[index],
-                                price[index], index);
+                            popupSell(context, false, title[index],
+                                image[index], price[index], index);
                           },
                           child: Text(
                             "buy".tr(),
@@ -149,97 +149,178 @@ Widget gui(BuildContext context, List listItems, String email) {
   );
 }
 
-popupSell(BuildContext context, String title, String image, String price,
-    int index) async {
-  return await showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        backgroundColor: Colors.white,
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                onPressed: () {
-                  BlocProvider.of<FishingBloc>(context).add(
-                      RejectPriceOfferEvent(
-                          index: index,
-                          fishingUsecase: sl.get<FishingUsecase>()));
-                  Navigator.of(context).pop();
-                },
-                child: const Text('no_thanks',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.blue,
-                      fontFamily: 'skullsandcrossbones',
-                    )).tr(),
-              ),
-              TextButton(
-                onPressed: () {
-                  BlocProvider.of<FishingBloc>(context).add(
-                      AcceptPriceOfferEvent(
-                          index: index,
-                          fishingUsecase: sl.get<FishingUsecase>()));
-                  Navigator.of(context).pop();
-                },
-                child: const Text('accept_offer',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.blue,
-                      fontFamily: 'skullsandcrossbones',
-                    )).tr(),
-              ),
-            ],
+popupSell(BuildContext context, bool isItMyCollection, String title,
+    String image, String price, int index) async {
+  if (isItMyCollection) {
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    print("cccccccccccccccccccccc");
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('no_thanks',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.blue,
+                        fontFamily: 'skullsandcrossbones',
+                      )).tr(),
+                ),
+                TextButton(
+                  onPressed: () {
+                    print("bbbbbbbbbbbbbbbbbbbbbbbb");
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('accept_offer',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.blue,
+                        fontFamily: 'skullsandcrossbones',
+                      )).tr(),
+                ),
+              ],
+            ),
+          ],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-        ],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        content: SizedBox(
-          height: 250.0,
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(25),
-                child: Image.asset(
-                  'assets/images/gameBoard/fish/' + image,
-                  width: 160,
-                  height: 160,
-                  fit: BoxFit.fill,
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontFamily: 'skullsandcrossbones',
-                  fontSize: 30.0,
-                  color: Colors.redAccent,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    "we_offer".tr() + price.toString(),
-                    style: const TextStyle(
-                      fontFamily: 'skullsandcrossbones',
-                      fontSize: 24.0,
-                      color: Colors.brown,
-                    ),
+          content: SizedBox(
+            height: 250.0,
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: Image.asset(
+                    'assets/images/gameBoard/fish/' + image,
+                    width: 160,
+                    height: 160,
+                    fit: BoxFit.fill,
                   ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontFamily: 'skullsandcrossbones',
+                    fontSize: 30.0,
+                    color: Colors.redAccent,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      "highest_bid".tr() + price.toString(),
+                      style: const TextStyle(
+                        fontFamily: 'skullsandcrossbones',
+                        fontSize: 24.0,
+                        color: Colors.brown,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
+  } else {
+    final TextEditingController? offerController = TextEditingController();
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('cancel',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.blue,
+                        fontFamily: 'skullsandcrossbones',
+                      )).tr(),
+                ),
+                TextButton(
+                  onPressed: () {
+                    print("aaaaaaaaaaaaaaaaaaa=" +
+                        offerController!.text.toString());
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.blue,
+                        fontFamily: 'skullsandcrossbones',
+                      )).tr(),
+                ),
+              ],
+            ),
+          ],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          content: SizedBox(
+            height: 250.0,
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: Image.asset(
+                    'assets/images/gameBoard/fish/' + image,
+                    width: 120,
+                    height: 120,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontFamily: 'skullsandcrossbones',
+                    fontSize: 24.0,
+                    color: Colors.redAccent,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 80,
+                      width: 200,
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: 'Enter Your Offer',
+                        ),
+                        keyboardType: TextInputType.number,
+                        controller: offerController,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 popup(BuildContext context, String title, String image, String price,

@@ -118,5 +118,7 @@
     "not enough_money": "Not enough Money!",
     "level:": "Level:",
     "move_to_personal_collection": "Move to Personal Collection",
-    "move_to_personal_collection?": "Move to Personal Collection?"
+    "move_to_personal_collection?": "Move to Personal Collection?",
+    "highest_bid": "Highest Bid:",
+    "your_offer": "Your Offer:"
 }
