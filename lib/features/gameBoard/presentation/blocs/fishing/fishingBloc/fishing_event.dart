@@ -75,3 +75,5 @@ class MoveItemToPersonalEvent extends FishingEvent {
   final FishingUsecase fishingUsecase;
   MoveItemToPersonalEvent({required this.index, required this.fishingUsecase});
 }
+
+class SendProceOfferCollectionFish extends FishingEvent {}

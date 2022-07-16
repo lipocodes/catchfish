@@ -2,6 +2,7 @@ import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_use
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -101,7 +102,7 @@ Widget gui(BuildContext context, List listItems, String email) {
                         GestureDetector(
                           onTap: () {
                             popupSell(context, true, title[index], image[index],
-                                price[index], index);
+                                price[index], index, email);
                           },
                           child: Text(
                             "bids".tr(),
@@ -117,7 +118,7 @@ Widget gui(BuildContext context, List listItems, String email) {
                         GestureDetector(
                           onTap: () {
                             popupSell(context, false, title[index],
-                                image[index], price[index], index);
+                                image[index], price[index], index, email);
                           },
                           child: Text(
                             "buy".tr(),
@@ -150,7 +151,7 @@ Widget gui(BuildContext context, List listItems, String email) {
 }
 
 popupSell(BuildContext context, bool isItMyCollection, String title,
-    String image, String price, int index) async {
+    String image, String price, int index, String email) async {
   if (isItMyCollection) {
     return await showDialog(
       context: context,
@@ -260,8 +261,15 @@ popupSell(BuildContext context, bool isItMyCollection, String title,
                 ),
                 TextButton(
                   onPressed: () {
+                    final FirebaseAuth auth = FirebaseAuth.instance;
                     print("aaaaaaaaaaaaaaaaaaa=" +
-                        offerController!.text.toString());
+                        offerController!.text.toString() +
+                        " " +
+                        email +
+                        " " +
+                        index.toString() +
+                        " " +
+                        auth.currentUser!.email.toString());
                     Navigator.of(context).pop();
                   },
                   child: const Text('OK',
