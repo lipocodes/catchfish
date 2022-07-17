@@ -217,7 +217,9 @@ class RemoteDatasource {
           "^^^" +
           temp[4] +
           "^^^" +
-          temp[5];
+          temp[5] +
+          "^^^" +
+          "incognito@gmail.com";
       caughtFish.removeAt(index);
       List personalCollection = userDoc.docs[0].data()['personalCollection'];
       personalCollection.add(fishToBeMoved);
@@ -243,6 +245,40 @@ class RemoteDatasource {
       int fishIndex,
       RemoteDatasource remoteDatasource) async {
     try {
+      final userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .where("email", isEqualTo: emailSeller)
+          .get();
+      List personalCollection = userDoc.docs[0].data()['personalCollection'];
+      String relevantFish = personalCollection[fishIndex];
+      List temp = relevantFish.split("^^^");
+      //comparing existing porce offer to the incoming proce offer
+      String existingPriceOffer = temp[1];
+      String emailExistingPriceOffer = temp[6];
+      if (int.parse(price) > int.parse(existingPriceOffer)) {
+        existingPriceOffer = price;
+        emailExistingPriceOffer = emailBuyer;
+        relevantFish = temp[0] +
+            "^^^" +
+            existingPriceOffer +
+            "^^^" +
+            temp[2] +
+            "^^^" +
+            temp[3] +
+            "^^^" +
+            temp[4] +
+            "^^^" +
+            temp[5] +
+            "^^^" +
+            emailExistingPriceOffer;
+        personalCollection[fishIndex] = relevantFish;
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userDoc.docs[0].id)
+            .set({"personalCollection": personalCollection},
+                SetOptions(merge: true));
+      }
+
       return const Right(true);
     } catch (e) {
       return Left(GeneralFailure());

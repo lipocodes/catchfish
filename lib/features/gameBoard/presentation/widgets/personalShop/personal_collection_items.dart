@@ -10,11 +10,13 @@ Widget personalCollectionItems(
   BuildContext context,
 ) {
   List<String> listItems = [];
+  String emailSeller = "";
   return BlocBuilder<FishingBloc, FishingState>(
     builder: (context, state) {
       if (state is LoadingPersonalCollectionState) {
         listItems = state.personalCollectionInventory;
-        return gui(context, listItems, state.email);
+        emailSeller = state.email;
+        return gui(context, listItems, emailSeller);
       } else if (state is RejectPriceOfferState) {
         List listItems = state.listItems;
         return gui(context, listItems, "");
@@ -22,7 +24,7 @@ Widget personalCollectionItems(
         List listItems = state.listItems;
         return gui(context, listItems, "");
       } else if (state is SendPriceOfferCollectionFishState) {
-        return gui(context, listItems, "");
+        return gui(context, listItems, emailSeller);
       } else {
         return gui(context, listItems, "");
       }
