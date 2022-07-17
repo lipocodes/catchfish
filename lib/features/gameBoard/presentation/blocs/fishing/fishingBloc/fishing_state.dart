@@ -102,3 +102,8 @@ class SendPriceOfferCollectionFishState extends FishingState {
   final bool success;
   const SendPriceOfferCollectionFishState({required this.success});
 }
+
+class AcceptPriceOfferCollectionFishState extends FishingState {
+  final bool success;
+  const AcceptPriceOfferCollectionFishState({required this.success});
+}

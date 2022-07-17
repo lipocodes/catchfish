@@ -46,4 +46,9 @@ abstract class FishingRepository {
       String emailSeller,
       int fishIndex,
       RemoteDatasource remoteDatasource);
+  Future<Either<Failure, bool>> acceptPriceOfferCollectionFish(
+      String emailBuyer,
+      String price,
+      int fishIndex,
+      RemoteDatasource remoteDatasource);
 }

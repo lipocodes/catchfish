@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/injection_container.dart';
@@ -24,6 +26,31 @@ Widget personalCollectionItems(
         List listItems = state.listItems;
         return gui(context, listItems, "");
       } else if (state is SendPriceOfferCollectionFishState) {
+        Timer(const Duration(seconds: 1), () {
+          SnackBar snackBar = SnackBar(
+            content: Text('price_offer_sent'.tr(),
+                style: const TextStyle(
+                  color: Colors.yellow,
+                  fontSize: 20.0,
+                  fontFamily: 'skullsandcrossbones',
+                )),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+        return gui(context, listItems, emailSeller);
+      } else if (state is AcceptPriceOfferCollectionFishState) {
+        Timer(const Duration(seconds: 1), () {
+          SnackBar snackBar = SnackBar(
+            content: Text('fish_sold'.tr(),
+                style: const TextStyle(
+                  color: Colors.yellow,
+                  fontSize: 20.0,
+                  fontFamily: 'skullsandcrossbones',
+                )),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+
         return gui(context, listItems, emailSeller);
       } else {
         return gui(context, listItems, "");
@@ -37,12 +64,15 @@ Widget gui(BuildContext context, List listItems, String email) {
   List<String> price = [];
   List<String> weight = [];
   List<String> image = [];
+  List<String> emailBuyer = [];
+
   for (int a = 0; a < listItems.length; a++) {
     List<String> temp = listItems[a].split("^^^");
     title.add(temp[0]);
     price.add(temp[1]);
     weight.add(temp[2]);
     image.add(temp[3]);
+    emailBuyer.add(temp[6]);
   }
   return Container(
     height: MediaQuery.of(context).size.height,
@@ -106,7 +136,7 @@ Widget gui(BuildContext context, List listItems, String email) {
                         GestureDetector(
                           onTap: () {
                             popupSell(context, true, title[index], image[index],
-                                price[index], index, email);
+                                price[index], index, email, emailBuyer[index]);
                           },
                           child: Text(
                             "bids".tr(),
@@ -121,8 +151,15 @@ Widget gui(BuildContext context, List listItems, String email) {
                       if (email.isNotEmpty) ...[
                         GestureDetector(
                           onTap: () {
-                            popupSell(context, false, title[index],
-                                image[index], price[index], index, email);
+                            popupSell(
+                                context,
+                                false,
+                                title[index],
+                                image[index],
+                                price[index],
+                                index,
+                                email,
+                                emailBuyer[index]);
                           },
                           child: Text(
                             "buy".tr(),
@@ -154,9 +191,17 @@ Widget gui(BuildContext context, List listItems, String email) {
   );
 }
 
-popupSell(BuildContext context, bool isItMyCollection, String title,
-    String image, String price, int index, String email) async {
+popupSell(
+    BuildContext context,
+    bool isItMyCollection,
+    String title,
+    String image,
+    String price,
+    int index,
+    String email,
+    String emailBuyer) async {
   if (isItMyCollection) {
+    //viewing existing bids on my fish
     return await showDialog(
       context: context,
       barrierDismissible: false,
@@ -169,7 +214,6 @@ popupSell(BuildContext context, bool isItMyCollection, String title,
               children: [
                 TextButton(
                   onPressed: () {
-                    print("cccccccccccccccccccccc");
                     Navigator.of(context).pop();
                   },
                   child: const Text('no_thanks',
@@ -181,7 +225,12 @@ popupSell(BuildContext context, bool isItMyCollection, String title,
                 ),
                 TextButton(
                   onPressed: () {
-                    print("bbbbbbbbbbbbbbbbbbbbbbbb");
+                    BlocProvider.of<FishingBloc>(context).add(
+                        AcceptPriceOfferCollectionFishEvent(
+                            emailBuyer: emailBuyer,
+                            indexFish: index,
+                            price: price,
+                            fishingUsecase: sl.get<FishingUsecase>()));
                     Navigator.of(context).pop();
                   },
                   child: const Text('accept_offer',
@@ -241,6 +290,7 @@ popupSell(BuildContext context, bool isItMyCollection, String title,
       },
     );
   } else {
+    //submitting bids on someone else's fish
     final TextEditingController? offerController = TextEditingController();
     return await showDialog(
       context: context,

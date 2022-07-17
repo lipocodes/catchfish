@@ -117,5 +117,7 @@
     "move_to_personal_collection": "Move to Personal Collection",
     "move_to_personal_collection?": "Move to Personal Collection?",
     "highest_bid": "Highest Bid:",
-    "your_offer": "Your Offer:"
+    "your_offer": "Your Offer:",
+    "fish_sold": "Fish Sold",
+    "price_offer_sent": "Price Offer Sent"
 }

@@ -90,3 +90,16 @@ class SendPriceOfferCollectionFishEvent extends FishingEvent {
       required this.indexFish,
       required this.fishingUsecase});
 }
+
+// ignore: must_be_immutable
+class AcceptPriceOfferCollectionFishEvent extends FishingEvent {
+  late String emailBuyer;
+  late String price;
+  late int indexFish;
+  final FishingUsecase fishingUsecase;
+  AcceptPriceOfferCollectionFishEvent(
+      {required this.emailBuyer,
+      required this.price,
+      required this.indexFish,
+      required this.fishingUsecase});
+}

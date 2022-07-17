@@ -192,6 +192,24 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
+  Future<Either<Failure, bool>> acceptPriceOfferCollectionFish(
+      String emailBuyer,
+      String price,
+      int fishIndex,
+      RemoteDatasource remoteDatasource) async {
+    try {
+      bool yesNo = false;
+      final res = await sl
+          .get<RemoteDatasource>()
+          .acceptPriceOfferCollectionFish(
+              emailBuyer, price, fishIndex, remoteDatasource);
+      res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
+      return Right(yesNo);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
   @override
   Future<Either<Failure, List<String>>> getGameResults() async {
     try {

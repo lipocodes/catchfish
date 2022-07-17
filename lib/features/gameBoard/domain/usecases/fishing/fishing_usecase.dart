@@ -299,6 +299,33 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     }
   }
 
+  Future<Either<Failure, bool>> acceptPriceOfferCollectionFish(
+      String emailBuyer,
+      String price,
+      int fishIndex,
+      FishingUsecase fishingUsecase) async {
+    try {
+      bool yesNo = false;
+      final res = await sl
+          .get<FishingRepositoryImpl>()
+          .acceptPriceOfferCollectionFish(
+              emailBuyer, price, fishIndex, sl.get<RemoteDatasource>());
+      res.fold(
+        (failure) => GeneralFailure(),
+        (success) => yesNo = success,
+      );
+      if (res.isRight()) {
+        return Right(yesNo);
+      } else {
+        return Left(GeneralFailure());
+      }
+    } catch (e) {
+      print("eeeeeeeeeeeee usecase acceptPriceOfferCollectionFish=" +
+          e.toString());
+      return Left(GeneralFailure());
+    }
+  }
+
   Future<Either<Failure, bool>> updateCaughtInGroups(
       String caughtFishDetails) async {
     try {

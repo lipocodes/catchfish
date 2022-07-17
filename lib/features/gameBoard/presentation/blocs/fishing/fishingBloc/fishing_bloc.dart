@@ -142,6 +142,19 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
           (success) =>
               emit(SendPriceOfferCollectionFishState(success: success)),
         );
+      } else if (event is AcceptPriceOfferCollectionFishEvent) {
+        String emailBuyer = event.emailBuyer;
+        String price = event.price;
+        int indexFish = event.indexFish;
+        _fishingUsecase = event.fishingUsecase;
+        final res = await _fishingUsecase.acceptPriceOfferCollectionFish(
+            emailBuyer, price, indexFish, _fishingUsecase);
+        res.fold(
+          (failure) => emit(const ErrorRedButtonPressedState(
+              message: "Error in AcceptPriceOfferCollectionFishEvent")),
+          (success) =>
+              emit(AcceptPriceOfferCollectionFishState(success: success)),
+        );
       } else if (event is GameOverEvent) {
         List<String> listAcheivements = [];
         FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();

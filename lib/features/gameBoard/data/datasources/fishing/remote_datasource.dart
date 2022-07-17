@@ -536,6 +536,18 @@ class RemoteDatasource {
     }
   }
 
+  Future<Either<Failure, bool>> acceptPriceOfferCollectionFish(
+      String emailBuyer,
+      String price,
+      int fishIndex,
+      RemoteDatasource remoteDatasource) async {
+    try {
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
   Future<Either<Failure, List<String>>> getGameResults() async {
     List<String> listAcheivements = [];
     try {
