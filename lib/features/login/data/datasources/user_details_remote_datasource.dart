@@ -14,10 +14,11 @@ class UserDetailsRemoteDataSource {
     String? token;
     String id = "";
     String uid = "";
+    final firestoreInstance = FirebaseFirestore.instance;
     try {
       final User? user = auth.currentUser;
       uid = user!.uid;
-      final firestoreInstance = FirebaseFirestore.instance;
+
       _prefs = await SharedPreferences.getInstance();
       //retreive FCM token
       token = await _fcm.getToken() ?? "";
@@ -54,6 +55,7 @@ class UserDetailsRemoteDataSource {
         "inventory": [],
         "lastInventoryUpdateDB": 0,
         "level": 1,
+        "newPriceOfferFishPersonalCollection": false,
         "prizeValues": {
           'inventoryBaits': 0,
           'inventoryMoney': 0,
@@ -61,7 +63,14 @@ class UserDetailsRemoteDataSource {
         },
         "uid": uid,
       });
-      print("eeeeeeeeeeeeeee saveUserToDB()" + e.toString());
+      QuerySnapshot res = await firestoreInstance
+          .collection("users")
+          .where('email', isEqualTo: userEntity.email)
+          .get();
+      id = res.docs[0].id;
+      await FirebaseFirestore.instance.collection('users').doc(id).update({
+        'docID': id,
+      });
     }
   }
 }

@@ -107,7 +107,7 @@ void callbackDispatcher() {
     var settings = InitializationSettings(android: android);
     flutterLocalNotificationsPlugin.initialize(settings,
         onSelectNotification: (v) {});
-    _showNotificationWithDefaultSound(flutterLocalNotificationsPlugin);
+    // _showNotificationWithDefaultSound(flutterLocalNotificationsPlugin);
     return Future.value(true);
     //return Future.error("error");
   });
