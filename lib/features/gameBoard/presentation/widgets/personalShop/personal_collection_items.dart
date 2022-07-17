@@ -49,6 +49,10 @@ Widget personalCollectionItems(
                 )),
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          final fishingUsecase = sl.get<FishingUsecase>();
+          BlocProvider.of<FishingBloc>(context).add(
+              LoadingPersonalCollectionEvent(
+                  fishingUsecase: fishingUsecase, email: ""));
         });
 
         return gui(context, listItems, emailSeller);

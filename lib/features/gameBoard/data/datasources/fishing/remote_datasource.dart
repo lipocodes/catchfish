@@ -586,15 +586,49 @@ class RemoteDatasource {
               ['lastPrizeValuesUpdateDB']);
       //////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////
+      //transferring the sold fish from me to buyer
+      //my personalCollection
+      List myPersonalCollection = myDoc.docs[0].data()['personalCollection'];
+      String soldFish = myPersonalCollection[fishIndex];
+      List temp = soldFish.split("^^^");
+      temp[1] = "0";
+      temp[6] = "incognito@gmail.com";
+      soldFish = temp[0] +
+          "^^^" +
+          temp[1] +
+          "^^^" +
+          temp[2] +
+          "^^^" +
+          temp[3] +
+          "^^^" +
+          temp[4] +
+          "^^^" +
+          temp[5] +
+          "^^^" +
+          temp[6];
+      myPersonalCollection.removeAt(fishIndex);
+      //buyer's personalCollection
+      List buyerPersonalCollection =
+          buyerDoc.docs[0].data()['personalCollection'];
+      buyerPersonalCollection.add(soldFish);
+
+      //////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////
       FirebaseFirestore.instance
           .collection('users')
           .doc(buyerDoc.docs[0].id)
-          .update({"prizeValues": buyerPrizeValuesEntity.toJson()});
+          .update({
+        "prizeValues": buyerPrizeValuesEntity.toJson(),
+        "personalCollection": buyerPersonalCollection
+      });
       //update me @DB
       FirebaseFirestore.instance
           .collection('users')
           .doc(myDoc.docs[0].id)
-          .update({"prizeValues": myPrizeValuesEntity.toJson()});
+          .update({
+        "prizeValues": myPrizeValuesEntity.toJson(),
+        "personalCollection": myPersonalCollection
+      });
       return const Right(true);
     } catch (e) {
       return Left(GeneralFailure());
