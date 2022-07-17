@@ -542,6 +542,59 @@ class RemoteDatasource {
       int fishIndex,
       RemoteDatasource remoteDatasource) async {
     try {
+      //what's my uid?
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+      //retreiving my doc @users col
+      final myDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .where("uid", isEqualTo: uid)
+          .get();
+      //retreiving buyer's doc @users col
+      final buyerDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .where("email", isEqualTo: emailBuyer)
+          .get();
+
+      int buyerInventoryMoney =
+          buyerDoc.docs[0].data()['prizeValues']['inventoryMoney'];
+      if (int.parse(price) > buyerInventoryMoney) {
+        return const Right(false);
+      }
+      /////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////
+      //changing buyer's inventoryMoney
+      buyerInventoryMoney -= int.parse(price);
+      //update buyer's inventoryMoney after selling the fish
+      PrizeValuesEntity buyerPrizeValuesEntity = PrizeValuesEntity(
+          inventoryMoney: buyerInventoryMoney,
+          inventoryBaits: buyerDoc.docs[0].data()['prizeValues']
+              ['inventoryBaits'],
+          inventoryXP: buyerDoc.docs[0].data()['prizeValues']['inventoryXP'],
+          lastPrizeValuesUpdateDB: buyerDoc.docs[0].data()['prizeValues']
+              ['lastPrizeValuesUpdateDB']);
+      //update my inventoryMoney after selling the fish
+      int myInventoryMoney =
+          myDoc.docs[0].data()['prizeValues']['inventoryMoney'];
+      myInventoryMoney += int.parse(price);
+      PrizeValuesEntity myPrizeValuesEntity = PrizeValuesEntity(
+          inventoryMoney: myInventoryMoney,
+          inventoryBaits: myDoc.docs[0].data()['prizeValues']['inventoryBaits'],
+          inventoryXP: myDoc.docs[0].data()['prizeValues']['inventoryXP'],
+          lastPrizeValuesUpdateDB: myDoc.docs[0].data()['prizeValues']
+              ['lastPrizeValuesUpdateDB']);
+      //////////////////////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////////////////////
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(buyerDoc.docs[0].id)
+          .update({"prizeValues": buyerPrizeValuesEntity.toJson()});
+      //update me @DB
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(myDoc.docs[0].id)
+          .update({"prizeValues": myPrizeValuesEntity.toJson()});
       return const Right(true);
     } catch (e) {
       return Left(GeneralFailure());

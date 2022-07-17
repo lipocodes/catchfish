@@ -41,7 +41,7 @@ Widget personalCollectionItems(
       } else if (state is AcceptPriceOfferCollectionFishState) {
         Timer(const Duration(seconds: 1), () {
           SnackBar snackBar = SnackBar(
-            content: Text('fish_sold'.tr(),
+            content: Text(state.success ? 'fish_sold'.tr() : "not_enough_money",
                 style: const TextStyle(
                   color: Colors.yellow,
                   fontSize: 20.0,

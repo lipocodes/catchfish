@@ -122,5 +122,6 @@
     "highest_bid": "Highest Bid:",
     "your_offer": "Your Offer:",
     "fish_sold": "Fish Sold",
-    "price_offer_sent": "Price Offer Sent"
+    "price_offer_sent": "Price Offer Sent",
+    "not_enough_money": "Buyer doesn't have enough money!"
 }
