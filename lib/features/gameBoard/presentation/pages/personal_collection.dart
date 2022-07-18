@@ -87,7 +87,6 @@ class _PersonalCollectionState extends State<PersonalCollection> {
   }
 
   showHideCollection() {
-    print("sssssssssssssssss=" + show);
     return Container(
       color: Colors.black,
       child: Column(

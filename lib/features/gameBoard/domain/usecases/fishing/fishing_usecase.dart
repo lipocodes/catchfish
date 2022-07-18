@@ -59,6 +59,24 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     }
   }
 
+  playTypingSound() {
+    if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+      playBackgroundAudio("typing.mp3");
+    }
+  }
+
+  playKaboomSound() {
+    if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+      playBackgroundAudio("kaboom.mp3");
+    }
+  }
+
+  playCoinSound() {
+    if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+      playBackgroundAudio("coin.mp3");
+    }
+  }
+
   Future<Either<Failure, PulseEntity>> getPulse() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -240,7 +258,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         (success) => yesNo = success,
       );
       if (res.isRight()) {
-        playBackgroundAudio("goodLuck.mp3");
+        playKaboomSound();
         return Right(yesNo);
       } else {
         return Left(GeneralFailure());
@@ -252,6 +270,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
   Future<Either<Failure, List<String>>> searchOtherPlayers(String text) async {
     try {
+      playTypingSound();
       List<String> relevantPlayers = [];
       final res = await sl
           .get<FishingRepositoryImpl>()
@@ -289,6 +308,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         (success) => yesNo = success,
       );
       if (res.isRight()) {
+        playCoinSound();
         return Right(yesNo);
       } else {
         return Left(GeneralFailure());
@@ -316,6 +336,10 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         (success) => yesNo = success,
       );
       if (res.isRight()) {
+        if (yesNo == true) {
+          playKaboomSound();
+        }
+
         return Right(yesNo);
       } else {
         return Left(GeneralFailure());
