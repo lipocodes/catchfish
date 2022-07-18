@@ -240,6 +240,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         (success) => yesNo = success,
       );
       if (res.isRight()) {
+        playBackgroundAudio("goodLuck.mp3");
         return Right(yesNo);
       } else {
         return Left(GeneralFailure());

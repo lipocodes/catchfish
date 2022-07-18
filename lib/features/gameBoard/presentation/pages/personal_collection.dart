@@ -21,6 +21,7 @@ class PersonalCollection extends StatefulWidget {
 class _PersonalCollectionState extends State<PersonalCollection> {
   TextEditingController searchPlayerController = TextEditingController();
   bool _showedWarningYet = false;
+  String show = "hide";
   @override
   void initState() {
     super.initState();
@@ -58,6 +59,7 @@ class _PersonalCollectionState extends State<PersonalCollection> {
                   const SizedBox(
                     height: 10.0,
                   ),
+                  showHideCollection(),
                   searchOtherPlayers(),
                   listRelevantPlayers(),
                   const SizedBox(
@@ -69,6 +71,47 @@ class _PersonalCollectionState extends State<PersonalCollection> {
             )),
       ),
     ));
+  }
+
+  showHideCollection() {
+    return Container(
+      color: Colors.black,
+      child: Column(
+        children: [
+          Text(
+            "show_collection_other_players".tr(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+              fontFamily: 'skullsandcrossbones',
+            ),
+          ),
+          ListTile(
+            title: const Text(
+              "Show",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontFamily: 'skullsandcrossbones',
+              ),
+            ),
+            leading: Radio(
+                toggleable: true,
+                activeColor: Colors.white,
+                fillColor:
+                    MaterialStateColor.resolveWith((states) => Colors.blue),
+                value: "show".tr(),
+                groupValue: show,
+                onChanged: (value) {
+                  setState(() {
+                    show = value.toString();
+                    print(show);
+                  });
+                }),
+          ),
+        ],
+      ),
+    );
   }
 
   showLoginWarning(BuildContext context) async {
