@@ -155,6 +155,9 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
           (success) =>
               emit(AcceptPriceOfferCollectionFishState(success: success)),
         );
+      } else if (event is ChangeShowCollectionEvent) {
+        _fishingUsecase = event.fishingUsecase;
+        await _fishingUsecase.changeShowCollection(event.show);
       } else if (event is GameOverEvent) {
         List<String> listAcheivements = [];
         FishingRepositoryImpl fishingRepositoryImpl = FishingRepositoryImpl();

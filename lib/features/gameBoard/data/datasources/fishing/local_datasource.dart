@@ -71,4 +71,13 @@ class LocalDatasourcePrefs implements LocalDatasource {
       return Left(GeneralFailure());
     }
   }
+
+  getPersonalCollection(bool showPersonalCollection) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setBool("showPersonalCollection", showPersonalCollection);
+    } catch (e) {
+      print("eeeeeeeeeeeeeee local getPersonalCollection=" + e.toString());
+    }
+  }
 }

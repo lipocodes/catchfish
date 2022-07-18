@@ -52,6 +52,7 @@ class UserDetailsRemoteDataSource {
         'FCMToken': token,
         "caughtFish": [],
         "personalCollection": [],
+        "showPersonalCollection": true,
         "inventory": [],
         "lastInventoryUpdateDB": 0,
         "level": 1,

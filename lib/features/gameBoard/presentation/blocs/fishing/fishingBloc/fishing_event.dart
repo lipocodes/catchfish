@@ -103,3 +103,10 @@ class AcceptPriceOfferCollectionFishEvent extends FishingEvent {
       required this.indexFish,
       required this.fishingUsecase});
 }
+
+class ChangeShowCollectionEvent extends FishingEvent {
+  final String show;
+  final FishingUsecase fishingUsecase;
+  const ChangeShowCollectionEvent(
+      {required this.show, required this.fishingUsecase});
+}

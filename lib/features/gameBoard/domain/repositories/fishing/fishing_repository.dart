@@ -51,4 +51,5 @@ abstract class FishingRepository {
       String price,
       int fishIndex,
       RemoteDatasource remoteDatasource);
+  void changeShowCollection(String show, RemoteDatasource remoteDatasource);
 }

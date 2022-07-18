@@ -17,6 +17,7 @@ Widget personalCollectionItems(
     builder: (context, state) {
       if (state is LoadingPersonalCollectionState) {
         listItems = state.personalCollectionInventory;
+
         emailSeller = state.email;
         return gui(context, listItems, emailSeller);
       } else if (state is RejectPriceOfferState) {

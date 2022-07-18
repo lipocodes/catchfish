@@ -327,6 +327,16 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     }
   }
 
+  changeShowCollection(String show) async {
+    try {
+      sl
+          .get<FishingRepositoryImpl>()
+          .changeShowCollection(show, sl.get<RemoteDatasource>());
+    } catch (e) {
+      print("eeeeeeeeeeeeee usecase changeShowCollection=" + e.toString());
+    }
+  }
+
   Future<Either<Failure, bool>> updateCaughtInGroups(
       String caughtFishDetails) async {
     try {

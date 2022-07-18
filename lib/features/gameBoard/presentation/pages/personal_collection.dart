@@ -10,6 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalCollection extends StatefulWidget {
   const PersonalCollection({Key? key}) : super(key: key);
@@ -21,13 +22,25 @@ class PersonalCollection extends StatefulWidget {
 class _PersonalCollectionState extends State<PersonalCollection> {
   TextEditingController searchPlayerController = TextEditingController();
   bool _showedWarningYet = false;
-  String show = "hide";
+  String show = "show";
+  bool showPersonalCollection = true;
   @override
   void initState() {
     super.initState();
+    retreivePrefs();
     final fishingUsecase = sl.get<FishingUsecase>();
     BlocProvider.of<FishingBloc>(context).add(LoadingPersonalCollectionEvent(
         fishingUsecase: fishingUsecase, email: ""));
+  }
+
+  retreivePrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    showPersonalCollection = prefs.getBool(
+          "showPersonalCollection",
+        ) ??
+        true;
+    showPersonalCollection == true ? show = "Show" : show = "hide";
+    setState(() {});
   }
 
   performBack() {
@@ -74,6 +87,7 @@ class _PersonalCollectionState extends State<PersonalCollection> {
   }
 
   showHideCollection() {
+    print("sssssssssssssssss=" + show);
     return Container(
       color: Colors.black,
       child: Column(
@@ -105,7 +119,10 @@ class _PersonalCollectionState extends State<PersonalCollection> {
                 onChanged: (value) {
                   setState(() {
                     show = value.toString();
-                    print(show);
+                    final fishingUsecase = sl.get<FishingUsecase>();
+                    BlocProvider.of<FishingBloc>(context).add(
+                        ChangeShowCollectionEvent(
+                            show: show, fishingUsecase: fishingUsecase));
                   });
                 }),
           ),

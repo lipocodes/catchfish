@@ -210,6 +210,15 @@ class FishingRepositoryImpl implements FishingRepository {
     }
   }
 
+  void changeShowCollection(
+      String show, RemoteDatasource remoteDatasource) async {
+    try {
+      sl.get<RemoteDatasource>().changeShowCollection(show);
+    } catch (e) {
+      print("eeeeeeeeeeeeeee  repository changeShowCollection=" + e.toString());
+    }
+  }
+
   @override
   Future<Either<Failure, List<String>>> getGameResults() async {
     try {

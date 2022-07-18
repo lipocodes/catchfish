@@ -161,6 +161,7 @@ class RemoteDatasource {
     try {
       String? uid = "";
       late QuerySnapshot<Map<String, dynamic>> userDoc;
+      //if this is me
       if (email.isEmpty) {
         final User? user = auth.currentUser;
         uid = user?.uid;
@@ -172,6 +173,11 @@ class RemoteDatasource {
             .collection("users")
             .where("uid", isEqualTo: uid)
             .get();
+        bool showPersonalCollection =
+            userDoc.docs[0].data()['showPersonalCollection'];
+        sl
+            .get<LocalDatasourcePrefs>()
+            .getPersonalCollection(showPersonalCollection);
       } else {
         //what is the doc ID of this user
         userDoc = await FirebaseFirestore.instance
@@ -292,6 +298,10 @@ class RemoteDatasource {
       final userDoc =
           await FirebaseFirestore.instance.collection("users").get();
       for (int a = 0; a < userDoc.docs.length; a++) {
+        //if this player doesn't allow others view his Personal Collection
+        if (userDoc.docs[a].data()['showPersonalCollection'] == false) {
+          continue;
+        }
         String displayName = userDoc.docs[a].data()['displayName'];
 
         if (displayName.contains(text)) {
@@ -632,6 +642,29 @@ class RemoteDatasource {
       return const Right(true);
     } catch (e) {
       return Left(GeneralFailure());
+    }
+  }
+
+  void changeShowCollection(
+    String show,
+  ) async {
+    try {
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+      final userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .where("uid", isEqualTo: uid)
+          .get();
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userDoc.docs[0].id)
+          .update({
+        "showPersonalCollection": show == "Show" ? true : false,
+      });
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeeeee datasource changeShowCollection=" +
+          e.toString());
     }
   }
 
