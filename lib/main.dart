@@ -2,9 +2,11 @@ import 'package:catchfish/features/fishingShop/presentation/blocs/bloc/fishingsh
 import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/blocs/multiplayer/lobby_multiplayer_game_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/motion_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/navigation/bloc/navigation_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/weather/bloc/weather_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/lobby_multiple_game.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/personal_shop.dart';
@@ -236,6 +238,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<SelectgroupBloc>(
           create: (BuildContext context) => SelectgroupBloc(),
         ),
+        BlocProvider<LobbyMultiplayerGameBloc>(
+          create: (BuildContext context) => LobbyMultiplayerGameBloc(),
+        ),
       ],
       child: MultiProvider(
           providers: [
@@ -263,7 +268,7 @@ class _MyAppState extends State<MyApp> {
                 switch (settings.name) {
                   case '/':
                     return PageTransition(
-                      child: const Splash() /*const SelectGroup()*/,
+                      child: /*const Splash()*/ const SelectGroup(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 1000),
@@ -334,6 +339,13 @@ class _MyAppState extends State<MyApp> {
                   case '/select_group':
                     return PageTransition(
                       child: const SelectGroup(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                      duration: const Duration(milliseconds: 2000),
+                    );
+                  case '/lobby_multiple_game':
+                    return PageTransition(
+                      child: const LobbyMultipleGame(),
                       type: PageTransitionType.fade,
                       settings: settings,
                       duration: const Duration(milliseconds: 2000),
