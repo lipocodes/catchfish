@@ -66,7 +66,11 @@ class SelectGroupUsecase extends UseCase<PulseEntity, NoParams> {
   Future<Either<Failure, bool>> joinMultiplayerGame(
       {required SelectGroupRepositoryImpl selectGroupRepositoryImpl}) async {
     try {
-      return const Right(true);
+      bool yesNo = false;
+      final res = await selectGroupRepositoryImpl.joinMultiplayerGame(
+          remoteDatasource: sl.get<RemoteDatasource>());
+      res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
+      return Right(yesNo);
     } catch (e) {
       print("eeeeeeeeeeeeeee usecase joinMultiplayerGame=" + e.toString());
       return Left(GeneralFailure());
@@ -76,7 +80,11 @@ class SelectGroupUsecase extends UseCase<PulseEntity, NoParams> {
   Future<Either<Failure, bool>> quitMultiplayerGame(
       {required SelectGroupRepositoryImpl selectGroupRepositoryImpl}) async {
     try {
-      return const Right(true);
+      bool yesNo = false;
+      final res = await selectGroupRepositoryImpl.quitMultiplayerGame(
+          remoteDatasource: sl.get<RemoteDatasource>());
+      res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
+      return Right(yesNo);
     } catch (e) {
       print("eeeeeeeeeeeeeee usecase quitMultiplayerGame=" + e.toString());
       return Left(GeneralFailure());
@@ -86,12 +94,10 @@ class SelectGroupUsecase extends UseCase<PulseEntity, NoParams> {
   Future<Either<Failure, MultipleplayerEntity>> getUpdateMyltiplayerGame(
       {required SelectGroupRepositoryImpl selectGroupRepositoryImpl}) async {
     try {
-      int timeTillStartGame = 100;
-      List playersInGroup = [
-        "https://th.bing.com/th/id/R.a875ddef4d39112e8371e8fdddf67157?rik=vEB9417RjaUz%2fw&pid=ImgRaw&r=0^^^Eli Shemesh"
-      ];
-      MultipleplayerEntity multipleplayerEntity = MultipleplayerEntity(
-          timeTillStartGame: timeTillStartGame, playersInGroup: playersInGroup);
+      final res = await selectGroupRepositoryImpl.getUpdateMultiplayerGame(
+          remoteDatasource: sl.get<RemoteDatasource>());
+      late MultipleplayerEntity multipleplayerEntity;
+      res.fold((l) => Left(GeneralFailure()), (r) => multipleplayerEntity = r);
       return Right(multipleplayerEntity);
     } catch (e) {
       print(

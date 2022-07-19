@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
+import 'package:catchfish/features/gameBoard/data/models/fishing/multipleplayer_entity.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/new_player_model.dart';
 import 'package:catchfish/features/lobby/domain/entities/prize_values_entity.dart';
 import 'package:catchfish/injection_container.dart';
@@ -938,6 +939,42 @@ class RemoteDatasource {
       listItems = caughtFish;
       return Right(listItems);
     } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> joinMultiplayerGame() async {
+    try {
+      return const Right(true);
+    } catch (e) {
+      print("eeeeeeeeeeeeeee usecase joinMultiplayerGame=" + e.toString());
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> quitMultiplayerGame(
+      {required RemoteDatasource remoteDatasource}) async {
+    try {
+      return const Right(true);
+    } catch (e) {
+      print("eeeeeeeeeeeeeee usecase quitMultiplayerGame=" + e.toString());
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, MultipleplayerModel>> getUpdateMultiplayerGame(
+      {required RemoteDatasource remoteDatasource}) async {
+    try {
+      int timeTillStartGame = 100;
+      List playersInGroup = [
+        "https://th.bing.com/th/id/R.a875ddef4d39112e8371e8fdddf67157?rik=vEB9417RjaUz%2fw&pid=ImgRaw&r=0^^^Eli Shemesh"
+      ];
+      MultipleplayerModel multipleplayerModel = MultipleplayerModel(
+          timeTillStartGame: timeTillStartGame, playersInGroup: playersInGroup);
+      return Right(multipleplayerModel);
+    } catch (e) {
+      print(
+          "eeeeeeeeeeeeeeeee usecase getUpdateMyltiplayerGame=" + e.toString());
       return Left(GeneralFailure());
     }
   }

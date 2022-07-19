@@ -1,6 +1,7 @@
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/fishing_repository_impl.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/mutipleplayer_entity.dart';
 
 import 'package:dartz/dartz.dart';
 
