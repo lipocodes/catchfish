@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Widget buttonStartGame(BuildContext context) {
+Widget buttonMultiplayerGame(BuildContext context) {
   return BlocBuilder<SelectgroupBloc, SelectgroupState>(
     builder: (context, state) {
       if (state is AllowedStartGame) {
@@ -51,7 +51,7 @@ Widget gui(BuildContext context, bool showWarning) {
     children: [
       SizedBox(
         child: TextButton(
-          child: const Text("solo_game").tr(),
+          child: const Text("multiplayer_game").tr(),
           style: TextButton.styleFrom(
               primary: Colors.white,
               backgroundColor: Colors.blue,
@@ -65,22 +65,12 @@ Widget gui(BuildContext context, bool showWarning) {
                 fontFamily: 'skullsandcrossbones',
               )),
           onPressed: () {
-            BlocProvider.of<SelectgroupBloc>(context)
-                .add(PressStartGameButtonEvent());
+            print("bbbbbbbbbbbbbbbbbbbbb");
+            //BlocProvider.of<SelectgroupBloc>(context)
+            //  .add(PressStartGameButtonEvent());
           },
         ),
       ),
-      if (showWarning) ...[
-        Text(
-          "select_another_name".tr(),
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.red,
-            fontStyle: FontStyle.italic,
-            fontFamily: 'skullsandcrossbones',
-          ),
-        ),
-      ],
     ],
   );
 }

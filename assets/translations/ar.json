@@ -126,5 +126,7 @@
     "not_enough_money": "Buyer doesn't have enough money!",
     "show_collection_other_players": "Show collection to other players",
     "show": "Show",
-    "hide": "Hide"  
+    "hide": "Hide",
+    "multiplayer_game": "Multiplayer Game",
+    "solo_game": "Solo Game"    
 }
