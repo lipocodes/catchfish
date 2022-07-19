@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:catchfish/features/gameBoard/presentation/blocs/multiplayer/lobby_multiplayer_game_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -50,9 +52,10 @@ class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
               BlocBuilder<LobbyMultiplayerGameBloc, LobbyMultiplayerGameState>(
             builder: (context, state) {
               if (state is JoinMultipleplayerGameState) {
-                print("aaaaaaaaaaaaaaaaaa=" + state.successful.toString());
-                BlocProvider.of<LobbyMultiplayerGameBloc>(context)
-                    .add(GetUpdateMultipleplayerGameEvent());
+                Timer(const Duration(seconds: 3), () {
+                  BlocProvider.of<LobbyMultiplayerGameBloc>(context)
+                      .add(GetUpdateMultipleplayerGameEvent());
+                });
                 return gui();
               } else if (state is GetUpdateMultipleplayerGameState) {
                 print("bbbbbbbbbbbbbbbbbbb=" +
@@ -61,7 +64,6 @@ class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
                     state.multipleplayerEntity.playersInGroup.toString());
                 return gui();
               } else if (state is QuitMultipleplayerGameState) {
-                print("cccccccccccccccccc=" + state.successful.toString());
                 return gui();
               } else {
                 return gui();

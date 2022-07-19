@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:catchfish/core/consts/general.dart';
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/models/fishing/list_group_model.dart';
@@ -450,6 +451,7 @@ class RemoteDatasource {
       String groupName, String yourName) async {
     try {
       var newGroup = {
+        'creationTime': DateTime.now().millisecondsSinceEpoch,
         'groupName': groupName,
         "gameStarted": false,
         'players': []
@@ -1049,13 +1051,43 @@ class RemoteDatasource {
 
   Future<Either<Failure, MultipleplayerModel>> getUpdateMultiplayerGame(
       {required RemoteDatasource remoteDatasource}) async {
+    List playersInGroup = [];
+    int creationTime = 0;
     try {
-      int timeTillStartGame = 100;
-      List playersInGroup = [
-        "https://th.bing.com/th/id/R.a875ddef4d39112e8371e8fdddf67157?rik=vEB9417RjaUz%2fw&pid=ImgRaw&r=0^^^Eli Shemesh"
-      ];
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      String displayName = user!.displayName ?? "";
+      if (displayName.isEmpty) {
+        displayName = DateTime.now().millisecondsSinceEpoch.toString();
+      }
+      final groupsDB =
+          await FirebaseFirestore.instance.collection("groups").get();
+      List<QueryDocumentSnapshot> docs = groupsDB.docs;
+
+      //going over groups
+      for (int a = 0; a < docs.length; a++) {
+        List players = docs[a]['players'];
+        String groupName = docs[a]['groupName'];
+        creationTime = docs[a]['creationTime'];
+
+        //going over players un group
+        for (int b = 0; b < players.length; b++) {
+          String playerName = players[b]['playerName'].toString();
+          //if we find player's name in a group, add all players of this group to a List
+          if (playerName == displayName) {
+            for (int c = 0; c < players.length; c++) {
+              playersInGroup.add(players[c]['playerName']);
+            }
+          }
+        }
+      }
+
+      //we calculate how many seconds we have till gamse starts
+      int timeTillStartGame = pendingTimeBeforeStartMultiplePlayerGame -
+          (DateTime.now().millisecondsSinceEpoch - creationTime);
       MultipleplayerModel multipleplayerModel = MultipleplayerModel(
           timeTillStartGame: timeTillStartGame, playersInGroup: playersInGroup);
+
       return Right(multipleplayerModel);
     } catch (e) {
       print(
