@@ -32,7 +32,6 @@ class RemoteDatasource {
     }
   }
 
-  //warning: I haven't has a new player yet
   Future<Either<Failure, bool>> addPlayerToGroup(String groupName) async {
     try {
       //the caller to this function needs to define newPlayerModel
@@ -54,6 +53,44 @@ class RemoteDatasource {
           .update({"players": FieldValue.arrayUnion(listPlayers)});
       return const Right(true);
     } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> removePlayerFromGroup(
+      String groupName, String playerName) async {
+    try {
+      //get the specific group we know that the player is in
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("groups")
+          .where('groupName', isEqualTo: groupName)
+          .get();
+      List listPlayers = querySnapshot.docs[0]['players'];
+      //going over players @group
+      for (int a = 0; a < listPlayers.length; a++) {
+        String name = listPlayers[a]['playerName'];
+        if (name == playerName) {
+          listPlayers.removeAt(a);
+        }
+      }
+      //if no players remain in the group: delete it. Else: update it.
+      if (listPlayers.isNotEmpty) {
+        FirebaseFirestore.instance
+            .collection('groups')
+            .doc(querySnapshot.docs[0].id)
+            .update({
+          "players": listPlayers,
+        });
+      } else {
+        FirebaseFirestore.instance
+            .collection('groups')
+            .doc(querySnapshot.docs[0].id)
+            .delete();
+      }
+
+      return const Right(true);
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeeee removePlayerFromGroup=" + e.toString());
       return Left(GeneralFailure());
     }
   }
@@ -980,6 +1017,29 @@ class RemoteDatasource {
   Future<Either<Failure, bool>> quitMultiplayerGame(
       {required RemoteDatasource remoteDatasource}) async {
     try {
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      String displayName = user!.displayName ?? "";
+      if (displayName.isEmpty) {
+        displayName = DateTime.now().millisecondsSinceEpoch.toString();
+      }
+      final groupsDB =
+          await FirebaseFirestore.instance.collection("groups").get();
+      List<QueryDocumentSnapshot> docs = groupsDB.docs;
+      //going over groups
+      for (int a = 0; a < docs.length; a++) {
+        List players = docs[a]['players'];
+        String groupName = docs[a]['groupName'];
+
+        //going over players un group
+        for (int b = 0; b < players.length; b++) {
+          String playerName = players[b]['playerName'].toString();
+          //if we find player's name in a group, remove
+          if (playerName == displayName) {
+            removePlayerFromGroup(groupName, playerName);
+          }
+        }
+      }
       return const Right(true);
     } catch (e) {
       print("eeeeeeeeeeeeeee usecase quitMultiplayerGame=" + e.toString());
