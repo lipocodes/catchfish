@@ -945,6 +945,31 @@ class RemoteDatasource {
 
   Future<Either<Failure, bool>> joinMultiplayerGame() async {
     try {
+      bool playerAddedToGroup = false;
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      String displayName = user!.displayName ?? "";
+      if (displayName.isEmpty) {
+        displayName = DateTime.now().millisecondsSinceEpoch.toString();
+      }
+      final groupsDB =
+          await FirebaseFirestore.instance.collection("groups").get();
+      List<QueryDocumentSnapshot> docs = groupsDB.docs;
+      //going over groups
+      for (int a = 0; a < docs.length; a++) {
+        List players = docs[a]['players'];
+        String groupName = docs[a]['groupName'];
+        //if this groups has place for additional players
+        if (players.length < 10 && playerAddedToGroup == false) {
+          //add me to this group
+          addUserToGroup(groupName, displayName);
+          playerAddedToGroup = true;
+        }
+      }
+      //if player can't be added to an existing group
+      if (playerAddedToGroup == false) {
+        createNewGroup("multiple_" + displayName, displayName);
+      }
       return const Right(true);
     } catch (e) {
       print("eeeeeeeeeeeeeee usecase joinMultiplayerGame=" + e.toString());
