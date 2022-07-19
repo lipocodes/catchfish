@@ -138,7 +138,7 @@ class _MyWidgetState extends State<SelectGroup> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              //buttonStartGame(context),
+              buttonStartGame(context),
               IconButton(
                 icon: const Icon(
                   Icons.arrow_back,

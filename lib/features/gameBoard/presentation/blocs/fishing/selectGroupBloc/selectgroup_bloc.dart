@@ -35,10 +35,7 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
         emit(EnteringScreenState(
             listGroups: l.list, selectedGroup: _selectedGroup));
       } else if (event is PressStartGameButtonEvent) {
-        if ((_selectedGroupType == 0 && _yourName.isEmpty) ||
-            (_selectedGroupType == 1 &&
-                (_groupName.isEmpty || _yourName.isEmpty)) ||
-            (_selectedGroupType == 2 && _selectedGroup.isEmpty)) {
+        if (_selectedGroupType == 0 && _yourName.isEmpty) {
           emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
         } else {
           //if user selects to join a group
@@ -47,28 +44,12 @@ class SelectgroupBloc extends Bloc<SelectgroupEvent, SelectgroupState> {
           if (_selectedGroupType == 0) {
             _groupName = "solo_" + _yourName;
           }
-          if (_selectedGroupType == 0 || _selectedGroupType == 1) {
+          if (_selectedGroupType == 0) {
             final res = await sl.get<SelectGroupUsecase>().createNewGroup(
                 _groupName, _yourName, selectGroupRepositoryImpl);
 
             if (res.isRight()) {
               emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
-            } else {
-              emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
-            }
-          } else if (_selectedGroupType == 2) {
-            final res = await sl.get<SelectGroupUsecase>().addUserToGroup(
-                _selectedGroup, _yourName, selectGroupRepositoryImpl);
-
-            if (res.isRight()) {
-              bool yesNo = false;
-              res.fold((l) => null, (r) => yesNo = r);
-              if (yesNo) {
-                emit(AllowedStartGame(selectedGroupType: _selectedGroupType));
-              } else {
-                emit(
-                    NotAllowedStartGame(selectedGroupType: _selectedGroupType));
-              }
             } else {
               emit(NotAllowedStartGame(selectedGroupType: _selectedGroupType));
             }
