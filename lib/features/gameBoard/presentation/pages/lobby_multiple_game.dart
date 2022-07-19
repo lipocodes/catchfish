@@ -20,6 +20,12 @@ class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
         .add(JoinMultipleplayerGameEvent());
   }
 
+  performBack() {
+    BlocProvider.of<LobbyMultiplayerGameBloc>(context)
+        .add(QuitMultipleplayerGameEvent());
+    Navigator.pop(context);
+  }
+
   Widget gui() {
     return SingleChildScrollView(
       child: Column(
@@ -32,27 +38,36 @@ class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.transparent,
-        //extendBodyBehindAppBar: true,
-        //appBar: appBar(context),
-        body: BlocBuilder<LobbyMultiplayerGameBloc, LobbyMultiplayerGameState>(
-          builder: (context, state) {
-            if (state is JoinMultipleplayerGameState) {
-              print("aaaaaaaaaaaaaaaaaa=" + state.successful.toString());
-              BlocProvider.of<LobbyMultiplayerGameBloc>(context)
-                  .add(GetUpdateMultipleplayerGameEvent());
-              return gui();
-            } else if (state is GetUpdateMultipleplayerGameState) {
-              print("bbbbbbbbbbbbbbbbbbb=" +
-                  state.timeTillStartGame.toString() +
-                  " " +
-                  state.playersInGroup.toString());
-              return gui();
-            } else {
-              return gui();
-            }
-          },
-        ));
+    return WillPopScope(
+      onWillPop: () {
+        return performBack();
+      },
+      child: Scaffold(
+          backgroundColor: Colors.transparent,
+          //extendBodyBehindAppBar: true,
+          //appBar: appBar(context),
+          body:
+              BlocBuilder<LobbyMultiplayerGameBloc, LobbyMultiplayerGameState>(
+            builder: (context, state) {
+              if (state is JoinMultipleplayerGameState) {
+                print("aaaaaaaaaaaaaaaaaa=" + state.successful.toString());
+                BlocProvider.of<LobbyMultiplayerGameBloc>(context)
+                    .add(GetUpdateMultipleplayerGameEvent());
+                return gui();
+              } else if (state is GetUpdateMultipleplayerGameState) {
+                print("bbbbbbbbbbbbbbbbbbb=" +
+                    state.multipleplayerEntity.timeTillStartGame.toString() +
+                    " " +
+                    state.multipleplayerEntity.playersInGroup.toString());
+                return gui();
+              } else if (state is QuitMultipleplayerGameState) {
+                print("cccccccccccccccccc=" + state.successful.toString());
+                return gui();
+              } else {
+                return gui();
+              }
+            },
+          )),
+    );
   }
 }

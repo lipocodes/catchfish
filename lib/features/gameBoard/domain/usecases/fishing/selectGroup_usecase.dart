@@ -4,8 +4,8 @@ import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_data
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/remote_datasource.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/list_group_entity.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/mutipleplayer_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/pulse_entity.dart';
-import 'package:catchfish/features/settings/data/datasources/remote_datasource.dart';
 import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 
@@ -59,6 +59,43 @@ class SelectGroupUsecase extends UseCase<PulseEntity, NoParams> {
       res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
       return Right(yesNo);
     } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> joinMultiplayerGame(
+      {required SelectGroupRepositoryImpl selectGroupRepositoryImpl}) async {
+    try {
+      return const Right(true);
+    } catch (e) {
+      print("eeeeeeeeeeeeeee usecase joinMultiplayerGame=" + e.toString());
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, bool>> quitMultiplayerGame(
+      {required SelectGroupRepositoryImpl selectGroupRepositoryImpl}) async {
+    try {
+      return const Right(true);
+    } catch (e) {
+      print("eeeeeeeeeeeeeee usecase quitMultiplayerGame=" + e.toString());
+      return Left(GeneralFailure());
+    }
+  }
+
+  Future<Either<Failure, MultipleplayerEntity>> getUpdateMyltiplayerGame(
+      {required SelectGroupRepositoryImpl selectGroupRepositoryImpl}) async {
+    try {
+      int timeTillStartGame = 100;
+      List playersInGroup = [
+        "https://th.bing.com/th/id/R.a875ddef4d39112e8371e8fdddf67157?rik=vEB9417RjaUz%2fw&pid=ImgRaw&r=0^^^Eli Shemesh"
+      ];
+      MultipleplayerEntity multipleplayerEntity = MultipleplayerEntity(
+          timeTillStartGame: timeTillStartGame, playersInGroup: playersInGroup);
+      return Right(multipleplayerEntity);
+    } catch (e) {
+      print(
+          "eeeeeeeeeeeeeeeee usecase getUpdateMyltiplayerGame=" + e.toString());
       return Left(GeneralFailure());
     }
   }

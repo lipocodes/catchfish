@@ -20,8 +20,10 @@ class QuitMultipleplayerGameState extends LobbyMultiplayerGameState {
 }
 
 class GetUpdateMultipleplayerGameState extends LobbyMultiplayerGameState {
-  final int timeTillStartGame;
-  final List playersInGroup;
-  const GetUpdateMultipleplayerGameState(
-      {required this.timeTillStartGame, required this.playersInGroup});
+  final MultipleplayerEntity multipleplayerEntity;
+  const GetUpdateMultipleplayerGameState({
+    required this.multipleplayerEntity,
+  });
 }
+
+class ErrorUpdateMultipleplayerGameState extends LobbyMultiplayerGameState {}

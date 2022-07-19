@@ -7,6 +7,7 @@ import 'package:catchfish/features/gameBoard/data/repositories/fishing_repositor
 import 'package:catchfish/features/gameBoard/data/repositories/navigation_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/data/repositories/select_group_repository_impl.dart';
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
+import 'package:catchfish/features/gameBoard/domain/entities/fishing/mutipleplayer_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/selectGroup_usecase.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/navigation/navigation_usecases.dart';
@@ -49,6 +50,8 @@ Future<bool> init() async {
   //entities
   sl.registerLazySingleton<CaughtFishEntity>(
       () => CaughtFishEntity(isFishCaught: true, caughtFishDetails: ""));
+  sl.registerLazySingleton<MultipleplayerEntity>(
+      () => MultipleplayerEntity(timeTillStartGame: 100, playersInGroup: []));
   //models
   sl.registerLazySingleton<NewPlayerModel>(() => NewPlayerModel(
       playerName: "", image: "", caughtFish: [], timeLastCaughtFish: 0));
