@@ -192,6 +192,7 @@ class _FishingState extends State<Fishing> {
                     }
                     _levelEnergy = int.parse(state.newCountdownTime
                         .substring(state.newCountdownTime.indexOf("^^^") + 3));
+
                     return Column(
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -200,6 +201,7 @@ class _FishingState extends State<Fishing> {
                       ],
                     );
                   } else if (state is GameOverState) {
+                    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                     BlocProvider.of<FishingBloc>(context)
                         .add(BetweenPulsesEvent());
                     popDialogGameOver(state.listAcheivements);

@@ -172,7 +172,18 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
       int minutes = int.parse(currentCountdownTime.substring(0, 2));
       int seconds = int.parse(currentCountdownTime.substring(3));
-      int levelEnergy = minutes;
+      int levelEnergy = 0;
+      if (seconds >= 0 && seconds < 12) {
+        levelEnergy = 0;
+      } else if (seconds >= 12 && seconds < 24) {
+        levelEnergy = 1;
+      } else if (seconds >= 24 && seconds < 36) {
+        levelEnergy = 2;
+      } else if (seconds >= 36 && seconds < 48) {
+        levelEnergy = 3;
+      } else if (seconds >= 48 && seconds <= 60) {
+        levelEnergy = 4;
+      }
 
       if (seconds > 0 && gameStarted) {
         seconds -= 1;
