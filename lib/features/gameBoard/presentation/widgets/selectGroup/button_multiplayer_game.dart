@@ -50,6 +50,7 @@ Widget gui(BuildContext context, bool showWarning) {
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       SizedBox(
+        width: 250.0,
         child: TextButton(
           child: const Text("multiplayer_game").tr(),
           style: TextButton.styleFrom(

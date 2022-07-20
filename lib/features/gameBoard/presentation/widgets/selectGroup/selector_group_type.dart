@@ -67,19 +67,23 @@ Widget gui(
   UI.TextDirection direction = UI.TextDirection.ltr;
   return Center(
     child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      // mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(height: 50.00),
+        const SizedBox(height: 100.00),
         buttonStartGame(context),
         const SizedBox(
-          height: 5.0,
+          height: 20.0,
+        ),
+        buttonMultiplayerGame(context),
+        const SizedBox(
+          height: 20.0,
         ),
         Container(
           width: 250.0,
           height: 50.0,
           decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 73, 164, 224),
-              borderRadius: BorderRadius.all(Radius.circular(20))),
+              color: Color.fromARGB(255, 60, 115, 151),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Directionality(
             textDirection: direction,
             child: TextField(
@@ -100,10 +104,6 @@ Widget gui(
             ),
           ),
         ),
-        const SizedBox(
-          height: 50.0,
-        ),
-        buttonMultiplayerGame(context),
       ],
     ),
   );
