@@ -125,5 +125,6 @@
     "show": "Show",
     "hide": "Hide",
     "multiplayer_game": "Multiplayer Game",
-    "solo_game": "Solo Game"    
+    "solo_game": "Solo Game",
+    "Players_waiting_for_game": "Players Waiting for Game"    
 }
