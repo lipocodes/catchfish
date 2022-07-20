@@ -23,7 +23,7 @@ class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
     //add event: join existibg group for a game OR craete a new one
     BlocProvider.of<LobbyMultiplayerGameBloc>(context)
         .add(JoinMultipleplayerGameEvent());
-    Timer.periodic(const Duration(seconds: 3), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       BlocProvider.of<LobbyMultiplayerGameBloc>(context)
           .add(GetUpdateMultipleplayerGameEvent());
     });
@@ -50,6 +50,14 @@ class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
       ),
       child: Column(
         children: [
+          const SizedBox(height: 20.0),
+          Text(((_timeTillGameStarts) / 1000).floor().toString(),
+              style: const TextStyle(
+                fontSize: 32.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+                fontFamily: 'skullsandcrossbones',
+              )),
           Text(
             "Players_waiting_for_game".tr(),
             style: const TextStyle(
