@@ -1085,6 +1085,7 @@ class RemoteDatasource {
       //we calculate how many seconds we have till gamse starts
       int timeTillStartGame = pendingTimeBeforeStartMultiplePlayerGame -
           (DateTime.now().millisecondsSinceEpoch - creationTime);
+
       MultipleplayerModel multipleplayerModel = MultipleplayerModel(
           timeTillStartGame: timeTillStartGame, playersInGroup: playersInGroup);
 

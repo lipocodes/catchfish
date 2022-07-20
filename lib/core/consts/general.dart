@@ -1,1 +1,1 @@
-int pendingTimeBeforeStartMultiplePlayerGame = 100000; //in milli
+int pendingTimeBeforeStartMultiplePlayerGame = 20000; //in milli

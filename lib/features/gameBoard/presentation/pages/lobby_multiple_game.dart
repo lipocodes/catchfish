@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:catchfish/features/gameBoard/presentation/blocs/multiplayer/lobby_multiplayer_game_bloc.dart';
+import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -17,19 +18,21 @@ class LobbyMultipleGame extends StatefulWidget {
 class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
   List _listPlayers = [];
   int _timeTillGameStarts = 100;
+  late Timer _timer;
   @override
   void initState() {
     super.initState();
     //add event: join existibg group for a game OR craete a new one
     BlocProvider.of<LobbyMultiplayerGameBloc>(context)
         .add(JoinMultipleplayerGameEvent());
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       BlocProvider.of<LobbyMultiplayerGameBloc>(context)
           .add(GetUpdateMultipleplayerGameEvent());
     });
   }
 
   performBack() {
+    _timer.cancel();
     BlocProvider.of<LobbyMultiplayerGameBloc>(context)
         .add(QuitMultipleplayerGameEvent());
     Navigator.pop(context);
@@ -107,20 +110,28 @@ class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
           body:
               BlocBuilder<LobbyMultiplayerGameBloc, LobbyMultiplayerGameState>(
             builder: (context, state) {
-              print("ggggggggggggggggggg=" + state.toString());
               if (state is JoinMultipleplayerGameState) {
                 return gui([]);
               } else if (state is GetUpdateMultipleplayerGameState) {
                 _listPlayers = state.multipleplayerEntity.playersInGroup;
                 _timeTillGameStarts =
                     state.multipleplayerEntity.timeTillStartGame;
+
+                if (_timeTillGameStarts < 2000 && _timeTillGameStarts > 0) {
+                  _timer.cancel();
+                  Timer(const Duration(seconds: 1), () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Fishing()),
+                    );
+                  });
+                }
                 BlocProvider.of<LobbyMultiplayerGameBloc>(context)
                     .add(NeutralEvent());
                 return gui(_listPlayers);
               } else if (state is QuitMultipleplayerGameState) {
                 return gui([]);
               } else if (state is NeutralState) {
-                print("vvvvvvvvvvvvvvv=" + _timeTillGameStarts.toString());
                 return gui(_listPlayers);
               } else {
                 return gui([_listPlayers]);
