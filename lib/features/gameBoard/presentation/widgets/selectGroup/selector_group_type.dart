@@ -99,7 +99,9 @@ Widget gui(
                 //labelText: playerName,
               ),
               onChanged: (text) {
-                print("aaaaaaaaaaaaaaaaaaaaa");
+                if (yourNameController.text.isEmpty) {
+                  yourNameController.text = "Must Have a Value!";
+                }
               },
             ),
           ),
