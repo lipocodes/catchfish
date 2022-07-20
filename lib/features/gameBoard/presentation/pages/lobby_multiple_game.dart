@@ -15,12 +15,18 @@ class LobbyMultipleGame extends StatefulWidget {
 }
 
 class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
+  List _listPlayers = [];
+  int _timeTillGameStarts = 100;
   @override
   void initState() {
     super.initState();
     //add event: join existibg group for a game OR craete a new one
     BlocProvider.of<LobbyMultiplayerGameBloc>(context)
         .add(JoinMultipleplayerGameEvent());
+    Timer.periodic(const Duration(seconds: 3), (timer) {
+      BlocProvider.of<LobbyMultiplayerGameBloc>(context)
+          .add(GetUpdateMultipleplayerGameEvent());
+    });
   }
 
   performBack() {
@@ -30,7 +36,6 @@ class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
   }
 
   Widget gui(List listPlayers) {
-    print("xxxxxxxxxxxxxxxxx=" + listPlayers.toString());
     return Container(
       height: 1000,
       width: MediaQuery.of(context).size.width,
@@ -64,7 +69,7 @@ class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
 
                       title: Center(
                     child: Text(
-                      listPlayers[index],
+                      listPlayers[index].toString(),
                       style: const TextStyle(
                         color: Colors.yellow,
                         fontSize: 22.0,
@@ -94,22 +99,23 @@ class _LobbyMultipleGameState extends State<LobbyMultipleGame> {
           body:
               BlocBuilder<LobbyMultiplayerGameBloc, LobbyMultiplayerGameState>(
             builder: (context, state) {
+              print("ggggggggggggggggggg=" + state.toString());
               if (state is JoinMultipleplayerGameState) {
-                Timer(const Duration(seconds: 3), () {
-                  BlocProvider.of<LobbyMultiplayerGameBloc>(context)
-                      .add(GetUpdateMultipleplayerGameEvent());
-                });
                 return gui([]);
               } else if (state is GetUpdateMultipleplayerGameState) {
-                print("bbbbbbbbbbbbbbbbbbb=" +
-                    state.multipleplayerEntity.timeTillStartGame.toString() +
-                    " " +
-                    state.multipleplayerEntity.playersInGroup.toString());
-                return gui(state.multipleplayerEntity.playersInGroup);
+                _listPlayers = state.multipleplayerEntity.playersInGroup;
+                _timeTillGameStarts =
+                    state.multipleplayerEntity.timeTillStartGame;
+                BlocProvider.of<LobbyMultiplayerGameBloc>(context)
+                    .add(NeutralEvent());
+                return gui(_listPlayers);
               } else if (state is QuitMultipleplayerGameState) {
                 return gui([]);
+              } else if (state is NeutralState) {
+                print("vvvvvvvvvvvvvvv=" + _timeTillGameStarts.toString());
+                return gui(_listPlayers);
               } else {
-                return gui([]);
+                return gui([_listPlayers]);
               }
             },
           )),

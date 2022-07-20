@@ -12,3 +12,5 @@ class JoinMultipleplayerGameEvent extends LobbyMultiplayerGameEvent {}
 class QuitMultipleplayerGameEvent extends LobbyMultiplayerGameEvent {}
 
 class GetUpdateMultipleplayerGameEvent extends LobbyMultiplayerGameEvent {}
+
+class NeutralEvent extends LobbyMultiplayerGameEvent {}

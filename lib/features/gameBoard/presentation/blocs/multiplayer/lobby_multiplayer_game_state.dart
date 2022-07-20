@@ -27,3 +27,5 @@ class GetUpdateMultipleplayerGameState extends LobbyMultiplayerGameState {
 }
 
 class ErrorUpdateMultipleplayerGameState extends LobbyMultiplayerGameState {}
+
+class NeutralState extends LobbyMultiplayerGameState {}

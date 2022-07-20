@@ -51,6 +51,8 @@ class LobbyMultiplayerGameBloc
           (success) => yesNo = success,
         );
         emit(QuitMultipleplayerGameState(successful: yesNo));
+      } else if (event is NeutralEvent) {
+        emit(NeutralState());
       }
     });
   }
