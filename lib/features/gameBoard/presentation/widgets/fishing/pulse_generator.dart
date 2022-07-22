@@ -7,6 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 int timeLastButtonPressed = 0;
+// 0: show "Cast" button
+//1: Let compass run and get pulses
+//2: Show "Catch" button
+//3: "Catch" button is long pressed, show inner game
 int redButtonGearStatus = 0;
 late SharedPreferences prefs;
 Widget pulseGenerator(
@@ -28,6 +32,20 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails) {
       const SizedBox(
         height: 150.0,
       ),
+      if (redButtonGearStatus == 2) ...[
+        SizedBox(
+          height: 100.0,
+          width: 100.0,
+          child: Image.asset(
+            //pixabay.com
+            'assets/images/gameBoard/mini_gauge.png',
+            fit: BoxFit.fill,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
+        ),
+      ],
       Stack(
         alignment: Alignment.center,
         children: [
