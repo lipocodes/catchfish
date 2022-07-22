@@ -32,18 +32,43 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails) {
       const SizedBox(
         height: 150.0,
       ),
-      if (redButtonGearStatus == 2) ...[
-        SizedBox(
-          height: 100.0,
-          width: 100.0,
-          child: Image.asset(
-            //pixabay.com
-            'assets/images/gameBoard/mini_gauge.png',
-            fit: BoxFit.fill,
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.center,
-          ),
+      if (redButtonGearStatus == 0) ...[
+        Stack(
+          children: [
+            Center(
+              child: SizedBox(
+                height: 100.0,
+                width: 100.0,
+                child: Image.asset(
+                  //pixabay.com
+                  'assets/images/gameBoard/mini_gauge.png',
+                  fit: BoxFit.fill,
+                  height: double.infinity,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 170,
+              top: 50,
+              child: SizedBox(
+                height: 40.0,
+                width: 20.0,
+                child: Transform.rotate(
+                  angle: 0,
+                  child: Image.asset(
+                    //pixabay.com
+                    'assets/images/gameBoard/hand.png',
+                    fit: BoxFit.fill,
+                    height: double.infinity,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
       Stack(
