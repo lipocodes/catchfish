@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/injection_container.dart';
@@ -13,10 +16,10 @@ int timeLastButtonPressed = 0;
 //3: "Catch" button is long pressed, show inner game
 int redButtonGearStatus = 0;
 late SharedPreferences prefs;
-Widget pulseGenerator(
-    BuildContext context, double angle, String caughtFishDetails) {
+Widget pulseGenerator(BuildContext context, double angle,
+    String caughtFishDetails, double angleMiniGauge) {
   retreivePrefs();
-  return gui(context, angle, caughtFishDetails);
+  return gui(context, angle, caughtFishDetails, angleMiniGauge);
 }
 
 retreivePrefs() async {
@@ -24,7 +27,13 @@ retreivePrefs() async {
   redButtonGearStatus = prefs.getInt("redButtonGearStatus") ?? 0;
 }
 
-Widget gui(BuildContext context, double angle, String caughtFishDetails) {
+Widget gui(BuildContext context, double angle, String caughtFishDetails,
+    double angleMiniGauge) {
+  /*var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    var random = Random();
+    angleMiniGauge = (random.nextInt(57)) / 57;
+    print("xxxxxxxxxxxxxxxxxx=" + angleMiniGauge.toString());
+  });*/
   List<String> details = caughtFishDetails.split("^^^");
 
   return Column(
@@ -56,7 +65,7 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails) {
                 height: 40.0,
                 width: 20.0,
                 child: Transform.rotate(
-                  angle: 0,
+                  angle: angleMiniGauge,
                   child: Image.asset(
                     //pixabay.com
                     'assets/images/gameBoard/hand.png',

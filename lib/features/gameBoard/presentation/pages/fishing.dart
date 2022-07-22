@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:catchfish/features/gameBoard/domain/entities/fishing/caught_fish_entity.dart';
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
@@ -39,6 +41,7 @@ class _FishingState extends State<Fishing> {
   String _groupLeader = "";
   bool _isDialogOpen = false;
   int redButtonGearStatus = 0;
+  double _angleMiniGauge = 0.0;
 
   @override
   void initState() {
@@ -118,6 +121,8 @@ class _FishingState extends State<Fishing> {
   @override
   Widget build(BuildContext context) {
     var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      var random = Random();
+      _angleMiniGauge = ((random.nextInt(114)) / 57) - 0.5;
       BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
           fishingUsecase: sl.get<FishingUsecase>(),
           currentCountdownTime: _currentTime));
@@ -238,16 +243,19 @@ class _FishingState extends State<Fishing> {
 
                     BlocProvider.of<FishingBloc>(context)
                         .add(BetweenPulsesEvent());
-                    return pulseGenerator(context, angle, _caughtFishDetails);
+                    return pulseGenerator(
+                        context, angle, _caughtFishDetails, _angleMiniGauge);
                   } else if (state is RedButtonPressedState) {
                     if (state.caughtFishDetails.isNotEmpty) {
                       _caughtFishDetails = state.caughtFishDetails;
                     }
                     sl.get<CaughtFishEntity>().isFishCaught = false;
                     sl.get<CaughtFishEntity>().caughtFishDetails = "";
-                    return pulseGenerator(context, angle, _caughtFishDetails);
+                    return pulseGenerator(
+                        context, angle, _caughtFishDetails, _angleMiniGauge);
                   } else {
-                    return pulseGenerator(context, angle, _caughtFishDetails);
+                    return pulseGenerator(
+                        context, angle, _caughtFishDetails, _angleMiniGauge);
                   }
                 },
               ),
