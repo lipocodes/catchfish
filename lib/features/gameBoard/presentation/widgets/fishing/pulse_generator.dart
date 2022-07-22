@@ -4,14 +4,21 @@ import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 int timeLastButtonPressed = 0;
+late SharedPreferences _prefs;
 Widget pulseGenerator(
-    BuildContext context, double angle, String caughtFishDetails) {
-  return gui(context, angle, caughtFishDetails);
+  BuildContext context,
+  double angle,
+  String caughtFishDetails,
+  String buttonText,
+) {
+  return gui(context, angle, caughtFishDetails, buttonText);
 }
 
-Widget gui(BuildContext context, double angle, String caughtFishDetails) {
+Widget gui(BuildContext context, double angle, String caughtFishDetails,
+    String buttonText) {
   List<String> details = caughtFishDetails.split("^^^");
 
   return Column(
@@ -49,41 +56,45 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails) {
               ),
             ),
           ),
-        ],
-      ),
-      GestureDetector(
-        onTap: () {
-          if (DateTime.now().millisecondsSinceEpoch - timeLastButtonPressed >
-              1000) {
-            timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
-            BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent(
-                fishingUsecase: sl.get<FishingUsecase>()));
-          }
-        },
-        child: SizedBox(
-          height: 120.0,
-          width: 136.0,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Image.asset(
-                //pixabay.com
-                'assets/images/gameBoard/redButton.png',
-                fit: BoxFit.fill,
-                height: double.infinity,
-                width: double.infinity,
+          GestureDetector(
+            onTap: () async {
+              if (DateTime.now().millisecondsSinceEpoch -
+                      timeLastButtonPressed >
+                  1000) {
+                _prefs = await SharedPreferences.getInstance();
+                _prefs.setBool("needPulse", true);
+
+                timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
+                BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent(
+                    fishingUsecase: sl.get<FishingUsecase>()));
+              }
+            },
+            child: SizedBox(
+              height: 130.0,
+              width: 140.0,
+              child: Stack(
                 alignment: Alignment.center,
+                children: [
+                  Image.asset(
+                    //pixabay.com
+                    'assets/images/gameBoard/redButton.png',
+                    fit: BoxFit.fill,
+                    height: double.infinity,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                  ),
+                  Text(
+                    buttonText,
+                    style: const TextStyle(
+                        fontSize: 24.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ],
               ),
-              Text(
-                "catch".tr(),
-                style: const TextStyle(
-                    fontSize: 24.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
       if (caughtFishDetails.isNotEmpty) ...[
         Row(
