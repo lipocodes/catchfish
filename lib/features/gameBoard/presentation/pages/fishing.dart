@@ -38,8 +38,6 @@ class _FishingState extends State<Fishing> {
   int _selectedGroupType = 0;
   String _groupLeader = "";
   bool _isDialogOpen = false;
-  bool _needPulse = false;
-  String _buttonText = "cast".tr();
 
   @override
   void initState() {
@@ -53,10 +51,9 @@ class _FishingState extends State<Fishing> {
 
   retreivePrefs() async {
     _prefs = await SharedPreferences.getInstance();
-    _selectedGroupType = _prefs.getInt("selectedGroupType") ?? 0;
-    _amIGroupLeader = _prefs.getBool('amIGroupLeader') ?? false;
-    _gameStarted = _prefs.getBool('gameStarted') ?? false;
-    _prefs.setBool("needPulse", false);
+    _selectedGroupType = await _prefs.getInt("selectedGroupType") ?? 0;
+    _amIGroupLeader = await _prefs.getBool('amIGroupLeader') ?? false;
+    _gameStarted = await _prefs.getBool('gameStarted') ?? false;
   }
 
   popDialogGameOver(List<String> listAcheivments) async {
@@ -117,8 +114,6 @@ class _FishingState extends State<Fishing> {
 
   @override
   Widget build(BuildContext context) {
-    bool needTick = false;
-
     var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
           fishingUsecase: sl.get<FishingUsecase>(),
@@ -233,19 +228,16 @@ class _FishingState extends State<Fishing> {
                     angle = state.angle;
                     BlocProvider.of<FishingBloc>(context)
                         .add(BetweenPulsesEvent());
-                    return pulseGenerator(
-                        context, angle, _caughtFishDetails, _buttonText);
+                    return pulseGenerator(context, angle, _caughtFishDetails);
                   } else if (state is RedButtonPressedState) {
                     if (state.caughtFishDetails.isNotEmpty) {
                       _caughtFishDetails = state.caughtFishDetails;
                     }
                     sl.get<CaughtFishEntity>().isFishCaught = false;
                     sl.get<CaughtFishEntity>().caughtFishDetails = "";
-                    return pulseGenerator(
-                        context, angle, _caughtFishDetails, _buttonText);
+                    return pulseGenerator(context, angle, _caughtFishDetails);
                   } else {
-                    return pulseGenerator(
-                        context, angle, _caughtFishDetails, _buttonText);
+                    return pulseGenerator(context, angle, _caughtFishDetails);
                   }
                 },
               ),
