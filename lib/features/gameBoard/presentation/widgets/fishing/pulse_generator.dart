@@ -4,11 +4,20 @@ import 'package:catchfish/injection_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 int timeLastButtonPressed = 0;
+int redButtonGearStatus = 0;
+late SharedPreferences prefs;
 Widget pulseGenerator(
     BuildContext context, double angle, String caughtFishDetails) {
+  retreivePrefs();
   return gui(context, angle, caughtFishDetails);
+}
+
+retreivePrefs() async {
+  prefs = await SharedPreferences.getInstance();
+  redButtonGearStatus = prefs.getInt("redButtonGearStatus") ?? 0;
 }
 
 Widget gui(BuildContext context, double angle, String caughtFishDetails) {
@@ -17,14 +26,14 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails) {
   return Column(
     children: [
       const SizedBox(
-        height: 100.0,
+        height: 150.0,
       ),
       Stack(
         alignment: Alignment.center,
         children: [
           SizedBox(
-            height: 216.0,
-            width: 296.0,
+            height: 250.0,
+            width: 320.0,
             child: Image.asset(
               //pixabay.com
               'assets/images/gameBoard/gauge.png',
@@ -49,41 +58,66 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails) {
               ),
             ),
           ),
-        ],
-      ),
-      GestureDetector(
-        onTap: () {
-          if (DateTime.now().millisecondsSinceEpoch - timeLastButtonPressed >
-              1000) {
-            timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
-            BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent(
-                fishingUsecase: sl.get<FishingUsecase>()));
-          }
-        },
-        child: SizedBox(
-          height: 120.0,
-          width: 136.0,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Image.asset(
-                //pixabay.com
-                'assets/images/gameBoard/redButton.png',
-                fit: BoxFit.fill,
-                height: double.infinity,
-                width: double.infinity,
+          GestureDetector(
+            onTap: () async {
+              if (DateTime.now().millisecondsSinceEpoch -
+                      timeLastButtonPressed >
+                  1000) {
+                if (redButtonGearStatus == 0) {
+                  prefs.setInt("redButtonGearStatus", 1);
+                } else if (redButtonGearStatus == 2) {
+                  prefs.setInt("redButtonGearStatus", 0);
+                }
+
+                timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
+                BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent(
+                    fishingUsecase: sl.get<FishingUsecase>()));
+              }
+            },
+            child: SizedBox(
+              height: 150.0,
+              width: 220.0,
+              child: Stack(
                 alignment: Alignment.center,
+                children: [
+                  if (redButtonGearStatus == 0) ...[
+                    Image.asset(
+                      //pixabay.com
+                      'assets/images/gameBoard/redButton.png',
+                      fit: BoxFit.fill,
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                    ),
+                    Text(
+                      "cast".tr(),
+                      style: const TextStyle(
+                          fontSize: 24.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ] else if (redButtonGearStatus == 2) ...[
+                    Image.asset(
+                      //pixabay.com
+                      'assets/images/gameBoard/redButton.png',
+                      fit: BoxFit.fill,
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                    ),
+                    Text(
+                      "catch".tr(),
+                      style: const TextStyle(
+                          fontSize: 24.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                ],
               ),
-              Text(
-                "catch".tr(),
-                style: const TextStyle(
-                    fontSize: 24.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
       if (caughtFishDetails.isNotEmpty) ...[
         Row(

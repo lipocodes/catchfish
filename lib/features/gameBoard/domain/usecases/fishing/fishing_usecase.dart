@@ -82,6 +82,10 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int myLevel = prefs.getInt("myLevel") ?? 1;
       bool needPulse = prefs.getBool("needPulse") ?? false;
+      int redButtonGearStatus = prefs.getInt("redButtonGearStatus") ?? 0;
+      if (redButtonGearStatus != 1) {
+        return Left(GeneralFailure());
+      }
 
       double pulseLength = 0.0;
       double angle = 0.0;

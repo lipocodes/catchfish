@@ -38,6 +38,7 @@ class _FishingState extends State<Fishing> {
   int _selectedGroupType = 0;
   String _groupLeader = "";
   bool _isDialogOpen = false;
+  int redButtonGearStatus = 0;
 
   @override
   void initState() {
@@ -54,6 +55,8 @@ class _FishingState extends State<Fishing> {
     _selectedGroupType = await _prefs.getInt("selectedGroupType") ?? 0;
     _amIGroupLeader = await _prefs.getBool('amIGroupLeader') ?? false;
     _gameStarted = await _prefs.getBool('gameStarted') ?? false;
+    //when entering game board, this is the initial status of the red button
+    _prefs.setInt("redButtonGearStatus", 0);
   }
 
   popDialogGameOver(List<String> listAcheivments) async {
@@ -226,6 +229,13 @@ class _FishingState extends State<Fishing> {
                 builder: (context, state) {
                   if (state is GetPulseState) {
                     angle = state.angle;
+                    //need to make this available for pulseGenerator
+                    if (state.pulseLength >= 1.8) {
+                      prefs.setInt("redButtonGearStatus", 2);
+                    } else {
+                      prefs.setInt("redButtonGearStatus", 1);
+                    }
+
                     BlocProvider.of<FishingBloc>(context)
                         .add(BetweenPulsesEvent());
                     return pulseGenerator(context, angle, _caughtFishDetails);
