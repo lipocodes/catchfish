@@ -59,14 +59,41 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails) {
             ),
           ),
           GestureDetector(
+            onLongPressStart: (details) {
+              if (DateTime.now().millisecondsSinceEpoch -
+                      timeLastButtonPressed >
+                  1000) {
+                if (redButtonGearStatus == 2) {
+                  final snackdemo = SnackBar(
+                    content: Text(
+                      "leave_button_catch_fish".tr(),
+                      style: const TextStyle(
+                        fontFamily: 'skullsandcrossbones',
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    backgroundColor: Colors.green,
+                    elevation: 10,
+                    behavior: SnackBarBehavior.floating,
+                    margin: const EdgeInsets.all(5),
+                  );
+                  Future.delayed(const Duration(milliseconds: 100), () {
+                    ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+                  });
+                }
+              }
+            },
+            onLongPressEnd: (details) {
+              if (redButtonGearStatus == 2) {
+                prefs.setInt("redButtonGearStatus", 0);
+              }
+            },
             onTap: () async {
               if (DateTime.now().millisecondsSinceEpoch -
                       timeLastButtonPressed >
                   1000) {
                 if (redButtonGearStatus == 0) {
                   prefs.setInt("redButtonGearStatus", 1);
-                } else if (redButtonGearStatus == 2) {
-                  prefs.setInt("redButtonGearStatus", 0);
                 }
 
                 timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;

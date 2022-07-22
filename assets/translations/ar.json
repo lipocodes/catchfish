@@ -130,5 +130,6 @@
     "multiplayer_game": "Multiplayer Game",
     "solo_game": "Solo Game",
     "Players_waiting_for_game": "Players Waiting for Game",
-    "cast": "Cast"            
+    "cast": "Cast",
+    "leave_button_catch_fish": "Leave the button to catch the fish!"               
 }
