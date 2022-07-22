@@ -121,6 +121,7 @@ class _FishingState extends State<Fishing> {
   @override
   Widget build(BuildContext context) {
     var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      //ransomize the angle in the mini compass
       var random = Random();
       _angleMiniGauge = ((random.nextInt(114)) / 57) - 0.5;
       BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
