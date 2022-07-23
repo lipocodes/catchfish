@@ -16,8 +16,21 @@ int timeLastButtonPressed = 0;
 //3: "Catch" button is long pressed, show inner game
 int redButtonGearStatus = 0;
 late SharedPreferences prefs;
+bool hasPlayerPressedRedButton = false;
 Widget pulseGenerator(BuildContext context, double angle,
     String caughtFishDetails, double angleMiniGauge) {
+  //timer: if redButtonGearStatus==2, check after 1 sec if player clicks on it.
+  // if not, redButtonGearStatus=1
+  if (redButtonGearStatus == 2) {
+    Timer(const Duration(seconds: 2), () async {
+      if (hasPlayerPressedRedButton == false) {
+        print("aaaaaaaaaaaaaaaaaa");
+        prefs = await SharedPreferences.getInstance();
+        prefs.setInt("redButtonGearStatus", 1);
+      }
+    });
+  }
+
   retreivePrefs();
   return gui(context, angle, caughtFishDetails, angleMiniGauge);
 }
@@ -29,11 +42,6 @@ retreivePrefs() async {
 
 Widget gui(BuildContext context, double angle, String caughtFishDetails,
     double angleMiniGauge) {
-  /*var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-    var random = Random();
-    angleMiniGauge = (random.nextInt(57)) / 57;
-    print("xxxxxxxxxxxxxxxxxx=" + angleMiniGauge.toString());
-  });*/
   List<String> details = caughtFishDetails.split("^^^");
 
   return Column(
@@ -41,7 +49,7 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
       const SizedBox(
         height: 150.0,
       ),
-      if (redButtonGearStatus == 0) ...[
+      if (redButtonGearStatus == 2) ...[
         Stack(
           children: [
             Center(
@@ -116,6 +124,7 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
                       timeLastButtonPressed >
                   1000) {
                 if (redButtonGearStatus == 2) {
+                  hasPlayerPressedRedButton = true;
                   final snackdemo = SnackBar(
                     content: Text(
                       "leave_button_catch_fish".tr(),
@@ -137,6 +146,7 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
             },
             onLongPressEnd: (details) {
               if (redButtonGearStatus == 2) {
+                //hasPlayerPressedRedButton = false;
                 prefs.setInt("redButtonGearStatus", 0);
               }
             },
