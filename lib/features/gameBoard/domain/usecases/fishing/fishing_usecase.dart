@@ -89,8 +89,9 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
       double pulseLength = 0.0;
       double angle = 0.0;
-      int random = 1 + Random().nextInt(10);
-      if (random == 10) {
+      //we randomize a number 2-6. If it's 2, it's a chance to catch a fish!
+      int random = 1 + Random().nextInt(5);
+      if (random == 2) {
         pulseLength = 2 - myLevel * 0.1;
         angle = 2.7925268;
         _isItCatchingTime = true;
