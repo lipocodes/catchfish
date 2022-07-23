@@ -123,7 +123,7 @@ class _FishingState extends State<Fishing> {
     var timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       //ransomize the angle in the mini compass
       var random = Random();
-      _angleMiniGauge = ((random.nextInt(114)) / 57) - 0.5;
+      _angleMiniGauge = ((random.nextInt(228) - 114) / 57);
       BlocProvider.of<FishingBloc>(context).add(TimerTickEvent(
           fishingUsecase: sl.get<FishingUsecase>(),
           currentCountdownTime: _currentTime));

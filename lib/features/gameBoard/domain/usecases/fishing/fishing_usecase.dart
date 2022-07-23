@@ -118,11 +118,16 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     }
   }
 
-  Future<Either<Failure, CaughtFishEntity>> isFishCaught() async {
+  Future<Either<Failure, CaughtFishEntity>> isFishCaught(
+      double angleMiniGauge) async {
     int myLevel = 1;
     List<String> lotteryPool = [];
     try {
-      bool isFishCaught = _isItCatchingTime;
+      bool isFishCaught = false;
+      if (angleMiniGauge > -1.3 && angleMiniGauge < 1.3) {
+        isFishCaught = true;
+      }
+
       if (isFishCaught) {
         if (!Platform.environment.containsKey('FLUTTER_TEST')) {
           playBackgroundAudio("catchFish.mp3");

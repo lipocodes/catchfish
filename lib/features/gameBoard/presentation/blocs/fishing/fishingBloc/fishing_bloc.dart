@@ -34,7 +34,8 @@ class FishingBloc extends Bloc<FishingEvent, FishingState> {
       } else if (event is BetweenPulsesEvent) {
         emit(BetweenPulsesState());
       } else if (event is RedButtonPressedEvent) {
-        final res = await event.fishingUsecase.isFishCaught();
+        final res =
+            await event.fishingUsecase.isFishCaught(event.angleMiniGauge);
         //if fish is caught: update the datasources about it
         if (res.isRight()) {
           sl.get<FishingUsecase>().updateCaughtInGroups(

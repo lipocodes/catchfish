@@ -146,7 +146,10 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
             },
             onLongPressEnd: (details) {
               if (redButtonGearStatus == 2) {
-                //hasPlayerPressedRedButton = false;
+                hasPlayerPressedRedButton = false;
+                BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent(
+                    fishingUsecase: sl.get<FishingUsecase>(),
+                    angleMiniGauge: angleMiniGauge));
                 prefs.setInt("redButtonGearStatus", 0);
               }
             },
@@ -160,7 +163,8 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
 
                 timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
                 BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent(
-                    fishingUsecase: sl.get<FishingUsecase>()));
+                    fishingUsecase: sl.get<FishingUsecase>(),
+                    angleMiniGauge: angleMiniGauge));
               }
             },
             child: SizedBox(

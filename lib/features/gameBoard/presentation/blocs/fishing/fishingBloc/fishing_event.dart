@@ -21,7 +21,9 @@ class BetweenPulsesEvent extends FishingEvent {}
 
 class RedButtonPressedEvent extends FishingEvent {
   final FishingUsecase fishingUsecase;
-  const RedButtonPressedEvent({required this.fishingUsecase});
+  final angleMiniGauge;
+  const RedButtonPressedEvent(
+      {required this.fishingUsecase, required this.angleMiniGauge});
 }
 
 class TimerTickEvent extends FishingEvent {
