@@ -999,7 +999,9 @@ class RemoteDatasource {
         List players = docs[a]['players'];
         String groupName = docs[a]['groupName'];
         //if this groups has place for additional players
-        if (players.length < 10 && playerAddedToGroup == false) {
+        if (players.length < 10 &&
+            playerAddedToGroup == false &&
+            groupName.contains("multiple")) {
           //add me to this group
           addUserToGroup(groupName, displayName);
           playerAddedToGroup = true;
