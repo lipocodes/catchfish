@@ -159,12 +159,12 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
                   1000) {
                 if (redButtonGearStatus == 0) {
                   prefs.setInt("redButtonGearStatus", 1);
+                  timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
+                  BlocProvider.of<FishingBloc>(context).add(
+                      RedButtonPressedEvent(
+                          fishingUsecase: sl.get<FishingUsecase>(),
+                          angleMiniGauge: angleMiniGauge));
                 }
-
-                timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
-                BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent(
-                    fishingUsecase: sl.get<FishingUsecase>(),
-                    angleMiniGauge: angleMiniGauge));
               }
             },
             child: SizedBox(
