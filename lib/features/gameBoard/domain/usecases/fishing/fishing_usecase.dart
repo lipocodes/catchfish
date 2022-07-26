@@ -15,6 +15,7 @@ import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:vibration/vibration.dart';
 
 class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   late SharedPreferences _prefs;
@@ -100,6 +101,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
           _isItCatchingTime = false;
         });
         if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+          Vibration.vibrate(duration: 1000);
           playBackgroundAudio("strongSignal.mp3");
         }
       } else {

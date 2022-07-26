@@ -13,6 +13,8 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../../core/consts/general.dart';
+
 class RemoteDatasource {
   List _allPlayers = [];
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -47,6 +49,12 @@ class RemoteDatasource {
         return Left(GeneralFailure());
       }
       listPlayers.add(newPlayerModel);
+      //if we got to have less than 5 players (inc. bots), we add a new bot
+      if (listPlayers.length < 5) {
+        var random = new Random();
+        int rand = random.nextInt(botNames.length) - 1;
+        //listPlayers.add(botNames[rand]);
+      }
 
       FirebaseFirestore.instance
           .collection('groups')
@@ -67,20 +75,28 @@ class RemoteDatasource {
           .where('groupName', isEqualTo: groupName)
           .get();
       List listPlayers = querySnapshot.docs[0]['players'];
+      int numberPlayers = querySnapshot.docs[0]['numberPlayers'];
       //going over players @group
       for (int a = 0; a < listPlayers.length; a++) {
         String name = listPlayers[a]['playerName'];
         if (name == playerName) {
           listPlayers.removeAt(a);
+          //if we got to have less than 5 players (inc. bots), we add a new bot
+          if (listPlayers.length < 5) {
+            var random = Random();
+            int rand = random.nextInt(botNames.length) - 1;
+            //listPlayers.add(botNames[rand]);
+          }
         }
       }
       //if no players remain in the group: delete it. Else: update it.
-      if (listPlayers.isNotEmpty) {
+      if (numberPlayers > 0) {
         FirebaseFirestore.instance
             .collection('groups')
             .doc(querySnapshot.docs[0].id)
             .update({
           "players": listPlayers,
+          "numberPlayers": --numberPlayers,
         });
       } else {
         FirebaseFirestore.instance
@@ -411,6 +427,7 @@ class RemoteDatasource {
       List<QueryDocumentSnapshot> docs = groupsDB.docs;
       for (int a = 0; a < docs.length; a++) {
         String gName = docs[a]['groupName'];
+        int numberPlayers = docs[a]['numberPlayers'];
         if (gName == groupName) {
           List listPlayers = docs[a]['players'];
           for (int b = 0; b < listPlayers.length; b++) {
@@ -431,6 +448,7 @@ class RemoteDatasource {
               .doc(docs[a].id)
               .set({
             "players": listPlayers,
+            "numberPlayers": ++numberPlayers,
           }, SetOptions(merge: true));
           final SharedPreferences prefs = await _prefs;
           prefs.setString("groupName", groupName);
@@ -454,7 +472,8 @@ class RemoteDatasource {
         'creationTime': DateTime.now().millisecondsSinceEpoch,
         'groupName': groupName,
         "gameStarted": false,
-        'players': []
+        'players': [],
+        "numberPlayers": 0,
       };
       await FirebaseFirestore.instance.collection("groups").add(newGroup);
       addUserToGroup(groupName, yourName);
@@ -996,10 +1015,10 @@ class RemoteDatasource {
       List<QueryDocumentSnapshot> docs = groupsDB.docs;
       //going over groups
       for (int a = 0; a < docs.length; a++) {
-        List players = docs[a]['players'];
+        int numberPlayers = docs[a]['numberPlayers'];
         String groupName = docs[a]['groupName'];
         //if this groups has place for additional players
-        if (players.length < 10 &&
+        if (numberPlayers < 10 &&
             playerAddedToGroup == false &&
             groupName.contains("multiple")) {
           //add me to this group
