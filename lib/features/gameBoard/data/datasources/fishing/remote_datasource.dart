@@ -51,9 +51,9 @@ class RemoteDatasource {
       listPlayers.add(newPlayerModel);
       //if we got to have less than 5 players (inc. bots), we add a new bot
       if (listPlayers.length < 5) {
-        var random = new Random();
+        var random = Random();
         int rand = random.nextInt(botNames.length) - 1;
-        //listPlayers.add(botNames[rand]);
+        addBotToGroup(groupName, botNames[rand]);
       }
 
       FirebaseFirestore.instance
@@ -81,22 +81,24 @@ class RemoteDatasource {
         String name = listPlayers[a]['playerName'];
         if (name == playerName) {
           listPlayers.removeAt(a);
+          numberPlayers--;
           //if we got to have less than 5 players (inc. bots), we add a new bot
           if (listPlayers.length < 5) {
             var random = Random();
             int rand = random.nextInt(botNames.length) - 1;
-            //listPlayers.add(botNames[rand]);
+            addBotToGroup(groupName, botNames[rand]);
           }
         }
       }
       //if no players remain in the group: delete it. Else: update it.
+
       if (numberPlayers > 0) {
         FirebaseFirestore.instance
             .collection('groups')
             .doc(querySnapshot.docs[0].id)
             .update({
           "players": listPlayers,
-          "numberPlayers": --numberPlayers,
+          "numberPlayers": numberPlayers,
         });
       } else {
         FirebaseFirestore.instance
@@ -419,6 +421,39 @@ class RemoteDatasource {
     }
   }
 
+  Future<Either<Failure, bool>> addBotToGroup(
+      String groupName, String botName) async {
+    try {
+      final groupsDB =
+          await FirebaseFirestore.instance.collection("groups").get();
+      List<QueryDocumentSnapshot> docs = groupsDB.docs;
+      for (int a = 0; a < docs.length; a++) {
+        String gName = docs[a]['groupName'];
+        //when we find the relevant group on DB
+        if (gName == groupName) {
+          List listPlayers = docs[a]['players'];
+          NewPlayerModel newPlayerModel = NewPlayerModel(
+              playerName: botName,
+              image: "",
+              caughtFish: ["Sargo^^^10^^^100^^^sargo.jpg^^^0"],
+              timeLastCaughtFish: 0);
+          Map map = newPlayerModel.toJson();
+          listPlayers.add(map);
+          //important: we update only players field and not numberPlayers, because it's a bot
+          await FirebaseFirestore.instance
+              .collection("groups")
+              .doc(docs[a].id)
+              .set({
+            "players": listPlayers,
+          }, SetOptions(merge: true));
+        }
+      }
+      return const Right(true);
+    } catch (e) {
+      return Left(GeneralFailure());
+    }
+  }
+
   Future<Either<Failure, bool>> addUserToGroup(
       String groupName, String yourName) async {
     try {
@@ -443,6 +478,12 @@ class RemoteDatasource {
               timeLastCaughtFish: 0);
           Map map = newPlayerModel.toJson();
           listPlayers.add(map);
+          //if we got to have less than 5 players (inc. bots), we add a new bot
+          if (listPlayers.length < 5) {
+            var random = Random();
+            int rand = random.nextInt(botNames.length) - 1;
+            addBotToGroup(groupName, botNames[rand]);
+          }
           await FirebaseFirestore.instance
               .collection("groups")
               .doc(docs[a].id)

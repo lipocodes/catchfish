@@ -1,4 +1,4 @@
-int pendingTimeBeforeStartMultiplePlayerGame = 60000; //in milli
+int pendingTimeBeforeStartMultiplePlayerGame = 10000; //in milli
 
 List<String> botNames = [
   "David Davis",
