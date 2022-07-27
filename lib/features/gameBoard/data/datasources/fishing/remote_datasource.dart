@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:catchfish/core/consts/fish.dart';
 import 'package:catchfish/core/consts/general.dart';
 import 'package:catchfish/core/errors/failures.dart';
 import 'package:catchfish/features/gameBoard/data/datasources/fishing/local_datasource.dart';
@@ -49,12 +50,6 @@ class RemoteDatasource {
         return Left(GeneralFailure());
       }
       listPlayers.add(newPlayerModel);
-      //if we got to have less than 5 players (inc. bots), we add a new bot
-      if (listPlayers.length < 5) {
-        var random = Random();
-        int rand = random.nextInt(botNames.length) - 1;
-        addBotToGroup(groupName, botNames[rand]);
-      }
 
       FirebaseFirestore.instance
           .collection('groups')
@@ -82,16 +77,9 @@ class RemoteDatasource {
         if (name == playerName) {
           listPlayers.removeAt(a);
           numberPlayers--;
-          //if we got to have less than 5 players (inc. bots), we add a new bot
-          if (listPlayers.length < 5) {
-            var random = Random();
-            int rand = random.nextInt(botNames.length) - 1;
-            addBotToGroup(groupName, botNames[rand]);
-          }
         }
       }
       //if no players remain in the group: delete it. Else: update it.
-
       if (numberPlayers > 0) {
         FirebaseFirestore.instance
             .collection('groups')
@@ -422,7 +410,8 @@ class RemoteDatasource {
   }
 
   Future<Either<Failure, bool>> addBotToGroup(
-      String groupName, String botName) async {
+    String groupName,
+  ) async {
     try {
       final groupsDB =
           await FirebaseFirestore.instance.collection("groups").get();
@@ -432,13 +421,20 @@ class RemoteDatasource {
         //when we find the relevant group on DB
         if (gName == groupName) {
           List listPlayers = docs[a]['players'];
-          NewPlayerModel newPlayerModel = NewPlayerModel(
-              playerName: botName,
-              image: "",
-              caughtFish: ["Sargo^^^10^^^100^^^sargo.jpg^^^0"],
-              timeLastCaughtFish: 0);
-          Map map = newPlayerModel.toJson();
-          listPlayers.add(map);
+          int len = 5 - listPlayers.length;
+          for (int b = 0; b < len; b++) {
+            var random = Random();
+            int rand1 = random.nextInt(botNames.length) - 1;
+            int rand2 = random.nextInt(fishCategoryC.length) - 1;
+            NewPlayerModel newPlayerModel = NewPlayerModel(
+                playerName: botNames[rand1],
+                image: "",
+                caughtFish: [fishCategoryC[rand2]],
+                timeLastCaughtFish: 0);
+            Map map = newPlayerModel.toJson();
+            listPlayers.add(map);
+          }
+
           //important: we update only players field and not numberPlayers, because it's a bot
           await FirebaseFirestore.instance
               .collection("groups")
@@ -450,6 +446,7 @@ class RemoteDatasource {
       }
       return const Right(true);
     } catch (e) {
+      print("eeeeeeeeeeeeeeeeeeeeeeeeeee remote addBotToGroup=" + e.toString());
       return Left(GeneralFailure());
     }
   }
@@ -480,9 +477,9 @@ class RemoteDatasource {
           listPlayers.add(map);
           //if we got to have less than 5 players (inc. bots), we add a new bot
           if (listPlayers.length < 5) {
-            var random = Random();
-            int rand = random.nextInt(botNames.length) - 1;
-            addBotToGroup(groupName, botNames[rand]);
+            addBotToGroup(
+              groupName,
+            );
           }
           await FirebaseFirestore.instance
               .collection("groups")

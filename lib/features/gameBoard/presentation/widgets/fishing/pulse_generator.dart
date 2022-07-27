@@ -24,7 +24,6 @@ Widget pulseGenerator(BuildContext context, double angle,
   if (redButtonGearStatus == 2) {
     Timer(const Duration(seconds: 2), () async {
       if (hasPlayerPressedRedButton == false) {
-        print("aaaaaaaaaaaaaaaaaa");
         prefs = await SharedPreferences.getInstance();
         prefs.setInt("redButtonGearStatus", 1);
       }
@@ -46,78 +45,9 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
 
   return Column(
     children: [
-      const SizedBox(
-        height: 150.0,
-      ),
-      if (redButtonGearStatus == 2) ...[
-        Stack(
-          children: [
-            Center(
-              child: SizedBox(
-                height: 100.0,
-                width: 100.0,
-                child: Image.asset(
-                  //pixabay.com
-                  'assets/images/gameBoard/mini_gauge.png',
-                  fit: BoxFit.fill,
-                  height: double.infinity,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                ),
-              ),
-            ),
-            Positioned(
-              left: 170,
-              top: 50,
-              child: SizedBox(
-                height: 40.0,
-                width: 20.0,
-                child: Transform.rotate(
-                  angle: angleMiniGauge,
-                  child: Image.asset(
-                    //pixabay.com
-                    'assets/images/gameBoard/hand.png',
-                    fit: BoxFit.fill,
-                    height: double.infinity,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
       Stack(
         alignment: Alignment.center,
         children: [
-          SizedBox(
-            height: 250.0,
-            width: 320.0,
-            child: Image.asset(
-              //pixabay.com
-              'assets/images/gameBoard/gauge.png',
-              fit: BoxFit.fill,
-              height: double.infinity,
-              width: double.infinity,
-              alignment: Alignment.center,
-            ),
-          ),
-          SizedBox(
-            height: 84.0,
-            width: 24.0,
-            child: Transform.rotate(
-              angle: angle,
-              child: Image.asset(
-                //pixabay.com
-                'assets/images/gameBoard/hand.png',
-                fit: BoxFit.fill,
-                height: double.infinity,
-                width: double.infinity,
-                alignment: Alignment.center,
-              ),
-            ),
-          ),
           GestureDetector(
             onLongPressStart: (details) {
               if (DateTime.now().millisecondsSinceEpoch -
@@ -125,32 +55,7 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
                   1000) {
                 if (redButtonGearStatus == 2) {
                   hasPlayerPressedRedButton = true;
-                  final snackdemo = SnackBar(
-                    content: Text(
-                      "leave_button_catch_fish".tr(),
-                      style: const TextStyle(
-                        fontFamily: 'skullsandcrossbones',
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    backgroundColor: Colors.green,
-                    elevation: 10,
-                    behavior: SnackBarBehavior.floating,
-                    margin: const EdgeInsets.all(5),
-                  );
-                  Future.delayed(const Duration(milliseconds: 100), () {
-                    ScaffoldMessenger.of(context).showSnackBar(snackdemo);
-                  });
                 }
-              }
-            },
-            onLongPressEnd: (details) {
-              if (redButtonGearStatus == 2) {
-                hasPlayerPressedRedButton = false;
-                BlocProvider.of<FishingBloc>(context).add(RedButtonPressedEvent(
-                    fishingUsecase: sl.get<FishingUsecase>(),
-                    angleMiniGauge: angleMiniGauge));
-                prefs.setInt("redButtonGearStatus", 0);
               }
             },
             onTap: () async {
@@ -160,6 +65,13 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
                 if (redButtonGearStatus == 0) {
                   prefs.setInt("redButtonGearStatus", 1);
                   timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
+                } else if (redButtonGearStatus == 2) {
+                  hasPlayerPressedRedButton = false;
+                  BlocProvider.of<FishingBloc>(context).add(
+                      RedButtonPressedEvent(
+                          fishingUsecase: sl.get<FishingUsecase>(),
+                          angleMiniGauge: angleMiniGauge));
+                  prefs.setInt("redButtonGearStatus", 0);
                 }
               }
             },
@@ -185,7 +97,8 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
                           color: Colors.white,
                           fontWeight: FontWeight.w700),
                     ),
-                  ] else if (redButtonGearStatus == 2) ...[
+                  ] else if (redButtonGearStatus == 1 ||
+                      redButtonGearStatus == 2) ...[
                     Image.asset(
                       //pixabay.com
                       'assets/images/gameBoard/redButton.png',

@@ -15,7 +15,6 @@ import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:vibration/vibration.dart';
 
 class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   late SharedPreferences _prefs;
@@ -101,7 +100,6 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
           _isItCatchingTime = false;
         });
         if (!Platform.environment.containsKey('FLUTTER_TEST')) {
-          Vibration.vibrate(duration: 1000);
           playBackgroundAudio("strongSignal.mp3");
         }
       } else {
@@ -126,11 +124,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
     int myLevel = 1;
     List<String> lotteryPool = [];
     try {
-      bool isFishCaught = false;
-      if (angleMiniGauge > -1.3 && angleMiniGauge < 1.3) {
-        isFishCaught = true;
-      }
-
+      bool isFishCaught = _isItCatchingTime;
       if (isFishCaught) {
         if (!Platform.environment.containsKey('FLUTTER_TEST')) {
           playBackgroundAudio("catchFish.mp3");
