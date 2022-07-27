@@ -15,6 +15,7 @@ import 'package:catchfish/injection_container.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:vibration/vibration.dart';
 
 class FishingUsecase extends UseCase<PulseEntity, NoParams> {
   late SharedPreferences _prefs;
@@ -92,16 +93,27 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       //we randomize a number 2-6. If it's 2, it's a chance to catch a fish!
       int random = 1 + Random().nextInt(5);
       if (random == 2) {
+        //fish isn't catchable (short vibration)
+        _isItCatchingTime = false;
+        Vibration.vibrate(pattern: [0, 400, 300, 400], amplitude: 256);
         pulseLength = 2 - myLevel * 0.1;
         angle = 2.7925268;
-        _isItCatchingTime = true;
         int milli = (pulseLength * 1000).toInt();
-        Future.delayed(Duration(milliseconds: milli), () {
-          _isItCatchingTime = false;
-        });
-        if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+
+        //after delay: fish is catchable (long vibration)
+        Future.delayed(const Duration(seconds: 3), () {
+          pulseLength = 2 - myLevel * 0.1;
+          angle = 2.7925268;
+          _isItCatchingTime = true;
+          int milli = (pulseLength * 1000).toInt();
+          Vibration.vibrate(pattern: [0, milli], amplitude: 256);
           playBackgroundAudio("strongSignal.mp3");
-        }
+          Future.delayed(Duration(milliseconds: milli), () async {
+            _isItCatchingTime = false;
+            prefs = await SharedPreferences.getInstance();
+            prefs.setInt("redButtonGearStatus", 1);
+          });
+        });
       } else {
         pulseLength = random / 10;
         double possibleAngleRange = (2.7925268 + 2.44346095);

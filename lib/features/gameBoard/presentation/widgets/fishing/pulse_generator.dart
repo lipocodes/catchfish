@@ -19,17 +19,6 @@ late SharedPreferences prefs;
 bool hasPlayerPressedRedButton = false;
 Widget pulseGenerator(BuildContext context, double angle,
     String caughtFishDetails, double angleMiniGauge) {
-  //timer: if redButtonGearStatus==2, check after 1 sec if player clicks on it.
-  // if not, redButtonGearStatus=1
-  if (redButtonGearStatus == 2) {
-    Timer(const Duration(seconds: 2), () async {
-      if (hasPlayerPressedRedButton == false) {
-        prefs = await SharedPreferences.getInstance();
-        prefs.setInt("redButtonGearStatus", 1);
-      }
-    });
-  }
-
   retreivePrefs();
   return gui(context, angle, caughtFishDetails, angleMiniGauge);
 }
