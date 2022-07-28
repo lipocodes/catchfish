@@ -90,13 +90,13 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
       double pulseLength = 0.0;
       double angle = 0.0;
-      //we randomize a number 2-9. If it's 2, it's a chance to catch a fish!
-      int random = 1 + Random().nextInt(8);
+      //we randomize a number 2-7. If it's 2, it's a chance to catch a fish!
+      int random = 1 + Random().nextInt(6);
       if (random == 2) {
         //fish isn't catchable (short vibration)
         _isItCatchingTime = false;
         //randomize time periods for the vibration
-        List<int> timePeriods = [100, 200, 300, 400, 500];
+        List<int> timePeriods = [200, 400, 600, 800, 1000];
         int randomIndex = Random().nextInt(timePeriods.length);
         int timePeriod1 = timePeriods[randomIndex];
         randomIndex = Random().nextInt(timePeriods.length);
@@ -116,7 +116,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
           angle = 2.7925268;
           _isItCatchingTime = true;
 
-          int milli = (pulseLength * 1000).toInt();
+          int milli = (pulseLength * 2000).toInt();
           Vibration.vibrate(pattern: [0, milli], amplitude: 256);
           //playBackgroundAudio("strongSignal.mp3");
           Future.delayed(Duration(milliseconds: milli), () async {

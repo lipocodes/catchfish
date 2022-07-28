@@ -12,6 +12,7 @@ int timeLastButtonPressed = 0;
 //2: Show "Catch" button
 //3: "Catch" button is long pressed, show inner game
 int redButtonGearStatus = 0;
+bool isItAfterCatchState = false;
 late SharedPreferences prefs;
 bool hasPlayerPressedRedButton = false;
 Widget pulseGenerator(BuildContext context, double angle,
@@ -65,7 +66,7 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
                       RedButtonPressedEvent(
                           fishingUsecase: sl.get<FishingUsecase>(),
                           angleMiniGauge: angleMiniGauge));
-                  prefs.setInt("redButtonGearStatus", 0);
+                  //prefs.setInt("redButtonGearStatus", 1);
                 }
               }
             },
