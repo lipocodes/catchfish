@@ -38,15 +38,6 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
         alignment: Alignment.center,
         children: [
           GestureDetector(
-            onLongPressStart: (details) {
-              if (DateTime.now().millisecondsSinceEpoch -
-                      timeLastButtonPressed >
-                  1000) {
-                if (redButtonGearStatus == 2) {
-                  hasPlayerPressedRedButton = true;
-                }
-              }
-            },
             onTap: () async {
               if (DateTime.now().millisecondsSinceEpoch -
                       timeLastButtonPressed >
@@ -55,12 +46,12 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
                   prefs.setInt("redButtonGearStatus", 1);
                   timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
                 } else if (redButtonGearStatus == 2) {
-                  hasPlayerPressedRedButton = false;
+                  timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
                   BlocProvider.of<FishingBloc>(context).add(
                       RedButtonPressedEvent(
                           fishingUsecase: sl.get<FishingUsecase>(),
                           angleMiniGauge: angleMiniGauge));
-                  prefs.setInt("redButtonGearStatus", 0);
+                  //prefs.setInt("redButtonGearStatus", 1);
                 }
               }
             },
