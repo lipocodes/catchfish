@@ -432,6 +432,11 @@ class RemoteDatasource {
                 caughtFish: [fishCategoryC[rand2]],
                 timeLastCaughtFish: 0);
             Map map = newPlayerModel.toJson();
+            //if this bot already exists, we need to randomize another one
+            if (listPlayers.contains(map)) {
+              b++;
+              continue;
+            }
             listPlayers.add(map);
           }
 

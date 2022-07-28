@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:catchfish/features/gameBoard/domain/usecases/fishing/fishing_usecase.dart';
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/fishingBloc/fishing_bloc.dart';
 import 'package:catchfish/injection_container.dart';
@@ -40,6 +37,12 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
             width: 400,
             child: Image(
                 image: AssetImage('assets/images/gameBoard/success.gif'))),
+      ] else if (redButtonGearStatus == 2) ...[
+        const SizedBox(
+            height: 400.0,
+            width: 400.0,
+            child:
+                Image(image: AssetImage('assets/images/gameBoard/jumping.gif')))
       ] else ...[
         const SizedBox(
           height: 400.0,
@@ -62,6 +65,7 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
                       RedButtonPressedEvent(
                           fishingUsecase: sl.get<FishingUsecase>(),
                           angleMiniGauge: angleMiniGauge));
+                  prefs.setInt("redButtonGearStatus", 0);
                 }
               }
             },

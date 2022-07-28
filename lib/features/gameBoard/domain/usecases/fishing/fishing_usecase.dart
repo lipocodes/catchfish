@@ -90,8 +90,8 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
       double pulseLength = 0.0;
       double angle = 0.0;
-      //we randomize a number 2-6. If it's 2, it's a chance to catch a fish!
-      int random = 1 + Random().nextInt(5);
+      //we randomize a number 2-9. If it's 2, it's a chance to catch a fish!
+      int random = 1 + Random().nextInt(8);
       if (random == 2) {
         //fish isn't catchable (short vibration)
         _isItCatchingTime = false;
@@ -118,11 +118,11 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
           int milli = (pulseLength * 1000).toInt();
           Vibration.vibrate(pattern: [0, milli], amplitude: 256);
-          playBackgroundAudio("strongSignal.mp3");
+          //playBackgroundAudio("strongSignal.mp3");
           Future.delayed(Duration(milliseconds: milli), () async {
             _isItCatchingTime = false;
             prefs = await SharedPreferences.getInstance();
-            prefs.setInt("redButtonGearStatus", 1);
+            //prefs.setInt("redButtonGearStatus", 1);
           });
         });
       } else {
@@ -130,7 +130,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         double possibleAngleRange = (2.7925268 + 2.44346095);
         angle = (pulseLength * possibleAngleRange) - 2.7925268;
         if (!Platform.environment.containsKey('FLUTTER_TEST')) {
-          playBackgroundAudio("weakSignal.mp3");
+          //playBackgroundAudio("weakSignal.mp3");
         }
       }
       double pulseStrength = 1.0;

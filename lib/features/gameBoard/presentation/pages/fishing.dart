@@ -249,6 +249,7 @@ class _FishingState extends State<Fishing> {
                   } else if (state is RedButtonPressedState) {
                     if (state.caughtFishDetails.isNotEmpty) {
                       _caughtFishDetails = state.caughtFishDetails;
+                      prefs.setInt("redButtonGearStatus", 0);
                       Future.delayed(const Duration(seconds: 3), () {
                         _caughtFishDetails = "";
                       });
