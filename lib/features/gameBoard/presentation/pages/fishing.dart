@@ -249,6 +249,9 @@ class _FishingState extends State<Fishing> {
                   } else if (state is RedButtonPressedState) {
                     if (state.caughtFishDetails.isNotEmpty) {
                       _caughtFishDetails = state.caughtFishDetails;
+                      Future.delayed(const Duration(seconds: 3), () {
+                        _caughtFishDetails = "";
+                      });
                     }
                     sl.get<CaughtFishEntity>().isFishCaught = false;
                     sl.get<CaughtFishEntity>().caughtFishDetails = "";

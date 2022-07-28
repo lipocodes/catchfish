@@ -34,8 +34,19 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
 
   return Column(
     children: [
+      if (caughtFishDetails.isNotEmpty) ...[
+        const SizedBox(
+            height: 400.0,
+            width: 400,
+            child: Image(
+                image: AssetImage('assets/images/gameBoard/success.gif'))),
+      ] else ...[
+        const SizedBox(
+          height: 400.0,
+          width: 400.0,
+        )
+      ],
       Stack(
-        alignment: Alignment.center,
         children: [
           GestureDetector(
             onTap: () async {
@@ -51,7 +62,6 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
                       RedButtonPressedEvent(
                           fishingUsecase: sl.get<FishingUsecase>(),
                           angleMiniGauge: angleMiniGauge));
-                  //prefs.setInt("redButtonGearStatus", 1);
                 }
               }
             },

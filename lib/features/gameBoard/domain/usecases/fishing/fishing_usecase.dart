@@ -95,7 +95,17 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       if (random == 2) {
         //fish isn't catchable (short vibration)
         _isItCatchingTime = false;
-        Vibration.vibrate(pattern: [0, 400, 300, 400], amplitude: 256);
+        //randomize time periods for the vibration
+        List<int> timePeriods = [100, 200, 300, 400, 500];
+        int randomIndex = Random().nextInt(timePeriods.length);
+        int timePeriod1 = timePeriods[randomIndex];
+        randomIndex = Random().nextInt(timePeriods.length);
+        int timePeriod2 = timePeriods[randomIndex];
+        randomIndex = Random().nextInt(timePeriods.length);
+        int timePeriod3 = timePeriods[randomIndex];
+        Vibration.vibrate(
+            pattern: [0, timePeriod1, timePeriod2, timePeriod3],
+            amplitude: 256);
         pulseLength = 2 - myLevel * 0.1;
         angle = 2.7925268;
         int milli = (pulseLength * 1000).toInt();
@@ -108,7 +118,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
           int milli = (pulseLength * 1000).toInt();
           Vibration.vibrate(pattern: [0, milli], amplitude: 256);
-          //playBackgroundAudio("strongSignal.mp3");
+          playBackgroundAudio("strongSignal.mp3");
           Future.delayed(Duration(milliseconds: milli), () async {
             _isItCatchingTime = false;
             prefs = await SharedPreferences.getInstance();
@@ -120,7 +130,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
         double possibleAngleRange = (2.7925268 + 2.44346095);
         angle = (pulseLength * possibleAngleRange) - 2.7925268;
         if (!Platform.environment.containsKey('FLUTTER_TEST')) {
-          //playBackgroundAudio("weakSignal.mp3");
+          playBackgroundAudio("weakSignal.mp3");
         }
       }
       double pulseStrength = 1.0;
