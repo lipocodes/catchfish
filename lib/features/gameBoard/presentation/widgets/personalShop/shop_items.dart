@@ -34,12 +34,14 @@ Widget gui(BuildContext context, List listItems) {
   List<String> price = [];
   List<String> weight = [];
   List<String> image = [];
+  List<String> bidNumber = [];
   for (int a = 0; a < listItems.length; a++) {
     List<String> temp = listItems[a].split("^^^");
     title.add(temp[0]);
     price.add(temp[1]);
     weight.add(temp[2]);
     image.add(temp[3]);
+    bidNumber.add(temp[4]);
   }
   return Container(
     height: MediaQuery.of(context).size.height,
@@ -60,7 +62,7 @@ Widget gui(BuildContext context, List listItems) {
         return GestureDetector(
           onTap: () {
             popup(context, title[index], image[index], price[index],
-                weight[index]);
+                weight[index], bidNumber[index]);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -116,7 +118,7 @@ Widget gui(BuildContext context, List listItems) {
                       GestureDetector(
                         onTap: () {
                           popupSell(context, title[index], image[index],
-                              price[index], index);
+                              price[index], index, bidNumber[index]);
                         },
                         child: Text(
                           "sell".tr(),
@@ -224,7 +226,8 @@ popupMoveToCollection(BuildContext context, String title, String image,
 }
 
 popupSell(BuildContext context, String title, String image, String price,
-    int index) async {
+    int index, String bidNumber) async {
+  print("aaaaaaaaaaaaaaaaa=" + bidNumber);
   return await showDialog(
     context: context,
     barrierDismissible: false,
@@ -272,9 +275,17 @@ popupSell(BuildContext context, String title, String image, String price,
           borderRadius: BorderRadius.circular(20),
         ),
         content: SizedBox(
-          height: 250.0,
+          height: 280.0,
           child: Column(
             children: [
+              Text(
+                "bids:".tr() + bidNumber.toString() + "/3",
+                style: const TextStyle(
+                  fontFamily: 'skullsandcrossbones',
+                  fontSize: 18.0,
+                  color: Colors.redAccent,
+                ),
+              ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(25),
                 child: Image.asset(
@@ -283,9 +294,6 @@ popupSell(BuildContext context, String title, String image, String price,
                   height: 160,
                   fit: BoxFit.fill,
                 ),
-              ),
-              const SizedBox(
-                height: 10.0,
               ),
               Text(
                 title,
@@ -317,7 +325,7 @@ popupSell(BuildContext context, String title, String image, String price,
 }
 
 popup(BuildContext context, String title, String image, String price,
-    String weight) async {
+    String weight, String bidNumber) async {
   return await showDialog(
     context: context,
     barrierDismissible: false,
@@ -342,6 +350,14 @@ popup(BuildContext context, String title, String image, String price,
           height: 250.0,
           child: Column(
             children: [
+              Text(
+                "bids:".tr() + bidNumber.toString() + "/3",
+                style: const TextStyle(
+                  fontFamily: 'skullsandcrossbones',
+                  fontSize: 30.0,
+                  color: Colors.redAccent,
+                ),
+              ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(25),
                 child: Image.asset(
