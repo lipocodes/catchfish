@@ -168,7 +168,7 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
         if (state is EnteringLobbyState) {
           return lobbyScreen(state);
         } else if (state is EndRotateCompassState) {
-          BlocProvider.of<LobbyBloc>(context).add(const EnteringLobbyEvent());
+          //BlocProvider.of<LobbyBloc>(context).add(const EnteringLobbyEvent());
           showDailyPrize(state.dailyPrize);
           return lobbyScreen(state);
         } else if (state is ReturningLobbyState) {
@@ -190,8 +190,8 @@ class _LobbyState extends State<Lobby> with SingleTickerProviderStateMixin {
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
-          if ((state is EnteringLobbyState ||
-              state is ReturningLobbyState)) ...[
+          if ((state is EnteringLobbyState && !state.hasRotatedTodayYet) ||
+              (state is ReturningLobbyState && !state.hasRotatedTodayYet)) ...[
             const SizedBox(
               height: 60.0,
             ),

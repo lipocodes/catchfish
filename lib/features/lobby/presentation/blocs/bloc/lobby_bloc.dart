@@ -191,6 +191,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
           PrizeValuesUsecase prizeValuesUsecase = PrizeValuesUsecase();
           prizeValuesUsecase.savePrizeValues(email, prizeValuesEntity);
         }
+
         emit(EndRotateCompassState(
             dailyPrize: dailyPrizes[randomIndex],
             inventoryMoney: inventoryMoney,

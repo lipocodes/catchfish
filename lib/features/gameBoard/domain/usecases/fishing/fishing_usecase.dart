@@ -117,7 +117,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
           _isItCatchingTime = true;
 
           int milli = (pulseLength * 2000).toInt();
-          Vibration.vibrate(pattern: [0, milli], amplitude: 256);
+          Vibration.vibrate(pattern: [0, milli], amplitude: 512);
           //playBackgroundAudio("strongSignal.mp3");
           Future.delayed(Duration(milliseconds: milli), () async {
             _isItCatchingTime = false;
