@@ -481,7 +481,12 @@ class RemoteDatasource {
           Map map = newPlayerModel.toJson();
           listPlayers.add(map);
           //if we got to have less than 5 players (inc. bots), we add a new bot
-          if (listPlayers.length < 5) {
+          final SharedPreferences prefs = await _prefs;
+          bool isItSoloGame = prefs.getBool("isItSoloGame") ?? false;
+          prefs.setString("groupName", groupName);
+          prefs.setString("yourName", yourName);
+          //no need for bots if it's a Solo Game
+          if (listPlayers.length < 5 && isItSoloGame == false) {
             addBotToGroup(
               groupName,
             );
@@ -493,9 +498,6 @@ class RemoteDatasource {
             "players": listPlayers,
             "numberPlayers": ++numberPlayers,
           }, SetOptions(merge: true));
-          final SharedPreferences prefs = await _prefs;
-          prefs.setString("groupName", groupName);
-          prefs.setString("yourName", yourName);
 
           //we run it because we have found the right group & added user to it.
           return const Right(true);

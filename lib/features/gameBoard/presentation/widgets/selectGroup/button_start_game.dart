@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:catchfish/features/gameBoard/presentation/blocs/fishing/selectGroupBloc/selectgroup_bloc.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/fishing.dart';
-import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,13 +18,16 @@ Widget buttonStartGame(BuildContext context) {
                 "selectedGroupType",
               ) ??
               0;
-
+          //Temporarily - go directly to the main game and overpass the navigation part of game
           if (selectedGroupType == 0) {
+            prefs.setBool("isItSoloGame", true);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const Navigation()),
+              MaterialPageRoute(
+                  builder: (context) => const /*Navigation*/ Fishing()),
             );
           } else if (selectedGroupType == 1 || selectedGroupType == 2) {
+            prefs.setBool("isItSoloGame", false);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const Fishing()),
