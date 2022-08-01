@@ -84,15 +84,23 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
       int myLevel = prefs.getInt("myLevel") ?? 1;
       bool needPulse = prefs.getBool("needPulse") ?? false;
       int redButtonGearStatus = prefs.getInt("redButtonGearStatus") ?? 0;
+      int numSecsSinceOpportunity =
+          prefs.getInt("numSecsSinceOpportunity") ?? 0;
       if (redButtonGearStatus != 1) {
         return Left(GeneralFailure());
       }
 
       double pulseLength = 0.0;
       double angle = 0.0;
-      //we randomize a number 2-7. If it's 2, it's a chance to catch a fish!
-      int random = 1 + Random().nextInt(6);
-      if (random == 2) {
+      //we randomize a number 2-6. If it's 2, it's a chance to catch a fish!
+      int random = 1 + Random().nextInt(5);
+
+      if ((random == 2 && numSecsSinceOpportunity >= 5) ||
+          (numSecsSinceOpportunity >= 10)) {
+        //we need to count #pulses since last vibrations, in order to make sure each
+        //opportunity occur 5-10 secs from one another
+        prefs.setInt("numSecsSinceOpportunity", 0);
+        prefs.setInt("redButtonGearStatus", 2);
         //fish isn't catchable (short vibration)
         _isItCatchingTime = false;
         //randomize time periods for the vibration
@@ -118,14 +126,19 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
 
           int milli = (pulseLength * 2000).toInt();
           Vibration.vibrate(pattern: [0, milli], amplitude: 512);
+
           //playBackgroundAudio("strongSignal.mp3");
           Future.delayed(Duration(milliseconds: milli), () async {
             _isItCatchingTime = false;
             prefs = await SharedPreferences.getInstance();
-            //prefs.setInt("redButtonGearStatus", 1);
+            prefs.setInt("redButtonGearStatus", 1);
           });
         });
       } else {
+        //we need to count #pulses since last vibrations, in order to make sure each
+        //opportunity occur 5-10 secs from one another
+        prefs.setInt("numSecsSinceOpportunity", ++numSecsSinceOpportunity);
+        prefs.setInt("redButtonGearStatus", 1);
         pulseLength = random / 10;
         double possibleAngleRange = (2.7925268 + 2.44346095);
         angle = (pulseLength * possibleAngleRange) - 2.7925268;
@@ -138,6 +151,7 @@ class FishingUsecase extends UseCase<PulseEntity, NoParams> {
           pulseStrength: pulseStrength, pulseLength: pulseLength, angle: angle);
       return Right(pulseEntity);
     } catch (e) {
+      print("eeeeeeeeeeeeeeeeeee getPulse()=" + e.toString());
       return Left(GeneralFailure());
     }
   }

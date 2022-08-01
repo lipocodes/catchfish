@@ -235,12 +235,6 @@ class _FishingState extends State<Fishing> {
                 builder: (context, state) {
                   if (state is GetPulseState) {
                     angle = state.angle;
-                    //need to make this available for pulseGenerator
-                    if (state.pulseLength >= 1.8) {
-                      prefs.setInt("redButtonGearStatus", 2);
-                    } else {
-                      prefs.setInt("redButtonGearStatus", 1);
-                    }
 
                     BlocProvider.of<FishingBloc>(context)
                         .add(BetweenPulsesEvent());
