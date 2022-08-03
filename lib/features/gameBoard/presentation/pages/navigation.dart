@@ -165,7 +165,6 @@ class _NavigationState extends State<Navigation> {
   @override
   void initState() {
     super.initState();
-
     changeMarina(true, 0);
     BlocProvider.of<NavigationBloc>(context).add(EnteringNavigationEvent());
   }

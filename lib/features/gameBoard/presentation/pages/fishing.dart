@@ -55,9 +55,9 @@ class _FishingState extends State<Fishing> {
 
   retreivePrefs() async {
     _prefs = await SharedPreferences.getInstance();
-    _selectedGroupType = await _prefs.getInt("selectedGroupType") ?? 0;
-    _amIGroupLeader = await _prefs.getBool('amIGroupLeader') ?? false;
-    _gameStarted = await _prefs.getBool('gameStarted') ?? false;
+    _selectedGroupType = _prefs.getInt("selectedGroupType") ?? 0;
+    _amIGroupLeader = _prefs.getBool('amIGroupLeader') ?? false;
+    _gameStarted = _prefs.getBool('gameStarted') ?? false;
     //when entering game board, this is the initial status of the red button
     _prefs.setInt("redButtonGearStatus", 0);
   }

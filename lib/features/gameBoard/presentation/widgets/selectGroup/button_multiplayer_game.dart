@@ -24,7 +24,7 @@ Widget buttonMultiplayerGame(BuildContext context) {
           if (selectedGroupType == 0) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const Navigation()),
+              MaterialPageRoute(builder: (context) => const Fishing()),
             );
           } else if (selectedGroupType == 1 || selectedGroupType == 2) {
             Navigator.push(

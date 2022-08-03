@@ -21,18 +21,13 @@ Widget buttonStartGame(BuildContext context) {
           //Temporarily - go directly to the main game and overpass the navigation part of game
           if (selectedGroupType == 0) {
             prefs.setBool("isItSoloGame", true);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const /*Navigation*/ Fishing()),
-            );
           } else if (selectedGroupType == 1 || selectedGroupType == 2) {
             prefs.setBool("isItSoloGame", false);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Fishing()),
-            );
           }
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Fishing()),
+          );
         });
 
         return Container();
