@@ -58,9 +58,10 @@ class UserDetailsRemoteDataSource {
         "level": 1,
         "newPriceOfferFishPersonalCollection": false,
         "prizeValues": {
-          'inventoryBaits': 0,
+          'inventoryBaits': 20,
           'inventoryMoney': 0,
-          'inventoryXP': 0
+          'inventoryXP': 0,
+          'lastPrizeValuesUpdateDB': 0,
         },
         "uid": uid,
       });

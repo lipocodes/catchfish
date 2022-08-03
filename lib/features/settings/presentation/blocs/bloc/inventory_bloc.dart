@@ -28,6 +28,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
           InventoryUsecases inventoryUsecases = InventoryUsecases();
           InventoryScreenEntity inventoryScreenEntity =
               await inventoryUsecases.getInventoryDB(email);
+
           emit(EnteringInventoryState(
               inventoryScreenEntity: inventoryScreenEntity));
         } else {

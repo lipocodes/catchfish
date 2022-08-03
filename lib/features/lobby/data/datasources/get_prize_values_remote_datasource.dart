@@ -19,6 +19,7 @@ class GetPrizeValuesRemoteDatasource {
 
       return prizeValuesEntity;
     } catch (e) {
+      print("eeeeeeeeeeeeeeeeeeeee remote getPrizeValuesDB=" + e.toString());
       PrizeValuesEntity prizeValuesEntity = PrizeValuesEntity(
           inventoryMoney: 0,
           inventoryBaits: 0,
