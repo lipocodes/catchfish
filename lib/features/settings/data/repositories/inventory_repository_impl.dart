@@ -22,11 +22,12 @@ class InventoryRepositoryImpl implements InventoryRepository {
     }
   }
 
-  Future<Either<Failure, bool>> buyItem(String email, int indexItem) async {
+  Future<Either<Failure, bool>> buyItem(
+      String email, int indexItem, int quantity) async {
     try {
       RemoteDataSources remoteDataSources = RemoteDataSources();
       bool yesNo = false;
-      final res = await remoteDataSources.buyItem(email, indexItem);
+      final res = await remoteDataSources.buyItem(email, indexItem, quantity);
       res.fold((l) => GeneralFailure(), (r) => yesNo = r);
       return Right(yesNo);
     } catch (e) {

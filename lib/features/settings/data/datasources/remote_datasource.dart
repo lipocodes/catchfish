@@ -76,7 +76,8 @@ class RemoteDataSources {
     }
   }
 
-  Future<Either<Failure, bool>> buyItem(String email, int indexItem) async {
+  Future<Either<Failure, bool>> buyItem(
+      String email, int indexItem, int quantity) async {
     try {
       var r = await FirebaseFirestore.instance.collection("fishingShop").get();
       String id = r.docs[indexItem]['id'];
@@ -92,17 +93,24 @@ class RemoteDataSources {
           .get();
 
       int inventoryMoney = t.docs[0]['prizeValues']['inventoryMoney'];
+      int inventoryBaits = t.docs[0]['prizeValues']['inventoryBaits'];
       List inventory = t.docs[0]['inventory'];
       inventory.add(purchasedItemDetails);
       //if player is short of money
-      if (priceItem > inventoryMoney) {
+      if ((priceItem * quantity) > inventoryMoney) {
         return const Right(false);
       } else {
         String id = t.docs[0].id;
-        await FirebaseFirestore.instance.collection('users').doc(id).update({
-          'prizeValues.inventoryMoney': (inventoryMoney - priceItem),
-          'inventory': inventory,
-        });
+        if (title.contains("Bait")) {
+          await FirebaseFirestore.instance.collection('users').doc(id).update({
+            'prizeValues.inventoryMoney':
+                (inventoryMoney - priceItem * quantity),
+            'prizeValues.inventoryBaits':
+                (inventoryBaits + priceItem * quantity),
+            'inventory': inventory,
+          });
+        }
+
         return const Right(true);
       }
     } catch (e) {

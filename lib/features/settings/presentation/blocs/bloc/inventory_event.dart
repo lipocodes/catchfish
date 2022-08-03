@@ -12,5 +12,6 @@ class EnteringInventoryEvent extends InventoryEvent {}
 // ignore: must_be_immutable
 class BuyingItemEvent extends InventoryEvent {
   int indexItem;
-  BuyingItemEvent({required this.indexItem});
+  int quantity;
+  BuyingItemEvent({required this.indexItem, required this.quantity});
 }

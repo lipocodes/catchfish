@@ -43,7 +43,8 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
         if (auth.currentUser != null) {
           email = auth.currentUser!.email!;
           InventoryUsecases inventoryUsecases = InventoryUsecases();
-          final res = await inventoryUsecases.buyItem(email, event.indexItem);
+          final res = await inventoryUsecases.buyItem(
+              email, event.indexItem, event.quantity);
           bool yesNo = false;
           res.fold((l) => Left(GeneralFailure()), (r) => yesNo = r);
           emit(BuyingItemState(enoughMoney: yesNo));

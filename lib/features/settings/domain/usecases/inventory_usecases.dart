@@ -115,11 +115,13 @@ class InventoryUsecases {
         quantities: quantities);
   }
 
-  Future<Either<Failure, bool>> buyItem(String email, int indexItem) async {
+  Future<Either<Failure, bool>> buyItem(
+      String email, int indexItem, int quantity) async {
     try {
       InventoryRepositoryImpl inventoryRepositoryImpl =
           InventoryRepositoryImpl();
-      final res = await inventoryRepositoryImpl.buyItem(email, indexItem);
+      final res =
+          await inventoryRepositoryImpl.buyItem(email, indexItem, quantity);
       bool yesNo = false;
       res.fold((l) => GeneralFailure(), ((r) => yesNo = r));
       return Right(yesNo);

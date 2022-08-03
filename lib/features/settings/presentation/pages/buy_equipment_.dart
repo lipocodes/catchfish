@@ -16,8 +16,52 @@ class BuyEquipment extends StatefulWidget {
 
 class _BuyEquipmentState extends State<BuyEquipment> {
   bool _showedWarningYet = false;
-
+  String _dropdownValue = "1";
   List localListInventory = [];
+
+//dropdown for selecting #items to buy
+  Widget dropDownBuy() {
+    // List of items in our dropdown menu
+    var items = [
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+    ];
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(10)),
+      child: DropdownButton(
+        // Initial Value
+        value: _dropdownValue,
+
+        // Down Arrow Icon
+        icon: const Icon(Icons.keyboard_arrow_down),
+
+        // Array list of items
+        items: items.map((String items) {
+          return DropdownMenuItem(
+            value: items,
+            child: Text(items),
+          );
+        }).toList(),
+        // After selecting the desired option,it will
+        // change button value to selected value
+        onChanged: (String? newValue) {
+          setState(() {
+            _dropdownValue = newValue!;
+            print(_dropdownValue);
+          });
+        },
+      ),
+    );
+  }
 
   getGridViewItems(BuildContext context, String gridItem) {
     showDialog(
@@ -166,7 +210,7 @@ class _BuyEquipmentState extends State<BuyEquipment> {
         if (state is EnteringInventoryState) {
           return GridView.count(
             crossAxisCount: 1,
-            childAspectRatio: (2),
+            childAspectRatio: (1.5),
             children: List.generate(
                 state.inventoryScreenEntity.idItemsToSell.length, (index) {
               return Padding(
@@ -217,19 +261,26 @@ class _BuyEquipmentState extends State<BuyEquipment> {
                               fontFamily: 'skullsandcrossbones',
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              BlocProvider.of<InventoryBloc>(context)
-                                  .add(BuyingItemEvent(indexItem: index));
-                            },
-                            child: Text(
-                              "buy".tr(),
-                              style: const TextStyle(
-                                fontSize: 24.0,
-                                color: Colors.red,
-                                fontFamily: 'skullsandcrossbones',
+                          Row(
+                            children: [
+                              dropDownBuy(),
+                              GestureDetector(
+                                onTap: () {
+                                  BlocProvider.of<InventoryBloc>(context).add(
+                                      BuyingItemEvent(
+                                          indexItem: index,
+                                          quantity: int.parse(_dropdownValue)));
+                                },
+                                child: Text(
+                                  "buy".tr(),
+                                  style: const TextStyle(
+                                    fontSize: 24.0,
+                                    color: Colors.red,
+                                    fontFamily: 'skullsandcrossbones',
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
