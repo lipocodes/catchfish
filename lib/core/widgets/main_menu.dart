@@ -1,5 +1,4 @@
-import 'package:catchfish/features/fishingShop/presentation/pages/fishing_shop.dart';
-import 'package:catchfish/features/gameBoard/presentation/pages/navigation.dart';
+import 'package:catchfish/core/utils/play_sound.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/personal_collection.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/personal_shop.dart';
 import 'package:catchfish/features/gameBoard/presentation/pages/select_group.dart';
@@ -11,8 +10,59 @@ import 'package:catchfish/features/tokens/presentation/pages/buy_tokens.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as UI;
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+//Warning: player has less than 5 baits, which may result in game premature end
+showBaitNumberWarning(BuildContext context) async {
+  late PlaySound playSound;
+  playSound = PlaySound();
+  playSound.play(
+    path: "assets/sounds/lobby/",
+    fileName: "beep.mp3",
+  );
+  await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.redAccent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Text(
+          "title_bait_number_warning",
+          style: TextStyle(
+            fontFamily: 'skullsandcrossbones',
+          ),
+        ).tr(),
+        content: const Text(
+          "body_bait_number_warning",
+          style: TextStyle(
+            fontFamily: 'skullsandcrossbones',
+          ),
+        ).tr(),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SelectGroup()),
+              );
+            },
+            child: const Text('OK',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.blue,
+                  fontFamily: 'skullsandcrossbones',
+                )),
+          ),
+        ],
+      );
+    },
+  );
+}
 
 Widget mainMenu(BuildContext context) {
   UI.TextDirection direction = UI.TextDirection.ltr;
@@ -46,13 +96,18 @@ Widget mainMenu(BuildContext context) {
                   fontWeight: FontWeight.bold,
                   fontFamily: 'skullsandcrossbones',
                 )),
-            onTap: () {
-              Navigator.pop(context);
-              //Navigator.pushNamed(context, '/main_game_board');
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SelectGroup()),
-              );
+            onTap: () async {
+              //Navigator.pop(context);
+              SharedPreferences _prefs = await SharedPreferences.getInstance();
+              int inventoryBaits = _prefs.getInt("inventoryBaits") ?? 0;
+              if (inventoryBaits < 5) {
+                showBaitNumberWarning(context);
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SelectGroup()),
+                );
+              }
             },
           ),
           const Divider(

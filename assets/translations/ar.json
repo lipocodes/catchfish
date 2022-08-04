@@ -5,6 +5,8 @@
     "explanation_compass": "Why rotate this compass?",
     "what_is_this": "What is this?",
     "compass_explantion": "When you rotate this compass, you get a number beween 0-360. \n\n This number gives you a daily prize: Money, fishing rods, baits, XPs and more.",
+    "title_bait_number_warning": "Less than 5 baits",
+    "body_bait_number_warning": "Please buy more baits!",
     "your_daily_prize": "Your Daily Prize",
     "click_to_enable_compass": "Rotate Again Today",
     "go_to_shop": "Go to Shop",
