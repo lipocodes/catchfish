@@ -97,7 +97,6 @@ Widget mainMenu(BuildContext context) {
                   fontFamily: 'skullsandcrossbones',
                 )),
             onTap: () async {
-              //Navigator.pop(context);
               SharedPreferences _prefs = await SharedPreferences.getInstance();
               int inventoryBaits = _prefs.getInt("inventoryBaits") ?? 0;
               if (inventoryBaits < 5) {

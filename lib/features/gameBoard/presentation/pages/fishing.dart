@@ -42,6 +42,7 @@ class _FishingState extends State<Fishing> {
   bool _isDialogOpen = false;
   int redButtonGearStatus = 0;
   double _angleMiniGauge = 0.0;
+  int _inventoryBaits = 0;
 
   @override
   void initState() {
@@ -60,6 +61,7 @@ class _FishingState extends State<Fishing> {
     _gameStarted = _prefs.getBool('gameStarted') ?? false;
     //when entering game board, this is the initial status of the red button
     _prefs.setInt("redButtonGearStatus", 0);
+    _inventoryBaits = _prefs.getInt("inventoryBaits") ?? 0;
   }
 
   popDialogGameOver(List<String> listAcheivments) async {
@@ -206,7 +208,8 @@ class _FishingState extends State<Fishing> {
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         energy(_levelEnergy),
-                        countdown(context, _currentTime, _numPlayers),
+                        countdown(context, _currentTime, _numPlayers,
+                            _inventoryBaits),
                       ],
                     );
                   } else if (state is GameOverState) {
@@ -217,7 +220,8 @@ class _FishingState extends State<Fishing> {
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         energy(_levelEnergy),
-                        countdown(context, _currentTime, _numPlayers),
+                        countdown(context, _currentTime, _numPlayers,
+                            _inventoryBaits),
                       ],
                     );
                   } else {
@@ -225,7 +229,8 @@ class _FishingState extends State<Fishing> {
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         energy(_levelEnergy),
-                        countdown(context, _currentTime, _numPlayers),
+                        countdown(context, _currentTime, _numPlayers,
+                            _inventoryBaits),
                       ],
                     );
                   }

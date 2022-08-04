@@ -54,6 +54,11 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
         children: [
           GestureDetector(
             onTap: () async {
+              //if player has no more baits, he can't try catching a fish..
+              int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
+              if (inventoryBaits < 1) {
+                return;
+              }
               if (DateTime.now().millisecondsSinceEpoch -
                       timeLastButtonPressed >
                   1000) {
