@@ -169,6 +169,7 @@ class _FishingState extends State<Fishing> {
               BlocBuilder<FishingBloc, FishingState>(
                 builder: (context, state) {
                   if (state is TimerTickState) {
+                    _inventoryBaits = _prefs.getInt("inventoryBaits") ?? 0;
                     if (state.namePlayerCaughtFish.isNotEmpty) {
                       final snackdemo = SnackBar(
                         content: Text(

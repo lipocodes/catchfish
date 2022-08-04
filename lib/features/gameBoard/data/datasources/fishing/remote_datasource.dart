@@ -784,6 +784,24 @@ class RemoteDatasource {
             "yourName",
           ) ??
           "";
+      ////////////////////////////////////////////////////////////////////////
+      //updating #baits on DB
+
+      int inventoryBaits = prefs.getInt("inventoryBaits") ?? 0;
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+      final userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .where("uid", isEqualTo: uid)
+          .get();
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userDoc.docs[0].id)
+          .update({
+        "prizeValues.inventoryBaits": inventoryBaits,
+      });
+      ////////////////////////////////////////////////////////////////////////
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection("groups")
           .where('groupName', isEqualTo: groupName)

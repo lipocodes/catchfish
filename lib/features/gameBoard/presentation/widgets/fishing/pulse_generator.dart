@@ -66,6 +66,8 @@ Widget gui(BuildContext context, double angle, String caughtFishDetails,
                   prefs.setInt("redButtonGearStatus", 1);
                   timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
                 } else if (redButtonGearStatus == 2) {
+                  prefs.setInt("inventoryBaits", inventoryBaits - 1);
+
                   timeLastButtonPressed = DateTime.now().millisecondsSinceEpoch;
                   BlocProvider.of<FishingBloc>(context).add(
                       RedButtonPressedEvent(
